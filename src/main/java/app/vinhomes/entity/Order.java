@@ -3,13 +3,11 @@ package app.vinhomes.entity;
 import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -19,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Order {
 
     @Id
@@ -31,11 +30,12 @@ public class Order {
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "order_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    @OneToOne(
+    @ManyToOne(
             optional = false,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "payment_id",
@@ -43,9 +43,10 @@ public class Order {
     )
     private Payment payment;
 
-    @OneToOne(
+    @ManyToOne(
             optional = false,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "service_id",
@@ -56,17 +57,20 @@ public class Order {
     @OneToOne(
             optional = false,
             cascade = CascadeType.ALL,
-            mappedBy = "order"
+            mappedBy = "order",
+            fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Schedule schedule;
 
-    @ManyToOne(
-            optional = false
-    )
+    @ManyToOne
     @JoinColumn(
             name = "account_id",
-            referencedColumnName = "account_id"
+            referencedColumnName = "account_id",
+            nullable = false
     )
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
+    @JsonIdentityReference(alwaysAsId = true)
     private Account account;
 
 }

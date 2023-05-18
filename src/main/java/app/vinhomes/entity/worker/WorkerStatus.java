@@ -1,6 +1,7 @@
 package app.vinhomes.entity.worker;
 
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.ServiceCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,5 +35,11 @@ public class WorkerStatus {
     )
     private Account account;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "job",
+            referencedColumnName = "servicecate_id"
+    )
+    private ServiceCategory serviceCategory;
 
 }

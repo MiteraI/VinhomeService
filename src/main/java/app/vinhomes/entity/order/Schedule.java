@@ -2,14 +2,14 @@ package app.vinhomes.entity.order;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,36 +20,39 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class Schedule {
 
     @Id
-    @Column(name = "schedule_id")
+    @Column(name = "order_id")
     private Long scheduleId;
 
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "work_time")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "checkout_time")
-    private Date endTime;
+    private LocalDateTime endTime;
 
     @OneToOne
     @JoinColumn(
-            name = "schedule_id",
+            name = "order_id",
             referencedColumnName = "order_id"
     )
+    @ToString.Exclude
+    @JsonBackReference
     @MapsId
     private Order order;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tbl_worker_schedule",
             joinColumns = @JoinColumn(
-                    name = "schedule_id",
-                    referencedColumnName = "schedule_id"
+                    name = "order_id",
+                    referencedColumnName = "order_id"
             ),
             inverseJoinColumns = @JoinColumn(
                     name = "account_worker_id",

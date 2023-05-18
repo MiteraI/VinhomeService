@@ -21,7 +21,6 @@ class AccountRepositoryTest {
         Address address = Address.builder().buildingBlock("D6").buildingRoom("411").build();
         Phone phone1 = Phone.builder().number("0123456789").build();
         Phone phone2 = Phone.builder().number("0123456780").build();
-        Phone phone3 = Phone.builder().number("0123456780").build();
         Account account = Account.builder().accountName("Kiet")
                 .password("12345")
                 .email("kiiaeet@gmail.com")
@@ -30,13 +29,14 @@ class AccountRepositoryTest {
                 .build();
         phone1.setAccount(account);
         phone2.setAccount(account);
-        phone3.setAccount(account);
-        account.addPhone(phone3);
         account.addPhone(phone1);
         account.addPhone(phone2);
         accountRepository.save(account);
     }
-
+    @Test
+    public void printAllAccount() {
+        System.out.println("Accounts info = " + accountRepository.findAll());
+    }
     @Test
     public void deleteAccount() {
         accountRepository.deleteAll();

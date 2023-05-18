@@ -1,11 +1,14 @@
 package app.vinhomes.entity.order;
 
+import app.vinhomes.entity.Order;
 import app.vinhomes.entity.ServiceCategory;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(
@@ -29,10 +32,14 @@ public class Service {
     @Column(name = "pnum")
     private int numOfPeople;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "servicecate_id",
-            referencedColumnName = "servicecate_id"
+            referencedColumnName = "servicecate_id",
+            nullable = false
     )
+    @ToString.Exclude
+    @JsonBackReference
     private ServiceCategory serviceCategory;
+
 }

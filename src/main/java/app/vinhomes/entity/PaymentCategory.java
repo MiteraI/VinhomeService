@@ -1,10 +1,15 @@
 package app.vinhomes.entity;
 
+import app.vinhomes.entity.order.Payment;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -22,4 +27,18 @@ public class PaymentCategory {
 
     @Column(name = "paymentcate_name")
     private String paymentCategoryName;
+
+    @OneToMany(
+            mappedBy = "paymentCategory",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<Payment> payments;
+    public void addPayment(Payment payment) {
+        if(payments == null) {
+            payments = new ArrayList<>();
+            payments.add(payment);
+        } else payments.add(payment);
+    }
 }

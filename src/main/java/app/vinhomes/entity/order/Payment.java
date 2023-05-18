@@ -1,11 +1,14 @@
 package app.vinhomes.entity.order;
 
+import app.vinhomes.entity.Order;
 import app.vinhomes.entity.PaymentCategory;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(
@@ -24,10 +27,14 @@ public class Payment {
     @Column(name = "payment_name")
     private String paymentName;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonBackReference
     @JoinColumn(
             name = "paymentcate_id",
-            referencedColumnName = "paymentcate_id"
+            referencedColumnName = "paymentcate_id",
+            nullable = false
     )
     private PaymentCategory paymentCategory;
+
 }

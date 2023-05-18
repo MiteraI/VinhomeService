@@ -1,10 +1,16 @@
 package app.vinhomes.entity;
 
+import app.vinhomes.entity.order.Payment;
+import app.vinhomes.entity.order.Service;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -22,4 +28,18 @@ public class ServiceCategory {
 
     @Column(name = "servicecate_name")
     private String paymentCategoryName;
+
+    @OneToMany(
+            mappedBy = "serviceCategory",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<Service> services;
+    public void addService(Service service) {
+        if(services == null) {
+            services = new ArrayList<>();
+            services.add(service);
+        } else services.add(service);
+    }
 }

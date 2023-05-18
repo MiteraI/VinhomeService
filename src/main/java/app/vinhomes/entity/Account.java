@@ -1,10 +1,8 @@
 package app.vinhomes.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,8 +64,10 @@ public class Account {
 
     @OneToMany(
             mappedBy = "account",
+            fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
+    @JsonManagedReference
     private List<Phone> phones;
     public void addPhone(Phone phone) {
         if(phones == null) {
@@ -75,11 +75,6 @@ public class Account {
             phones.add(phone);
         } else phones.add(phone);
     }
-
-    @ManyToOne
-    @JoinColumn(
-            name = "job",
-            referencedColumnName = "servicecate_id"
-    )
-    private ServiceCategory serviceCategory;
+    @Column(columnDefinition = "integer default 1")
+    private int status;
 }

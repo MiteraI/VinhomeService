@@ -1,5 +1,6 @@
 package app.vinhomes.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Phone {
             referencedColumnName = "account_id",
             nullable = false
     )
+    @JsonBackReference
     private Account account;
 
 }
