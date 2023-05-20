@@ -15,22 +15,27 @@ class ServiceCategoryRepositoryTest {
     @Test
     public void addServiceCateAlongServices() {
         ServiceCategory serviceCategory = ServiceCategory.builder()
-                .paymentCategoryName("Cleaning")
+                .paymentCategoryName("Electrictian")
                 .build();
         Service service1 = Service.builder()
-                .serviceName("40M2 Room")
-                .numOfPeople(2)
+                .serviceName("Fridge")
+                .numOfPeople(1)
                 .price(600000)
                 .serviceCategory(serviceCategory)
                 .build();
         Service service2 = Service.builder()
-                .serviceName("60M2 Room")
-                .numOfPeople(3)
+                .serviceName("Air Conditioner")
+                .numOfPeople(1)
                 .price(800000)
                 .serviceCategory(serviceCategory)
                 .build();
         serviceCategory.addService(service1);
         serviceCategory.addService(service2);
         serviceCategoryRepository.save(serviceCategory);
+    }
+
+    @Test
+    public void printServiceBasedOnCategory() {
+        System.out.println("Service info = "+ serviceCategoryRepository.findById(1L).get().getServices().get(1));
     }
 }
