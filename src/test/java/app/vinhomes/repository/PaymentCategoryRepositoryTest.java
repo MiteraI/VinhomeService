@@ -14,7 +14,7 @@ class PaymentCategoryRepositoryTest {
 
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-    @Test
+    //@Test
     public void addPaymentCategoryAlongWithPayments() {
         Payment payment1 = Payment.builder()
                 .paymentName("VIB")

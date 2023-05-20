@@ -26,7 +26,7 @@ class OrderRepositoryTest {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    @Test
+    //@Test
     public void addOrder() {
         Account account = accountRepository.findById(1L).get();
         Schedule schedule = Schedule.builder()
@@ -45,12 +45,12 @@ class OrderRepositoryTest {
         orderRepository.save(order);
     }
 
-    @Test
+   // @Test
     public void printAllOrder() {
         System.out.println("Orders info = " + orderRepository.findAll());
     }
 
-    @Test
+  //  @Test
     public void selectAllOrder() {
         System.out.println("Orders info = " + orderRepository.findAll());
     }

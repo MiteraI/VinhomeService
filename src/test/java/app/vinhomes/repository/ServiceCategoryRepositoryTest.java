@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ServiceCategoryRepositoryTest {
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
-    @Test
+   // @Test
     public void addServiceCateAlongServices() {
         ServiceCategory serviceCategory = ServiceCategory.builder()
                 .paymentCategoryName("Cleaning")

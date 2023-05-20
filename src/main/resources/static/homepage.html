@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/homepage.css">
+</head>
+<body>
+    <h1>Create an Account</h1>
+    <button class="button-create" onclick="createForm()"><h1>Create</h1></button>
+
+    <div class="overlay"></div>
+    <div class="form">
+        <div class="form-close" onclick="closeCreateForm()" >close</div>
+        <form class="form-create" id="create-form" action="/UserController/createAccount" method="get">
+            <table class="form-create-table">
+                <tr>
+                    <td> <label> Username</label></td>
+                    <td> <input type="text" name="txtUsername" value=""> </td>
+                </tr>
+                <tr>
+                    <td> <label> Password</label></td>
+                    <td> <input type="password" name="txtPassword" value=""> </td>
+                </tr>
+                <tr>
+                    <td> <label> Email</label></td>
+                    <td> <input type="text" name="txtEmail" value=""> </td>
+                </tr>
+                <tr>
+                    <td> <label> Firstname</label></td>
+                    <td> <input type="text" name="txtFirstname" value=""> </td>
+                </tr>
+                <tr>
+                    <td> <label> Lastname</label></td>
+                    <td> <input type="text" name="txtLastname" value=""> </td>
+                </tr>
+                <tr>
+                    <td> <label> Dob</label></td>
+                    <td><input type="date" name="txtDate" value=""><br></td>
+                </tr>
+                <tr>
+                    <td><label >Address</label></td>
+                    <td><input type="radio" value="txtBlockA">block A <input type="radio" value="txtBlockB">block B <input type="radio" value="txtBlockC">block C </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label >Room Number</label><input type="text" name="txtRoomNumber" value=""> </td>
+                </tr>
+            </table>
+            <input type="submit" value="Submit">
+            <!--<button  onclick="submitForm()">create</button> -->
+            
+        </form>
+    </div>
+    
+    
+
+    
+
+
+</body>
+<script src="js/homepage.js"></script>
+</html>

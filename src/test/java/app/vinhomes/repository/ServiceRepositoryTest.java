@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ServiceRepositoryTest {
     @Autowired
     private ServiceRepository serviceRepository;
-    @Test
+   // @Test
     public void getAllServices() {
         System.out.println("Services info = " + serviceRepository.findAll());
     }

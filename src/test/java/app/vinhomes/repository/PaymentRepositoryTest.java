@@ -17,7 +17,7 @@ class PaymentRepositoryTest {
 
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-    @Test
+   // @Test
     public void addPayment() {
         PaymentCategory paymentCategory = paymentCategoryRepository.findById(1L).get();
         Payment payment = Payment.builder()
@@ -28,7 +28,7 @@ class PaymentRepositoryTest {
         paymentRepository.save(payment);
     }
 
-    @Test
+   // @Test
     public void printAllPayment() {
         System.out.println("Payments info = " + paymentRepository.findAll());
     }

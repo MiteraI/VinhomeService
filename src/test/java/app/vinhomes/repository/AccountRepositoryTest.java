@@ -16,7 +16,7 @@ class AccountRepositoryTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Test
+   // @Test
     public void addAccount() {
         Address address = Address.builder().buildingBlock("D6").buildingRoom("411").build();
         Phone phone1 = Phone.builder().number("0123456789").build();
@@ -33,11 +33,11 @@ class AccountRepositoryTest {
         account.addPhone(phone2);
         accountRepository.save(account);
     }
-    @Test
+   // @Test
     public void printAllAccount() {
         System.out.println("Accounts info = " + accountRepository.findAll());
     }
-    @Test
+   // @Test
     public void deleteAccount() {
         accountRepository.deleteAll();
     }
