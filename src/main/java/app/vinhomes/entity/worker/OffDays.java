@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class OffDays {
-
+    //Worker will have a function that
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "off_id")

@@ -21,14 +21,18 @@ class PaymentRepositoryTest {
     public void addPayment() {
         PaymentCategory paymentCategory = paymentCategoryRepository.findById(1L).get();
         Payment payment = Payment.builder()
-                .paymentName("VIB")
+                .paymentName("MoMo")
                 .paymentCategory(paymentCategory)
                 .build();
         paymentCategory.addPayment(payment);
         paymentRepository.save(payment);
     }
 
-   // @Test
+    @Test
+    public void deletePayment() {
+        paymentRepository.deleteById(2L);
+    }
+    @Test
     public void printAllPayment() {
         System.out.println("Payments info = " + paymentRepository.findAll());
     }

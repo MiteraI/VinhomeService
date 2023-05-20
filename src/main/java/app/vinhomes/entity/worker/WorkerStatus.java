@@ -31,14 +31,16 @@ public class WorkerStatus {
     @OneToOne
     @JoinColumn(
             name = "worker_id",
-            referencedColumnName = "account_id"
+            referencedColumnName = "account_id",
+            nullable = false
     )
     private Account account;
 
-    @ManyToOne
+    @ManyToOne //Job of worker
     @JoinColumn(
             name = "job",
-            referencedColumnName = "servicecate_id"
+            referencedColumnName = "servicecate_id",
+            nullable = false
     )
     private ServiceCategory serviceCategory;
 
