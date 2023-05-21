@@ -26,7 +26,7 @@ public class ServiceCategory {
     @Column(name = "servicecate_id")
     private Long paymentCategoryId;
 
-    @Column(name = "servicecate_name")
+    @Column(name = "servicecate_name", nullable = false)
     private String paymentCategoryName;
 
     @OneToMany(
@@ -35,6 +35,7 @@ public class ServiceCategory {
             cascade = CascadeType.ALL
     )
     @JsonManagedReference
+    @Column(nullable = false)
     private List<Service> services;
     public void addService(Service service) {
         if(services == null) {

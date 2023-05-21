@@ -28,10 +28,10 @@ class AccountRepositoryTest {
         Address address = Address.builder().buildingBlock("D6").buildingRoom("411").build();
         Phone phone1 = Phone.builder().number("0123456789").build();
         Phone phone2 = Phone.builder().number("0123456780").build();
-        Account account = Account.builder().accountName("Kiet")
+        Account account = Account.builder()
                 .password("12345")
-                .email("kiiaeet@gmail.com")
-                .accountName("kiethased")
+                .email("kiiaet@gmail.com")
+                .accountName("kiethase")
                 .address(address)
                 .build();
         phone1.setAccount(account);

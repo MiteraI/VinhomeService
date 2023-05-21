@@ -19,6 +19,6 @@ public class LoginFormController {
         Account loginedUser = accountRepository.findByAccountNameAndPassword(request.getParameter("accountName"), request.getParameter("password"));
         session.setAttribute("loginedUser", loginedUser );
         System.out.println(session.getAttribute("loginedUser"));
-        return "redirect:/";
+        return "homepage";
     }
 }

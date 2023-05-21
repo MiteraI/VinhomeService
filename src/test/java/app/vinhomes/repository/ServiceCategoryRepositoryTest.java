@@ -38,4 +38,9 @@ class ServiceCategoryRepositoryTest {
     public void printServiceBasedOnCategory() {
         System.out.println("Service info = "+ serviceCategoryRepository.findById(1L).get().getServices().get(1));
     }
+
+    @Test
+    public void deleteAll() {
+        serviceCategoryRepository.deleteAll();
+    }
 }

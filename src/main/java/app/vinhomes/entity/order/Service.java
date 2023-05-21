@@ -27,9 +27,10 @@ public class Service {
     @Column(name = "service_name")
     private String serviceName;
 
+    @Column(nullable = false)
     private double price;
 
-    @Column(name = "pnum")
+    @Column(name = "pnum", nullable = false)
     private int numOfPeople;
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

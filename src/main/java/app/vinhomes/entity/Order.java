@@ -25,6 +25,7 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
+    @Column(nullable = false)
     private double price;
 
     @Basic
@@ -33,24 +34,24 @@ public class Order {
     private LocalDateTime createTime;
 
     @ManyToOne(
-            optional = false,
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "payment_id",
-            referencedColumnName = "payment_id"
+            referencedColumnName = "payment_id",
+            nullable = false
     )
     private Payment payment;
 
     @ManyToOne(
-            optional = false,
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "service_id",
-            referencedColumnName = "service_id"
+            referencedColumnName = "service_id",
+            nullable = false
     )
     private Service service;
 
@@ -69,6 +70,7 @@ public class Order {
             referencedColumnName = "account_id",
             nullable = false
     )
+    @JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
     @JsonIdentityReference(alwaysAsId = true)
     private Account account;

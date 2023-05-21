@@ -19,6 +19,7 @@ public class Phone {
     @Column(name = "phone_id")
     private Long phoneId;
 
+    @Column(nullable = false)
     private String number;
 
     @ManyToOne(
