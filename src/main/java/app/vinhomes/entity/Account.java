@@ -1,5 +1,7 @@
 package app.vinhomes.entity;
 
+import app.vinhomes.entity.worker.WorkerStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,34 +41,47 @@ public class Account {
     @Column(name = "pwd", nullable = false)
     private String password;
 
+    @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String firstName;
 
+    @Column(nullable = false)
     private String lastName;
 
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     private Date dob; //date of birth
 
+    @Column(
+            name = "status",
+            nullable = false
+    )
+    private int accountStatus;
+
+    @Column(nullable = false)
     private int role;
 
     @OneToOne(
-            optional = false,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "address_id",
-            referencedColumnName = "address_id",
-            nullable = false
+            referencedColumnName = "address_id"
     )
+    @ToString.Exclude
+    @JsonIgnore
     private Address address;
 
     @OneToMany(
             mappedBy = "account",
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
     )
+    @ToString.Exclude
+    @JsonIgnore
     @JsonManagedReference
     private List<Phone> phones;
     public void addPhone(Phone phone) {
@@ -75,6 +90,25 @@ public class Account {
             phones.add(phone);
         } else phones.add(phone);
     }
-    @Column(columnDefinition = "integer default 1")
-    private int status;
+
+    //Optional attribute for cascade delete only
+    @OneToOne(
+            mappedBy = "account",
+            cascade = CascadeType.ALL
+    )
+    @ToString.Exclude
+    @JsonIgnore
+    @JsonManagedReference
+    private WorkerStatus workerStatus;
+
+    @OneToMany(
+            mappedBy = "account",
+            cascade = CascadeType.ALL
+    )
+    @ToString.Exclude
+    @JsonIgnore
+    @JsonManagedReference
+    private List<Order> orders;
+
+
 }

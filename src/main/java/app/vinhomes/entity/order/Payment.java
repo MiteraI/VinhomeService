@@ -24,10 +24,16 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @Column(name = "payment_name")
+    @Column(
+            name = "payment_name",
+            nullable = false
+    )
     private String paymentName;
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(
+            optional = false, cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY
+    )
     @ToString.Exclude
     @JsonBackReference
     @JoinColumn(

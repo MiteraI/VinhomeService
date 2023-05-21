@@ -25,7 +25,7 @@ public class PaymentCategory {
     @Column(name = "paymentcate_id")
     private Long paymentCategoryId;
 
-    @Column(name = "paymentcate_name")
+    @Column(name = "paymentcate_name", nullable = false)
     private String paymentCategoryName;
 
     @OneToMany(
@@ -33,6 +33,7 @@ public class PaymentCategory {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
+    @Column(nullable = false)
     @JsonManagedReference
     private List<Payment> payments;
     public void addPayment(Payment payment) {

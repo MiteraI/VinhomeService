@@ -2,6 +2,10 @@ package app.vinhomes.entity.worker;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.ServiceCategory;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +38,9 @@ public class WorkerStatus {
             referencedColumnName = "account_id",
             nullable = false
     )
+    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
+    @JsonIdentityReference(alwaysAsId = true)
     private Account account;
 
     @ManyToOne //Job of worker

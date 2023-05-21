@@ -26,4 +26,9 @@ class PaymentCategoryRepositoryTest {
         payment1.setPaymentCategory(paymentCategory);
         paymentCategoryRepository.save(paymentCategory);
     }
+
+    @Test
+    public void deleteAll() {
+        paymentCategoryRepository.deleteAll();
+    }
 }
