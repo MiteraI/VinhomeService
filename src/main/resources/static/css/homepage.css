@@ -26,8 +26,8 @@ body{
     border: 2px black solid;
     position: absolute;
     display: none;
-    top: 50%;
-    left: 50%;
+    top: 20%;
+    left: 20%;
 
 }
 .form-close{
@@ -41,6 +41,10 @@ body{
 .form-create-table{
     margin: 0 auto;
 
+}
+.error-message{
+    color: red;
+    visibility: hidden;
 }
 
 

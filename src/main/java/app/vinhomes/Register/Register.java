@@ -4,29 +4,141 @@ import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Register {
-    public static boolean checkUsername(String username){
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9._-]{3,15}$");
-        Matcher matcher = pattern.matcher(username);
-        return matcher.matches();
+    public static String checkUsername(String username) {
+        if(username.isEmpty()){
+            return "please enter username";
+        }
+        if (username.length()<3 || username.length()>15) {
+            return "username can only be between 3 and 15 character long";
+        }
+        else{
+            Pattern pattern = Pattern.compile("^[a-zA-Z0-9._-]{3,15}$");
+            Matcher matcher = pattern.matcher(username.trim());
+            if(matcher.matches()){
+                return "";
+            }
+            else{
+                return "wrong format username";
+            }
+        }
+    }
+
+    public static String checkPassword(String password) {
+        if(password.isEmpty()){
+            return "please enter password";
+        }
+
+        Pattern pattern = Pattern.compile("^[\\d\\D]{3,15}$");
+        Matcher matcher = pattern.matcher(password.trim());
+        if(matcher.matches()){
+            return "";
+        }else{
+            return "password should contain special character and stuff";
+        }
 
     }
-    public static boolean checkPassword(String password){
-        return ;
+
+    public static String checkEmail(String email) {
+        if(email.isEmpty()){
+            return "please enter your email";
+        }
+        Pattern pattern1 = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}+\\.[a-zA-Z]{2,6}$");
+        Matcher matcher1 = pattern1.matcher(email.trim());
+        Pattern pattern2 = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}$");
+        Matcher matcher2 = pattern2.matcher(email.trim());
+        if (matcher1.matches()) {
+            return "";
+        } else if (matcher2.matches()) {
+            return "";
+        } else {
+            return "enter the correct email";
+        }
     }
-    public static boolean checkEmail(){
+
+    public static String checkFirstname(String firstname) {
+        if(firstname.isEmpty()){
+            return "please enter your first name";
+        }
+        Pattern pattern = Pattern.compile("^[a-zA-Z\\s]{3,15}$");
+        Matcher matcher = pattern.matcher(firstname.trim());
+        if(matcher.matches()){
+            return "";
+        }else{
+            return "please enter your name, is should not have any special character";
+        }
 
     }
-    public static boolean checkFirstname(){
+
+    public static String checkLastname(String lastname) {
+        if(lastname.isEmpty()){
+            return "please enter your last name";
+        }
+        Pattern pattern = Pattern.compile("^[a-zA-Z\\s]{3,15}$");
+        Matcher matcher = pattern.matcher(lastname.trim());
+        if(matcher.matches()){
+            return "";
+        }else{
+            return "please enter your name, is should not have any special character";
+        }
+    }
+    public static String checkDate(String date){
+        if(date.isEmpty()){
+            return "please enter your Date of Birth";
+        }else{
+            return "";
+        }
+    }
+
+    public static String checkAddress(String block, String roomnumber) {
+        //block ko can phai kiem tra, vi van de ko phai block bi lam gia hay doi, do no xai RADIO button, ko can nhap nen ko sai
+        // but co kha nang bi trun RoomNumber trong cung 1 block, nene se query lay bang do ra trc de check trung
+        try {
+            int roomNo = Integer.parseInt(roomnumber);
+            /// can xem lai ve quy luat so phong
+            if (roomNo > 100 && roomNo < 999) {
+                return "";
+            } else {
+                return "your room number is not correct, enter your real room";
+            }
+        } catch (NumberFormatException e) {
+            //System.out.println(e);
+            return "please enter room number, it should not contain character";
+        }
 
     }
-    public static boolean checkLastname(){
 
-    }
-    public static boolean checkAddress(){
+    public static String checkPhoneNumber(String phonenumber) {
+        //phone number regrex VAN CHUA HOAN THIEN< CAN XEM LAI CHO DUNG
+        try{
+            Pattern pattern = Pattern.compile("^\\d{10,12}$");
+            Matcher matcher = pattern.matcher(phonenumber);
+            if(matcher.matches()){
+                return "";
+            }else{
+                return "your phone number should contain only number between 10 and 12 ";
+            }
+        }catch(NumberFormatException e){
+            //System.out.println(e);
+            return "phone should only contain number";
+        }
 
     }
 }
+
+//    public static void main(String[] args) {
+//        System.out.println(checkEmail("abc.d@gmail.com.bbb"));
+//        System.out.println(checkEmail("2asdf2@gmail.com."));
+//        System.out.println(checkEmail("asdfasdf324323423421"));
+//    }
+
+//public static void main(String[] args) {
+//    System.out.println(checkFirstname("abc"));
+//    System.out.println(checkFirstname("ab c"));
+//    System.out.println(checkFirstname("abc asdf asdf"));
+//}
+

@@ -3,6 +3,7 @@ package app.vinhomes.controller;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,13 +33,13 @@ public class AdminController {
 
     }
     @PostMapping(path = "/form", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String getFormData(@RequestBody String newAccount){
+    public String getFormData(@RequestBody JsonNode newAccount){
         System.out.println(newAccount.toString());
         try{
-            JSONObject obj = new JSONObject(newAccount);
-            System.out.println( (String) obj.get("txtUsername"));
-            System.out.println( (String) obj.get("txtPassword"));
-            System.out.println( (String) obj.get("isAdmin"));
+            //JSONObject obj = new JSONObject(newAccount);
+            System.out.println(newAccount.get("txtUsername").asText());
+            System.out.println( newAccount.get("txtPassword").asText());
+            System.out.println( newAccount.get("isAdmin").asText());
         }catch(Exception e){
             System.out.println("something wrong with login");
             return "something wrong with login info";

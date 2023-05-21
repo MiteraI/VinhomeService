@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/homepage.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    
 </head>
 <body>
     <h1>Create an Account</h1>
@@ -14,53 +17,89 @@
     <div class="overlay"></div>
     <div class="form">
         <div class="form-close" onclick="closeCreateForm()" >close</div>
-        <form class="form-create" id="create-form" action="/UserController/createAccount" method="get">
-            <table class="form-create-table">
-                <tr>
-                    <td> <label> Username</label></td>
-                    <td> <input type="text" name="txtUsername" value=""> </td>
-                </tr>
-                <tr>
-                    <td> <label> Password</label></td>
-                    <td> <input type="password" name="txtPassword" value=""> </td>
-                </tr>
-                <tr>
-                    <td> <label> Email</label></td>
-                    <td> <input type="text" name="txtEmail" value=""> </td>
-                </tr>
-                <tr>
-                    <td> <label> Firstname</label></td>
-                    <td> <input type="text" name="txtFirstname" value=""> </td>
-                </tr>
-                <tr>
-                    <td> <label> Lastname</label></td>
-                    <td> <input type="text" name="txtLastname" value=""> </td>
-                </tr>
-                <tr>
+        <form class="form-create" id="create-form" >
+                <div>
+                     <label> Username</label></td>
+                     <input type="text" name="txtUsername" value=""> </td> </br>
+                            <p class="error-message"> asdf</p>    
+                    </div>
+
+                <div>
+                    <label> Password</label></td>
+                     <input type="password" name="txtPassword" value=""> </td></br>
+                     <p class="error-message">asdf</p>
+                    </div>
+
+                <div>
+                    <label> Email</label></td>
+                     <input type="text" name="txtEmail" value=""> </td></br>
+                     <p class="error-message">asdf</p>
+                    </div>  
+
+                <div>
+                     <label> Firstname</label></td>
+                    <input type="text" name="txtFirstname" value=""> </td></br>
+                    <p class="error-message">asdf</p>
+                </div>
+
+                <div>
+                    <label> Lastname</label></td>
+                    <input type="text" name="txtLastname" value=""> </td></br>
+                    <p class="error-message">asdf</p>
+                </div>
+
+                <div>
                     <td> <label> Dob</label></td>
-                    <td><input type="date" name="txtDate" value=""><br></td>
-                </tr>
-                <tr>
-                    <td><label >Address</label></td>
-                    <td><input type="radio" value="txtBlockA">block A <input type="radio" value="txtBlockB">block B <input type="radio" value="txtBlockC">block C </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><label >Room Number</label><input type="text" name="txtRoomNumber" value=""> </td>
-                </tr>
-            </table>
+                    <td><input type="date" name="txtDate" value="2000/00/00"><br></td></br>
+                    <p class="error-message">asdf</p>
+                </div>
+
+                <div>
+                    <label> PhoneNumber</label></td>
+                    <input type="text" name="txtPhonenumber" value=""><br></td></br>
+                    <p class="error-message">asdf</p>
+                </div>
+
+                <div>
+                    <label >Address</label>adsf</td>
+                    <input type="radio" name="btnRadio" value="A" checked="checked">block A <input type="radio" value="B">block B <input type="radio" value="C">block C </td></br>
+                    
+                </div>  
+
+                <div>
+                    <label >Room Number</label><input type="text" name="txtRoomnumber" value=""> </td></br>
+                    <p class="error-message">adsf</p>
+                </div>  
+                     
+                    
+                    
             <input type="submit" value="Submit">
-            <!--<button  onclick="submitForm()">create</button> -->
+            <!-- <button  onclick="submitCreateForm()">create</button> -->
             
         </form>
-    </div>
-    
+    </div> 
+    <!-- <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Password</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-labelledby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            Must be 8-20 characters long.
+          </span>
+        </div>
+      </div> -->
+  </body> 
+  <script src="./js/homepage.js"></script> 
+</html>
     
 
     
 
 
-</body>
+<!-- </body>
 <script src="js/homepage.js"></script>
     <title>HomePage</title>
     <button onclick="getSessionData()">get session</button>
@@ -80,4 +119,4 @@
     };
 </script>
 </body>
-</html>
+</html> -->
