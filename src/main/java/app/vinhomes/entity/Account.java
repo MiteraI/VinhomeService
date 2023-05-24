@@ -6,8 +6,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -51,12 +52,15 @@ public class Account {
     private String lastName;
 
     @Basic
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dob; //date of birth
+    @Temporal(TemporalType.DATE)
+    private LocalDate dob; //date of birth
+
+    private String cookie; //Only used for cookie authorization
 
     @Column(
             name = "status",
-            nullable = false
+            nullable = false,
+            columnDefinition = "integer default 1"
     )
     private int accountStatus;
 

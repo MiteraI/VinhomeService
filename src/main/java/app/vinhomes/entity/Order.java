@@ -1,6 +1,7 @@
 package app.vinhomes.entity;
 
 import app.vinhomes.entity.order.Payment;
+import app.vinhomes.entity.order.Review;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import com.fasterxml.jackson.annotation.*;
@@ -27,6 +28,9 @@ public class Order {
 
     @Column(nullable = false)
     private double price;
+
+    @Column(nullable = false)
+    private int status; //0 - pending, 1 - cancel, 2 - complete
 
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
@@ -64,6 +68,17 @@ public class Order {
     @JsonManagedReference
     private Schedule schedule;
 
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(
+            name = "review_id",
+            referencedColumnName = "review_id",
+            nullable = false
+    )
+    private Review review;
+
     @ManyToOne
     @JoinColumn(
             name = "account_id",
@@ -74,5 +89,4 @@ public class Order {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
     @JsonIdentityReference(alwaysAsId = true)
     private Account account;
-
 }

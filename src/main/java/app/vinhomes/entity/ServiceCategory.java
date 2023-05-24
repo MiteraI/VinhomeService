@@ -24,10 +24,10 @@ public class ServiceCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "servicecate_id")
-    private Long paymentCategoryId;
+    private Long serviceCategoryId;
 
     @Column(name = "servicecate_name", nullable = false)
-    private String paymentCategoryName;
+    private String serviceCategoryName;
 
     @OneToMany(
             mappedBy = "serviceCategory",

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +27,21 @@ public class Schedule {
     @Column(name = "order_id")
     private Long scheduleId;
 
+    @Column(name = "work_day")
     @Basic
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "work_time")
-    private LocalDateTime startTime;
+    @Temporal(TemporalType.DATE)
+    private LocalDate workDay;
 
-    @Basic
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "checkout_time")
-    private LocalDateTime endTime;
+    @ManyToOne(
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(
+            name = "timeslot_id",
+            referencedColumnName = "timeslot_id",
+            nullable = false
+    )
+    private TimeSlot timeSlot;
 
     @OneToOne
     @JoinColumn(

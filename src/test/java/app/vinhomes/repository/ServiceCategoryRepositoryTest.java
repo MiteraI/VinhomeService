@@ -15,7 +15,7 @@ class ServiceCategoryRepositoryTest {
     @Test
     public void addServiceCateAlongServices() {
         ServiceCategory serviceCategory = ServiceCategory.builder()
-                .paymentCategoryName("Electrictian")
+                .serviceCategoryName("Electrictian")
                 .build();
         Service service1 = Service.builder()
                 .serviceName("Fridge")
