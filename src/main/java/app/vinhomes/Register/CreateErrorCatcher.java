@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreateAccountError {
+public class CreateErrorCatcher {
     private String usernameErr;
     private String passwordErr;
     private String emailErr;

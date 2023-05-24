@@ -13,7 +13,7 @@ public class PageController {
 
     @RequestMapping(value = "/")
     public String home() {
-        return "forward:/homepage.html";
+        return "forward:/createAccount.html";
     }
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin() {

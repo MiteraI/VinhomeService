@@ -13,13 +13,109 @@
 </head>
 <body>
     <div class="container">
+        <button onclick="getWorkerList()">show worker</button>
+        <button class="button-create" onclick="createForm()">add worker</button>
 
-        <button>Add worker</button>
-        <button>Delete worker</button><br>
-        adsf
+        <div class="form">
+          <div class="form-close" onclick="closeCreateForm()" >close</div>
+          <form class="form-create" id="create-form" >
+                  <div>
+                       <label> Username</label></td>
+                       <input type="text" name="txtUsername" value="" > </td> </br>
+                              <p class="error-message"> asdf</p>    
+                      </div>
+  
+                  <div>
+                      <label> Password</label></td>
+                       <input type="password" name="txtPassword" value="" > </td></br>
+                       <p class="error-message">asdf</p>
+                      </div>
+  
+                  <div>
+                      <label> Email</label></td>
+                       <input type="text" name="txtEmail" value="" > </td></br>
+                       <p class="error-message">asdf</p>
+                      </div>  
+  
+                  <div>
+                       <label> Firstname</label></td>
+                      <input type="text" name="txtFirstname" value="" > </td></br>
+                      <p class="error-message">asdf</p>
+                  </div>
+  
+                  <div>
+                      <label> Lastname</label></td>
+                      <input type="text" name="txtLastname" value=""> </td></br>
+                      <p class="error-message">asdf</p>
+                  </div>
+  
+                  <div>
+                      <td> <label> Dob</label></td>
+                      <td><input type="date" name="txtDate" value="2000/00/00"><br></td></br>
+                      <p class="error-message">asdf</p>
+                  </div>
+  
+                  <div>
+                      <label> PhoneNumber</label></td>
+                      <input type="text" name="txtPhonenumber" value=""><br></td></br>
+                      <p class="error-message">asdf</p>
+                  </div>
+                  <p class="error-message">adsf</p>
+              <input type="submit" value="Submit">
+              <input type="reset" value="Reset">
+              
+          </form>
+      </div> 
+
+        <table class="table-worker">
+            <thead>
+              <tr>
+                <th id="heading-id" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
+                <th id="heading-email" scope="col" class="asc">email</th>
+                <th id="heading-firstname" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
+                <th id="heading-lastname" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
+                <th id="heading-dob" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
+                <th id="heading-status" scope="col" class="asc" onclick='sortByStatus(this)'>Account status</th>
+                <th id="heading-role" scope="col" class="asc">Role</th>
+                <th>Delete</th>
+                <th>UPDATE</th>
+              </tr>
+            </thead>
+            <tbody id="worker-list">
+              
+            </tbody>
+          </table>
+
 
 
     </div>
+    <!--THIS IS FOR GETTING USER ACCOUNT -->
+    <!-- <table class="table-customer">
+        <thead>
+          <tr>
+            <th id="heading-id" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
+            <th id="heading-email" scope="col" class="asc">email</th>
+            <th id="heading-firstname" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
+            <th id="heading-lastname" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
+            <th id="heading-dob" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
+            <th id="heading-status" scope="col" class="asc" onclick='sortByStatus(this)'>Account status</th>
+            <th id="heading-role" scope="col" class="asc">Role</th>
+            <th>Delete</th>
+            <th>UPDATE</th>
+          </tr>
+        </thead>
+        <tbody id="customer-list">
+          
+        </tbody> -->
+      </table>
+
+
+
+
+
+
+
 </body>
     <script src="js/showworker.js"></script>
+    
 </html>

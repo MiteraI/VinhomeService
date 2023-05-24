@@ -15,20 +15,21 @@ body{
     top:0;
     display: none;
 }
+
 .login-button{
     background-color: black;
     color: aliceblue;
 
 }
 .form{
+    left: 0;
     background-color: white;
     width: 40%;
     border: 2px black solid;
     position: absolute;
     display: none;
-    top: 20%;
-    left: 20%;
-
+    justify-content: center;
+    align-items: center;
 }
 .form-close{
     background-color: green;
