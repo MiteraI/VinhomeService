@@ -1,7 +1,7 @@
 var data ;
  
 // fecth a get
-async function deleteWorker(id){
+async function deleteByID(id){
     console.log(id)
     const response = await fetch(`http://localhost:8080/UserRestController/${id}`,{    
         method : "DELETE" ,
@@ -25,8 +25,10 @@ async function deleteWorker(id){
 
 
  async function getWorkerList(){
+    document.getElementsByClassName("table-worker")[0].style.display = "none";
+    document.getElementsByClassName("table-worker")[0].style.display = "block";
     console.log("inside get worker")
-    const response = await fetch("http://localhost:8080/UserRestController/getAccount")
+    const response = await fetch("http://localhost:8080/UserRestController/getAccountWorker")
      data =await response.json();
      printRow(data);
  }  
@@ -59,7 +61,7 @@ function printRow(data){
                 <td><input type="hidden" name="txtDob"value="${data[worker].dob}">${date_output}</td>
                 <td><input type="hidden" name="txtStatus"value="${data[worker].accountStatus}">${statusString}</td>
                 <td><input type="hidden" name="txtRole"value="${data[worker].role}">${roleString}</td>
-                <td><button onclick='deleteWorker(${data[worker].accountId})'>DELETE</button></td>
+                <td><button onclick='deleteByID(${data[worker].accountId})'>DELETE</button></td>
                 <td><button onclick='updateWorker(${data[worker].accountId})'>UPDATE</button></td>        
         </tr>
         `;
@@ -253,8 +255,15 @@ async function updateWorker(id){
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
       }
-    function clearForm(){
 
-    }
+
+    async  function getCustomerList(){
+        document.getElementsByClassName("table-worker")[0].style.display = "none";
+        document.getElementsByClassName("table-worker")[0].style.display = "block";
+        console.log("inside get worker")
+        const response = await fetch("http://localhost:8080/UserRestController/getAccountCustomer")
+         data =await response.json();
+         printRow(data);
+      }
       //delay(1000).then(() => console.log('ran after 1 second1 passed'));
 

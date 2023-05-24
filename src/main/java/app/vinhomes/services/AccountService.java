@@ -53,14 +53,14 @@ public class AccountService {
         workerList =  accountRepository.findByRoleEquals(workerole);
         return ResponseEntity.status(HttpStatus.OK).body(workerList);
     }
-    public ResponseEntity<List<Account>> deleteWorkerById (long id){
+    public ResponseEntity<List<Account>> deleteByID (long id){
         try{
-            Account workerAccount = accountRepository.findById(id).get();
-            workerAccount.setAccountStatus(0);
-            accountRepository.save(workerAccount);
+            Account account = accountRepository.findById(id).get();
+            account.setAccountStatus(0);
+            accountRepository.save(account);
             List<Account> workerList = new ArrayList<>();
-            int workerole = 1;
-            workerList =  accountRepository.findByRoleEquals(workerole);
+            int role = account.getRole();
+            workerList =  accountRepository.findByRoleEquals(role);
             return ResponseEntity.status(HttpStatus.OK).body(workerList);
         }catch (Exception e){
             System.out.println(e);

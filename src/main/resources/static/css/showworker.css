@@ -1,11 +1,12 @@
 .form{
     position: fixed;
+    left: 50%;top: 20%;
+    transform: translate(-50%, 0);
     margin: auto;
     background-color: white;
-    max-width: 60vw;
+    max-width: 40%;
     border: 2px #000000 solid;
-    top: 10vh;
-    left: 20vw;
+    
     display: none;
     justify-content: center;
     align-items: center;
@@ -34,3 +35,11 @@
     color: red;
     visibility: hidden;
 }
+.table-worker{
+    display: none;
+}
+.table-customer{
+    display: none;
+}
+
+

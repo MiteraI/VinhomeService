@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/UserRestController")
@@ -73,7 +74,7 @@ public class UserController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date datetoadd = new Date();
             datetoadd = simpleDateFormat.parse(request.get("txtDate").asText());
-            Phone phone = Phone.builder().number(phonenumber).build();
+            Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText()).build();
             Account account = Account.builder()
                     .accountName(request.get("txtUsername").asText())
                     .password(request.get("txtPassword").asText())
@@ -132,7 +133,7 @@ public class UserController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date datetoadd = new Date();
             datetoadd = simpleDateFormat.parse(request.get("txtDate").asText());
-            Phone phone = Phone.builder().number(phonenumber).build();
+            Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText()).build();
             Account account = Account.builder()
                     .accountName(request.get("txtUsername").asText())
                     .password(request.get("txtPassword").asText())
@@ -155,17 +156,26 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(error);
     }
-    @GetMapping(value = "/getAccount",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getAccountWorker",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Account> getAllWorker(){
         int workerRoleValue = 1;
         List<Account> workerList = new ArrayList<>();
         workerList = accountRepository.findByRoleEquals(workerRoleValue);
         return workerList ;
     }
-    @DeleteMapping(value = "/{workerID}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Account>> deleteByIDAndReturnWorker(@PathVariable long workerID){
-        System.out.println("call DELETE success, id is: "+ workerID );
-        ResponseEntity<List<Account>> response = accountService.deleteWorkerById(workerID);
+    @GetMapping(value ="/getAccountCustomer", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Account> getAllCustomer(){
+        int CustomerRoleValue = 0;
+        List<Account> CustomerList = new ArrayList<>();
+        CustomerList = accountRepository.findByRoleEquals(CustomerRoleValue);
+        return CustomerList ;
+    }
+
+
+    @DeleteMapping(value = "/{ID}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Account>> deleteByIDAndReturn(@PathVariable long ID){
+        System.out.println("call DELETE success, id is: "+ ID );
+        ResponseEntity<List<Account>> response = accountService.deleteByID(ID);
         return response ;
     }
 
@@ -174,5 +184,11 @@ public class UserController {
         System.out.println("yes call update");
         ResponseEntity<List<Account>> response = accountService.updateAccountById(request);
         return response;
+    }
+    @GetMapping(value = "/testing",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Optional<Account> testingGetPhone(){
+        System.out.println("call success");
+        Optional<Account> value = accountRepository.findById(12L);
+        return value;
     }
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${acc != null} ? ${acc.accountName} + '\'s profile' : ''"></title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+
+<body>
+  <form class="profile_form">
+    <span class="profile_firstName">
+      <label class="label_firstName">First Name: </label>
+      <input th:value="${acc != null} ? ${acc.firstName} : ''" class="input_firstName" type="text">
+    </span>
+    <span class="profile_lastName">
+      <label class="label_lastName">Last Name: </label>
+      <input th:value="${acc != null} ? ${acc.lastName} : ''" class="input_lastName" type="text">
+    </span>
+    <br><br>
+    <span class="profile_username">
+      <label class="label_username">username: </label>
+      <input th:value="${acc != null} ? ${acc.accountName} : ''" class="input_username" type="text">
+    </span>
+    <span class="profile_password">
+      <label class="label_password">password: </label>
+      <input th:value="${acc != null} ? ${acc.password} : ''" class="input_password" type="text">
+    </span>
+    <br><br>
+    <span class="profile_email">
+      <label class="label_email">Email: </label>
+      <input th:value="${acc != null} ? ${acc.email} : ''" class="input_email" type="text">
+    </span>
+    <span class="profile_dob">
+      <label class="label_dob">DateOfBirth: </label>
+      <input th:value="${acc != null} ? ${acc.dob} : ''" class="input_dob" type="text">
+    </span>
+  </form>
+</body>
+
+</html>

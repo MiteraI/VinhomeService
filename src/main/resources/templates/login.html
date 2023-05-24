@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+  </head>
+  <body>
+    <h2>Login</h2>
+    <h1>Login Form</h1>
+    <form id="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+      <button type="submit">Login</button>
+      <span id="loginStatusText" style="color: red;"></span>
+    </form>
+    <span>
+      Don't have account?
+      <a href="/register" class="login_btn">Register Now!</a>
+    </span>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../static/js/login.js"></script>
+  </body>
+</html>

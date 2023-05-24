@@ -1,0 +1,40 @@
+.header{
+    background: aqua;
+}
+
+.header_nav{
+    display: flex;
+    height: 50px;
+    align-items: center;
+}
+
+.header_container{
+    display: flex;
+    margin-left: auto;
+}
+
+.header_profileBtn{
+    width: 100%;
+}
+
+.header_option{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header_category, .header_profile{
+    margin-right: 10px;
+}
+
+.login_btn{
+    margin-left: auto;
+}
+
+.hide{
+     display: none;
+ }
+.appear{
+    display: block;
+}

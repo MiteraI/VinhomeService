@@ -159,6 +159,7 @@ public class ErrorChecker {
             return "the status is not a number 0 or 1, try again";
         }
     }
+
 }
 
 //    public static void main(String[] args) {

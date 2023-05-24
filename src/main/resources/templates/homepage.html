@@ -1,15 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Service Homepage</title>
+    <link rel="stylesheet" href="../static/css/homepage.css">
+    <title>HomePage</title>
 </head>
-<body>
-    <div align="center">
-        <h1>Account's List</h1>
-        <div th:each="account : ${accountList}">
-            <h3 th:text="${account.email}"> </h3>
-        </div>
-    </div>
+
+<body onload="getSessionData()">
+    <header class="header">
+        <nav class="header_nav">
+            <div class="header_logo">logo goes here</div>
+            <a href="/login" class="login_btn">Login Now!</a>
+
+            <div class="header_container hide">
+                <div class="header_profile">
+                    <button th:text="${acc != null} ? ${acc.accountName} : ''" class="header_profileBtn"></button>
+                    <div class="header_option">
+                        <a href="./profile" class="userprofile_btn">Profile</a>
+                        <a href="#" onclick="logOut()" class="logout_btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="main">
+        <h3>Category:</h3>
+        <ul class="main_categoryList">
+
+        </ul>
+    </main>
+    <!--    <h1 id="text">Hello Customer ヽ(゜▽゜　)</h1>-->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../static/js/authentication.js"></script>
+    <script>
+        const categoryList = document.querySelector('.main_categoryList');
+
+        const getCategory = async () => {
+            const { data } = await axios.get("/category");
+            for (let i = 0; i < data.length; i++) {
+                let name = "main_serviceList" + i
+                categoryList.innerHTML +=
+                    `<li>${data[i].paymentCategoryName}
+            <ul class=${name}>
+            </ul>
+        </li>`
+                for (let j = 0; j < data[i].services.length; j++) {
+                    console.log(data[i].services[j].serviceName);
+                    const main_serviceList = document.querySelector("." + name);
+
+                    let serviceLink = `/service/${data[i].services[j].serviceId}?cname=${data[i].paymentCategoryName}&sname=${data[i].services[j].serviceName}`;
+
+                    console.log(serviceLink)
+                    main_serviceList.innerHTML +=
+                        `<li><a href=${serviceLink}>${data[i].services[j].serviceName}</a></li>`
+                }
+            }
+
+        }
+        getCategory()
+    </script>
 </body>
+
 </html>
