@@ -19,8 +19,8 @@ class WorkerStatusRepositoryTest {
     @Test
     public void printAllStatusesByJob() {
         System.out.println("All worker status's info ="+
-                workerStatusRepository.findTop2ByServiceCategoryOrderByWorkCountAsc(
-                        serviceCategoryRepository.findById(2L).get()
+                workerStatusRepository.findByServiceCategoryAndStatusOrderByWorkCountAsc(
+                        serviceCategoryRepository.findById(1L).get(), 0
                 ));
     }
 }

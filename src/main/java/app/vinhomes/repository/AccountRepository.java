@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+import java.util.List;
+
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByAccountNameAndPassword(String accountName, String password);
 
@@ -15,4 +17,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     //@Query("select * from tbl_account a left join tbl_phone b on a.account_id = b.account_id")
     //List<Account> getAccountWithPhone();
+    List<Account> findByRole(int role);
 }

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface WorkerStatusRepository extends JpaRepository<WorkerStatus, Long> {
-    List<WorkerStatus> findTop2ByServiceCategoryOrderByWorkCountAsc(ServiceCategory serviceCategory);
+    List<WorkerStatus> findByServiceCategoryAndStatusOrderByWorkCountAsc(ServiceCategory serviceCategory, int status);
 }
