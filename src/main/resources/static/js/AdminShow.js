@@ -25,49 +25,69 @@ async function deleteByID(id){
 
 
  async function getWorkerList(){
-    document.getElementsByClassName("table-worker")[0].style.display = "none";
+    document.getElementsByClassName("table-customer")[0].style.display = "none";
     document.getElementsByClassName("table-worker")[0].style.display = "block";
     console.log("inside get worker")
     const response = await fetch("http://localhost:8080/UserRestController/getAccountWorker")
      data =await response.json();
-     printRow(data);
+     printRow(data,"worker-list");
  }  
 
-function printRow(data){
-    var table_tag = document.getElementById("worker-list");
+function printRow(data,IdOfTableBody){
+    var table_tag = document.getElementById(IdOfTableBody);
     table_tag.innerHTML = ""
     console.log(data)
     var output = "";
-    var rolestring;var statusstring;
-    for(var worker in data){
-        roleString = ( data[worker].role == 1) ? "worker" : "user";
-        statusString = (data[worker].accountStatus == 1) ? "active" : "off ";
+    for(var i in data){
+        roleString = ( data[i].role == 1) ? "worker" : "user";
+        statusString = (data[i].accountStatus == 1) ? "active" : "off ";
         var date_new; var date_output;
-        if(data[worker].dob == null){
+        if(data[i].dob == null){
             date_output = "not yet imported"
         }else{
-            date_new = new Date(data[worker].dob);console.log(date_new)
+            date_new = new Date(data[i].dob);console.log(date_new)
             date_output = new Intl.DateTimeFormat('en-US').format(date_new);
         }
          
         output = `
-        <tr id="${data[worker].accountId}">
-                <td><input type="hidden" name="txtID" value="${data[worker].accountId}">${data[worker].accountId}</td>
-                <input type="hidden" name="txtUsername" value="${data[worker].accountName}">
-                <input type="hidden" name="txtPassword" value="${data[worker].password}">
-                <td><input type="hidden" name="txtEmail"value="${data[worker].email}">${data[worker].email}</td>
-                <td><input type="hidden" name="txtFirstname"value="${data[worker].firstName}">${data[worker].firstName}</td>
-                <td><input type="hidden" name="txtLastname"value="${data[worker].lastName}">${data[worker].lastName}</td>
-                <td><input type="hidden" name="txtDob"value="${data[worker].dob}">${date_output}</td>
-                <td><input type="hidden" name="txtStatus"value="${data[worker].accountStatus}">${statusString}</td>
-                <td><input type="hidden" name="txtRole"value="${data[worker].role}">${roleString}</td>
-                <td><button onclick='deleteByID(${data[worker].accountId})'>DELETE</button></td>
-                <td><button onclick='updateWorker(${data[worker].accountId})'>UPDATE</button></td>        
-        </tr>
+        <tr id="${data[i].accountId}" onclick='showFullCustomerInfo(${data[i].accountId})'>
+                <td><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>
+                <input type="hidden" name="txtUsername" value="${data[i].accountName}">
+                <input type="hidden" name="txtPassword" value="${data[i].password}">
+                <td><input type="hidden" name="txtEmail"value="${data[i].email}">${data[i].email}</td>
+                <td><input type="hidden" name="txtFirstname"value="${data[i].firstName}">${data[i].firstName}</td>
+                <td><input type="hidden" name="txtLastname"value="${data[i].lastName}">${data[i].lastName}</td>
+                <td><input type="hidden" name="txtDob"value="${data[i].dob}">${date_output}</td>
+                <td><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
+                <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
+                <td><button onclick='deleteByID(${data[i].accountId})'>DELETE</button></td>
+                <td><button onclick='updateWorker(${data[i].accountId})'>UPDATE</button></td>  
+            </tr>     
+        
         `;
         table_tag.innerHTML += output;
     }
 }
+
+async function showFullCustomerInfo(AccountID){
+    const response1 = await fetch(`http://localhost:8080/UserRestController/getAccountInfo/${AccountID}`,{    
+        method : "GET" });
+    console.log("yes get all info customer ")
+    var account =await response1.json();console.log(account);
+    const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber`,{    
+        method : "Post" ,
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(account)}
+        
+        );
+    console.log("yes get in phone");
+    var phone = await response2.json();console.log(phone)
+    
+}
+
+
 
 
 async function updateWorker(id){
@@ -101,7 +121,7 @@ async function updateWorker(id){
     }else {
         data =await response.json();
     }
-    printRow(data);
+    printRow(data,"worker-list");
 }
 
  function sortById(htmlstuff){
@@ -259,11 +279,11 @@ async function updateWorker(id){
 
     async  function getCustomerList(){
         document.getElementsByClassName("table-worker")[0].style.display = "none";
-        document.getElementsByClassName("table-worker")[0].style.display = "block";
+        document.getElementsByClassName("table-customer")[0].style.display = "block";
         console.log("inside get worker")
         const response = await fetch("http://localhost:8080/UserRestController/getAccountCustomer")
          data =await response.json();
-         printRow(data);
+         printRow(data,"customer-list");
       }
       //delay(1000).then(() => console.log('ran after 1 second1 passed'));
 

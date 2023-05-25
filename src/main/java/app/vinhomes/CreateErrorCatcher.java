@@ -1,4 +1,4 @@
-package app.vinhomes.Register;
+package app.vinhomes;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

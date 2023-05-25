@@ -34,6 +34,8 @@ public class OrderController {
     @Autowired
     private TimeSlotRepository timeSlotRepository;
 
+    @Autowired
+    private ServiceRepository serviceRepository;
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getAllOrder() {
 //        Address address = Address.builder().buildingBlock("C4").buildingRoom("333").build();

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../static/css/showworker.css">
+    <link rel="stylesheet" href="../static/css/AdminShow.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
@@ -67,17 +67,17 @@
               
           </form>
       </div> 
-
+      <div class="TABLE-FOR-WORKER">
         <table class="table-worker">
             <thead>
               <tr>
-                <th id="heading-id" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
-                <th id="heading-email" scope="col" class="asc">email</th>
-                <th id="heading-firstname" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
-                <th id="heading-lastname" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
-                <th id="heading-dob" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
-                <th id="heading-status" scope="col" class="asc" onclick='sortByStatus(this)'>Account status</th>
-                <th id="heading-role" scope="col" class="asc">Role</th>
+                <th id="heading-id-c" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
+                <th id="heading-email-c" scope="col" class="asc">email</th>
+                <th id="heading-firstname-c" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
+                <th id="heading-lastname-c" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
+                <th id="heading-dob-c" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
+                <th id="heading-status-c" scope="col" class="asc" onclick='sortByStatus(this)'> status</th>
+                <th id="heading-role-c" scope="col" class="asc">Role</th>
                 <th>Delete</th>
                 <th>UPDATE</th>
               </tr>
@@ -86,37 +86,38 @@
               
             </tbody>
           </table>
-
-
-
-    </div>
+        </div>
     <!-- THIS IS FOR GETTING USER ACCOUNT -->
-    <table class="table-customer">
-        <thead>
-          <tr>
-            <th id="heading-id" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
-            <th id="heading-email" scope="col" class="asc">email</th>
-            <th id="heading-firstname" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
-            <th id="heading-lastname" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
-            <th id="heading-dob" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
-            <th id="heading-status" scope="col" class="asc" onclick='sortByStatus(this)'>Account status</th>
-            <th id="heading-role" scope="col" class="asc">Role</th>
-            <th>Delete</th>
-            <th>UPDATE</th>
-          </tr>
-        </thead>
-        <tbody id="customer-list">
+    <!-- asdfasdfsadfsdafsadf
+    asdfasdfsadfdsafasdf -->
+    <div class="TABLE-FOR-CUSTOMER">
+          <table class="table-customer">
+            <thead>
+              <tr>
+                <th id="heading-id" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
+                <th id="heading-email" scope="col" class="asc">email</th>
+                <th id="heading-firstname" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
+                <th id="heading-lastname" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
+                <th id="heading-dob" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
+                <th id="heading-status" scope="col" class="asc" onclick='sortByStatus(this)'> status</th>
+                <th id="heading-role" scope="col" class="asc">Role</th>
+                <th>Delete</th>
+                <th>UPDATE</th>
+              </tr>
+            </thead>
+            <tbody id="customer-list">
+              
+            </tbody>
+          </table>
+        </div>
+
+
+
           
-        </tbody>
-      </table>
-
-
-
-
-
+    </div>
 
 
 </body>
-    <script src="../static/js/showworker.js"></script>
+    <script src="../static/js/AdminShow.js"></script>
     
 </html>

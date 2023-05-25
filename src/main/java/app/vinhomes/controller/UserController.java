@@ -1,9 +1,11 @@
 package app.vinhomes.controller;
 
 
-import app.vinhomes.Register.CreateErrorCatcher;
-import app.vinhomes.Register.ErrorChecker;
+import app.vinhomes.CreateErrorCatcher;
+import app.vinhomes.ErrorChecker;
+import app.vinhomes.ResponseJoinEntity.JoinAccountInfo;
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.Address;
 import app.vinhomes.entity.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.PhoneRepository;
@@ -14,12 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/UserRestController")
@@ -45,7 +47,7 @@ public class UserController {
         date = errorChecker.checkDate(request.get("txtDate").asText());
         System.out.println(request.get("txtDate").asText());
         phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText());
-        //address = errorChecker.checkAddress(request.get("btnRadio").asText(), request.get("txtRoomnumber").asText());
+        address = errorChecker.checkAddress(request.get("btnRadio").asText(), request.get("txtRoomnumber").asText());
         //this is where we change direction if worker or customer account
         //
         //role = 1 is worker
@@ -57,8 +59,8 @@ public class UserController {
         errorList.add(lastname);
         errorList.add(date);
         errorList.add(phonenumber);
-        errorList.add("");
-        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date, phonenumber, "");
+        errorList.add(address);
+        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date, phonenumber, address);
         for (String message : errorList) {
             if (message.isEmpty()) {
                 continue;
@@ -70,25 +72,27 @@ public class UserController {
         //
         //
         try {
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            Date datetoadd = new Date();
-            datetoadd = simpleDateFormat.parse(request.get("txtDate").asText());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(request.get("txtDate").asText(), formatter);
             Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText()).build();
+            Address address1 = Address.builder().buildingBlock(request.get("btnRadio").asText()).buildingRoom(request.get("txtRoomnumber").asText()).build();
             Account account = Account.builder()
                     .accountName(request.get("txtUsername").asText())
                     .password(request.get("txtPassword").asText())
                     .email(request.get("txtEmail").asText())
                     .firstName(request.get("txtFirstname").asText())
                     .lastName(request.get("txtLastname").asText())
-                    .dob(datetoadd)
+                    .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)
+                    .address(address1)
                     .build();
             accountRepository.save(account);
             phone.setAccount(account);
             phoneRepository.save(phone);
-        } catch (ParseException e) {
+        } catch (DateTimeException e) {
+            System.out.println("cant parse date");
             System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }catch (Exception e){
@@ -129,10 +133,9 @@ public class UserController {
             }
         }
         try {
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            Date datetoadd = new Date();
-            datetoadd = simpleDateFormat.parse(request.get("txtDate").asText());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(request.get("txtDate").asText(), formatter);
             Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText()).build();
             Account account = Account.builder()
                     .accountName(request.get("txtUsername").asText())
@@ -140,14 +143,15 @@ public class UserController {
                     .email(request.get("txtEmail").asText())
                     .firstName(request.get("txtFirstname").asText())
                     .lastName(request.get("txtLastname").asText())
-                    .dob(datetoadd)
+                    .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)
                     .build();
             accountRepository.save(account);
             phone.setAccount(account);
             phoneRepository.save(phone);
-        } catch (ParseException e) {
+        } catch (DateTimeException e) {
+            System.out.println("cant parse date");
             System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }catch (Exception e){
@@ -185,10 +189,20 @@ public class UserController {
         ResponseEntity<List<Account>> response = accountService.updateAccountById(request);
         return response;
     }
-    @GetMapping(value = "/testing",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<Account> testingGetPhone(){
+    @GetMapping(value = "/testing/{accountID}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JoinAccountInfo testingGetJoinCustomer(@PathVariable String accountID){
         System.out.println("call success");
-        Optional<Account> value = accountRepository.findById(12L);
-        return value;
+        JoinAccountInfo accountInfo = accountService.getCustomerWithPhoneAndAddress(Long.parseLong(accountID));
+        return accountInfo;
+    }
+    @GetMapping(value = "/getAccountInfo/{ID}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Account getAccountById(@PathVariable String ID){
+        Account account = accountRepository.findById(Long.parseLong(ID)).get();
+        return account;
+    }
+    @PostMapping (value = "/getAccountPhonenumber",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Phone> getPhonenumberById(@RequestBody Account account ){
+        List<Phone> phoneList = phoneRepository.findByAccount(account);
+        return phoneList;
     }
 }

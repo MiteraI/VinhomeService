@@ -1,14 +1,21 @@
 package app.vinhomes.services;
 
-import app.vinhomes.Register.ErrorChecker;
+import app.vinhomes.ErrorChecker;
+import app.vinhomes.ResponseJoinEntity.JoinAccountInfo;
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.Address;
+import app.vinhomes.entity.Phone;
 import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.AddressRepository;
+import app.vinhomes.repository.PhoneRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.mapping.Join;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -16,6 +23,10 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository ;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private PhoneRepository phoneRepository;
 
     public ResponseEntity<List<Account>> updateAccountById(JsonNode request){
         ErrorChecker errorChecker = new ErrorChecker();
@@ -79,4 +90,13 @@ public class AccountService {
         return false;
 
     }
+    public JoinAccountInfo getCustomerWithPhoneAndAddress(long id){
+        Account account = accountRepository.findById(id).get();
+        List<Phone> phoneList = phoneRepository.findByAccount(account);
+        Address address = account.getAddress();
+        //List<Address> addressList = new ArrayList<>();
+        JoinAccountInfo accountInfo = new JoinAccountInfo(account,phoneList,address);
+        return accountInfo;
+    }
+
 }

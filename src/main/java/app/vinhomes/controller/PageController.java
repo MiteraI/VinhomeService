@@ -28,7 +28,7 @@ public class PageController {
             model.addAttribute("acc", acc);
             System.out.println(model.getAttribute("acc"));
             if (acc.getRole() == 2) {
-                return "showworker";
+                return "login";
             }
             else if (acc.getRole() == 1) {
                 return "staff";
@@ -83,6 +83,10 @@ public class PageController {
             }
         }
         return acc;
+    }
+    @RequestMapping(value = "/adminshow")
+    public String AdminShow(){
+        return "AdminShow";
     }
 
 

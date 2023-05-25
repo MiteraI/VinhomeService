@@ -1,11 +1,17 @@
-package app.vinhomes.Register;
+package app.vinhomes;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -160,17 +166,15 @@ public class ErrorChecker {
         }
     }
 
+//    public static void main(String[] args) throws ParseException {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        String date1 = "2016-13-12";
+//
+//        //convert String to LocalDate
+//        LocalDate localDate = LocalDate.parse(date1, formatter);
+//        System.out.println(localDate);
+//    }
 }
 
-//    public static void main(String[] args) {
-//        System.out.println(checkEmail("abc.d@gmail.com.bbb"));
-//        System.out.println(checkEmail("2asdf2@gmail.com."));
-//        System.out.println(checkEmail("asdfasdf324323423421"));
-//    }
 
-//public static void main(String[] args) {
-//    System.out.println(checkFirstname("abc"));
-//    System.out.println(checkFirstname("ab c"));
-//    System.out.println(checkFirstname("abc asdf asdf"));
-//}
 
