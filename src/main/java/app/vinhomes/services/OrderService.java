@@ -2,10 +2,10 @@ package app.vinhomes.services;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
-import app.vinhomes.entity.order.Review;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
+import app.vinhomes.entity.worker.OffDays;
 import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.*;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,12 +34,14 @@ public class OrderService {
     private TimeSlotRepository timeSlotRepository;
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
+    @Autowired
+    private OffDaysRepository offDaysRepository;
 
     public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
         if (sessionAccount == null) {
-            return null;
+            return new Order();
         }
         //Get account from session
         Account account = accountRepository.findById(sessionAccount.getAccountId()).get();
@@ -70,6 +72,29 @@ public class OrderService {
         for (WorkerStatus workerStatus : workerStatuses) {
             workerAccounts.add(workerStatus.getAccount());
         }
+        //Find the workers that is in the allowed day off
+        System.out.println(schedule.getWorkDay());
+        List<OffDays> offDaysList = offDaysRepository.findByOffDay(schedule.getWorkDay());
+        List<Account> offWorkerAccounts = new ArrayList<>();
+        for (OffDays offDays : offDaysList) {
+            offWorkerAccounts.add(offDays.getAccount());
+        }
+
+        List<Account> readyWorkerAccounts = new ArrayList<>();
+        if (!offWorkerAccounts.isEmpty()) {
+            for (Account availableWorker : workerAccounts) {
+                boolean isOff = false;
+                for (Account offWorker : offWorkerAccounts) {
+                    if (offWorker.getAccountId() == availableWorker.getAccountId()) {
+                        isOff = true;
+                        break;
+                    }
+                }
+                if (!isOff) {
+                    readyWorkerAccounts.add(availableWorker);
+                }
+            }
+        }
 
         //Get order that is in the work day and timeslot the user chose with the job cate to find busy worker
         List<Order> orders = orderRepository.
@@ -85,13 +110,12 @@ public class OrderService {
         for (Order order : orders) {
             busyWorkerAccounts.addAll(order.getSchedule().getWorkers());
         }
-
         //Get free worker list from the 2 other list
         List<Account> freeWorkerAccounts = new ArrayList<>();
-        if (busyWorkerAccounts.size() == 0) {
+        if (busyWorkerAccounts.isEmpty() && offWorkerAccounts.isEmpty()) {
             freeWorkerAccounts = workerAccounts;
         } else {
-            for (Account worker : workerAccounts) {
+            for (Account worker : readyWorkerAccounts) {
                 boolean isBusy = false;
                 for (Account busyWorker : busyWorkerAccounts) {
                     if (busyWorker.getAccountId() == worker.getAccountId()) {
@@ -124,11 +148,6 @@ public class OrderService {
                 .schedule(schedule)
                 .build();
         schedule.setOrder(order);
-        Review review = Review.builder()
-                .account(account)
-                .service(service)
-                .build();
-        order.setReview(review);
         return orderRepository.save(order);
     }
 }

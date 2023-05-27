@@ -1,7 +1,6 @@
 package app.vinhomes.entity;
 
 import app.vinhomes.entity.order.Payment;
-import app.vinhomes.entity.order.Review;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import com.fasterxml.jackson.annotation.*;
@@ -68,16 +67,11 @@ public class Order {
     @JsonManagedReference
     private Schedule schedule;
 
-    @OneToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JoinColumn(
-            name = "review_id",
-            referencedColumnName = "review_id",
-            nullable = false
-    )
-    private Review review;
+    @Column(columnDefinition = "integer default 0")
+    private int rating;
+
+    @Column(columnDefinition = "varchar(255) default ' '")
+    private String comment;
 
     @ManyToOne
     @JoinColumn(
@@ -85,8 +79,12 @@ public class Order {
             referencedColumnName = "account_id",
             nullable = false
     )
-    @JsonBackReference
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIgnoreProperties(
+            {
+                    "email", "address", "phone", "password",
+                    "accountName", "cookie", "dob", "accountStatus",
+                    "role"
+            }
+    )
     private Account account;
 }

@@ -1,14 +1,10 @@
 package app.vinhomes.entity.order;
 
-import app.vinhomes.entity.Order;
 import app.vinhomes.entity.ServiceCategory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 
 @Entity
 @Table(

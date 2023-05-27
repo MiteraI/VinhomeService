@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(
@@ -25,7 +25,7 @@ public class OffDays {
     private Long offDaysId;
 
     @Temporal(TemporalType.DATE)
-    private Date offDay;
+    private LocalDate offDay;
 
     @ManyToOne()
     @JoinColumn(

@@ -32,6 +32,8 @@ public class OrderController {
     private OrderRepository orderRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getAllOrder() {
@@ -44,11 +46,11 @@ public class OrderController {
         LocalTime startTime = timeSlotRepository.findById(orderJSON.get("timeId").asLong()).get().getStartTime();
         LocalDateTime orderedTime = parsedDate.atTime(startTime);
         //Date received is before now then "Date is in the past"
-        if(parsedDate.isBefore(LocalDate.now())) {
+        if (parsedDate.isBefore(LocalDate.now())) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
         }
 
-        if(orderedTime.isBefore(LocalDateTime.now())) {
+        if (orderedTime.isBefore(LocalDateTime.now())) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
         }
 
@@ -56,10 +58,33 @@ public class OrderController {
         if (order == null) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
         } else {
+            if (order.getAccount() == null) return ResponseEntity
+                    .status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body("Have not logged in");
             return ResponseEntity.ok("Order created with Id " + order.getOrderId());
         }
     }
 
+    @PostMapping(value = "/ratecomment")
+    public ResponseEntity<String> rate(@RequestBody JsonNode rateJson) {
 
+        return ResponseEntity.ok().body("Reviewed");
+    }
 
+    @PostMapping(value = "/login")
+    public ResponseEntity<String> login(@RequestBody JsonNode loginJson, HttpSession session) {
+        Account account = accountRepository.findByAccountNameAndPassword(
+                loginJson.get("accountname").asText(),
+                loginJson.get("pwd").asText()
+        );
+        if (account != null) {
+            session.setAttribute("loginedUser", account);
+            return ResponseEntity.ok().body("Success");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No account found");
+        }
+    }
 }
+
+
+
