@@ -1,22 +1,22 @@
-function createForm(){
-    //document.querySelectorAll(".overlay")[0].style.display = "block";
-    document.querySelectorAll(".form")[0].style.display = "flex";
-}
-function closeCreateForm(){
-   //document.querySelectorAll(".overlay")[0].style.display = "none";
-    document.querySelectorAll(".form")[0].style.display = "none";
+// function openCreateForm(){
+//     //document.querySelectorAll(".overlay")[0].style.display = "block";
+//     document.querySelectorAll(".form")[0].style.display = "flex";
+// }
+// function closeCreateForm(){
+//    //document.querySelectorAll(".overlay")[0].style.display = "none";
+//    document.querySelectorAll(".form")[0].style.display = "none";
 
-}
+// }
 
-const form =  document.getElementById("create-form");
-form.addEventListener('submit',async function(event){
-    console.log(form)
+const form_create =  document.getElementById("create-form");
+form_create.addEventListener('submit',async function(event){
+    console.log(form_create)
     event.preventDefault();
-    const form_data = new FormData(form);
+    const form_data = new FormData(form_create);
    const data = Object.fromEntries(form_data);
    
    console.log(data);
-   const response = await fetch("http://localhost:8080/UserRestController/createAccountCustomer/0",
+   const response = await fetch("http://localhost:8080/createAccountAPI/createAccountCustomer/0",
     {    
         method : "POST" ,
         headers: {
@@ -55,7 +55,8 @@ form.addEventListener('submit',async function(event){
                     i+=1;
                 }
             }
-            console.log('yes successs')
+            console.log('yes successs');
+            
             window.location.href = "/";
        }else if(response.status == 500){
             error_message= await response.json()

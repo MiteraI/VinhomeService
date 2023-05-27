@@ -22,7 +22,9 @@ body{
 
 }
 .form{
-    left: 0;
+    position: fixed;
+    left: 50%;top: 15%;
+    transform: translate(-50%, 0);
     background-color: white;
     width: 40%;
     border: 2px black solid;

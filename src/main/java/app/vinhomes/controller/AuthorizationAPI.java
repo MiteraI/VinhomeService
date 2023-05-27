@@ -1,6 +1,5 @@
 package app.vinhomes.controller;
 
-
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -28,6 +27,7 @@ public class AuthorizationAPI {
             // Return a success response
             HttpSession session = request.getSession();
             session.setAttribute("loginedUser", account);
+            System.out.println(session.getAttribute("loginedUser"));
             return ResponseEntity.ok("Login successful");
         } else {
             // Return an error response

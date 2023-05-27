@@ -28,7 +28,7 @@ public class PageController {
             model.addAttribute("acc", acc);
             System.out.println(model.getAttribute("acc"));
             if (acc.getRole() == 2) {
-                return "login";
+                return "admin";
             }
             else if (acc.getRole() == 1) {
                 return "staff";
@@ -84,12 +84,20 @@ public class PageController {
         }
         return acc;
     }
-    @RequestMapping(value = "/adminshow")
-    public String AdminShow(){
-        return "AdminShow";
+    @RequestMapping (value = "/createAccount")
+    public String getAccountCreate(){
+        return "createAccountCustomer";
     }
-
-
-
+    @RequestMapping (value = "/index")
+    public String index(){
+        return "index.html";
+    }
+    @RequestMapping(value = "/AdminShow")
+    public String admin(){
+        return "AdminShow";
+    }@RequestMapping(value = "/testShow")
+    public String test(){
+        return "testShow";
+    }
 
 }

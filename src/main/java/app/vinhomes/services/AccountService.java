@@ -69,10 +69,10 @@ public class AccountService {
             Account account = accountRepository.findById(id).get();
             account.setAccountStatus(0);
             accountRepository.save(account);
-            List<Account> workerList = new ArrayList<>();
+            List<Account> accountList = new ArrayList<>();
             int role = account.getRole();
-            workerList =  accountRepository.findByRoleEquals(role);
-            return ResponseEntity.status(HttpStatus.OK).body(workerList);
+            accountList =  accountRepository.findByRoleEquals(role);
+            return ResponseEntity.status(HttpStatus.OK).body(accountList);
         }catch (Exception e){
             System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

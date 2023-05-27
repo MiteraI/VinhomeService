@@ -3,38 +3,38 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/css/homepage.css">
+    <link rel="stylesheet" href="../static/MinhCSS/homepage.css">
     <title>HomePage</title>
 </head>
 
 <body onload="getSessionData()">
-    <header class="header">
-        <nav class="header_nav">
-            <div class="header_logo">logo goes here</div>
-            <a href="/login" class="login_btn">Login Now!</a>
+<header class="header">
+    <nav class="header_nav">
+        <div class="header_logo">logo goes here</div>
+        <a href="/login" class="login_btn">Login Now!</a>
 
-            <div class="header_container hide">
-                <div class="header_profile">
-                    <button th:text="${acc != null} ? ${acc.accountName} : ''" class="header_profileBtn"></button>
-                    <div class="header_option">
-                        <a href="./profile" class="userprofile_btn">Profile</a>
-                        <a href="#" onclick="logOut()" class="logout_btn">Logout</a>
-                    </div>
+        <div class="header_container hide">
+            <div class="header_profile">
+                <button th:text="${acc != null} ? ${acc.accountName} : ''" class="header_profileBtn"></button>
+                <div class="header_option">
+                    <a href="./profile" class="userprofile_btn">Profile</a>
+                    <a href="#" onclick="logOut()" class="logout_btn">Logout</a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <main class="main">
-        <h3>Category:</h3>
-        <ul class="main_categoryList">
+        </div>
+    </nav>
+</header>
+<main class="main">
+    <h3>Category:</h3>
+    <ul class="main_categoryList">
 
-        </ul>
-    </main>
-    <!--    <h1 id="text">Hello Customer ヽ(゜▽゜　)</h1>-->
+    </ul>
+</main>
+<!--    <h1 id="text">Hello Customer ヽ(゜▽゜　)</h1>-->
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="../static/js/authentication.js"></script>
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="../static/authentication.js"></script>
+<script>
         const categoryList = document.querySelector('.main_categoryList');
 
         const getCategory = async () => {

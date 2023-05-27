@@ -5,8 +5,7 @@
     margin: auto;
     background-color: white;
     max-width: 40%;
-    border: 2px #000000 solid;
-    
+    border: 2px #000000 solid;   
     display: none;
     justify-content: center;
     align-items: center;
@@ -35,11 +34,11 @@
     color: red;
     visibility: hidden;
 }
-.table-worker{
+/* .table-worker{
     display: none;
 }
 .table-customer{
     display: none;
-}
+} */
 
 

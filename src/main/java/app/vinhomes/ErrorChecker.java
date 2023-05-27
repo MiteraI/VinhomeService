@@ -1,7 +1,9 @@
 package app.vinhomes;
 
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.Address;
 import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.AddressRepository;
 import app.vinhomes.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +24,8 @@ public class ErrorChecker {
     private AccountRepository accountRepository ;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private AddressRepository addressRepository;
     public  String checkUsername(String username) {
         Account account = accountRepository.findByAccountName(username);
         System.out.println(account);
@@ -126,7 +130,13 @@ public class ErrorChecker {
             int roomNo = Integer.parseInt(roomnumber);
             /// can xem lai ve quy luat so phong
             if (roomNo > 100 && roomNo < 999) {
-                return "";
+                Address address = addressRepository.findByBuildingBlockAndBuildingRoom(block,roomnumber);
+                if(address == null ){
+                    return "";
+                }else{
+                    return "someone has already take this address";
+                }
+
             } else {
                 return "your room number is not correct, enter your real room";
             }
@@ -140,6 +150,7 @@ public class ErrorChecker {
     public  String checkPhoneNumber(String phonenumber) {
         //phone number regrex VAN CHUA HOAN THIEN< CAN XEM LAI CHO DUNG
         try{
+
             Pattern pattern = Pattern.compile("^\\d{10,12}$");
             Matcher matcher = pattern.matcher(phonenumber);
             if(matcher.matches()){

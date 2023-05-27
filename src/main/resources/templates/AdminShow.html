@@ -1,123 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../static/css/AdminShow.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-    
 </head>
+
 <body>
-    <div class="container">
-        <button onclick="getWorkerList()">show worker</button>
-        <button class="button-create" onclick="createForm()">add worker</button>
-        <button onclick="getCustomerList()">show customer</button>
+    <div>
+        <div class="position-relative">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-        <div class="form">
-          <div class="form-close" onclick="closeCreateForm()" >close</div>
-          <form class="form-create" id="create-form" >
-                  <div>
-                       <label> Username</label></td>
-                       <input type="text" name="txtUsername" value="" > </td> </br>
-                              <p class="error-message"> asdf</p>    
-                      </div>
-  
-                  <div>
-                      <label> Password</label></td>
-                       <input type="password" name="txtPassword" value="" > </td></br>
-                       <p class="error-message">asdf</p>
-                      </div>
-  
-                  <div>
-                      <label> Email</label></td>
-                       <input type="text" name="txtEmail" value="" > </td></br>
-                       <p class="error-message">asdf</p>
-                      </div>  
-  
-                  <div>
-                       <label> Firstname</label></td>
-                      <input type="text" name="txtFirstname" value="" > </td></br>
-                      <p class="error-message">asdf</p>
-                  </div>
-  
-                  <div>
-                      <label> Lastname</label></td>
-                      <input type="text" name="txtLastname" value=""> </td></br>
-                      <p class="error-message">asdf</p>
-                  </div>
-  
-                  <div>
-                      <td> <label> Dob</label></td>
-                      <td><input type="date" name="txtDate" value="2000/00/00"></td></br>
-                      <p class="error-message">asdf</p>
-                  </div>
-  
-                  <div>
-                      <label> PhoneNumber</label></td>
-                      <input type="text" name="txtPhonenumber" value=""></td></br>
-                      <p class="error-message">asdf</p>
-                  </div>
-                      <p class="error-message">adsf</p>
-              <input type="submit" value="Submit">
-              <input type="reset" value="Reset">
-              
-          </form>
-      </div> 
-      <div class="TABLE-FOR-WORKER">
-        <table class="table-worker">
-            <thead>
-              <tr>
-                <th id="heading-id-c" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
-                <th id="heading-email-c" scope="col" class="asc">email</th>
-                <th id="heading-firstname-c" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
-                <th id="heading-lastname-c" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
-                <th id="heading-dob-c" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
-                <th id="heading-status-c" scope="col" class="asc" onclick='sortByStatus(this)'> status</th>
-                <th id="heading-role-c" scope="col" class="asc">Role</th>
-                <th>Delete</th>
-                <th>UPDATE</th>
-              </tr>
-            </thead>
-            <tbody id="worker-list">
-              
-            </tbody>
-          </table>
-        </div>
-    <!-- THIS IS FOR GETTING USER ACCOUNT -->
-    <!-- asdfasdfsadfsdafsadf
-    asdfasdfsadfdsafasdf -->
-    <div class="TABLE-FOR-CUSTOMER">
-          <table class="table-customer">
-            <thead>
-              <tr>
-                <th id="heading-id" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
-                <th id="heading-email" scope="col" class="asc">email</th>
-                <th id="heading-firstname" scope="col" class="asc" onclick='sortByFirstname(this)'>Firstname</th>
-                <th id="heading-lastname" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname</th>
-                <th id="heading-dob" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
-                <th id="heading-status" scope="col" class="asc" onclick='sortByStatus(this)'> status</th>
-                <th id="heading-role" scope="col" class="asc">Role</th>
-                <th>Delete</th>
-                <th>UPDATE</th>
-              </tr>
-            </thead>
-            <tbody id="customer-list">
-              
-            </tbody>
-          </table>
+                    <!-- <div class="container-fluid p-0 "> -->
+                    <a class="navbar-brand" href="#">
+                        <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
+                            class="d-inline-block align-top mx-3" alt="">
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="#" onclick="getWorkerList()">
+                                    <h4>WORKER</h4>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="#" onclick="getCustomerList()">
+                                    <h4>USER</h4>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white  m-0" href="#" onclick="openCreateForm()">
+                                    <h4>Create worker</h4>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <!-- </div> -->
+            </nav>
         </div>
 
 
 
-          
+
+
+        <div class="container d-flex justify-content-end p-0 mt-5">
+            <div class="form-group  has-feedback mt-4 col-md-4 ">
+                <!-- <label class="sr-only" for="search">Search</label> -->
+                <input type="text" class="form-control" name="q" id="search" placeholder="Search">
+
+                <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>
+            </div>
+        </div>
+
+
+
+
+        <div class="container col-6 border border-black p-lg-3 bg-white position-fixed position-absolute fixed-bottom rounded mb-5 z-3 p-5  form"
+            style="display: none; z-index: 99;">
+            <form id="create-form" class="">
+                <div class="form-group">
+                    <label> Username</label>
+                    <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
+                        name="txtUsername">
+                    <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group">
+                    <label> Password</label>
+                    <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword">
+                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group">
+                    <label> Email</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtEmail">
+                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group">
+                    <label> Firstname</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtFirstname">
+                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group">
+                    <label> Lastname</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtLastname">
+                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group">
+                    <label> Dob</label>
+                    <input type="date" class="form-control" placeholder="" name="txtDate">
+                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group">
+                    <label> PhoneNumber</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtPhonenumber">
+                    <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                    <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                </div>
+                <div class=" container-fluid d-flex justify-content-between">
+                    <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset">
+                    <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Submit">
+                    <div class=" btn btn-primary form-close d-inline-block align-content-end"
+                        onclick="closeCreateForm()">close</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER--><!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <div class="container fixed-top  " style="display: none; " id="update-form-container">
+        <div class="visually-hidden mt-5 ">asdf</div>
+        <div class="container d-flex justify-content-center align-items-center   mt-5 ">
+            <div class="container w-75 border border-black   bg-white
+                    mt-5 rounded  p-5   " style="z-index: 99;">
+                <form id="update-form" class="">
+                    <div class="container p-0 m-0 d-flex justify-content-center mb-3">
+                        <div class="align-items-center">
+                            <label> ID: </label>
+                        </div>
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Username</label>
+                            <input type="text" id="update-form-username" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> password</label>
+                            <input type="text" id="update-form-password" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtPassword" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Firstname</label>
+                            <input type="text" id="update-form-firstname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtFirstname" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Lastname</label>
+                            <input type="text" id="update-form-lastname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtLastname" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+
+                    <div class="container d-flex p-0 m-0">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Dob</label>
+                            <input type="date" id="update-form-dob" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtDate" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> PhoneNumber</label>
+                            <div class="input-group">
+                                <input type="text" name="txtPhonenumber" class="form-control" aria-label="Text input with dropdown button" id="update-form-phonenumber"
+                                    value="">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Dropdown</button>
+                                    <div class="dropdown-menu" id="dropdown-phone">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
+                                placeholder="" name="txtPhonenumber"> -->
+                            <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> email</label>
+                            <input type="text" id="update-form-email" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+
+                    </div>
+
+                    <div class="container d-flex p-0 m-0">
+                        <div class="form-group col-6  p-0 m-0">
+                            <input type="radio" class="form-check-input" name="btnRadio" value="A" checked=""> block A
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" class="form-check-input" name="btnRadio" value="B" checked="">block B
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" class="form-check-input" name="btnRadio" value="C" checked=""> block C
+                            </br>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Room</label>
+                            <input type="text" id="update-form-room" class="form-control form-control-sm w-25"
+                                placeholder="" name="txtRoomnumber" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+                    </div>
+
+                    <div class=" container-fluid d-flex justify-content-between">
+                        <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset">
+                        <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
+                        <div class=" btn btn-primary form-close d-inline-block align-content-end"
+                            onclick="closeUpdateForm()">
+                            close</div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 
 
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+
+
+    <div class="container mt-5" style="z-index: -1;">
+        <!-- <button onclick="getWorkerList()">show worker</button>
+        <button class="button-create" onclick="createForm()">add worker</button>
+        <button onclick="getCustomerList()">show customer</button> -->
+
+        <!-- <div class="TABLE-FOR-WORKER container-fluid"> -->
+        <table class="table-worker table table-striped" style="display:none">
+            <thead>
+                <tr>
+                    <th id="heading-id-w" scope="col" class="asc" onclick='sortById(this)' style="width: 20%;">accountID
+                    </th>
+                    <th id="heading-email-w" scope="col" class="asc" style="width: 20%;">email</th>
+                    <th id="heading-firstname-w" scope="col" class="asc" onclick='sortByFirstname(this)'
+                        style="width: 20%;">Firstname
+                    </th>
+                    <th id="heading-lastname-w" scope="col" class="asc" onclick='sortByLastname(this)'
+                        style="width: 20%;">Lastname</th>
+                    <th id="heading-dob-w" scope="col" class="asc" style="width: 20%;">Dob</th>
+                    <th id="heading-status-w" scope="col" class="asc" style="width: 20%;"> status</th>
+                    <th id="heading-role-w" scope="col" class="asc" style="width: 20%;">Role</th>
+                    <th style="width: 20%;">Delete</th> <!--  onclick='sortByDob(this)' -->
+                    <th style="width: 20%;">UPDATE</th><!--  onclick='sortByStatus(this)' -->
+                </tr>
+            </thead>
+            <tbody id="worker-list">
+
+            </tbody>
+        </table>
+        <!-- </div> -->
+        <!-- THIS IS FOR GETTING USER ACCOUNT -->
+        <!-- asdfasdfsadfsdafsadf
+    asdfasdfsadfdsafasdf -->
+        <div class="TABLE-FOR-CUSTOMER">
+            <table class="table-customer table table-striped" style="display:none">
+                <thead>
+                    <tr>
+                        <th id="heading-id-c" scope="col" class="asc" onclick='sortById(this)' style="width: 20%;">
+                            accountID</th>
+                        <th id="heading-email-c" scope="col" class="asc" style="width: 20%;">email</th>
+                        <th id="heading-firstname-c" scope="col" class="asc" onclick='sortByFirstname(this)'
+                            style="width: 20%;">Firstname
+                        </th>
+                        <th id="heading-lastname-c" scope="col" class="asc" onclick='sortByLastname(this)'
+                            style="width: 20%;">Lastname</th>
+                        <th id="heading-dob-c" scope="col" class="asc" onclick='sortByDob(this)' style="width: 20%;">Dob
+                        </th>
+                        <th id="heading-status-c" scope="col" class="asc" onclick='sortByStatus(this)'
+                            style="width: 20%;"> status</th>
+                        <th id="heading-role-c" scope="col" class="asc" style="width: 20%;">Role</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="customer-list">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector("#search").addEventListener('input', sorttable)
+        function sorttable() {
+            var search_input = document.querySelector("#search").value.toLowerCase();;
+            console.log(search_input)
+            const list = document.querySelectorAll('.item-to-search')
+            list.forEach((element) => {
+                text_element = element.textContent;
+                if (text_element.toLowerCase().includes(search_input.toLowerCase())) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        }
+
+        //console.log(document.querySelectorAll('.item-to-search')[0].textContent)
+
+    </script>
+
 </body>
-    <script src="../static/js/AdminShow.js"></script>
-    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+<script src="../static/MinhJavaScript/AdminShow.js"></script>
+
 </html>

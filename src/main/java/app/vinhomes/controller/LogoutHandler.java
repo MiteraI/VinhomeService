@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogoutHandler {
     @PostMapping()
     public ResponseEntity<String> logout(HttpServletRequest request) {
-            // Return a success response
-            HttpSession session = request.getSession(false);
-            session.invalidate();
-            return ResponseEntity.ok("Logout successful");
+        // Return a success response
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return ResponseEntity.ok("Logout successful");
     }
 }
