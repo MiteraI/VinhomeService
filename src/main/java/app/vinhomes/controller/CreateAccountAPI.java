@@ -37,15 +37,15 @@ public class CreateAccountAPI {
         System.out.println("inside create account");
         System.out.println(request.asText());
         String username, password, email, firstname, lastname, phonenumber, date, address;
-        username = errorChecker.checkUsername(request.get("txtUsername").asText());
-        password = errorChecker.checkPassword(request.get("txtPassword").asText());
-        email = errorChecker.checkEmail(request.get("txtEmail").asText());
-        firstname = errorChecker.checkFirstname(request.get("txtFirstname").asText());
-        lastname = errorChecker.checkLastname(request.get("txtLastname").asText());
-        date = errorChecker.checkDate(request.get("txtDate").asText());
-        System.out.println(request.get("txtDate").asText());
-        phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText());
-        address = errorChecker.checkAddress(request.get("btnRadio").asText(), request.get("txtRoomnumber").asText());
+        username = errorChecker.checkUsername(request.get("txtUsername").asText().trim());
+        password = errorChecker.checkPassword(request.get("txtPassword").asText().trim());
+        email = errorChecker.checkEmail(request.get("txtEmail").asText().trim());
+        firstname = errorChecker.checkFirstname(request.get("txtFirstname").asText().trim());
+        lastname = errorChecker.checkLastname(request.get("txtLastname").asText().trim());
+        date = errorChecker.checkDate(request.get("txtDate").asText().trim());
+        System.out.println(request.get("txtDate").asText().trim());
+        phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());
+        address = errorChecker.checkAddress(request.get("btnRadio").asText(), request.get("txtRoomnumber").asText().trim());
         //this is where we change direction if worker or customer account
         //
         //role = 1 is worker
@@ -73,14 +73,14 @@ public class CreateAccountAPI {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             //convert String to LocalDate
             LocalDate localDate = LocalDate.parse(request.get("txtDate").asText(), formatter);
-            Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText()).build();
-            Address address1 = Address.builder().buildingBlock(request.get("btnRadio").asText()).buildingRoom(request.get("txtRoomnumber").asText()).build();
+            Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText().trim()).build();
+            Address address1 = Address.builder().buildingBlock(request.get("btnRadio").asText().trim()).buildingRoom(request.get("txtRoomnumber").asText().trim()).build();
             Account account = Account.builder()
-                    .accountName(request.get("txtUsername").asText())
-                    .password(request.get("txtPassword").asText())
-                    .email(request.get("txtEmail").asText())
-                    .firstName(request.get("txtFirstname").asText())
-                    .lastName(request.get("txtLastname").asText())
+                    .accountName(request.get("txtUsername").asText().trim())
+                    .password(request.get("txtPassword").asText().trim())
+                    .email(request.get("txtEmail").asText().trim())
+                    .firstName(request.get("txtFirstname").asText().trim())
+                    .lastName(request.get("txtLastname").asText().trim())
                     .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)

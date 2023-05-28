@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <!-- <div class="container-fluid vh-100  overlay " style="background-color: rgba(0, 0, 0, 0.5); display: none;"> -->
     <div>
         <div class="position-relative">
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
@@ -68,53 +69,88 @@
 
 
 
-        <div class="container col-6 border border-black p-lg-3 bg-white position-fixed position-absolute fixed-bottom rounded mb-5 z-3 p-5  form"
-            style="display: none; z-index: 99;">
-            <form id="create-form" class="">
-                <div class="form-group">
-                    <label> Username</label>
-                    <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
-                        name="txtUsername">
-                    <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
-                </div>
-                <div class="form-group">
-                    <label> Password</label>
-                    <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword">
-                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                </div>
-                <div class="form-group">
-                    <label> Email</label>
-                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtEmail">
-                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                </div>
-                <div class="form-group">
-                    <label> Firstname</label>
-                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtFirstname">
-                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                </div>
-                <div class="form-group">
-                    <label> Lastname</label>
-                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtLastname">
-                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                </div>
-                <div class="form-group">
-                    <label> Dob</label>
-                    <input type="date" class="form-control" placeholder="" name="txtDate">
-                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                </div>
-                <div class="form-group">
-                    <label> PhoneNumber</label>
-                    <input type="text" class="form-control form-control-sm" placeholder="" name="txtPhonenumber">
+        <div class="container col-6  position-fixed fixed-top rounded mt-5  p-5  vh-100 form" style="display: none; ">
+            <div class="visually-hidden mt-5 ">asdf</div>
+            <div class="mt-5 border border-black p-lg-3 bg-white" style="z-index: 99;">
+                <form id="create-form" class=" ">
+                    <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                        <div class="form-group col-6">
+                            <label> Username</label>
+                            <input type="text" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
+                                placeholder="" name="txtUsername">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6">
+                            <label> Password</label>
+                            <input type="password" class="form-control form-control-sm w-75" placeholder=""
+                                name="txtPassword">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+                    <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                        <div class="form-group col-6">
+                            <label> Email</label>
+                            <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtEmail">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6">
+                            <label> Firstname</label>
+                            <input type="text" class="form-control form-control-sm w-75" placeholder=""
+                                name="txtFirstname">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+                    <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                        <div class="form-group col-6">
+                            <label> Lastname</label>
+                            <input type="text" class="form-control form-control-sm w-75" placeholder=""
+                                name="txtLastname">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6">
+                            <label> Dob</label>
+                            <input type="date" class="form-control w-75" placeholder="" name="txtDate">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+                    <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                        <div class="form-group col-6">
+                            <label> PhoneNumber</label>
+                            <input type="text" class="form-control form-control-sm  w-75" placeholder=""
+                                name="txtPhonenumber">
+                            <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+                        <div class=" col-6  "></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Service</label>
+                        <div class="input-group">
+                            <input type="text" name="txtService" class="form-control h-50"
+                                aria-label="Text input with dropdown button" id="w-create-form-service" value=""
+                                readonly="readonly">
+                            <input type="hidden" name="txtServiceId" id="w-create-form-serviceid" value="">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Dropdown</button>
+                                <div class="dropdown-menu" id="w-create-form-dropdown-service">
+
+                                </div>
+                                <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                            </div>
+                        </div>
+                    </div>
                     <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
-                    <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
-                </div>
-                <div class=" container-fluid d-flex justify-content-between">
-                    <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset">
-                    <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Submit">
-                    <div class=" btn btn-primary form-close d-inline-block align-content-end"
-                        onclick="closeCreateForm()">close</div>
-                </div>
-            </form>
+                    <div class=" container-fluid d-flex justify-content-between">
+                        <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset">
+                        <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Submit">
+                        <div class=" btn btn-primary form-close d-inline-block align-content-end"
+                            onclick="closeCreateForm()">close</div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <!-- THIS IS THE UPDATE FORM FOR CUSTOMER--><!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
@@ -130,7 +166,8 @@
                 <form id="update-form" class="">
                     <div class="container p-0 m-0 d-flex justify-content-center mb-3">
                         <div class="align-items-center">
-                            <label> ID: </label>
+                            <label> <!-- ID: -->ID:<input name="txtID" id="update-form-id" type="hidden"
+                                    value=""></label>
                         </div>
                     </div>
                     <div class="container p-0 m-0 d-flex">
@@ -150,32 +187,43 @@
 
                     <div class="container p-0 m-0 d-flex">
                         <div class="form-group col-6  p-0 m-0">
+                            <label> email</label>
+                            <input type="text" id="update-form-email" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
                             <label> Firstname</label>
                             <input type="text" id="update-form-firstname" class="form-control form-control-sm w-75"
                                 placeholder="" name="txtFirstname" value="">
                             <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
                         </div>
+
+                    </div>
+
+
+                    <div class="container d-flex p-0 m-0">
                         <div class="form-group col-6  p-0 m-0">
                             <label> Lastname</label>
                             <input type="text" id="update-form-lastname" class="form-control form-control-sm w-75"
                                 placeholder="" name="txtLastname" value="">
                             <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
                         </div>
-                    </div>
-
-
-                    <div class="container d-flex p-0 m-0">
                         <div class="form-group col-6  p-0 m-0">
                             <label> Dob</label>
                             <input type="date" id="update-form-dob" class="form-control form-control-sm w-75"
                                 placeholder="" name="txtDate" value="">
                             <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
                         </div>
+
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
                         <div class="form-group col-6  p-0 m-0">
                             <label> PhoneNumber</label>
                             <div class="input-group">
-                                <input type="text" name="txtPhonenumber" class="form-control" aria-label="Text input with dropdown button" id="update-form-phonenumber"
-                                    value="">
+                                <input type="text" name="txtPhonenumber" class="form-control"
+                                    aria-label="Text input with dropdown button" id="update-form-phonenumber" value="">
+                                <input type="hidden" name="txtPhoneID" value="" id="update-form-phoneid">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" aria-haspopup="true"
@@ -188,14 +236,6 @@
                             <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
                                 placeholder="" name="txtPhonenumber"> -->
                             <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
-                        </div>
-                    </div>
-                    <div class="container p-0 m-0 d-flex">
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> email</label>
-                            <input type="text" id="update-form-email" class="form-control form-control-sm w-75"
-                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
-                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
                         </div>
 
                     </div>
@@ -218,7 +258,6 @@
                     </div>
 
                     <div class=" container-fluid d-flex justify-content-between">
-                        <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset">
                         <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
                         <div class=" btn btn-primary form-close d-inline-block align-content-end"
                             onclick="closeUpdateForm()">
@@ -231,9 +270,177 @@
     </div>
 
 
-    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
-    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
-    <!-- THIS IS THE UPDATE FORM FOR CUSTOMER-->
+    <!-- THIS IS THE UPDATE FORM FOR WORKER -->
+    <!-- THIS IS THE UPDATE FORM FOR WORKER-->
+    <!-- THIS IS THE UPDATE FORM FOR WORKER-->
+    <!-- THIS IS THE UPDATE FORM FOR WORKER -->
+    <!-- THIS IS THE UPDATE FORM FOR WORKER-->
+    <!-- THIS IS THE UPDATE FORM FOR WORKER-->
+    <div class="container-fluid fixed-top vh-100 mt-5 " style="display: none;" id="w-update-form-container">
+        <div class="container d-flex justify-content-center align-items-center   ">
+            <div class="container w-75 border border-black   bg-white rounded  p-5   " style="z-index: 99;">
+                <form id="w-update-form" class="">
+                    <div class="container p-0 m-0 d-flex justify-content-center mb-3">
+                        <div class="align-items-center">
+                            <label> <!-- ID: -->ID:<input name="txtID" id="w-update-form-id" type="hidden"
+                                    value=""></label>
+                        </div>
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Username</label>
+                            <input type="text" id="w-update-form-username" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> password</label>
+                            <input type="text" id="w-update-form-password" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtPassword" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> email</label>
+                            <input type="text" id="w-update-form-email" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Firstname</label>
+                            <input type="text" id="w-update-form-firstname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtFirstname" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="container d-flex p-0 m-0">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Lastname</label>
+                            <input type="text" id="w-update-form-lastname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtLastname" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Dob</label>
+                            <input type="date" id="w-update-form-dob" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtDate" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> PhoneNumber</label>
+                            <div class="input-group">
+                                <input type="text" name="txtPhonenumber" class="form-control"
+                                    aria-label="Text input with dropdown button" id="w-update-form-phonenumber"
+                                    value="">
+                                <input type="hidden" name="txtPhoneID" value="" id="w-update-form-phoneid">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Dropdown</button>
+                                    <div class="dropdown-menu" id="w-dropdown-phone">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
+                                placeholder="" name="txtPhonenumber"> -->
+                            <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+
+                    </div>
+                    <div class="container d-flex p-0 m-0 border-top border-2 ">
+                        <div class="form-group col-6  p-0 mt-3">
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label>days off: &nbsp;&nbsp; <input type="text" name="txtDayoff" id="w-dayoff" value=""
+                                        class="w-25 me-3 float-end " readonly="readonly"></label>
+                                <div class="btn-group w-25" style="margin-right: 25%" role="group"
+                                    aria-label="Basic outlined example">
+                                    <button type="button" id="w-dayoff-plus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-dayoff","+")'>+</button>
+                                    <button type="button" id="w-dayoff-minus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-dayoff","-")'>-</button>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label>work count:&nbsp;&nbsp; <input type="text" name="txtWorkcount" id="w-workcount"
+                                        value="" class="w-25 me-3 float-end" readonly="readonly"></label>
+                                <div class="btn-group w-25" style="margin-right: 25%" role="group"
+                                    aria-label="Basic outlined example">
+                                    <button type="button" id="w-workcount-plus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-workcount","+")'>+</button>
+                                    <button type="button" id="w-workcount-minus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-workcount","-")'>-</button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label>status: <input type="text" id="w-status-text" value=""
+                                        class="w-25 me-3 float-end" readonly="readonly">
+                                    <input type="hidden" name="txtStatus" id="w-status" value=""
+                                        class="w-25 me-3 float-end">
+                                </label>
+                                <div class="btn-group w-50" style="margin-right: 25%" role="group"
+                                    aria-label="Basic outlined example">
+                                    <button type="button" id="w-status-free" class="btn btn-outline-primary w-50"
+                                        onclick="workerStatus(this.id)">free</button>
+                                    <button type="button" id="w-status-off" class="btn btn-outline-primary w-50"
+                                        onclick="workerStatus(this.id)">Off</button>
+                                    <!-- <input type="radio" class="btn-check w-50" name="w-status-radio" id="w-status-free"
+                                        autocomplete="off" checked='true'>
+                                    <label class="btn btn-outline-primary w-50" for="w-status-free">Free</label>
+
+                                    <input type="radio" class="btn-check w-50" name="w-status-radio" id="w-status-off"
+                                        autocomplete="off">
+                                    <label class="btn btn-outline-primary w-50" for="w-status-off">Off</label> -->
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label> Service</label>
+                                <div class="input-group">
+                                    <!-- dont take the below input in server!!!! -->
+                                    <input type="text" name="txtService" class="form-control"
+                                        aria-label="Text input with dropdown button" id="w-service" value=""
+                                        readonly="readonly">
+
+                                    <input type="hidden" name="txtServiceId" id="w-serviceid" value="">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">Dropdown</button>
+                                        <div class="dropdown-menu" id="w-dropdown-service">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+
+                        </div>
+                    </div>
+
+                    <div class=" container-fluid d-flex justify-content-between">
+                        <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
+                        <div class=" btn btn-primary form-close d-inline-block align-content-end"
+                            onclick="closeWorkerUpdateForm()">
+                            close</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 
     <div class="container mt-5" style="z-index: -1;">
@@ -257,7 +464,7 @@
                     <th id="heading-status-w" scope="col" class="asc" style="width: 20%;"> status</th>
                     <th id="heading-role-w" scope="col" class="asc" style="width: 20%;">Role</th>
                     <th style="width: 20%;">Delete</th> <!--  onclick='sortByDob(this)' -->
-                    <th style="width: 20%;">UPDATE</th><!--  onclick='sortByStatus(this)' -->
+                    <!-- <th style="width: 20%;">UPDATE</th> onclick='sortByStatus(this)' -->
                 </tr>
             </thead>
             <tbody id="worker-list">
@@ -294,7 +501,7 @@
             </table>
         </div>
     </div>
-
+<!-- </div> -->
     <script>
         document.querySelector("#search").addEventListener('input', sorttable)
         function sorttable() {

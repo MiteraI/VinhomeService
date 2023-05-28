@@ -7,9 +7,9 @@ import app.vinhomes.ResponseJoinEntity.JoinAccountInfo;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Address;
 import app.vinhomes.entity.Phone;
-import app.vinhomes.repository.AccountRepository;
-import app.vinhomes.repository.AddressRepository;
-import app.vinhomes.repository.PhoneRepository;
+import app.vinhomes.entity.ServiceCategory;
+import app.vinhomes.entity.worker.WorkerStatus;
+import app.vinhomes.repository.*;
 import app.vinhomes.services.AccountService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/UserRestController")
@@ -37,19 +38,23 @@ public class AdminAPI {
     private ErrorChecker errorChecker;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private WorkerStatusRepository workerStatusRepository;
+    @Autowired
+    private ServiceCategoryRepository serviceCategoryRepository;
     @PostMapping(value = "/createAccountWorker/{rolenumber}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForWorker(@RequestBody JsonNode request,@PathVariable int rolenumber){
         System.out.println("inside create account for worker");
         System.out.println(request.asText());
         String username, password, email, firstname, lastname, phonenumber, date, address;
-        username = errorChecker.checkUsername(request.get("txtUsername").asText());System.out.println(username);
-        password = errorChecker.checkPassword(request.get("txtPassword").asText());System.out.println(password);
-        email = errorChecker.checkEmail(request.get("txtEmail").asText());System.out.println(email);
-        firstname = errorChecker.checkFirstname(request.get("txtFirstname").asText());System.out.println(firstname);
-        lastname = errorChecker.checkLastname(request.get("txtLastname").asText());System.out.println(lastname);
+        username = errorChecker.checkUsername(request.get("txtUsername").asText().trim());System.out.println(username);
+        password = errorChecker.checkPassword(request.get("txtPassword").asText().trim());System.out.println(password);
+        email = errorChecker.checkEmail(request.get("txtEmail").asText().trim());System.out.println(email);
+        firstname = errorChecker.checkFirstname(request.get("txtFirstname").asText().trim());System.out.println(firstname);
+        lastname = errorChecker.checkLastname(request.get("txtLastname").asText().trim());System.out.println(lastname);
         date = errorChecker.checkDate(request.get("txtDate").asText());System.out.println(date);
-        System.out.println(request.get("txtDate").asText());
-        phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText());System.out.println(phonenumber);
+        System.out.println(request.get("txtDate").asText().trim());
+        phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());System.out.println(phonenumber);
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(password);
@@ -73,21 +78,24 @@ public class AdminAPI {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             //convert String to LocalDate
             LocalDate localDate = LocalDate.parse(request.get("txtDate").asText(), formatter);
-            Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText()).build();
+            Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText().trim()).build();
+            ServiceCategory serviceCategory = serviceCategoryRepository.findById(request.get("txtServiceId").asLong()).get();
+            WorkerStatus workerStatus = WorkerStatus.builder().allowedDayOff(10).status(0).workCount(0).serviceCategory(serviceCategory).build();
             Account account = Account.builder()
-                    .accountName(request.get("txtUsername").asText())
-                    .password(request.get("txtPassword").asText())
-                    .email(request.get("txtEmail").asText())
-                    .firstName(request.get("txtFirstname").asText())
-                    .lastName(request.get("txtLastname").asText())
+                    .accountName(request.get("txtUsername").asText().trim())
+                    .password(request.get("txtPassword").asText().trim())
+                    .email(request.get("txtEmail").asText().trim())
+                    .firstName(request.get("txtFirstname").asText().trim())
+                    .lastName(request.get("txtLastname").asText().trim())
                     .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)
                     .build();
             accountRepository.save(account);System.out.println("save account");
             phone.setAccount(account);
-            phoneRepository.save(phone);
-            System.out.println("save phone");
+            phoneRepository.save(phone);System.out.println("save phone");
+            workerStatus.setAccount(account);
+            workerStatusRepository.save(workerStatus);System.out.println("save worker status");
         } catch (DateTimeException e) {
             System.out.println("cant parse date");
             System.out.println(e);
@@ -127,12 +135,6 @@ public class AdminAPI {
         ResponseEntity<List<Account>> response = accountService.updateAccountById(request);
         return response;
     }
-//    @GetMapping(value = "/testing/{accountID}",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public JoinAccountInfo testingGetJoinCustomer(@PathVariable String accountID){
-//        System.out.println("call success");
-//        JoinAccountInfo accountInfo = accountService.getCustomerWithPhoneAndAddress(Long.parseLong(accountID));
-//        return accountInfo;
-//    }
     @GetMapping(value = "/getAccountInfo/{ID}",produces = MediaType.APPLICATION_JSON_VALUE)
     public Account getAccountById(@PathVariable String ID){
         Account account = accountRepository.findById(Long.parseLong(ID)).get();
@@ -149,22 +151,58 @@ public class AdminAPI {
         Address address = accountRepository.findById(accountID).get().getAddress();
         return address;
     }
-    @PutMapping(value = "/testUpdateAccount", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/UpdateAccountCustomer", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> updateAccountCustomer(@RequestBody JsonNode updateInfo){
         int roleCustomer  = 0;
         System.out.println("get in update account customer");
         System.out.println(updateInfo.asText());
-        String username, password, email, firstname, lastname, phonenumber, date, address;
-        username = errorChecker.checkUsername(updateInfo.get("txtUsername").asText());
-        password = errorChecker.checkPassword(updateInfo.get("txtPassword").asText());
-        email = errorChecker.checkEmail(updateInfo.get("txtEmail").asText());
-        firstname = errorChecker.checkFirstname(updateInfo.get("txtFirstname").asText());
-        lastname = errorChecker.checkLastname(updateInfo.get("txtLastname").asText());
+        System.out.println("id of account update: "+ updateInfo.get("txtID").asText());
+            Account account_to_update  = accountRepository.findById(updateInfo.get("txtID").asLong()).get();
+        String ID, username, password, email, firstname, lastname, phonenumber, date, address;
+        Long phoneID;
+        if(account_to_update.getAccountName().equals( updateInfo.get("txtUsername").asText().trim()) ){
+            username = "";
+        }
+        else{
+            username = errorChecker.checkUsername(updateInfo.get("txtUsername").asText());
+        }
+//////////////
+        password = errorChecker.checkPassword(updateInfo.get("txtPassword").asText().trim());
+////////////
+        if(account_to_update.getEmail().equals( updateInfo.get("txtEmail").asText().trim()) ) {
+            email = "";
+        }
+        else{
+            email = errorChecker.checkEmail(updateInfo.get("txtEmail").asText());
+        }
+///////////
+        firstname = errorChecker.checkFirstname(updateInfo.get("txtFirstname").asText().trim());
+        lastname = errorChecker.checkLastname(updateInfo.get("txtLastname").asText().trim());
         date = errorChecker.checkDate(updateInfo.get("txtDate").asText());
         System.out.println(updateInfo.get("txtDate").asText());
-        phonenumber = errorChecker.checkPhoneNumber(updateInfo.get("txtPhonenumber").asText());
-        System.out.println(updateInfo.get("txtPhonenumber").asText());
-        address = errorChecker.checkAddress(updateInfo.get("btnRadio").asText(), updateInfo.get("txtRoomnumber").asText());
+            List<Phone> phoneList = new ArrayList<>();
+            phoneList = phoneRepository.findByAccount(account_to_update);//xem laip
+        //////////
+        System.out.println(updateInfo.get("txtPhonenumber").asText().trim());
+        if(updateInfo.get("txtPhoneID").asText().trim().isEmpty() == false){
+            phoneID = Long.parseLong(updateInfo.get("txtPhoneID").asText().trim()); System.out.println(phoneID);
+            phonenumber = phoneRepository.findById(phoneID).get().getNumber();
+            if(updateInfo.get("txtPhonenumber").asText().trim().equals(phonenumber)){
+                phonenumber = "";
+            }else{
+                phonenumber = errorChecker.checkPhoneNumber(updateInfo.get("txtPhonenumber").asText().trim());
+            }
+        }else{
+            phoneID = null;
+            phonenumber = errorChecker.checkPhoneNumber(updateInfo.get("txtPhonenumber").asText().trim());
+        }
+
+        if (account_to_update.getAddress().getBuildingBlock().equals(updateInfo.get("btnRadio").asText())
+        && account_to_update.getAddress().getBuildingRoom().equals(updateInfo.get("txtRoomnumber").asText().trim())){
+            address = "";
+        }else{
+            address = errorChecker.checkAddress(updateInfo.get("btnRadio").asText(), updateInfo.get("txtRoomnumber").asText().trim());
+        }
         //this is where we change direction if worker or customer account
         System.out.println("yes check okkk");
         //role = 1 is worker
@@ -178,47 +216,63 @@ public class AdminAPI {
         errorList.add(phonenumber);
         errorList.add(address);
         CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date, phonenumber, address);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-//        for (String message : errorList) {
-//            if (message.isEmpty()) {
-//                continue;
-//            } else {
-//                //return error;
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//            }
-//        }
-//        //
-//        //
-//        try {
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//            //convert String to LocalDate
-//            LocalDate localDate = LocalDate.parse(updateInfo.get("txtDate").asText(), formatter);
-//            Phone phone = Phone.builder().number(updateInfo.get("txtPhonenumber").asText()).build();
-//            Address address1 = Address.builder().buildingBlock(updateInfo.get("btnRadio").asText()).buildingRoom(updateInfo.get("txtRoomnumber").asText()).build();
-//            Account account = Account.builder()
-//                    .accountName(updateInfo.get("txtUsername").asText())
-//                    .password(updateInfo.get("txtPassword").asText())
-//                    .email(updateInfo.get("txtEmail").asText())
-//                    .firstName(updateInfo.get("txtFirstname").asText())
-//                    .lastName(updateInfo.get("txtLastname").asText())
-//                    .dob(localDate)
-//                    .role(roleCustomer)
-//                    .accountStatus(1)
-//                    .address(address1)
-//                    .build();
-//
-//        } catch (DateTimeException e) {
-//            System.out.println("cant parse date");
-//            System.out.println(e);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        }catch (Exception e){
-//            System.out.println("something wrong with saving the account");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//        System.out.println("okk, SAVE SUCCESS");
-//        return ResponseEntity.status(HttpStatus.OK).body(null);
+        //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        for (String message : errorList) {
+            if (message.isEmpty()) {
+                continue;
+            } else {
+                System.out.println("bad request");
+                //return error;
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+        }
+        //
+        //
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(updateInfo.get("txtDate").asText().trim(), formatter);
+            Optional<Phone> phone1 = phoneRepository.findById(phoneID);
+                    //Phone.builder().number(updateInfo.get("txtPhonenumber").asText().trim()).build();
+            Address address1= addressRepository.findByBuildingBlockAndBuildingRoom(updateInfo.get("btnRadio").asText(),updateInfo.get("txtRoomnumber").asText().trim());
+                    //Address.builder().buildingBlock(updateInfo.get("btnRadio").asText().trim()).buildingRoom(updateInfo.get("txtRoomnumber").asText()).build();
+            System.out.println("yes work");
+            account_to_update.setAccountName(updateInfo.get("txtUsername").asText().trim());
+            account_to_update.setPassword(updateInfo.get("txtPassword").asText().trim());
+            account_to_update.setEmail(updateInfo.get("txtEmail").asText().trim());
+            account_to_update.setFirstName(updateInfo.get("txtFirstname").asText().trim());
+            account_to_update.setLastName(updateInfo.get("txtLastname").asText().trim());
+            account_to_update.setDob(localDate);
+            account_to_update.setAddress(address1);
+
+            accountRepository.save(account_to_update);System.out.println("save account");
+            if(phone1 != null){
+                phone1.get().setNumber(updateInfo.get("txtPhonenumber").asText());
+                phoneRepository.save(phone1.get());System.out.println("save phone");
+            }
+        } catch (DateTimeException e) {
+            System.out.println("cant parse date");
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }catch (Exception e){
+            System.out.println("something wrong with saving the account");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+        System.out.println("okk, SAVE SUCCESS");
+        return ResponseEntity.status(HttpStatus.OK).body(error);
     }
+    @PostMapping(value = "/getWorkerStatus",produces = MediaType.APPLICATION_JSON_VALUE)
+    public WorkerStatus getWorkerStatus(@RequestBody Account account){
+        System.out.println("get in address");
+        WorkerStatus workerStatus =  workerStatusRepository.findByAccount(account);
+        return workerStatus;
 
-
+    }
+    @GetMapping(value = "/getServiceCategory",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ServiceCategory> getServiceCate(){
+        System.out.println("yes in status");
+        List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAll();
+        return serviceCategoryList;
+    }
 
 }

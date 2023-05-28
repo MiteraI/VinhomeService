@@ -16,90 +16,56 @@
 </head>
 
 <body>
-    <div class="position-relative">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- <div class="container-fluid p-0 "> -->
-                <a class="navbar-brand" href="#">
-                    <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
-                        class="d-inline-block align-top mx-3" alt="">
-                </a>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item ">
-                            <a class="nav-link text-white  m-0" href="#" onclick="getWorkerList()">
-                                <h4>WORKER</h4>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link text-white  m-0" href="#" onclick="getCustomerList()">
-                                <h4>USER</h4>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white  m-0" href="#" onclick="openCreateForm()">
-                                <h4>Create worker</h4>
-                            </a>
-                        </li>
-
-                    </ul>
+    <div class="container col-6 border border-black p-lg-3 bg-white position-fixed position-absolute fixed-bottom rounded mb-5 z-3 p-5  form"
+        style="display: block; z-index: 99;">
+        <form id="create-form" class="">
+            <div class="container m-0 p-0 ">
+                <div class="form-group col-6 m-0 p-0">
+                    <label> Username</label>
+                    <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
+                        name="txtUsername">
+                    <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                </div>
+                <div class="form-group col-6 m-0 p-0">
+                    <label> Password</label>
+                    <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword">
+                    <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
                 </div>
             </div>
-            <!-- </div> -->
-        </nav>
-    </div>
-
-    <div>asdfasdfsadfdsafasdf</div>
-    <div class="container mt-5">
-        <table id="example" class="display table table-striped table-worker" style="width:100%">
-            <!-- <thead>
-                <th>accountID</th>             
-                <th>email</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Dob</th>
-                <th>status</th>
-                <th>Role</th>
-                <th>Delete</th> 
-                <th>UPDATE</th>
-                </tr>
-            </thead>
-            <tbody id="worker-list">
-            </tbody> -->
-        </table>
-        <div class="container">
-            <div class="TABLE-FOR-CUSTOMER">
-                <table class="table-customer table table-striped" style="display:none">
-                    <thead>
-                        <tr>
-                            <th id="heading-id-c" scope="col" class="asc" onclick='sortById(this)'>accountID</th>
-                            <th id="heading-email-c" scope="col" class="asc">email</th>
-                            <th id="heading-firstname-c" scope="col" class="asc" onclick='sortByFirstname(this)'>
-                                Firstname
-                            </th>
-                            <th id="heading-lastname-c" scope="col" class="asc" onclick='sortByLastname(this)'>Lastname
-                            </th>
-                            <th id="heading-dob-c" scope="col" class="asc" onclick='sortByDob(this)'>Dob</th>
-                            <th id="heading-status-c" scope="col" class="asc" onclick='sortByStatus(this)'> status</th>
-                            <th id="heading-role-c" scope="col" class="asc">Role</th>
-                            <th>Delete</th>
-                            <th>UPDATE</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customer-list">
-
-                    </tbody>
-                </table>
+            <div class="form-group">
+                <label> Email</label>
+                <input type="text" class="form-control form-control-sm" placeholder="" name="txtEmail">
+                <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
             </div>
-        </div>
+            <div class="form-group">
+                <label> Firstname</label>
+                <input type="text" class="form-control form-control-sm" placeholder="" name="txtFirstname">
+                <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+            </div>
+            <div class="form-group">
+                <label> Lastname</label>
+                <input type="text" class="form-control form-control-sm" placeholder="" name="txtLastname">
+                <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+            </div>
+            <div class="form-group">
+                <label> Dob</label>
+                <input type="date" class="form-control" placeholder="" name="txtDate">
+                <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+            </div>
+            <div class="form-group">
+                <label> PhoneNumber</label>
+                <input type="text" class="form-control form-control-sm" placeholder="" name="txtPhonenumber">
+                <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+            </div>
+            <div class=" container-fluid d-flex justify-content-between">
+                <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset">
+                <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Submit">
+                <div class=" btn btn-primary form-close d-inline-block align-content-end" onclick="closeCreateForm()">
+                    close</div>
+            </div>
+        </form>
     </div>
-
 
 
 
@@ -107,4 +73,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
     crossorigin="anonymous"></script>
+
 </html>

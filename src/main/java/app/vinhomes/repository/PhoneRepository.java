@@ -9,4 +9,5 @@ import java.util.List;
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
 
     List<Phone> findByAccount(Account account);
+    List<Phone> findByNumber(String number);
 }

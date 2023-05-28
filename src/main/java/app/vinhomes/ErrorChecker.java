@@ -2,8 +2,10 @@ package app.vinhomes;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Address;
+import app.vinhomes.entity.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.AddressRepository;
+import app.vinhomes.repository.PhoneRepository;
 import app.vinhomes.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +28,9 @@ public class ErrorChecker {
     private AccountService accountService;
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private PhoneRepository phoneRepository;
     public  String checkUsername(String username) {
         Account account = accountRepository.findByAccountName(username);
         System.out.println(account);
@@ -153,7 +158,12 @@ public class ErrorChecker {
 
             Pattern pattern = Pattern.compile("^\\d{10,12}$");
             Matcher matcher = pattern.matcher(phonenumber);
-            if(matcher.matches()){
+            List<Phone> phoneList = new ArrayList<>();
+                phoneList =     phoneRepository.findByNumber(phonenumber);
+            if(phoneList.isEmpty() == false){
+                return "this phone number has already been taken, try other number";
+            }
+            else if(matcher.matches()){
                 return "";
             }else{
                 return "your phone number should contain only number between 10 and 12 ";
