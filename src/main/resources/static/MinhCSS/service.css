@@ -1,0 +1,29 @@
+.order_form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(24 19 19 / 45%);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.order_form form {
+    height: 700px;
+    width: 650px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.order_form form span {
+    margin-top: 15px;
+}
+
+.appear {
+    display: flex;
+}

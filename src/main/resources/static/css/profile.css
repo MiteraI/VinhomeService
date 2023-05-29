@@ -1,0 +1,40 @@
+table {
+  border: solid 1px;
+}
+
+table td:first-child {
+  width: 150px;
+  text-align: right;
+  box-sizing: border-box;
+  padding-right: 15px;
+}
+
+table td {
+  border: solid 1px;
+  height: 30px;
+}
+
+table td:nth-child(2) {
+  width: 300px;
+}
+
+.span_data {
+  margin-left: 15px;
+}
+
+.input_data {
+  width: inherit;
+  height: inherit;
+}
+
+.fa-eye-slash,
+.fa-eye {
+  position: relative;
+  float: right;
+  top: -25px;
+}
+
+.cancel_btn {
+  display: none;
+  user-select: none;
+}

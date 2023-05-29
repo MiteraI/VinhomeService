@@ -2,6 +2,8 @@ package app.vinhomes.services;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import app.vinhomes.entity.PaymentCategory;
+import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
@@ -36,7 +38,8 @@ public class OrderService {
     private ServiceCategoryRepository serviceCategoryRepository;
     @Autowired
     private OffDaysRepository offDaysRepository;
-
+    @Autowired
+    private PaymentCategoryRepository paymentCategoryRepository;
     public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
@@ -53,6 +56,10 @@ public class OrderService {
         //Assigning timeslot
         Long timeId = orderJson.get("timeId").asLong();
         TimeSlot timeSlot = timeSlotRepository.findById(timeId).get();
+
+        //Assigning Payment
+        Long paymentId = orderJson.get("paymentId").asLong();
+        Payment payment = paymentRepository.findById(paymentId).get();
 
         //Assigning schedule
         String day = orderJson.get("day").asText();
@@ -144,7 +151,7 @@ public class OrderService {
                 .price(service.getPrice())
                 .account(account)
                 .service(service)
-                .payment(paymentRepository.findById(1L).get())
+                .payment(payment)
                 .schedule(schedule)
                 .build();
         schedule.setOrder(order);
