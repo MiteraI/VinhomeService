@@ -1,5 +1,7 @@
 package app.vinhomes.entity;
 
+import app.vinhomes.entity.customer.Address;
+import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.worker.WorkerStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

@@ -1,6 +1,5 @@
 package app.vinhomes.entity.order;
 
-import app.vinhomes.entity.PaymentCategory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;

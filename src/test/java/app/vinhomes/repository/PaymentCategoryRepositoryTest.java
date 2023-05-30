@@ -1,14 +1,14 @@
 package app.vinhomes.repository;
 
-import app.vinhomes.entity.PaymentCategory;
+import app.vinhomes.entity.order.PaymentCategory;
 import app.vinhomes.entity.order.Payment;
+import app.vinhomes.repository.order.PaymentCategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class PaymentCategoryRepositoryTest {
 

@@ -2,7 +2,7 @@ package app.vinhomes.repository;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
-import app.vinhomes.entity.ServiceCategory;
+import app.vinhomes.entity.order.ServiceCategory;
 import app.vinhomes.entity.order.TimeSlot;
 import org.springframework.data.jpa.repository.JpaRepository;
 

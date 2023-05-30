@@ -1,7 +1,7 @@
 package app.vinhomes.entity.worker;
 
 import app.vinhomes.entity.Account;
-import app.vinhomes.entity.ServiceCategory;
+import app.vinhomes.entity.order.ServiceCategory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;

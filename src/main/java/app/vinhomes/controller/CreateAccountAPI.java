@@ -1,13 +1,13 @@
 package app.vinhomes.controller;
 
-import app.vinhomes.CreateErrorCatcher;
-import app.vinhomes.ErrorChecker;
+import app.vinhomes.common.CreateErrorCatcher;
+import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
-import app.vinhomes.entity.Address;
-import app.vinhomes.entity.Phone;
+import app.vinhomes.entity.customer.Address;
+import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
-import app.vinhomes.repository.PhoneRepository;
-import app.vinhomes.services.AccountService;
+import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.service.AccountService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

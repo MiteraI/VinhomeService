@@ -1,11 +1,10 @@
 package app.vinhomes.controller;
 
 import app.vinhomes.entity.Account;
-import app.vinhomes.entity.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
-import app.vinhomes.repository.PhoneRepository;
-import app.vinhomes.repository.ServiceRepository;
+import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.repository.order.ServiceRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

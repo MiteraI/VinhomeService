@@ -1,17 +1,15 @@
 package app.vinhomes.repository;
 
 import app.vinhomes.entity.Account;
-import app.vinhomes.entity.Address;
-import app.vinhomes.entity.Phone;
+import app.vinhomes.entity.customer.Address;
+import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.worker.WorkerStatus;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
+import app.vinhomes.repository.worker.WorkerStatusRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class AccountRepositoryTest {
     @Autowired

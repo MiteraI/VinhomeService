@@ -1,7 +1,7 @@
 package app.vinhomes.controller;
 
 import app.vinhomes.entity.order.Service;
-import app.vinhomes.repository.ServiceRepository;
+import app.vinhomes.repository.order.ServiceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

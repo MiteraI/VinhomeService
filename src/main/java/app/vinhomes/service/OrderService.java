@@ -1,93 +1,108 @@
-package app.vinhomes.repository;
+package app.vinhomes.service;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
+import app.vinhomes.entity.worker.Leave;
 import app.vinhomes.entity.worker.WorkerStatus;
-import app.vinhomes.repository.order.PaymentRepository;
-import app.vinhomes.repository.order.ServiceCategoryRepository;
-import app.vinhomes.repository.order.ServiceRepository;
-import app.vinhomes.repository.order.TimeSlotRepository;
+import app.vinhomes.repository.*;
+import app.vinhomes.repository.order.*;
+import app.vinhomes.repository.worker.LeaveRepository;
 import app.vinhomes.repository.worker.WorkerStatusRepository;
-import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
-class OrderRepositoryTest {
-
+@org.springframework.stereotype.Service
+public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private AccountRepository accountRepository;
+    private PaymentRepository paymentRepository;
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
-    private ServiceCategoryRepository serviceCategoryRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
+    private AccountRepository accountRepository;
     @Autowired
     private WorkerStatusRepository workerStatusRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
-
-    @Test
-    @Deprecated //Leave it to lam nguoi
-    public void addOrderThatAssignWorker() {
-        Account account = accountRepository.findById(1L).get();
-        Service service = serviceRepository.findById(3L).get();
-        Schedule schedule = Schedule.builder()
-                .workDay(LocalDate.now())
-                .build();
-        Order order = Order.builder()
-                .createTime(LocalDateTime.now().withNano(0))
-                .price(600000)
-                .account(account)
-                .service(service)
-                .payment(paymentRepository.findById(1L).get())
-                .schedule(schedule)
-                .build();
-        schedule.setOrder(order);
-        if (service.getNumOfPeople() == 2) {
-            List<WorkerStatus> workerStatuses = workerStatusRepository
-                    .findByServiceCategoryAndStatusOrderByWorkCountAsc(
-                            service.getServiceCategory(), 0);
-            for (WorkerStatus workerStatus : workerStatuses) {
-                schedule.addWorker(workerStatus.getAccount());
-                System.out.println(schedule);
-            }
+    @Autowired
+    private ServiceCategoryRepository serviceCategoryRepository;
+    @Autowired
+    private LeaveRepository leaveRepository;
+    @Autowired
+    private PaymentCategoryRepository paymentCategoryRepository;
+    public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Account sessionAccount = (Account) session.getAttribute("loginedUser");
+        if (sessionAccount == null) {
+            return new Order();
         }
-        orderRepository.save(order);
-    }
+        //Get account from session
+        Account account = accountRepository.findById(sessionAccount.getAccountId()).get();
 
-    @Test
-    public void officialOrderThatAssignWorkerBasedOnSchedule() {
-        Account account = accountRepository.findById(1L).get();
         //Assigning service
-        Service service = serviceRepository.findById(3L).get();
+        Long serviceId = orderJson.get("serviceId").asLong();
+        Service service = serviceRepository.findById(serviceId).get();
+
         //Assigning timeslot
-        TimeSlot timeSlot = timeSlotRepository.findById(3L).get();
+        Long timeId = orderJson.get("timeId").asLong();
+        TimeSlot timeSlot = timeSlotRepository.findById(timeId).get();
+
+        //Assigning Payment
+        Long paymentId = orderJson.get("paymentId").asLong();
+        Payment payment = paymentRepository.findById(paymentId).get();
+
         //Assigning schedule
+        String day = orderJson.get("day").asText();
         Schedule schedule = Schedule.builder()
-                .workDay(LocalDate.of(2023, 5, 23))
+                .workDay(LocalDate.parse(day))
                 .timeSlot(timeSlot)
                 .build();
+
         //Initialize list of appropriate workers statuses for find worker account
         List<WorkerStatus> workerStatuses = workerStatusRepository.findByServiceCategoryAndStatusOrderByWorkCountAsc(
                 serviceCategoryRepository.findById(service.getServiceCategory().getServiceCategoryId()).get()
                 , 0
         );
+
         //Transfer to worker account to list
         List<Account> workerAccounts = new ArrayList<>();
         for (WorkerStatus workerStatus : workerStatuses) {
             workerAccounts.add(workerStatus.getAccount());
+        }
+        //Find the workers that is in the allowed day off
+        System.out.println(schedule.getWorkDay());
+        List<Leave> leaveList = leaveRepository.findByLeaveDay(schedule.getWorkDay());
+        List<Account> offWorkerAccounts = new ArrayList<>();
+        for (Leave leave : leaveList) {
+            offWorkerAccounts.add(leave.getAccount());
+        }
+
+        List<Account> readyWorkerAccounts = new ArrayList<>();
+        if (!offWorkerAccounts.isEmpty()) {
+            for (Account availableWorker : workerAccounts) {
+                boolean isOff = false;
+                for (Account offWorker : offWorkerAccounts) {
+                    if (offWorker.getAccountId() == availableWorker.getAccountId()) {
+                        isOff = true;
+                        break;
+                    }
+                }
+                if (!isOff) {
+                    readyWorkerAccounts.add(availableWorker);
+                }
+            }
         }
 
         //Get order that is in the work day and timeslot the user chose with the job cate to find busy worker
@@ -104,13 +119,12 @@ class OrderRepositoryTest {
         for (Order order : orders) {
             busyWorkerAccounts.addAll(order.getSchedule().getWorkers());
         }
-
         //Get free worker list from the 2 other list
         List<Account> freeWorkerAccounts = new ArrayList<>();
-        if (busyWorkerAccounts.size() == 0) {
+        if (busyWorkerAccounts.isEmpty() && offWorkerAccounts.isEmpty()) {
             freeWorkerAccounts = workerAccounts;
         } else {
-            for (Account worker : workerAccounts) {
+            for (Account worker : readyWorkerAccounts) {
                 boolean isBusy = false;
                 for (Account busyWorker : busyWorkerAccounts) {
                     if (busyWorker.getAccountId() == worker.getAccountId()) {
@@ -132,39 +146,17 @@ class OrderRepositoryTest {
             }
         } catch (Exception ex) {
             System.out.println("Not enough worker");
+            return null;
         }
         Order order = Order.builder()
                 .createTime(LocalDateTime.now().withNano(0))
                 .price(service.getPrice())
                 .account(account)
                 .service(service)
-                .payment(paymentRepository.findById(1L).get())
+                .payment(payment)
                 .schedule(schedule)
                 .build();
         schedule.setOrder(order);
-
-        orderRepository.save(order);
-    }
-
-    @Test
-    public void printAllOrder() {
-        System.out.println("Orders info = " + orderRepository.findAll());
-    }
-
-    @Test
-    public void printAllOrderThatHasASpecificDayAndTimeSlot() {
-        Service service = serviceRepository.findById(2l).get();
-        List<Order> orders = orderRepository.findAllBySchedule_WorkDayAndSchedule_TimeSlotAndService_ServiceCategory(
-                LocalDate.of(2023, 5, 23)
-                , timeSlotRepository.findById(2L).get()
-                , serviceCategoryRepository.findById(
-                        service.getServiceCategory().getServiceCategoryId()).get()
-        );
-        System.out.println("Order list = " + orders);
-    }
-
-    @Test
-    public void deleteAll() {
-        orderRepository.deleteAll();
+        return orderRepository.save(order);
     }
 }
