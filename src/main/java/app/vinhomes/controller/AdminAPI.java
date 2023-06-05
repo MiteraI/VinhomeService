@@ -1,5 +1,8 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.SECURITY.Authentication.AuthenticationResponse;
+import app.vinhomes.SECURITY.Authentication.AuthenticationService;
+import app.vinhomes.SECURITY.Authentication.RegisterRequest;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
@@ -18,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DateTimeException;
@@ -29,7 +34,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/UserRestController")
+//@PreAuthorize(value = ,"hasRole(1)")
 public class AdminAPI {
+    @Autowired
+
+    private AuthenticationService authenticationService;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -74,8 +83,10 @@ public class AdminAPI {
         errorList.add(lastname);
         errorList.add(date);
         errorList.add(phonenumber);
-        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date,
-                phonenumber, "");
+        CreateErrorCatcher error =
+                new CreateErrorCatcher
+                        (username, password, email, firstname, lastname, date,phonenumber, "");
+
         System.out.println("yes pass add error list");
         for (String message : errorList) {
             if (message.isEmpty()) {
@@ -87,14 +98,19 @@ public class AdminAPI {
             }
         }
         try {
+            System.out.println("in adding worker");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             // convert String to LocalDate
             LocalDate localDate = LocalDate.parse(request.get("txtDate").asText(), formatter);
+            System.out.println("in adding worker");
             Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText().trim()).build();
+            System.out.println("in adding worker");
             ServiceCategory serviceCategory = serviceCategoryRepository.findById(request.get("txtServiceId").asLong())
                     .get();
+            System.out.println("in adding worker");
             WorkerStatus workerStatus = WorkerStatus.builder().allowedDayOff(10).status(0).workCount(0)
                     .serviceCategory(serviceCategory).build();
+            System.out.println("in adding worker");
             Account account = Account.builder()
                     .accountName(request.get("txtUsername").asText().trim())
                     .password(request.get("txtPassword").asText().trim())
@@ -105,7 +121,9 @@ public class AdminAPI {
                     .role(rolenumber)
                     .accountStatus(1)
                     .build();
-            accountRepository.save(account);
+            System.out.println("before adding worker");
+            Account response = authenticationService.register(account);
+//            accountRepository.save(account);
             System.out.println("save account");
             phone.setAccount(account);
             phoneRepository.save(phone);
@@ -113,6 +131,7 @@ public class AdminAPI {
             workerStatus.setAccount(account);
             workerStatusRepository.save(workerStatus);
             System.out.println("save worker status");
+//            error.setAuthenticationResponse(response);
         } catch (DateTimeException e) {
             System.out.println("cant parse date");
             System.out.println(e);
@@ -126,6 +145,7 @@ public class AdminAPI {
 
     @GetMapping(value = "/getAccountWorker", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Account> getAllWorker() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         int workerRoleValue = 1;
         List<Account> workerList = new ArrayList<>();
         workerList = accountRepository.findByRoleEquals(workerRoleValue);
@@ -134,6 +154,7 @@ public class AdminAPI {
 
     @GetMapping(value = "/getAccountCustomer", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Account> getAllCustomer() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         int CustomerRoleValue = 0;
         List<Account> CustomerList = new ArrayList<>();
         CustomerList = accountRepository.findByRoleEquals(CustomerRoleValue);

@@ -1,5 +1,6 @@
 package app.vinhomes.common;
 
+import app.vinhomes.SECURITY.Authentication.AuthenticationResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class CreateErrorCatcher {
     private String dateErr;
     private String phonenumberErr;
     private String addressErr;
+    //private AuthenticationResponse authenticationResponse;
 
     public CreateErrorCatcher(String usernameErr, String passwordErr, String emailErr, String firstnameErr, String lastnameErr) {
         this.usernameErr = usernameErr;
@@ -26,6 +28,7 @@ public class CreateErrorCatcher {
         this.firstnameErr = firstnameErr;
         this.lastnameErr = lastnameErr;
     }
+
 }
 
 
