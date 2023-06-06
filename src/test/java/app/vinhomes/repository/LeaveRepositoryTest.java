@@ -11,8 +11,8 @@ import java.time.LocalDate;
 class LeaveRepositoryTest {
     @Autowired
     private LeaveRepository leaveRepository;
-//    @Test
-//    public void printAll() {
-//        System.out.println(leaveRepository.findByOffDay(LocalDate.parse("2023-05-27")));
-//    }
+    @Test
+    public void printAll() {
+        System.out.println(leaveRepository.findByOffDay(LocalDate.parse("2023-05-27")));
+    }
 }

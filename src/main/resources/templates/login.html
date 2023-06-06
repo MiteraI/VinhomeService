@@ -12,6 +12,7 @@
 <body class="min-vh-100 d-flex align-items-center justify-content-center">
 <div class="container-fluid w-25">
   <h1 class="text-center">Login</h1>
+
   <div class="container d-flex justify-content-center align-items-center" style="visibility: hidden;">
     <label id="error-message" class="text-danger conte">sadfadsf</label>
   </div>
@@ -20,6 +21,7 @@
     <!-- Email input -->
     <div class="form-outline mb-4">
       <label class="form-label" for=""> Username</label>
+
       <input type="text" id="username" name="username" class="form-control" />
     </div>
 
@@ -36,6 +38,7 @@
         <div class="form-check">
           <input class="form-check-input" name="remember-me"type="checkbox"  id="remember-me" checked />
           <label class="form-check-label" for="remember-me"> Remember me </label>
+
         </div>
       </div>
 
@@ -76,49 +79,7 @@ const error_message = document.getElementById("error-message");
     error_message.style.visibility = "hidden";
 
   }
-<!--  form.addEventListener("submit", function (event) {-->
-<!--    event.preventDefault(); // Prevent form submission-->
 
-<!--    const username = usernameInput.value;-->
-<!--    const password = passwordInput.value;-->
-
-<!--    // Call a function to make the Axios POST request with the form data-->
-<!--    loginWithAccountNameAndPassword(username, password);-->
-<!--  });-->
-
-<!--  let loginWithAccountNameAndPassword = async (username, password) => {-->
-<!--    const loginData = {-->
-<!--      username: username,-->
-<!--      password: password,-->
-<!--    };-->
-<!--    await axios-->
-<!--            .post("/api/login", loginData)-->
-<!--            .then((response) => {-->
-<!--              if (response.status === 200) {-->
-<!--                // Handle successful login-->
-<!--                window.location.replace("/");-->
-<!--              } else {-->
-<!--                // Handle other successful responses or unexpected responses-->
-<!--                console.log("Unexpected response:", response);-->
-<!--              }-->
-<!--            })-->
-<!--            .catch((error) => {-->
-<!--              if (error.response.status === 401) {-->
-<!--                console.log("Account name or password is wrong");-->
-<!--                loginSpan.classList.add(...loginSpanClassList)-->
-<!--                loginSpan.innerHTML = "Username/Email or Password is wrong"-->
-
-<!--                setTimeout(() => {-->
-<!--                  loginSpan.innerHTML = "";-->
-<!--                  loginSpan.classList.remove(...loginSpanClassList)-->
-<!--                }, 10000)-->
-<!--              }-->
-<!--              else {-->
-<!--                console.log(error);-->
-
-<!--              }-->
-<!--            });-->
-<!--  };-->
 
 
 </script>
