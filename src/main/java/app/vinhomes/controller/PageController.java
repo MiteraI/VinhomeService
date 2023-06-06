@@ -2,13 +2,17 @@ package app.vinhomes.controller;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
-import app.vinhomes.repository.ServiceRepository;
+import app.vinhomes.repository.OrderRepository;
+import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.repository.order.ServiceRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -20,6 +24,12 @@ public class PageController {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private PhoneRepository phoneRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request, Model model) {
         Account acc = getSessionAccount(request);
@@ -28,14 +38,11 @@ public class PageController {
             model.addAttribute("acc", acc);
             System.out.println(model.getAttribute("acc"));
             if (acc.getRole() == 2) {
-                return "admin";
+                return "AdminShow";
             }
             else if (acc.getRole() == 1) {
                 return "staff";
             }
-        }
-        else{
-            System.out.println("null");
         }
         return "homepage";
     }
@@ -50,17 +57,17 @@ public class PageController {
     }
 
     @RequestMapping(value = "/service/{id}", method = RequestMethod.GET)
-    public String getService(@PathVariable("id") String id, HttpServletRequest request, Model model){
-        Account acc = getSessionAccount(request);
-        System.out.println(id);
-        System.out.println("co1");
-        model.addAttribute("service", serviceRepository.findById(Long.parseLong(id)).get());
-        System.out.println(model.getAttribute("service"));
-        if(acc != null) {
-            System.out.println(acc.getAccountName());
+    public String prepareOrder (@PathVariable("id") Long serviceId, Model model, HttpServletRequest request) {
+        if(request.getSession() != null){
+            HttpSession session = request.getSession(false);
+            Account acc = (Account)  session.getAttribute("loginedUser");
             model.addAttribute("acc", acc);
         }
-        return "service";
+        String cateName = request.getParameter("cname");
+        model.addAttribute("cateName", cateName);
+        model.addAttribute("service", serviceRepository.getServicesByServiceId(serviceId));
+        model.addAttribute("ordersByService", orderRepository.findAllByService_ServiceId(serviceId));
+        return "serviceDetail";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
@@ -70,7 +77,8 @@ public class PageController {
             return "login";
         }
         model.addAttribute("acc", acc);
-        System.out.println(acc);
+        List<String> p = phoneRepository.getPhoneNumberById(acc.getAccountId().intValue());
+        System.out.println(p);
         return "profile";
     }
 
@@ -84,21 +92,14 @@ public class PageController {
         }
         return acc;
     }
-    @RequestMapping (value = "/createAccount")
-    public String getAccountCreate(){
-        return "createAccountCustomer";
+
+    @RequestMapping(value = "/yourOrders")
+    public String yourOrder(){
+        return "viewOrder";
     }
-    @RequestMapping (value = "/index")
-    public String index(){
-        return "index.html";
-    }
-    @RequestMapping(value = "/AdminShow")
-    public String admin(){
-        return "AdminShow";
-    }
-    @RequestMapping(value = "/testShow")
-    public String test(){
-        return "testShow";
-    }
+
+    @RequestMapping(value = "/detail")
+    public String detail() { return "Detail"; }
+
 
 }

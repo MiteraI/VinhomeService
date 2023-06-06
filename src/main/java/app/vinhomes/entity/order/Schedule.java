@@ -3,8 +3,7 @@ package app.vinhomes.entity.order;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -65,6 +64,13 @@ public class Schedule {
                     referencedColumnName = "account_id"
             )
     )
+    @JsonIgnoreProperties(
+            {
+                    "email", "address", "phone", "password",
+                    "accountName", "cookie", "dob", "accountStatus",
+                    "role"
+            }
+            )
     private List<Account> workers;
 
     public void addWorker(Account worker) {

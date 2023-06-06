@@ -1,18 +1,17 @@
 package app.vinhomes.repository;
 
-import app.vinhomes.entity.ServiceCategory;
+import app.vinhomes.entity.order.ServiceCategory;
 import app.vinhomes.entity.order.Service;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ServiceCategoryRepositoryTest {
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
-   // @Test
+    @Test
     public void addServiceCateAlongServices() {
         ServiceCategory serviceCategory = ServiceCategory.builder()
                 .serviceCategoryName("Electrictian")

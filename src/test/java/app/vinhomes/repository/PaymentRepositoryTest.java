@@ -1,14 +1,12 @@
 package app.vinhomes.repository;
 
-import app.vinhomes.entity.PaymentCategory;
+import app.vinhomes.entity.order.PaymentCategory;
 import app.vinhomes.entity.order.Payment;
+import app.vinhomes.repository.order.PaymentCategoryRepository;
+import app.vinhomes.repository.order.PaymentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PaymentRepositoryTest {
@@ -17,7 +15,7 @@ class PaymentRepositoryTest {
 
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-   // @Test
+    @Test
     public void addPayment() {
         PaymentCategory paymentCategory = paymentCategoryRepository.findById(1L).get();
         Payment payment = Payment.builder()

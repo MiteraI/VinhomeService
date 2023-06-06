@@ -1,13 +1,12 @@
 package app.vinhomes.repository;
 
 import app.vinhomes.entity.order.TimeSlot;
+import app.vinhomes.repository.order.TimeSlotRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TimeSlotRepositoryTest {

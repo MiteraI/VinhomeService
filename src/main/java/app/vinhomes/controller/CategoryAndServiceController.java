@@ -1,16 +1,17 @@
 package app.vinhomes.controller;
 
-import app.vinhomes.entity.ServiceCategory;
-import app.vinhomes.entity.order.Service;
-import app.vinhomes.repository.ServiceCategoryRepository;
-import app.vinhomes.repository.ServiceRepository;
+import app.vinhomes.entity.order.ServiceCategory;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
+import app.vinhomes.repository.order.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController //Use for API
-@RequestMapping(value = "/category")
+@RequestMapping(value = "/api/category")
 public class CategoryAndServiceController {
 
     @Autowired

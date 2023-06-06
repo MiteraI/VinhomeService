@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-
-import java.util.List;
+import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByAccountNameAndPassword(String accountName, String password);
+    List<Account> findByRole(int role);
 
     List<Account> findByRoleEquals(int role);
     Account findByEmailEquals(String email);
@@ -17,5 +17,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     //@Query("select * from tbl_account a left join tbl_phone b on a.account_id = b.account_id")
     //List<Account> getAccountWithPhone();
-    List<Account> findByRole(int role);
+    @Query("""
+select a from Account a   
+    where a.accountName = :account_name   
+""")
+    Optional<Account> findUsername(String account_name);
 }

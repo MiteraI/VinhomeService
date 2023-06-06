@@ -2,13 +2,15 @@ package app.vinhomes.repository;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
-import app.vinhomes.entity.PaymentCategory;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.entity.worker.WorkerStatus;
-import jakarta.persistence.EntityNotFoundException;
-import org.aspectj.weaver.ast.Or;
+import app.vinhomes.repository.order.PaymentRepository;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
+import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.repository.order.TimeSlotRepository;
+import app.vinhomes.repository.worker.WorkerStatusRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OrderRepositoryTest {

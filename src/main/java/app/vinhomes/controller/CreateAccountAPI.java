@@ -1,13 +1,14 @@
 package app.vinhomes.controller;
 
-import app.vinhomes.CreateErrorCatcher;
-import app.vinhomes.ErrorChecker;
+import app.vinhomes.Security.Authentication.AuthenticationService;
+import app.vinhomes.common.CreateErrorCatcher;
+import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
-import app.vinhomes.entity.Address;
-import app.vinhomes.entity.Phone;
+import app.vinhomes.entity.customer.Address;
+import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
-import app.vinhomes.repository.PhoneRepository;
-import app.vinhomes.services.AccountService;
+import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.service.AccountService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,8 @@ public class CreateAccountAPI {
     private PhoneRepository phoneRepository;
     @Autowired
     private ErrorChecker errorChecker;
+    @Autowired
+    private AuthenticationService authenticationService;
     @PostMapping(value = "/createAccountCustomer/{rolenumber}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForCustomer(@RequestBody JsonNode request, @PathVariable int rolenumber) {
         System.out.println("inside create account");
@@ -86,7 +89,8 @@ public class CreateAccountAPI {
                     .accountStatus(1)
                     .address(address1)
                     .build();
-            accountRepository.save(account);System.out.println("save account");
+            Account response = authenticationService.register(account);
+            System.out.println("save account");
             phone.setAccount(account);
             phoneRepository.save(phone);System.out.println("save phone");
         } catch (DateTimeException e) {
@@ -101,5 +105,6 @@ public class CreateAccountAPI {
         return ResponseEntity.status(HttpStatus.OK).body(error);
 
     }
+
 
 }
