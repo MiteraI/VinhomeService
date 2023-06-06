@@ -1,6 +1,6 @@
 package app.vinhomes.controller;
 
-import app.vinhomes.Security.Authentication.AuthenticationService;
+import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;

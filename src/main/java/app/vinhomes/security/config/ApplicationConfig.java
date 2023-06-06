@@ -1,4 +1,4 @@
-package app.vinhomes.Security.Config;
+package app.vinhomes.security.config;
 
 
 import app.vinhomes.entity.Account;

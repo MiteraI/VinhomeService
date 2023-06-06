@@ -1,21 +1,15 @@
 package app.vinhomes.controller;
 
 
-import app.vinhomes.Security.Authentication.AuthenticationRequest;
-import app.vinhomes.Security.Authentication.AuthenticationService;
+import app.vinhomes.security.authentication.AuthenticationRequest;
+import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

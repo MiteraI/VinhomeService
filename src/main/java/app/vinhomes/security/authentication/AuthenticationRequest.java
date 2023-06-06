@@ -1,4 +1,4 @@
-package app.vinhomes.Security.Authentication;
+package app.vinhomes.security.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
