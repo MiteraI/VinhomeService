@@ -1,5 +1,6 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
@@ -44,28 +45,23 @@ public class AdminAPI {
     private WorkerStatusRepository workerStatusRepository;
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @PostMapping(value = "/createAccountWorker/{rolenumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForWorker(@RequestBody JsonNode request,
                                                                      @PathVariable int rolenumber) {
         System.out.println("inside create account for worker");
-        System.out.println(request.asText());
+
         String username, password, email, firstname, lastname, phonenumber, date, address;
         username = errorChecker.checkUsername(request.get("txtUsername").asText().trim());
-        System.out.println(username);
         password = errorChecker.checkPassword(request.get("txtPassword").asText().trim());
-        System.out.println(password);
         email = errorChecker.checkEmail(request.get("txtEmail").asText().trim());
-        System.out.println(email);
         firstname = errorChecker.checkFirstname(request.get("txtFirstname").asText().trim());
-        System.out.println(firstname);
         lastname = errorChecker.checkLastname(request.get("txtLastname").asText().trim());
-        System.out.println(lastname);
         date = errorChecker.checkDate(request.get("txtDate").asText());
-        System.out.println(date);
-        System.out.println(request.get("txtDate").asText().trim());
         phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());
-        System.out.println(phonenumber);
+
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(password);
@@ -74,15 +70,15 @@ public class AdminAPI {
         errorList.add(lastname);
         errorList.add(date);
         errorList.add(phonenumber);
-        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date,
-                phonenumber, "");
-        System.out.println("yes pass add error list");
+
+        CreateErrorCatcher error =
+                new CreateErrorCatcher
+                        (username, password, email, firstname, lastname, date,phonenumber, "");
+
         for (String message : errorList) {
             if (message.isEmpty()) {
                 continue;
             } else {
-                System.out.println("error input");
-                // return error;
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
             }
         }
@@ -105,17 +101,16 @@ public class AdminAPI {
                     .role(rolenumber)
                     .accountStatus(1)
                     .build();
-            accountRepository.save(account);
+            Account response = authenticationService.register(account);
             System.out.println("save account");
             phone.setAccount(account);
             phoneRepository.save(phone);
-            System.out.println("save phone");
+
             workerStatus.setAccount(account);
             workerStatusRepository.save(workerStatus);
             System.out.println("save worker status");
         } catch (DateTimeException e) {
             System.out.println("cant parse date");
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (Exception e) {
             System.out.println("something wrong with saving the account");

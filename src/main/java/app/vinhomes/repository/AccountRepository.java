@@ -2,8 +2,10 @@ package app.vinhomes.repository;
 
 import app.vinhomes.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByAccountNameAndPassword(String accountName, String password);
@@ -15,5 +17,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     //@Query("select * from tbl_account a left join tbl_phone b on a.account_id = b.account_id")
     //List<Account> getAccountWithPhone();
+    @Query("""
+select a from Account a   
+    where a.accountName = :account_name   
+""")
+    Optional<Account> findUsername(String account_name);
 
 }

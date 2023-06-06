@@ -1,5 +1,6 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
@@ -32,6 +33,10 @@ public class CreateAccountAPI {
     private PhoneRepository phoneRepository;
     @Autowired
     private ErrorChecker errorChecker;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @PostMapping(value = "/createAccountCustomer/{rolenumber}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForCustomer(@RequestBody JsonNode request, @PathVariable int rolenumber) {
         System.out.println("inside create account");
@@ -86,7 +91,9 @@ public class CreateAccountAPI {
                     .accountStatus(1)
                     .address(address1)
                     .build();
-            accountRepository.save(account);System.out.println("save account");
+
+            Account response = authenticationService.register(account);
+            System.out.println("save account");
             phone.setAccount(account);
             phoneRepository.save(phone);System.out.println("save phone");
         } catch (DateTimeException e) {
