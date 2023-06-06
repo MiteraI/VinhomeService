@@ -22,4 +22,5 @@ select a from Account a
     where a.accountName = :account_name   
 """)
     Optional<Account> findUsername(String account_name);
+
 }

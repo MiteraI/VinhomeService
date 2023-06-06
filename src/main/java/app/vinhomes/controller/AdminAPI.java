@@ -52,6 +52,7 @@ public class AdminAPI {
     public ResponseEntity<CreateErrorCatcher> createAccountForWorker(@RequestBody JsonNode request,
                                                                      @PathVariable int rolenumber) {
         System.out.println("inside create account for worker");
+
         String username, password, email, firstname, lastname, phonenumber, date, address;
         username = errorChecker.checkUsername(request.get("txtUsername").asText().trim());
         password = errorChecker.checkPassword(request.get("txtPassword").asText().trim());
@@ -60,6 +61,7 @@ public class AdminAPI {
         lastname = errorChecker.checkLastname(request.get("txtLastname").asText().trim());
         date = errorChecker.checkDate(request.get("txtDate").asText());
         phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());
+
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(password);
@@ -68,9 +70,11 @@ public class AdminAPI {
         errorList.add(lastname);
         errorList.add(date);
         errorList.add(phonenumber);
+
         CreateErrorCatcher error =
                 new CreateErrorCatcher
                         (username, password, email, firstname, lastname, date,phonenumber, "");
+
         for (String message : errorList) {
             if (message.isEmpty()) {
                 continue;
@@ -101,6 +105,7 @@ public class AdminAPI {
             System.out.println("save account");
             phone.setAccount(account);
             phoneRepository.save(phone);
+
             workerStatus.setAccount(account);
             workerStatusRepository.save(workerStatus);
             System.out.println("save worker status");
