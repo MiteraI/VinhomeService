@@ -69,6 +69,7 @@ public class Account {
 
     @OneToOne(
             cascade = CascadeType.ALL,
+//            fetch = FetchType.EAGER
             fetch = FetchType.LAZY
     )
     @JoinColumn(
@@ -83,6 +84,7 @@ public class Account {
             mappedBy = "account",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
+//            fetch = FetchType.EAGER
     )
     @ToString.Exclude
     @JsonIgnore

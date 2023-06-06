@@ -95,7 +95,8 @@ public class PageController {
     @RequestMapping(value = "/AdminShow")
     public String admin(){
         return "AdminShow";
-    }@RequestMapping(value = "/testShow")
+    }
+    @RequestMapping(value = "/testShow")
     public String test(){
         return "testShow";
     }

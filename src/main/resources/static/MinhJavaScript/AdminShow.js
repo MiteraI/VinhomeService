@@ -84,7 +84,7 @@ async function showFullCustomerInfo(AccountID) {
     var list = document.getElementsByClassName("error-message");
     var i = 9;
     for (var key in list) {
-        if(i < 17){
+        if (i < 17) {
             list[i].innerHTML = "appropriate input";
             list[i].style.visibility = "hidden";
             i += 1;
@@ -111,6 +111,11 @@ async function showFullCustomerInfo(AccountID) {
     });
     console.log("yes get in phone");
     var phone = await response2.json();
+    if (phone.length != 0) {
+
+        document.getElementById("update-form-phonenumber").value = phone[0].number.toString();
+        document.getElementById("update-form-phoneid").value = phone[0].phoneId;
+    }
     console.log(await phone)
     //get address of account
     const response3 = await fetch(`http://localhost:8080/UserRestController/getAccountAddress/${AccountID}`, {
@@ -125,14 +130,13 @@ async function showFullCustomerInfo(AccountID) {
     for (var i in await phone) {
         output =
             `
-            <a class="dropdown-item" onclick="phoneInputUpdate(${phone[i].number}, ${phone[i].phoneId})" > 
+            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" > 
                 ${phone[i].number}
             </a>
         `;
         drop_down_menu.innerHTML += output;
     }
-    document.getElementById("update-form-phonenumber").value = phone[0].number;
-    document.getElementById("update-form-phoneid").value = phone[0].phoneId;
+
     //this is to get 1 phone to the form if there is one 
 
     ///form info setup
@@ -162,6 +166,7 @@ async function showFullCustomerInfo(AccountID) {
             console.log("somethingwrong with address"); alert("something wrong with address, or this guy dont have a house yet")
             break;
     }
+
     document.getElementById("update-form-room").value = address.buildingRoom;
 }
 
@@ -224,15 +229,16 @@ update_form.addEventListener('submit', async function (event) {
         alert("successfully update");
         //closeCreateForm();
 
-        delay(1000).then( () => {var list = document.getElementsByClassName("error-message");
-        var i = 9;
-        for (var key in error_message) {
-            console.log(list[i].innerHTML)
-            list[i].innerHTML = "appropriate input";
-            list[i].style.visibility = "hidden";
-            i += 1;
-                }
+        delay(1000).then(() => {
+            var list = document.getElementsByClassName("error-message");
+            var i = 9;
+            for (var key in error_message) {
+                console.log(list[i].innerHTML)
+                list[i].innerHTML = "appropriate input";
+                list[i].style.visibility = "hidden";
+                i += 1;
             }
+        }
         ).then(closeUpdateForm()).then(getCustomerList());
     }
 }
@@ -240,7 +246,7 @@ update_form.addEventListener('submit', async function (event) {
 function phoneInputUpdate(number, id) {
     console.log(number)
     console.log(id)
-    document.getElementById("update-form-phonenumber").value = number;
+    document.getElementById("update-form-phonenumber").value = number.toString();
     document.getElementById("update-form-phoneid").value = id
 }
 function closeUpdateForm() {

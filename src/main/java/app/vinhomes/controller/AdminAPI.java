@@ -234,7 +234,10 @@ public class AdminAPI {
             LocalDate localDate = LocalDate.parse(updateInfo.get("txtDate").asText().trim(), formatter);
             Optional<Phone> phone1 = phoneRepository.findById(phoneID);
                     //Phone.builder().number(updateInfo.get("txtPhonenumber").asText().trim()).build();
-            Address address1= addressRepository.findByBuildingBlockAndBuildingRoom(updateInfo.get("btnRadio").asText(),updateInfo.get("txtRoomnumber").asText().trim());
+            Address address1= addressRepository.findById(account_to_update.getAddress().getAddress_id()).get();
+            address1.setBuildingRoom(updateInfo.get("txtRoomnumber").asText().trim());
+            address1.setBuildingBlock(updateInfo.get("btnRadio").asText().trim());
+            System.out.println("yes find address of old account");
                     //Address.builder().buildingBlock(updateInfo.get("btnRadio").asText().trim()).buildingRoom(updateInfo.get("txtRoomnumber").asText()).build();
             System.out.println("yes work");
             account_to_update.setAccountName(updateInfo.get("txtUsername").asText().trim());
@@ -245,11 +248,13 @@ public class AdminAPI {
             account_to_update.setDob(localDate);
             account_to_update.setAddress(address1);
 
+            addressRepository.save(address1);System.out.println("save address");
             accountRepository.save(account_to_update);System.out.println("save account");
             if(phone1 != null){
                 phone1.get().setNumber(updateInfo.get("txtPhonenumber").asText());
                 phoneRepository.save(phone1.get());System.out.println("save phone");
             }
+
         } catch (DateTimeException e) {
             System.out.println("cant parse date");
             System.out.println(e);
@@ -274,5 +279,8 @@ public class AdminAPI {
         List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAll();
         return serviceCategoryList;
     }
-
+    @GetMapping(value = "/getAddress", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Address> getAllAddress(){
+        return addressRepository.findAll();
+    }
 }
