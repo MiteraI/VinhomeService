@@ -31,7 +31,8 @@ public class SecurityConfig {
                         .failureHandler(simpleAuthenticationFailure)
                         .successHandler(successHandler)
                 )
-                .rememberMe(token -> token.userDetailsService(userDetailsService)
+                .rememberMe(token -> token
+                        .userDetailsService(userDetailsService)
                         .authenticationSuccessHandler(successHandler)
                         .tokenValiditySeconds(60 * 60)
                         .key("anythingyoulike")
@@ -42,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/admin").hasAuthority("2"))
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
-                        .logoutUrl("/api/logout")
+                        .logoutUrl("/logout")
                         .addLogoutHandler(simpleLogoutHandler)
                         .addLogoutHandler(securityContextLogoutHandler())
                         .logoutSuccessHandler(simpleLogoutSuccesesHandler())
