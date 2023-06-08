@@ -24,9 +24,9 @@
 
         <div class="col-sm-6 col-lg-4">
             <div>
-                <img alt="Service Image" crossorigin="anonymous"
-                     src="https://www.minimaldesksetups.com/wp-content/uploads/2022/11/293302129_1066920367364912_1474394010024187611_n-768x960.jpg"
-                     style="width: 70%; height: 100%;">
+                <!--GET IMAGE FROM AZURE https://imagesforservice.blob.core.windows.net/images/plant.png AND BYPASS CORS HEADER POLICY-->
+                <img alt="service image" id="service-image" src="https://imagesforservice.blob.core.windows.net/images/bamboo.jpg"
+                     style="width: 100%; height: 100%; object-fit: contain;">
             </div>
         </div>
 
@@ -113,6 +113,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+
     let paramOrderId = window.location.search;
     console.log(paramOrderId);
     let urlParam = new URLSearchParams(paramOrderId);
