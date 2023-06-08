@@ -74,14 +74,13 @@ public class Account implements UserDetails {
 
     @OneToOne(
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "address_id",
             referencedColumnName = "address_id"
     )
     @ToString.Exclude
-    @JsonIgnore
     private Address address;
 
     @OneToMany(

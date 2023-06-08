@@ -81,7 +81,7 @@ public class Order {
     )
     @JsonIgnoreProperties(
             {
-                    "email", "address", "phone", "password",
+                    "email", "password",
                     "accountName", "cookie", "dob", "accountStatus",
                     "role"
             }

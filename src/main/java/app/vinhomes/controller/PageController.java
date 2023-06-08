@@ -41,7 +41,7 @@ public class PageController {
                 return "AdminShow";
             }
             else if (acc.getRole() == 1) {
-                return "staff";
+                return "scheduleTable";
             }
         }
         return "homepage";

@@ -13,6 +13,6 @@ class LeaveRepositoryTest {
     private LeaveRepository leaveRepository;
     @Test
     public void printAll() {
-        System.out.println(leaveRepository.findByOffDay(LocalDate.parse("2023-05-27")));
+        System.out.println(leaveRepository.findByLeaveDay(LocalDate.parse("2023-05-27")));
     }
 }
