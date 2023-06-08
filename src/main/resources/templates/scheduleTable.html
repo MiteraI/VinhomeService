@@ -1,177 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-<table>
-    <thead>
-    <tr>
-        <th rowspan="2">
+  </head>
+  <body>
+    <table id="timeTable">
+      <thead>
+        <tr>
+          <th rowspan="2">
             <span class="auto-style1"><strong>Year</strong></span>
             <select>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
             </select>
             <br />
             Week
             <select id="weekSelect">
-                <option value="1">02/01 To 08/01</option>
-                <option value="2">09/01 To 15/01</option>
-                <option value="3">16/01 To 22/01</option>
-                <option value="4">23/01 To 29/01</option>
-                <option value="5">30/01 To 05/02</option>
-                <option value="6">06/02 To 12/02</option>
-                <option value="7">13/02 To 19/02</option>
-                <option value="8">20/02 To 26/02</option>
-                <option value="9">27/02 To 05/03</option>
-                <option value="10">06/03 To 12/03</option>
-                <option value="11">13/03 To 19/03</option>
-                <option value="12">20/03 To 26/03</option>
-                <option value="13">27/03 To 02/04</option>
-                <option value="14">03/04 To 09/04</option>
-                <option value="15">10/04 To 16/04</option>
-                <option value="16">17/04 To 23/04</option>
-                <option value="17">24/04 To 30/04</option>
-                <option value="18">01/05 To 07/05</option>
-                <option value="19">08/05 To 14/05</option>
-                <option value="20">15/05 To 21/05</option>
-                <option value="21">22/05 To 28/05</option>
-                <option value="22">29/05 To 04/06</option>
-                <option value="23">05/06 To 11/06</option>
-                <option value="24">12/06 To 18/06</option>
-                <option value="25">19/06 To 25/06</option>
-                <option value="26">26/06 To 02/07</option>
-                <option value="27">03/07 To 09/07</option>
-                <option value="28">10/07 To 16/07</option>
-                <option value="29">17/07 To 23/07</option>
-                <option value="30">24/07 To 30/07</option>
-                <option value="31">31/07 To 06/08</option>
-                <option value="32">07/08 To 13/08</option>
-                <option value="33">14/08 To 20/08</option>
-                <option value="34">21/08 To 27/08</option>
-                <option value="35">28/08 To 03/09</option>
-                <option value="36">04/09 To 10/09</option>
-                <option value="37">11/09 To 17/09</option>
-                <option value="38">18/09 To 24/09</option>
-                <option value="39">25/09 To 01/10</option>
-                <option value="40">02/10 To 08/10</option>
-                <option value="41">09/10 To 15/10</option>
-                <option value="42">16/10 To 22/10</option>
-                <option value="43">23/10 To 29/10</option>
-                <option value="44">30/10 To 05/11</option>
-                <option value="45">06/11 To 12/11</option>
-                <option value="46">13/11 To 19/11</option>
-                <option value="47">20/11 To 26/11</option>
-                <option value="48">27/11 To 03/12</option>
-                <option value="49">04/12 To 10/12</option>
-                <option value="50">11/12 To 17/12</option>
-                <option value="51">18/12 To 24/12</option>
-                <option value="52">25/12 To 31/12</option>
+              <option value="1">02/01 To 08/01</option>
+              <option value="2">09/01 To 15/01</option>
+              <option value="3">16/01 To 22/01</option>
+              <option value="4">23/01 To 29/01</option>
+              <option value="5">30/01 To 05/02</option>
+              <option value="6">06/02 To 12/02</option>
+              <option value="7">13/02 To 19/02</option>
+              <option value="8">20/02 To 26/02</option>
+              <option value="9">27/02 To 05/03</option>
+              <option value="10">06/03 To 12/03</option>
+              <option value="11">13/03 To 19/03</option>
+              <option value="12">20/03 To 26/03</option>
+              <option value="13">27/03 To 02/04</option>
+              <option value="14">03/04 To 09/04</option>
+              <option value="15">10/04 To 16/04</option>
+              <option value="16">17/04 To 23/04</option>
+              <option value="17">24/04 To 30/04</option>
+              <option value="18">01/05 To 07/05</option>
+              <option value="19">08/05 To 14/05</option>
+              <option value="20">15/05 To 21/05</option>
+              <option value="21">22/05 To 28/05</option>
+              <option value="22">29/05 To 04/06</option>
+              <option value="23">05/06 To 11/06</option>
+              <option value="24">12/06 To 18/06</option>
+              <option value="25">19/06 To 25/06</option>
+              <option value="26">26/06 To 02/07</option>
+              <option value="27">03/07 To 09/07</option>
+              <option value="28">10/07 To 16/07</option>
+              <option value="29">17/07 To 23/07</option>
+              <option value="30">24/07 To 30/07</option>
+              <option value="31">31/07 To 06/08</option>
+              <option value="32">07/08 To 13/08</option>
+              <option value="33">14/08 To 20/08</option>
+              <option value="34">21/08 To 27/08</option>
+              <option value="35">28/08 To 03/09</option>
+              <option value="36">04/09 To 10/09</option>
+              <option value="37">11/09 To 17/09</option>
+              <option value="38">18/09 To 24/09</option>
+              <option value="39">25/09 To 01/10</option>
+              <option value="40">02/10 To 08/10</option>
+              <option value="41">09/10 To 15/10</option>
+              <option value="42">16/10 To 22/10</option>
+              <option value="43">23/10 To 29/10</option>
+              <option value="44">30/10 To 05/11</option>
+              <option value="45">06/11 To 12/11</option>
+              <option value="46">13/11 To 19/11</option>
+              <option value="47">20/11 To 26/11</option>
+              <option value="48">27/11 To 03/12</option>
+              <option value="49">04/12 To 10/12</option>
+              <option value="50">11/12 To 17/12</option>
+              <option value="51">18/12 To 24/12</option>
+              <option value="52">25/12 To 31/12</option>
             </select>
-        </th>
-        <th align="center">Mon</th>
-        <th align="center">Tue</th>
-        <th align="center">Wed</th>
-        <th align="center">Thu</th>
-        <th align="center">Fri</th>
-        <th align="center">Sat</th>
-        <th align="center">Sun</th>
-    </tr>
-    <tr id="weekdate">
-        <th id="mondaydate" align="center"></th>
-        <th id="tuesdaydate" align="center"></th>
-        <th id="wednesdaydate" align="center"></th>
-        <th id="thursdaydate" align="center"></th>
-        <th id="fridaydate" align="center"></th>
-        <th id="saturdaydate" align="center"></th>
-        <th id="sundaydate" align="center"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Slot 1</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td>Slot 2</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td>Slot 3</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td>Slot 4</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td>Slot 5</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td>Slot 6</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    </tbody>
-</table>
-<script>
-      let setSchedule = async (startDate, endDate) => {
-        week = {
-            startDate : startDate,
-            endDate : endDate
+          </th>
+          <th align="center">Mon</th>
+          <th align="center">Tue</th>
+          <th align="center">Wed</th>
+          <th align="center">Thu</th>
+          <th align="center">Fri</th>
+          <th align="center">Sat</th>
+          <th align="center">Sun</th>
+        </tr>
+        <tr id="weekdate">
+          <th id="mondaydate" align="center"></th>
+          <th id="tuesdaydate" align="center"></th>
+          <th id="wednesdaydate" align="center"></th>
+          <th id="thursdaydate" align="center"></th>
+          <th id="fridaydate" align="center"></th>
+          <th id="saturdaydate" align="center"></th>
+          <th id="sundaydate" align="center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Slot 1</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Slot 2</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Slot 3</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Slot 4</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Slot 5</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Slot 6</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Function to clear table data everytime fetching data
+      function clearTableContent() {
+        const table = document.getElementById("timeTable");
+        const rows = table.rows;
+        const rowCount = rows.length;
+
+        // Iterate over each row in the table
+        for (let i = 2; i < rowCount; i++) {
+          const cells = rows[i].cells;
+          const cellCount = cells.length;
+
+          // Iterate over each cell in the row
+          for (let j = 1; j < cellCount; j++) {
+            const cell = cells[j];
+            // Clear the content of the cell
+            if (cell.innerHTML !== "-") {
+              cell.innerHTML = "-";
+            }
+            // Or use the following line if you want to clear the HTML content of the cell:
+            // cell.innerHTML = '';
+          }
         }
-        await fetch("http://localhost:8080/worker/api/schedules", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(week),
-        })
-          .then((response) => response.json())
-          .then((json) => console.log(json));
+      }
+      // Fetch function
+      let setSchedule = async (startDate, endDate) => {
+        console.log(startDate + "  " + endDate);
+        clearTableContent();
+        await axios
+          .post("/api/worker/schedules", {
+            startDate: startDate,
+            endDate: endDate,
+          })
+          .then((res) => {
+            // Get the table element
+            const table = document.getElementById("timeTable");
+            data = res.data;
+            console.log(data);
+            // Iterate over each API entry
+            data.forEach((entry) => {
+              const { order, workDay, timeSlot, workers } = entry;
+              console.log(entry);
+              // Extract day and slot from workDay and timeSlot
+              const day = new Date(workDay).getDay(); // 0 (Sunday) to 6 (Saturday)
+              const slot = timeSlot.timeSlotId; // Adjust index to match table row index
+
+              // Get the table cell for the specific day and slot
+              const cell = table.rows[slot + 1].cells[day];
+
+              // Create a string to display the worker names
+              const workerNames = workers
+                .map((worker) => `${worker.firstName} ${worker.lastName}`)
+                .join("<br>");
+
+              console.log(order.account.address.buildingBlock);
+              // Set the worker names as the cell content
+              cell.innerHTML =
+                workerNames +
+                "<br>" +
+                order.account.address.buildingBlock +
+                order.account.address.buildingRoom;
+            });
+          })
+          .catch((error) => console.log(error));
       };
 
       window.addEventListener("load", setOptionByCurrentDate);
@@ -244,15 +294,25 @@
           formatDate(saturday);
         document.getElementById("sundaydate").textContent = formatDate(endDate);
 
-        setSchedule(startDate, endDate).then(() => console.log("cool"));
+        setSchedule(
+          formatDateWithYear(startDate),
+          formatDateWithYear(endDate)
+        ).then(() => console.log("cool"));
       }
 
       function formatDate(date) {
         var day = date.getDate();
         var month = date.getMonth() + 1;
-        var year = date.getFullYear();
         return ("0" + day).slice(-2) + "/" + ("0" + month).slice(-2);
       }
+      function formatDateWithYear(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        return (
+          year + "-" + ("0" + month).slice(-2) + "-" + ("0" + day).slice(-2)
+        );
+      }
     </script>
-</body>
+  </body>
 </html>

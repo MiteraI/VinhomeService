@@ -21,10 +21,12 @@ public class WorkerService {
     public List<Schedule> getSchedulesForSelf(LocalDate startDate, LocalDate endDate, HttpServletRequest request) {
         Account account = SessionUserCaller.getSessionUser(request);
         if (account == null) return new ArrayList<Schedule>();
-        return scheduleRepository.findAllByDateBetweenAndAccount_AccountId(
-                LocalDate.of(2023,5,1)
-                , LocalDate.of(2023, 6, 30)
-                , 5L
+        System.out.println(startDate);
+        System.out.println(endDate);
+        return scheduleRepository.findAllByWorkDayBetweenAndWorkers_AccountId(
+                startDate
+                , endDate
+                , account.getAccountId()
         );
     }
 }
