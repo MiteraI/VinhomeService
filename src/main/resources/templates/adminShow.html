@@ -585,7 +585,7 @@ asdfasdfsadfdsafasdf -->
 
     const firstName = document.getElementById("firstName");
     const lastName = document.getElementById("lastName");
-    const Date =  document.getElementById('offDate');
+    const date =  document.getElementById('offDate');
     const numOff = document.getElementById("days");
     const Data = {
         date: "",
@@ -593,7 +593,7 @@ asdfasdfsadfdsafasdf -->
         firstName: "",
         lastName: ""
     };
-    Date.addEventListener('input', function (){
+    date.addEventListener('input', function (){
         Data.date = this.value;
         console.log(Data.date)
     });
