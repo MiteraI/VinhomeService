@@ -89,12 +89,11 @@ async function showFullCustomerInfo(AccountID) {
     console.log("yes get all info customer ")
     var account = await response1.json(); console.log(await account);
     //get phone of account
-    const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber`, {
-        method: "Post",
+    const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${AccountID}`, {
+        method: "GET",
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(account)
+        }
     });
     console.log("yes get in phone");
     var phone = await response2.json();
@@ -509,24 +508,22 @@ async function showFullWorkerInfo(AccountID) {
     console.log("yes get all info worker ")
     var account = await response1.json(); console.log(await account);
     //get phone of account
-    var response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber`, {
-        method: "Post",
+    var response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${AccountID}`, {
+        method: "GET",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(account)
     });
     console.log("yes get in phone");
     var phone = await response2.json(); console.log(await phone)
     /////get worker status
-    var response3 = await fetch(`http://localhost:8080/UserRestController/getWorkerStatus`, {
-        method: "Post",
+    var response3 = await fetch(`http://localhost:8080/UserRestController/getWorkerStatus/${AccountID}`, {
+        method: "GET",
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(account)
+        }
     });
-    var worker_status = await response3.json();
+    var worker_status = await response3.json();console.log(await worker_status)
 
     var response4 = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
         method: "get",
