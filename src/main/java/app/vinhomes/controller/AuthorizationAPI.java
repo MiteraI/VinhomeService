@@ -37,7 +37,6 @@ public class AuthorizationAPI {
         }catch (Exception e){
             System.out.println("Login fail, some stuff happen");
             return "fail";
-
         }
     }
 }
