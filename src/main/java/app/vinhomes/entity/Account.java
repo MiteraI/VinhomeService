@@ -44,6 +44,9 @@ public class Account implements UserDetails {
     @Column(name = "account_name", nullable = false)
     private String accountName;
 
+    @Column(name = "leave_limit", columnDefinition = "integer default 12")
+    private int leaveLimit;
+
     @Column(name = "pwd", nullable = false)
     private String password;
 
