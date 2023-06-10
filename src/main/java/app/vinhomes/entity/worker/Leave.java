@@ -35,12 +35,12 @@ public class Leave {
     )
     private Account account;
 
-//    @ManyToOne(
-//            cascade = CascadeType.ALL
-//    )
-//    @JoinColumn (
-//            name = "leave_report_id",
-//            referencedColumnName = "leave_report_id"
-//    )
-//    private LeaveReport leaveReport;
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn (
+            name = "leave_report_id",
+            referencedColumnName = "leave_report_id"
+    )
+    private LeaveReport leaveReport;
 }
