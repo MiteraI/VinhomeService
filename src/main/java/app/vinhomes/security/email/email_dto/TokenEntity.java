@@ -1,16 +1,16 @@
-package app.vinhomes.security.sms.dto;
+package app.vinhomes.security.email.email_dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OTPAttribute {
-    private String oneTimePassword;
+public class TokenEntity {
+    private String email;
+    private String tokenvalue;
     private Date expired;
 }

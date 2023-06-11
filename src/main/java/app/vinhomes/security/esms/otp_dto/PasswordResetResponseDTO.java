@@ -1,4 +1,4 @@
-package app.vinhomes.security.sms.dto;
+package app.vinhomes.security.esms.otp_dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
