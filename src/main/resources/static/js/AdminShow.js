@@ -72,6 +72,7 @@ function printRow(data, IdOfTableBody) {
                 <td><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
                 <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
                 <td><button onclick='deleteByID(${data[i].accountId})'>DELETE</button></td>
+                <td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>View order</button></td>
         </tr>
         `;
         table_tag.innerHTML += output;
@@ -89,11 +90,12 @@ async function showFullCustomerInfo(AccountID) {
     console.log("yes get all info customer ")
     var account = await response1.json(); console.log(await account);
     //get phone of account
-    const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${AccountID}`, {
-        method: "GET",
+    const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber`, {
+        method: "Post",
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(account)
     });
     console.log("yes get in phone");
     var phone = await response2.json();
@@ -111,7 +113,7 @@ async function showFullCustomerInfo(AccountID) {
     for (var i in await phone) {
         output =
             `
-            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" > 
+            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" >
                 ${phone[i].number}
             </a>
         `;
@@ -353,7 +355,7 @@ async function openCreateForm() {
     for (var i in await service_list) {
         output =
             `
-            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" > 
+            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
                 ${service_list[i].serviceCategoryName}
             </a>
         `;
@@ -508,22 +510,24 @@ async function showFullWorkerInfo(AccountID) {
     console.log("yes get all info worker ")
     var account = await response1.json(); console.log(await account);
     //get phone of account
-    var response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${AccountID}`, {
-        method: "GET",
+    var response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber`, {
+        method: "Post",
         headers: {
             'Content-Type': 'application/json'
         },
+        body: JSON.stringify(account)
     });
     console.log("yes get in phone");
     var phone = await response2.json(); console.log(await phone)
     /////get worker status
-    var response3 = await fetch(`http://localhost:8080/UserRestController/getWorkerStatus/${AccountID}`, {
-        method: "GET",
+    var response3 = await fetch(`http://localhost:8080/UserRestController/getWorkerStatus`, {
+        method: "Post",
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(account)
     });
-    var worker_status = await response3.json();console.log(await worker_status)
+    var worker_status = await response3.json();
 
     var response4 = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
         method: "get",
@@ -537,7 +541,7 @@ async function showFullWorkerInfo(AccountID) {
     for (var i in await phone) {
         output =
             `
-            <a class="dropdown-item" onclick="phoneInputUpdate(${phone[i].number}, ${phone[i].phoneId})" > 
+            <a class="dropdown-item" onclick="phoneInputUpdate(${phone[i].number}, ${phone[i].phoneId})" >
                 ${phone[i].number}
             </a>
         `;
@@ -577,7 +581,7 @@ async function showFullWorkerInfo(AccountID) {
     for (var i in await service_list) {
         output =
             `
-            <a class="dropdown-item" onclick="updateAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" > 
+            <a class="dropdown-item" onclick="updateAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
                 ${service_list[i].serviceCategoryName}
             </a>
         `;
@@ -626,5 +630,9 @@ function plusAndMinus(number_id, caltype) {
         }
 
     }
+}
+const getUserOrders = async(uid) => {
+    window.location.href = `/api/admin/order/user?id=${uid}`
+
 }
 

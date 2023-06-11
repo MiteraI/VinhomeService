@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
-    @Query(value = "select p.number from tbl_phone p where p.account_id = ?1", nativeQuery=true)
-    List<String> getPhoneNumberById(long account_id);
+    List<Phone> findByAccount_AccountId(Long accountId);
+
 
     List<Phone> findByAccount(Account account);
 

@@ -80,7 +80,7 @@ public class Account implements UserDetails {
             name = "address_id",
             referencedColumnName = "address_id"
     )
-    @ToString.Exclude
+
     private Address address;
 
     @OneToMany(

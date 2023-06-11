@@ -22,17 +22,20 @@ form_create.addEventListener('submit', async function (event) {
     console.log(response.status)
     if (response.status == 400) {
         error_message = await response.json()
+        error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+        console.log(error_message)
         var list = document.getElementsByClassName("error-message");
         var i = 0;
         for (var key in error_message) {
             if (error_message[key] !== "") {
                 list[i].classList.remove('d-none')
                 list[i].innerHTML = '❌ ' + error_message[key];
-                i += 1;
             } else {
+                list[i].classList.remove('d-none')
                 list[i].innerHTML = "✔";
-                i += 1;
             }
+            i += 1;
+
 
         }
         submitBtn.classList.remove('disabled');

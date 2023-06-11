@@ -21,6 +21,7 @@ public class CategoryAndServiceController {
     private ServiceRepository serviceRepository;
     @GetMapping()
     public List<ServiceCategory> getCategory(){
+        System.out.println("3");
         System.out.println(serviceCategoryRepository.findAll());
         return serviceCategoryRepository.findAll();
     }
