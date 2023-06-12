@@ -9,7 +9,10 @@ import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.service.AccountService;
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,10 +40,13 @@ public class CreateAccountAPI {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping(value = "/createAccountCustomer/{rolenumber}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateErrorCatcher> createAccountForCustomer(@RequestBody JsonNode request, @PathVariable int rolenumber) {
+    @PostMapping(value = "/createAccountCustomer/{rolenumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CreateErrorCatcher> createAccountForCustomer(@RequestBody JsonNode request,
+                                                                       @PathVariable int rolenumber, HttpServletRequest request_) {
         System.out.println("inside create account");
         System.out.println(request.asText());
+        Account acc = null;
+        Address addr = null;
         String username, password, email, firstname, lastname, phonenumber, date, address;
         username = errorChecker.checkUsername(request.get("txtUsername").asText().trim());
         password = errorChecker.checkPassword(request.get("txtPassword").asText().trim());
@@ -50,10 +56,11 @@ public class CreateAccountAPI {
         date = errorChecker.checkDate(request.get("txtDate").asText().trim());
         System.out.println(request.get("txtDate").asText().trim());
         phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());
-        address = errorChecker.checkAddress(request.get("btnRadio").asText(), request.get("txtRoomnumber").asText().trim());
-        //this is where we change direction if worker or customer account
+        address = errorChecker.checkAddress(request.get("btnRadio").asText(),
+                request.get("txtRoomnumber").asText().trim());
+        // this is where we change direction if worker or customer account
         //
-        //role = 1 is worker
+        // role = 1 is worker
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(password);
@@ -63,12 +70,13 @@ public class CreateAccountAPI {
         errorList.add(date);
         errorList.add(phonenumber);
         errorList.add(address);
-        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date, phonenumber, address);
+        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date,
+                phonenumber, address);
         for (String message : errorList) {
             if (message.isEmpty()) {
                 continue;
             } else {
-                //return error;
+                // return error;
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
             }
         }
@@ -76,11 +84,12 @@ public class CreateAccountAPI {
         //
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            //convert String to LocalDate
+            // convert String to LocalDate
             LocalDate localDate = LocalDate.parse(request.get("txtDate").asText(), formatter);
             Phone phone = Phone.builder().number(request.get("txtPhonenumber").asText().trim()).build();
-            Address address1 = Address.builder().buildingBlock(request.get("btnRadio").asText().trim()).buildingRoom(request.get("txtRoomnumber").asText().trim()).build();
-            Account account = Account.builder()
+            addr = Address.builder().buildingBlock(request.get("btnRadio").asText().trim())
+                    .buildingRoom(request.get("txtRoomnumber").asText().trim()).build();
+            acc = Account.builder()
                     .accountName(request.get("txtUsername").asText().trim())
                     .password(request.get("txtPassword").asText().trim())
                     .email(request.get("txtEmail").asText().trim())
@@ -89,22 +98,27 @@ public class CreateAccountAPI {
                     .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)
-                    .address(address1)
+                    .address(addr)
                     .build();
 
-            Account response = authenticationService.register(account);
+            Account response = authenticationService.register(acc);
             System.out.println("save account");
-            phone.setAccount(account);
-            phoneRepository.save(phone);System.out.println("save phone");
+            phone.setAccount(acc);
+            phoneRepository.save(phone);
+            System.out.println("save phone");
         } catch (DateTimeException e) {
             System.out.println("cant parse date");
             System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("something wrong with saving the account");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
         System.out.println("okk, SAVE SUCCESS");
+        HttpSession session = request_.getSession();
+        session.setAttribute("loginedUser", acc);
+        session.setAttribute("address", addr);
+        System.out.println(session.getAttribute("loginedUser"));
         return ResponseEntity.status(HttpStatus.OK).body(error);
 
     }
