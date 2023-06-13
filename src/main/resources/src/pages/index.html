@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../font.css" />
+		<link rel="stylesheet" href="../dist/index.css" />
+		<title>SuperClean</title>
+	</head>
+	<body class="overflow-x-hidden">
+		<header class="bg-blue-bootstrap p-8" id="Home">
+			<nav class="mx-20">
+				<div class="flex items-center justify-between">
+					<!-- Navbar Brand -->
+					<div>
+						<a class="text-5xl font-extrabold text-white" href="#Home">SuperClean</a>
+						<button class="xm:block md:hidden" id="toggle-button">
+							<img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
+							<img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
+						</button>
+					</div>
+					<!-- Navlinks list -->
+					<div>
+						<ul class="flex list-none space-x-20">
+							<li class="text-xl font-medium text-white"><a href="/">Home</a></li>
+							<li class="text-xl font-medium text-white"><a href="#about">About</a></li>
+							<li class="text-xl font-medium text-white"><a href="#service">Service</a></li>
+							<li class="text-xl font-medium text-white"><a href="#footer">Contact</a></li>
+						</ul>
+					</div>
+					<!-- Profile links -->
+					<div>
+						<a href="/login"
+							><button
+								class="cursor-pointer rounded-xl border-none bg-white px-10 py-4 font-extrabold text-blue-bootstrap"
+							>
+								Login
+							</button></a
+						>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<div class="content-body mx-28 my-20 space-y-28">
+			<!-- About us section -->
+			<section class="flex space-x-8" id="about">
+				<div class="w-2/6">
+					<img src="../assets/images/about.jpg" alt="people are cleaning" />
+				</div>
+				<div class="h-full w-4/6 space-y-14 p-2">
+					<p class="text-4xl text-blue-bootstrap">We guarantee <span class="font-bold">excellence</span></p>
+					<p class="text-xl text-strong-gray">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet soluta fugiat quis corporis repellendus
+						dolore facere architecto id debitis molestias, dolores maxime exercitationem reprehenderit voluptatum quo
+						vero quasi. Itaque, ab cupiditate. Placeat, accusamus veniam. Porro vel ratione obcaecati iure sint, dolores
+						a, eius ad corporis amet iste maiores consectetur repellendus.
+					</p>
+				</div>
+			</section>
+
+			<!-- Service category section -->
+			<section class="flex-col items-center justify-center space-y-6" id="service" >
+				<p class="text-center text-2xl text-strong-gray">Our services</p>
+
+				<p class="text-center text-4xl text-blue-bootstrap">Practice with <span class="font-bold">Love</span></p>
+				<br />
+
+				<!-- 2 service category -->
+				<div class="flex justify-around">
+					<div class="w-2/6 flex-col space-y-6 text-center">
+						<img class="mx-auto" src="../assets/images/service-1.jpg" alt="cleaning house" />
+
+						<p class="text-2xl text-blue-bootstrap">House cleaning</p>
+
+						<div>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iure necessitatibus suscipit soluta
+								doloribus ex provident magnam fuga enim maiores!
+							</p>
+						</div>
+						<br />
+						<div>
+							<a href="#"
+								><button class="cursor-pointer rounded-xl border-none bg-yello-info px-8 py-2">
+									<span class="font-bold">LEARN MORE</span>
+								</button></a
+							>
+						</div>
+					</div>
+					<div class="w-2/6 flex-col space-y-6 text-center">
+						<img class="mx-auto" src="../assets/images/service-4.jpg" alt="cleaning house" />
+
+						<p class="text-2xl text-blue-bootstrap">Appliances cleaning</p>
+
+						<div>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iure necessitatibus suscipit soluta
+								doloribus ex provident magnam fuga enim maiores!
+							</p>
+						</div>
+						<br />
+						<div>
+							<a href="#"
+								><button class="cursor-pointer rounded-xl border-none bg-yello-info px-8 py-2">
+									<span class="font-bold">LEARN MORE</span>
+								</button></a
+							>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<footer class="flex items-center justify-between bg-blue-bootstrap px-28 py-10" id="footer">
+			<div>
+				<a class="text-5xl font-extrabold text-white" href="#home">SuperClean</a>
+				<button class="xm:block md:hidden" id="toggle-button">
+					<img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
+					<img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
+				</button>
+			</div>
+			<div class="text-white">
+				<p>Contact us</p>
+				<ul>
+					<li>
+						<img
+							class="mr-5 inline w-6 fill-white"
+							src="../assets/svg/phone-rotary-svgrepo-com.svg"
+							alt="phone_svg"
+						/>0 856 721 175
+					</li>
+					<li>
+						<img
+							class="fill-w mr-5 inline w-6"
+							src="../assets/svg/mail-svgrepo-com.svg"
+							alt="mail_svg"
+						/>example@gmail.com
+					</li>
+				</ul>
+			</div>
+			<div>
+				<a href="#"
+					><button class="cursor-pointer rounded-full border-none bg-yello-info px-12 py-6">
+						<span class="font-bold">Join us</span>
+					</button></a
+				>
+			</div>
+		</footer>
+	</body>
+</html>

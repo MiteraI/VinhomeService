@@ -72,8 +72,13 @@ function printRow(data, IdOfTableBody) {
                 <td><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
                 <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
                 <td><button onclick='deleteByID(${data[i].accountId})'>DELETE</button></td>
-        </tr>
         `;
+        if(data[i].role == 0){
+            output += `<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>View order</button></td></tr>`
+        }
+        else{
+            output += `</tr>`
+        }
         table_tag.innerHTML += output;
     }
 }
@@ -111,7 +116,7 @@ async function showFullCustomerInfo(AccountID) {
     for (var i in await phone) {
         output =
             `
-            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" > 
+            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" >
                 ${phone[i].number}
             </a>
         `;
@@ -353,7 +358,7 @@ async function openCreateForm() {
     for (var i in await service_list) {
         output =
             `
-            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" > 
+            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
                 ${service_list[i].serviceCategoryName}
             </a>
         `;
@@ -537,7 +542,7 @@ async function showFullWorkerInfo(AccountID) {
     for (var i in await phone) {
         output =
             `
-            <a class="dropdown-item" onclick="phoneInputUpdate(${phone[i].number}, ${phone[i].phoneId})" > 
+            <a class="dropdown-item" onclick="phoneInputUpdate(${phone[i].number}, ${phone[i].phoneId})" >
                 ${phone[i].number}
             </a>
         `;
@@ -577,7 +582,7 @@ async function showFullWorkerInfo(AccountID) {
     for (var i in await service_list) {
         output =
             `
-            <a class="dropdown-item" onclick="updateAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" > 
+            <a class="dropdown-item" onclick="updateAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
                 ${service_list[i].serviceCategoryName}
             </a>
         `;
@@ -628,3 +633,7 @@ function plusAndMinus(number_id, caltype) {
     }
 }
 
+const getUserOrders = async(uid) => {
+    window.location.href = `/api/admin/order/user?id=${uid}`
+
+}
