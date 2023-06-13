@@ -101,5 +101,8 @@ public class PageController {
     @RequestMapping(value = "/detail")
     public String detail() { return "Detail"; }
 
+    @RequestMapping(value = "/homepage")
+    public String homepage() { return "homepage"; }
+
 
 }

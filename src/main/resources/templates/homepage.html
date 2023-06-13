@@ -7,6 +7,7 @@
     <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <META HTTP-EQUIV=”refresh” CONTENT=”15″>
     <title>HomePage</title>
     <style>
         * {
@@ -126,6 +127,47 @@
         .btn:hover {
             background-color: #555;
         }
+
+        .dropdown-toggle::after {
+            content: none;
+        }
+
+        .dropdown-menu {
+            top: 100%;
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        //UNDERLINE APPEAR WHEN HOVER//
+        .underline a {
+            text-decoration: none;
+            position: relative;
+            color: black;
+        }
+
+        .underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #000;
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.2s ease-in-out 0s;
+        }
+
+        .underline:hover::after {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+
+        .avatar:hover {
+            border: 2px solid #f9215e;
+        }
+
     </style>
 </head>
 
@@ -143,19 +185,47 @@
                 <a class="login_btn nav-link" href="/login"><i class="fa fa-sign-in me-2"></i>Login</a>
             </li>
             <li class="nav-item dropdown d-none">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 15px;" >
                     Category
                 </a>
                 <div class="main_categoryList dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
                 </div>
             </li>
             <li class="nav-item dropdown d-none">
-
-                <a class="nav-link dropdown-toggle p" th:text="${acc != null} ? ${acc.accountName} : ''" href="#"
-                   id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">
-                    <i class="fas fa-user"></i>
+<!--                <a class="nav-link dropdown-toggle p" th:text="${acc != null} ? ${acc.accountName} : ''" href="#"-->
+<!--                   id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"-->
+<!--                   aria-expanded="false">-->
+<!--                    <i class="fas fa-user"></i>-->
+<!--                </a>-->
+                <!--AVATAR DROPDOWN BUT NO DROPDOWN ARROW BOOTSTARP-->
+                <a class="nav-link dropdown-toggle p" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="me-3">
+                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+                        <!--get account id-->
+                        <input id="accID" th:value="${acc != null} ? ${acc.accountId} : ''" type="hidden">
+                        <script>
+                        const accountID = document.getElementById("accID").value;
+                        axios
+                            .get("http://localhost:8080/images/getAvatar/avatar.png?time=" + new Date().getTime())
+<!--                            .get("http://2cedcd6c980412.lhr.life/images/getAvatar/avatar.png?time=" + new Date().getTime())-->
+                            .then((response) => {
+                                console.log(response.data);
+                                document.getElementById("avatar").src = response.data;
+                                avatar.onload = function () {
+                                    URL.revokeObjectURL(avatar.src) // free memory
+                                }
+                                setTimeout(function () {
+                                    document.getElementById("avatar").style.display = "block";
+                                }, 500);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                        </script>
+                        <img alt="avatar" class="avatar" id="avatar" loading="lazy" src=""
+                             style="height: 50px; width: 50px; object-fit: cover; object-position: 100% 0; border-radius: 50%">
+                    </div>
                 </a>
                 <div class="dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="./profile"><i class="fa fa-user me-3"></i>Profile</a>
