@@ -61,6 +61,8 @@ public class AzureBlobFileController {
 
     //THIS TO ENCODE THE PASSWORD OF ACCOUNT//
     //ONLY USE WHEN PASS IS READABLE AND NEED TO ENCODE//
+    //AFTER ENCODE, THE PASS WILL BE UNREADABLE//
+    //MAKE SURE TO CHANGE ACCID BELOW//
     @GetMapping("/encode")
     public void encode() {
         Account acc = accountRepository.findById(3L).get();
