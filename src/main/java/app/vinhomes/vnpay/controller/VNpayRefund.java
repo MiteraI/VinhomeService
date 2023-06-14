@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,23 +22,26 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 @RestController
-@RequestMapping(value = "vnpay/refund")
+@RequestMapping(value = "/vnpay/refund")
 public class VNpayRefund {
-    @PostMapping
+    private final String transactionTypeValue = "02";
+    @GetMapping
     public ResponseEntity<?> refund(HttpServletRequest req,  HttpServletResponse resp) throws IOException {
         String vnp_RequestId = ConfigVNpay.getRandomNumber(8);
         String vnp_Version = "2.1.0";
         String vnp_Command = "refund";
         String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
-        String vnp_TransactionType = req.getParameter("trantype");
-        String vnp_TxnRef = req.getParameter("order_id");
-        long amount = Integer.parseInt(req.getParameter("amount"))*100;
+//        02: Giao dịch hoàn trả toàn phần (vnp_TransactionType=02)
+//        03: Giao dịch hoàn trả một phần (vnp_TransactionType=03)
+        // mac dinh = 2, dell ai tra mot phan cho met
+        String vnp_TransactionType = transactionTypeValue ;//req.getParameter("trantype")
+        String vnp_TxnRef = req.getParameter("order_id");//String.valueOf(93930081) ;
+        int amount = Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;
         String vnp_Amount = String.valueOf(amount);
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
-        String vnp_TransactionNo = ""; //Assuming value of the parameter "vnp_TransactionNo" does not exist on your system.
-        String vnp_TransactionDate = req.getParameter("trans_date");
-        String vnp_CreateBy = req.getParameter("user");
-
+        String vnp_TransactionNo = "";
+        String vnp_TransactionDate =req.getParameter("trans_date"); //String.valueOf(20230611175217l) ;
+        String vnp_CreateBy = "NGUYEN VAN A";//req.getParameter("user");
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
@@ -95,9 +99,6 @@ public class VNpayRefund {
         }
         in.close();
         System.out.println(response.toString());
-
-
-
         return ResponseEntity.ok().body("yes refund success maybe");
     }
 }

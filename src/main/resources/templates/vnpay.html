@@ -15,13 +15,13 @@
 
 <body>
     <div class="container d-flex justify-content-center align-items-center col-10 m-0  ">
-    <form class="" action="/vnpay/createPayment">
+    <form class="" action="/vnpay/createPayment" method="get">
         <div>
             <input type="text" class="" name="ordertype" value="BILL">
             <input type="text" class="" name="serviceId" value="2">
         </div>
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">thong tin don hang</label>
+            <label for="" class="form-label">thong tin don hang</label>
             <div> <span> ghi vao so cho no dep</span></div>
             <input type="hidden" name="service-id" class="form-control" id="" value="">
         </div>
@@ -36,7 +36,7 @@
             <br> chi dc chon NCB luc test, do cac the ngan hang test chi support navbar-collapse<br>
              xai the khac se ko transaction duoc, nhung no van nhan, chi la thanh toan fail
             <select name="bankcode" id="bankcode" class="form-control">
-                <option value="INITCARD">INTERNATIONAL CARD</option>
+                <option value="INTCARD">INTERNATIONAL CARD</option>
                 <option value="NCB">Ngan hang NCB</option>
                 <option value="ATM">ATM CARD </option>
             </select>
@@ -45,5 +45,7 @@
     </form>
 </div>
 </body>
-
+<script>
+    
+</script>
 </html>

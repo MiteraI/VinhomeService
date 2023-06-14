@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,17 +24,17 @@ import java.util.TimeZone;
 @RestController
 @RequestMapping(value = "/vnpay/query")
 public class VNpayQuery {
-    @PostMapping
+    @GetMapping
     public ResponseEntity<?> query(HttpServletRequest req , HttpServletResponse resp) throws IOException {
         //Command:querydr
         String vnp_RequestId = ConfigVNpay.getRandomNumber(8);
         String vnp_Version = "2.1.0";
         String vnp_Command = "querydr";
         String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
-        String vnp_TxnRef = req.getParameter("order_id");
+        String vnp_TxnRef = String.valueOf(93930081);//req.getParameter("order_id")
         String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
-        //String vnp_TransactionNo = req.getParameter("transactionNo");
-        String vnp_TransDate = req.getParameter("trans_date");
+        //String vnp_TransactionNo = String.valueOf(14035682) ;//req.getParameter("transactionNo");
+        String vnp_TransDate = String.valueOf (20230611175217l); //req.getParameter("trans_date");//vnp_payday
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -41,7 +42,8 @@ public class VNpayQuery {
 
         String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
 
-        JsonObject vnp_Params = new JsonObject ();
+        JsonObject  vnp_Params = new JsonObject ();
+
         vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
         vnp_Params.addProperty("vnp_Version", vnp_Version);
         vnp_Params.addProperty("vnp_Command", vnp_Command);
@@ -49,6 +51,7 @@ public class VNpayQuery {
         vnp_Params.addProperty("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
         //vnp_Params.put("vnp_TransactionNo", vnp_TransactionNo);
+        //vnp_Params.addProperty("vnp_TransactionNo", vnp_TransactionNo);
         vnp_Params.addProperty("vnp_TransactionDate", vnp_TransDate);
         vnp_Params.addProperty("vnp_CreateDate", vnp_CreateDate);
         vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
@@ -81,8 +84,6 @@ public class VNpayQuery {
         }
         in.close();
         System.out.println(response.toString());
-
-
         return ResponseEntity.ok().body("yes query work maybe");
     }
 }

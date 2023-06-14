@@ -105,4 +105,8 @@ public class PageController {
     public String vnpay(){
         return "vnpay";
     }
+    @RequestMapping(value = "/vnpayreturn",method = RequestMethod.GET)
+    public String vnpayreturn(){
+        return "vnpayreturn";
+    }
 }

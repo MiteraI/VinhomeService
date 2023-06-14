@@ -1,6 +1,7 @@
 package app.vinhomes.vnpay.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -9,16 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-
+@Service
 public class ConfigVNpay {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-
-    // return page jsp ko ton tai, co the tu config lai thanh trang rieng
-    public static String vnp_Returnurl = "http://localhost:8080/vnpay_jsp/vnpay_return.jsp";
-    public static String vnp_TmnCode = "BIDAHJ80";
+    public static String vnp_Returnurl = "http://localhost:8080/vnpay/returnurl";
+    public static String vnp_TmnCode = "BIDAHJ80";//BIDAHJ80
     public static String vnp_HashSecret = "JKYVPQSMJBCALYXMRDFWNDHANCXDEBJT";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
-
     public static String md5(String message) {
         String digest = null;
         try {

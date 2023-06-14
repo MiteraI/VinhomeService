@@ -16,9 +16,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +47,8 @@ public class OrderService {
     private LeaveRepository leaveRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-    public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
+    private Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
+        System.out.println("inside OfficialCreateOrder");
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
         if (sessionAccount == null) {
@@ -158,5 +164,30 @@ public class OrderService {
                 .build();
         schedule.setOrder(order);
         return orderRepository.save(order);
+    }
+    public ResponseEntity<String> createOrder( JsonNode orderJSON, HttpServletRequest request) {
+        System.out.println("inside createOrder");
+        LocalDate parsedDate = LocalDate.parse(orderJSON.get("day").asText());
+        LocalTime startTime = timeSlotRepository.findById(orderJSON.get("timeId").asLong()).get().getStartTime();
+        LocalDateTime orderedTime = parsedDate.atTime(startTime);
+        //Date received is before now then "Date is in the past"
+        if (parsedDate.isBefore(LocalDate.now())) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
+        }
+
+        if (orderedTime.isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
+        }
+
+        Order order = this.officialCreateOrder(orderJSON, request);
+        System.out.println("pass official create order");
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
+        } else {
+            if (order.getAccount() == null) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Have not logged in");
+            }
+            return ResponseEntity.ok(order.getOrderId().toString());
+        }
     }
 }
