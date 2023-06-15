@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./pages/*.{html,js}", "./*{html,js}"],
+  content: [
+    "./pages/*.{html,js}", "./*{html,js}",
+    "../templates/**/*.html", "../static/js/*.js"
+  ],
   theme: {
     screens: {
       xm: '250px',
@@ -17,6 +20,12 @@ module.exports = {
         'yello-info': '#FFD12F',
         'red-cancel': '#DC3545',
         'green-success': '#28A745'
+      },
+      width: {
+        'inherit': 'inherit'
+      },
+      height: {
+        'inherit': 'inherit'
       }
     },
   },
