@@ -100,17 +100,7 @@
                     <hr>
                 </div>
             </div>
-            <!--            <style>-->
-            <!--                .rating-container {-->
-            <!--                    display: inline-block;-->
-            <!--                }-->
-            <!--                .star {-->
-            <!--                    color: gold;-->
-            <!--                }-->
-            <!--            </style>-->
-            <!--                <div class="rating-container">-->
-            <!--                    <label>Rating:</label>-->
-            <!--                </div>-->
+
         </div>
     </div>
 </div>
@@ -122,7 +112,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" style="text-align: center">Order Service</h5>
-                        <form id="my-form">
+                        <form id="my-form" action="/vnpay/createPayment" method="post">
                             <!-- Form fields and content -->
                             <div class="form-group" style="margin-bottom: 15px">
                                 <label for="customerName">Customer Name:</label>
@@ -214,30 +204,6 @@
         }
     </style>
 
-<!--<script th:inline="javascript">-->
-<!--    var orders = [[${ordersByService}]] ;-->
-
-<!--    orders.forEach(function(order) {-->
-<!--        var rating = order.rating;-->
-<!--        var container = document.createElement("div");-->
-<!--        container.className = "rating-container";-->
-<!--        container.style.display = 'inline-block';-->
-<!--        var label = document.createElement('label');-->
-<!--        label.textContent = "Rating:";-->
-<!--        var ratingElement = document.querySelector('.rating-container');-->
-
-
-<!--        for (var i = 0; i < rating; i++) {-->
-<!--            var star = document.createElement('i');-->
-<!--            star.classList.add('bi', 'bi-star', 'star');-->
-<!--            star.classList.add('bi-star-fill');-->
-<!--            star.color = 'gold';-->
-<!--            container.appendChild(star);-->
-<!--            container.appendChild(label);-->
-<!--        }-->
-<!--        ratingElement.appendChild(document.createElement('br'))-->
-<!--    });-->
-<!--</script>-->
     <script>
         const service = document.getElementById("serviceName");
         serviceId = service.value;
@@ -247,9 +213,6 @@
             serviceId: serviceId,
             day: "",
             timeId: ""
-            //////// MINH : Add Attribute
-            ////////,transactionMethod: ""
-            //////// MINH : Add Attribute
 
         };
         fetch("/api/order/timeSlot")
@@ -321,7 +284,7 @@
 
         // createData(serviceId, PaymentId, TimeSlotId, date);
         // console.log(dataObj)
-        const form = document.getElementById("my-form")
+/*        const form = document.getElementById("")//my-form
 
         form.addEventListener("submit", function (event) {
             event.preventDefault();
@@ -332,13 +295,14 @@
                     //'Content-Type': 'application/x-www-form-urlencoded'
                     'Content-Type': 'application/json'
                 },
-                body:JSON.stringify(giveData)
+                //body:JSON.stringify(giveData)
             })
                 .then((res) => {
                     if (res.status === 200) {
                         document.getElementById("formContainer").style.display = 'none';
                         alert("You have ordered successfully");
                         console.log("Successful");
+
                     }
                     else {
                         console.log("Fail");
@@ -350,7 +314,7 @@
                         console.log("Exception")
                     }
                 })
-        })
+        })*/
 
         const cancelButton = document.getElementById("btnCancel");
         cancelButton.addEventListener("click", function (event) {

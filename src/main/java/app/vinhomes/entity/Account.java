@@ -106,6 +106,7 @@ public class Account implements UserDetails {
             cascade = CascadeType.ALL
     )
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JsonIgnore
     @JsonManagedReference
     private WorkerStatus workerStatus;

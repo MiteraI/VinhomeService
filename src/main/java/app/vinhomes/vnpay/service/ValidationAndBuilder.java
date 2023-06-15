@@ -67,16 +67,16 @@ public class ValidationAndBuilder {
                 Transaction toSaveTransaction =
                 Transaction.builder()
                         .vnp_txnRef(vnp_txnRef)
-                        .paymentMethod(paymentRepository.findById(Long.valueOf(paymentMethodID)).get().toString())
+                        .paymentMethod(paymentRepository.findById(Long.valueOf(paymentMethodID)).get().getPaymentName().toString())
                         .transactionId(getOrder.getOrderId())
                         .order(getOrder)
-                        .bankCode("")
-                        .vnp_TransactionDate(0)
+                        //.bankCode("")
+                        //.vnp_TransactionDate(0)
                         .build();
                 System.out.println(toSaveTransaction);
 
                 System.out.println("done build transaction, now safe");
-                return toSaveTransaction;
+                return transactionRepository.save(toSaveTransaction);
             }
         }catch (NullPointerException e){
             System.out.println("WHY cant find Order with its own ID, major error    "+e.getMessage());

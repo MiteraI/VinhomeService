@@ -12,12 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import app.vinhomes.vnpay.config.ConfigVNpay;
 import app.vinhomes.vnpay.service.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -33,15 +37,17 @@ public class VNpayController extends HttpServlet {
     @Autowired
     private TransactionRepository transactionRepository;
     private String errorURL = "/";
-    @PostMapping
-    public ResponseEntity<String> createPayment( @RequestBody JsonNode jsonNode ,HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @PostMapping//@RequestParam JsonNode jsonNode ,
+    public ResponseEntity<String> createPayment( HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "billpayment";
+        JsonNode jsonNode1 ;
         ////////////////////////////////////////////////////////////
         String orderID = null;
-        String transactionMethodID = jsonNode.get("paymentId").asText();
-        String dayfromFormOrderService= jsonNode.get("day").asText();
+
+        String transactionMethodID = req.getParameter("paymentId");//jsonNode.get("paymentId").asText();
+        String dayfromFormOrderService= req.getParameter("day") ;//jsonNode.get("day").asText();
         if(transactionMethodID != null){
             ResponseEntity<String> response = orderService.createOrder(jsonNode,req);// this return resp status + ORDER ID!!
             if(response.getStatusCode().is2xxSuccessful())    {
@@ -136,14 +142,17 @@ public class VNpayController extends HttpServlet {
                 Long.parseLong(orderID),
                 vnp_TxnRef,
                 transactionMethodID);
-        transactionRepository.save(getTransactionObj);
+
         if(getTransactionObj != null){
             System.out.println("  "+ getTransactionObj.getVnp_txnRef());
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         //resp.getWriter().write(gson.toJson(job));
         resp.sendRedirect(paymentUrl);
-        return ResponseEntity.ok().body("");
+        //RedirectView redirectView = new RedirectView();
+        //redirectView.setUrl(payreturn redirectView;
+        //return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(paymentUrl)).build();
+        return ResponseEntity.ok().body(paymentUrl);
     }
 
 

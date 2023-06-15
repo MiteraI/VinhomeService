@@ -2,14 +2,15 @@ package app.vinhomes.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "tbl_transaction")
 @Data
+//@Getter
+//@Setter
+//@ToString
+/////
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
