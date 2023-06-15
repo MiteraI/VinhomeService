@@ -2,6 +2,7 @@ package app.vinhomes.unittest;
 
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.repository.TransactionRepository;
+import app.vinhomes.vnpay.service.ValidationAndBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 public class test {
     @Autowired
     private TransactionRepository transactionRepository;
+    @Autowired
+    private ValidationAndBuilder validationAndBuilder;
 //    @Value("${twilio.expiration}")
     private int expired = 120000;
 
@@ -29,5 +32,13 @@ public class test {
     void testTransactionRepo(){
         List<Transaction> transactionList= transactionRepository.findAll();
         int size = transactionList.size();
+    }
+    @Test
+    void testTransaction(){
+        validationAndBuilder.BuildTransactionThroughOrder(
+            37,
+                "123123",
+                "8"
+        );
     }
 }

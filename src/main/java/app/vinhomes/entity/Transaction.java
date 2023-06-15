@@ -1,5 +1,6 @@
 package app.vinhomes.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,13 +21,12 @@ public class Transaction {
     private String bankCode;
     private String vnp_txnRef;
     private long vnp_TransactionDate;
-    @OneToOne
+    @OneToOne(
+            cascade = CascadeType.MERGE
+    )
     @JoinColumn(
-            name = "order_id",
-            referencedColumnName = "order_id"
+            name = "transaction_id"
     )
     @MapsId
     private Order order;
-
-
 }

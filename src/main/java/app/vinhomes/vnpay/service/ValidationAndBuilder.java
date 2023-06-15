@@ -9,6 +9,7 @@ import app.vinhomes.repository.order.PaymentCategoryRepository;
 import app.vinhomes.repository.order.PaymentRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.core.RepositoryCreationException;
 
@@ -72,8 +73,9 @@ public class ValidationAndBuilder {
                         .bankCode("")
                         .vnp_TransactionDate(0)
                         .build();
-                System.out.println();
-                transactionRepository.save(toSaveTransaction);
+                System.out.println(toSaveTransaction);
+
+                System.out.println("done build transaction, now safe");
                 return toSaveTransaction;
             }
         }catch (NullPointerException e){

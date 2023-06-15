@@ -30,6 +30,8 @@ public class VNpayController extends HttpServlet {
     private ValidationAndBuilder vnpayService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private TransactionRepository transactionRepository;
     private String errorURL = "/";
     @PostMapping
     public ResponseEntity<String> createPayment( @RequestBody JsonNode jsonNode ,HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -134,8 +136,9 @@ public class VNpayController extends HttpServlet {
                 Long.parseLong(orderID),
                 vnp_TxnRef,
                 transactionMethodID);
+        transactionRepository.save(getTransactionObj);
         if(getTransactionObj != null){
-            System.out.println(getTransactionObj.getTransactionId() +"  "+ getTransactionObj.getVnp_txnRef());
+            System.out.println("  "+ getTransactionObj.getVnp_txnRef());
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         //resp.getWriter().write(gson.toJson(job));
