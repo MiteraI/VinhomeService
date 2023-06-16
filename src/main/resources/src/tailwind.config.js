@@ -17,7 +17,7 @@ module.exports = {
       colors: {
         'blue-bootstrap': '#007BFF',
         'strong-gray': '#535151',
-        'yello-info': '#FFD12F',
+        'yellow-info': '#FFD12F',
         'red-cancel': '#DC3545',
         'green-success': '#28A745'
       },
