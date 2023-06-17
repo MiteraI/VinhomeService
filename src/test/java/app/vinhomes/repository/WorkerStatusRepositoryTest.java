@@ -1,5 +1,6 @@
 package app.vinhomes.repository;
 
+import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.worker.WorkerStatusRepository;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,9 @@ class WorkerStatusRepositoryTest {
     private WorkerStatusRepository workerStatusRepository;
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
     @Test
     public void printAllWorkerStatus() {
         System.out.println("All worker status's info = "+workerStatusRepository.findAll());
@@ -22,5 +26,17 @@ class WorkerStatusRepositoryTest {
                 workerStatusRepository.findByServiceCategoryAndStatusOrderByWorkCountAsc(
                         serviceCategoryRepository.findById(1L).get(), 0
                 ));
+    }
+
+    @Test
+    public void createWorker () {
+        WorkerStatus workerStatus = WorkerStatus.builder()
+                .account(accountRepository.findByAccountId(3L))
+                .status(0)
+                .allowedDayOff(10)
+                .workCount(0)
+                .serviceCategory(serviceCategoryRepository.findByServiceCategoryId(1L))
+                .build();
+        workerStatusRepository.save(workerStatus);
     }
 }

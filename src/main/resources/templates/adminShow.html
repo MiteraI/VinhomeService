@@ -46,8 +46,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white  m-0" href="#" id="createDaysOff">
-                                <h4>Create Days Off</h4>
+                            <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
+                                <h4>See Leave Report</h4>
                             </a>
                         </li>
                     </ul>
@@ -550,6 +550,24 @@ asdfasdfsadfdsafasdf -->
             </div>
         </div>
     </div>
+    <div class="container" style="display: none;" id="leave-list">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Reason</th>
+                <th>File</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="tbody-see-all-leave-report">
+
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- </div> -->
 <script>
@@ -582,6 +600,17 @@ asdfasdfsadfdsafasdf -->
 
         formContainer.style.opacity = '1';
         formContainer.style.pointerEvents = 'auto';
+    })
+</script>
+<script>
+    document.getElementById('see-all-leave-report').addEventListener('click', function () {
+        var listLeave = document.getElementById('leave-list');
+        listLeave.style.display = '';
+
+        void listLeave.offsetWidth;
+
+        listLeave.style.opacity = '1';
+        listLeave.style.pointerEvents = 'auto';
     })
 </script>
 <script>
@@ -649,6 +678,78 @@ asdfasdfsadfdsafasdf -->
         const divForm = document.getElementById("formContainer");
         divForm.style.display = 'none';
     })
+</script>
+<script>
+    const leaveBtn = document.getElementById("see-all-leave-report");
+    leaveBtn.addEventListener('click', function () {
+        fetch('/api/leave-report')
+            .then(response => response.json())
+            .then(data => {
+                let output = '';
+                data.forEach(item => {
+                    const leaveReport = item['leaveReport'];
+                    const account = item['account'];
+
+                    const firstName = account['firstName'];
+                    const lastName = account['lastName'];
+                    const startDate = leaveReport['startTime'];
+                    const endDate = leaveReport['endTime'];
+                    const reason = leaveReport['reason'];
+                    const link = leaveReport['fileURL'];
+                    // const file = leaveReport['file'];
+
+                    output += `
+                        <tr>
+                          <td>${firstName}</td>
+                          <td>${lastName}</td>
+                          <td>${startDate}</td>
+                          <td>${endDate}</td>
+                          <td>${reason}</td>
+
+                            <td th:if="${link != null}"><img src="${link}"/></td>
+                            <td>
+                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
+                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
+                            </td>
+                        </tr>
+                      `;
+                });
+
+                document.getElementById('tbody-see-all-leave-report').innerHTML = output;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    })
+</script>
+<script>
+    function approveLeave(leaveReportId) {
+        performAction('api/leave-report/update', leaveReportId, 1); // Assuming 1 represents the 'approve' status
+    }
+
+    function rejectLeave(leaveReportId) {
+        performAction('api/leave-report/update', leaveReportId, 2); // Assuming 0 represents the 'reject' status
+    }
+
+    function performAction(url, leaveReportId, status) {
+        // Perform AJAX request to your controller
+        fetch(url, {
+            method: 'POST', // or 'GET' based on your server-side implementation
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ leaveReportId: leaveReportId, status: status })
+        })
+            .then(data => {
+                if (data.status === 200) {
+                    console.log(data.text());
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

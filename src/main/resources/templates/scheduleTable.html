@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
   <body>
     <table id="timeTable">
       <thead>
@@ -157,6 +159,86 @@
         </tr>
       </tbody>
     </table>
+    <div class="container mt-5" th:with="user= ${session.loginedUser}">
+      <h2>Leave dates</h2>
+      <form id="submit-leave-form" enctype="multipart/form-data">
+        <div class="form-group" >
+          <label for="firstName">First Name:</label>
+          <input type="text" class="form-control" id="firstName" th:value="${user.getFirstName()}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name:</label>
+          <input type="text" class="form-control" id="lastName" th:value="${user.getLastName()}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="startDate">Start Date:</label>
+          <input type="date" class="form-control" id="startDate" >
+        </div>
+        <div class="form-group">
+          <label for="endDate">End Date:</label>
+          <input type="date" class="form-control" id="endDate">
+        </div>
+        <div class="form-group">
+          <label for="content">Reason</label>
+          <input type="text" class="form-control" id="content" >
+        </div>
+        <div class="form-group">
+          <label for="file">Upload Related File:</label>
+          <input type="file" class="form-control-file" id="file" name="file" >
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-leave">Submit</button>
+      </form>
+    </div>
+    <script>
+      let startDate;
+      let endDate;
+      let reason;
+      document.getElementById("startDate").addEventListener('input', function () {
+        startDate = this.value;
+      });
+
+      document.getElementById("endDate").addEventListener('input', function () {
+        endDate = this.value;
+      });
+
+      document.getElementById("content").addEventListener('input', function () {
+        reason = this.value;
+      });
+
+      const submitLeaveForm = document.getElementById("submit-leave-form");
+      submitLeaveForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("startDate", startDate);
+        formData.append("endDate", endDate);
+        formData.append("reason", reason);
+
+        const fileInput = document.getElementById("file");
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          formData.append('file', file);
+        }
+        console.log(formData)
+        async function fetchData() {
+          try {
+            const response = await fetch("/api/leave-report", {
+              method: 'POST',
+              body: formData
+            });
+            const dataNoti = await response.text();
+            if (response.status === 201) {
+              alert(dataNoti);
+            } else {
+              alert(dataNoti);
+            }
+          } catch (error) {
+            console.log("Error: ", error);
+          }
+        }
+        fetchData();
+      })
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       // Function to clear table data everytime fetching data

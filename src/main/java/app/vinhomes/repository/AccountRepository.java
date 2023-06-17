@@ -17,6 +17,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Account findByFirstNameAndLastName (String firstName, String lastName);
 
+
     //@Query("select * from tbl_account a left join tbl_phone b on a.account_id = b.account_id")
     //List<Account> getAccountWithPhone();
     @Query("""
@@ -25,4 +26,5 @@ select a from Account a
 """)
     Optional<Account> findUsername(String account_name);
 
+    Account findByAccountId (Long id);
 }

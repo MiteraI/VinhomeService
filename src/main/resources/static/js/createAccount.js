@@ -21,7 +21,7 @@ form_create.addEventListener('submit', async function (event) {
 
     console.log(response.status)
     if (response.status == 400) {
-        error_message = await response.json()
+        let error_message = await response.json()
         var list = document.getElementsByClassName("error-message");
         var i = 0;
         for (var key in error_message) {
@@ -39,7 +39,7 @@ form_create.addEventListener('submit', async function (event) {
 
 
     } else if (response.status == 200) {
-        error_message = await response.json()
+        let error_message = await response.json()
         var list = document.getElementsByClassName("error-message");
         var i = 0;
         for (var key in error_message) {
@@ -54,7 +54,7 @@ form_create.addEventListener('submit', async function (event) {
         window.location.replace("/");
 
     } else if (response.status == 500) {
-        error_message = await response.json()
+        let error_message = await response.json()
         var list = document.getElementsByClassName("error-message");
         var i = 0;
         for (var key in error_message) {
