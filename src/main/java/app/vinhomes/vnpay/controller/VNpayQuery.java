@@ -1,5 +1,7 @@
 package app.vinhomes.vnpay.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,17 +33,17 @@ public class VNpayQuery {
         String vnp_Version = "2.1.0";
         String vnp_Command = "querydr";
         String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
-        String vnp_TxnRef = String.valueOf(93930081);//req.getParameter("order_id")
+        String vnp_TxnRef = "63562614";//req.getParameter("order_id")
         String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
         //String vnp_TransactionNo = String.valueOf(14035682) ;//req.getParameter("transactionNo");
-        String vnp_TransDate = String.valueOf (20230611175217l); //req.getParameter("trans_date");//vnp_payday
+        String vnp_TransDate = String.valueOf (20230616094041l); //req.getParameter("trans_date");//vnp_payday
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
-
+        //20230616094041
         String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
-
+       // 63562614
         JsonObject  vnp_Params = new JsonObject ();
 
         vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
@@ -81,6 +83,7 @@ public class VNpayQuery {
         StringBuffer response = new StringBuffer();
         while ((output = in.readLine()) != null) {
             response.append(output);
+            //System.out.println(output);
         }
         in.close();
         System.out.println(response.toString());

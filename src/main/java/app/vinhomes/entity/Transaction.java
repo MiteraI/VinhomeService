@@ -1,5 +1,6 @@
 package app.vinhomes.entity;
 
+import app.vinhomes.entity.type_enum.TransactionStatus;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,8 +21,10 @@ public class Transaction {
     private Long transactionId;
     private String paymentMethod;
     private String bankCode;
-    private String vnp_txnRef;
-    private long vnp_TransactionDate;
+    private String vnpTxnRef;
+    private long vnpTransactionDate;
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
     @OneToOne(
             cascade = CascadeType.MERGE
     )

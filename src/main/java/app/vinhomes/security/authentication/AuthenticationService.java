@@ -40,13 +40,10 @@ public class AuthenticationService {
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
         var account = accountRepository.findByAccountName(request.getUsername());
-        System.out.println();
         if (account == null) {
             return account;
         }
-
      return null;
-
     }
 
 

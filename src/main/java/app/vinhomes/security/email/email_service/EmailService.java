@@ -2,6 +2,7 @@ package app.vinhomes.security.email.email_service;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.security.email.email_dto.TokenEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -59,6 +60,10 @@ public class EmailService   {
             System.out.println(e.getMessage());
             return "Error while Sending Mail";
         }
+    }
+    public String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
     public Map<String,TokenEntity> getTokenEntityMap(){
         return this.tokenEntityMap;

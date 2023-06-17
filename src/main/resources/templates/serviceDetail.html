@@ -121,7 +121,7 @@
                             <div class="form-group" style="margin-bottom: 15px" >
                                 <label for="ServiceName1">Service name:</label>
                                 <input id="ServiceName1" style="line-height: 15px;" th:field="${service.serviceName}" >
-                                <input type="hidden" th:value="${service.serviceId}" id="serviceName">
+                                <input type="hidden" name="serviceId" th:value="${service.serviceId}" id="serviceName">
                             </div>
                             <label for="timeSlot">Time Slot</label>
                             <div class="form-group" style="margin-left: 20px; margin-bottom: 15px;" id="timeSlot">
@@ -272,7 +272,6 @@
                         if (this.checked) {
                             giveData.paymentId = this.value;
                             console.log(giveData.paymentId);
-
                         }
                     })
                 })

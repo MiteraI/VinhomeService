@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import app.vinhomes.vnpay.config.ConfigVNpay;
 
+import javax.xml.crypto.dsig.SignatureMethod;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,14 +18,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 @RestController
 @RequestMapping(value = "/vnpay/refund")
 public class VNpayRefund {
     private final String transactionTypeValue = "02";
+    @GetMapping("/getlong")
+    public String getLongDate() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        Date date = format.parse("11/06/2023 23:03:18");
+        SimpleDateFormat anotherFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String returnString = anotherFormat.format(date);
+        System.out.println(returnString);
+        return returnString;
+    }
     @GetMapping
     public ResponseEntity<?> refund(HttpServletRequest req,  HttpServletResponse resp) throws IOException {
         String vnp_RequestId = ConfigVNpay.getRandomNumber(8);
@@ -34,14 +46,15 @@ public class VNpayRefund {
 //        02: Giao dịch hoàn trả toàn phần (vnp_TransactionType=02)
 //        03: Giao dịch hoàn trả một phần (vnp_TransactionType=03)
         // mac dinh = 2, dell ai tra mot phan cho met
-        String vnp_TransactionType = transactionTypeValue ;//req.getParameter("trantype")
-        String vnp_TxnRef = req.getParameter("order_id");//String.valueOf(93930081) ;
-        int amount = Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;
+        String vnp_TransactionType = transactionTypeValue ;//req.getParameter("vnp_TransactionType")
+            String vnp_TxnRef = "93698609";//req.getParameter("order_id");
+        // response từ query trả về từ vnpay ko cần *100, nó đã sẵn nhân 100 rồi
+            int amount =15000000 ;//Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;10000000
         String vnp_Amount = String.valueOf(amount);
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
         String vnp_TransactionNo = "";
-        String vnp_TransactionDate =req.getParameter("trans_date"); //String.valueOf(20230611175217l) ;
-        String vnp_CreateBy = "NGUYEN VAN A";//req.getParameter("user");
+            String vnp_TransactionDate =String.valueOf(20230611230318l) ;//req.getParameter("trans_date"); //
+        String vnp_CreateBy = "adsasdsad";//req.getParameter("user");NGUYEN VAN A// ko quan trong
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
@@ -49,7 +62,8 @@ public class VNpayRefund {
         String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
 
         JsonObject vnp_Params = new JsonObject ();
-
+        //63562614
+        //20230616094041
         vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
         vnp_Params.addProperty("vnp_Version", vnp_Version);
         vnp_Params.addProperty("vnp_Command", vnp_Command);

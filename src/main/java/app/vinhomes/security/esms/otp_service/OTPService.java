@@ -3,10 +3,6 @@ package app.vinhomes.security.esms.otp_service;
 import app.vinhomes.security.esms.otp_dto.OTPAttribute;
 import app.vinhomes.security.esms.otp_dto.OTPStatus;
 import app.vinhomes.security.esms.otp_dto.PasswordResetResponseDTO;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.rest.api.v2010.account.ValidationRequest;
-import com.twilio.type.PhoneNumber;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
