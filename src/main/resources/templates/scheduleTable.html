@@ -1,318 +1,402 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <table id="timeTable">
-      <thead>
-        <tr>
-          <th rowspan="2">
-            <span class="auto-style1"><strong>Year</strong></span>
-            <select>
-              <option value="2020">2020</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-            </select>
-            <br />
-            Week
-            <select id="weekSelect">
-              <option value="1">02/01 To 08/01</option>
-              <option value="2">09/01 To 15/01</option>
-              <option value="3">16/01 To 22/01</option>
-              <option value="4">23/01 To 29/01</option>
-              <option value="5">30/01 To 05/02</option>
-              <option value="6">06/02 To 12/02</option>
-              <option value="7">13/02 To 19/02</option>
-              <option value="8">20/02 To 26/02</option>
-              <option value="9">27/02 To 05/03</option>
-              <option value="10">06/03 To 12/03</option>
-              <option value="11">13/03 To 19/03</option>
-              <option value="12">20/03 To 26/03</option>
-              <option value="13">27/03 To 02/04</option>
-              <option value="14">03/04 To 09/04</option>
-              <option value="15">10/04 To 16/04</option>
-              <option value="16">17/04 To 23/04</option>
-              <option value="17">24/04 To 30/04</option>
-              <option value="18">01/05 To 07/05</option>
-              <option value="19">08/05 To 14/05</option>
-              <option value="20">15/05 To 21/05</option>
-              <option value="21">22/05 To 28/05</option>
-              <option value="22">29/05 To 04/06</option>
-              <option value="23">05/06 To 11/06</option>
-              <option value="24">12/06 To 18/06</option>
-              <option value="25">19/06 To 25/06</option>
-              <option value="26">26/06 To 02/07</option>
-              <option value="27">03/07 To 09/07</option>
-              <option value="28">10/07 To 16/07</option>
-              <option value="29">17/07 To 23/07</option>
-              <option value="30">24/07 To 30/07</option>
-              <option value="31">31/07 To 06/08</option>
-              <option value="32">07/08 To 13/08</option>
-              <option value="33">14/08 To 20/08</option>
-              <option value="34">21/08 To 27/08</option>
-              <option value="35">28/08 To 03/09</option>
-              <option value="36">04/09 To 10/09</option>
-              <option value="37">11/09 To 17/09</option>
-              <option value="38">18/09 To 24/09</option>
-              <option value="39">25/09 To 01/10</option>
-              <option value="40">02/10 To 08/10</option>
-              <option value="41">09/10 To 15/10</option>
-              <option value="42">16/10 To 22/10</option>
-              <option value="43">23/10 To 29/10</option>
-              <option value="44">30/10 To 05/11</option>
-              <option value="45">06/11 To 12/11</option>
-              <option value="46">13/11 To 19/11</option>
-              <option value="47">20/11 To 26/11</option>
-              <option value="48">27/11 To 03/12</option>
-              <option value="49">04/12 To 10/12</option>
-              <option value="50">11/12 To 17/12</option>
-              <option value="51">18/12 To 24/12</option>
-              <option value="52">25/12 To 31/12</option>
-            </select>
-          </th>
-          <th align="center">Mon</th>
-          <th align="center">Tue</th>
-          <th align="center">Wed</th>
-          <th align="center">Thu</th>
-          <th align="center">Fri</th>
-          <th align="center">Sat</th>
-          <th align="center">Sun</th>
-        </tr>
-        <tr id="weekdate">
-          <th id="mondaydate" align="center"></th>
-          <th id="tuesdaydate" align="center"></th>
-          <th id="wednesdaydate" align="center"></th>
-          <th id="thursdaydate" align="center"></th>
-          <th id="fridaydate" align="center"></th>
-          <th id="saturdaydate" align="center"></th>
-          <th id="sundaydate" align="center"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Slot 1</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>Slot 2</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>Slot 3</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>Slot 4</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>Slot 5</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>Slot 6</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      // Function to clear table data everytime fetching data
-      function clearTableContent() {
-        const table = document.getElementById("timeTable");
-        const rows = table.rows;
-        const rowCount = rows.length;
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+<body>
+<table id="timeTable">
+  <thead>
+  <tr>
+    <th rowspan="2">
+      <span class="auto-style1"><strong>Year</strong></span>
+      <select>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+      </select>
+      <br />
+      Week
+      <select id="weekSelect">
+        <option value="1">02/01 To 08/01</option>
+        <option value="2">09/01 To 15/01</option>
+        <option value="3">16/01 To 22/01</option>
+        <option value="4">23/01 To 29/01</option>
+        <option value="5">30/01 To 05/02</option>
+        <option value="6">06/02 To 12/02</option>
+        <option value="7">13/02 To 19/02</option>
+        <option value="8">20/02 To 26/02</option>
+        <option value="9">27/02 To 05/03</option>
+        <option value="10">06/03 To 12/03</option>
+        <option value="11">13/03 To 19/03</option>
+        <option value="12">20/03 To 26/03</option>
+        <option value="13">27/03 To 02/04</option>
+        <option value="14">03/04 To 09/04</option>
+        <option value="15">10/04 To 16/04</option>
+        <option value="16">17/04 To 23/04</option>
+        <option value="17">24/04 To 30/04</option>
+        <option value="18">01/05 To 07/05</option>
+        <option value="19">08/05 To 14/05</option>
+        <option value="20">15/05 To 21/05</option>
+        <option value="21">22/05 To 28/05</option>
+        <option value="22">29/05 To 04/06</option>
+        <option value="23">05/06 To 11/06</option>
+        <option value="24">12/06 To 18/06</option>
+        <option value="25">19/06 To 25/06</option>
+        <option value="26">26/06 To 02/07</option>
+        <option value="27">03/07 To 09/07</option>
+        <option value="28">10/07 To 16/07</option>
+        <option value="29">17/07 To 23/07</option>
+        <option value="30">24/07 To 30/07</option>
+        <option value="31">31/07 To 06/08</option>
+        <option value="32">07/08 To 13/08</option>
+        <option value="33">14/08 To 20/08</option>
+        <option value="34">21/08 To 27/08</option>
+        <option value="35">28/08 To 03/09</option>
+        <option value="36">04/09 To 10/09</option>
+        <option value="37">11/09 To 17/09</option>
+        <option value="38">18/09 To 24/09</option>
+        <option value="39">25/09 To 01/10</option>
+        <option value="40">02/10 To 08/10</option>
+        <option value="41">09/10 To 15/10</option>
+        <option value="42">16/10 To 22/10</option>
+        <option value="43">23/10 To 29/10</option>
+        <option value="44">30/10 To 05/11</option>
+        <option value="45">06/11 To 12/11</option>
+        <option value="46">13/11 To 19/11</option>
+        <option value="47">20/11 To 26/11</option>
+        <option value="48">27/11 To 03/12</option>
+        <option value="49">04/12 To 10/12</option>
+        <option value="50">11/12 To 17/12</option>
+        <option value="51">18/12 To 24/12</option>
+        <option value="52">25/12 To 31/12</option>
+      </select>
+    </th>
+    <th align="center">Mon</th>
+    <th align="center">Tue</th>
+    <th align="center">Wed</th>
+    <th align="center">Thu</th>
+    <th align="center">Fri</th>
+    <th align="center">Sat</th>
+    <th align="center">Sun</th>
+  </tr>
+  <tr id="weekdate">
+    <th id="mondaydate" align="center"></th>
+    <th id="tuesdaydate" align="center"></th>
+    <th id="wednesdaydate" align="center"></th>
+    <th id="thursdaydate" align="center"></th>
+    <th id="fridaydate" align="center"></th>
+    <th id="saturdaydate" align="center"></th>
+    <th id="sundaydate" align="center"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Slot 1</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Slot 2</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Slot 3</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Slot 4</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Slot 5</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Slot 6</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  </tbody>
+</table>
 
-        // Iterate over each row in the table
-        for (let i = 2; i < rowCount; i++) {
-          const cells = rows[i].cells;
-          const cellCount = cells.length;
+<div class="container mt-5" th:with="user= ${session.loginedUser}">
+  <h2>Leave dates</h2>
+  <form id="submit-leave-form" enctype="multipart/form-data">
+    <div class="form-group" >
+      <label for="firstName">First Name:</label>
+      <input type="text" class="form-control" id="firstName" th:value="${user.getFirstName()}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" class="form-control" id="lastName" th:value="${user.getLastName()}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="startDate">Start Date:</label>
+      <input type="date" class="form-control" id="startDate" >
+    </div>
+    <div class="form-group">
+      <label for="endDate">End Date:</label>
+      <input type="date" class="form-control" id="endDate">
+    </div>
+    <div class="form-group">
+      <label for="content">Reason</label>
+      <input type="text" class="form-control" id="content" >
+    </div>
+    <div class="form-group">
+      <label for="file">Upload Related File:</label>
+      <input type="file" class="form-control-file" id="file" name="file" >
+    </div>
+    <button type="submit" class="btn btn-primary" id="submit-leave">Submit</button>
+  </form>
+</div>
+<script>
+  let startDate;
+  let endDate;
+  let reason;
+  document.getElementById("startDate").addEventListener('input', function () {
+    startDate = this.value;
+  });
 
-          // Iterate over each cell in the row
-          for (let j = 1; j < cellCount; j++) {
-            const cell = cells[j];
-            // Clear the content of the cell
-            if (cell.innerHTML !== "-") {
-              cell.innerHTML = "-";
-            }
-            // Or use the following line if you want to clear the HTML content of the cell:
-            // cell.innerHTML = '';
-          }
+  document.getElementById("endDate").addEventListener('input', function () {
+    endDate = this.value;
+  });
+
+  document.getElementById("content").addEventListener('input', function () {
+    reason = this.value;
+  });
+
+  const submitLeaveForm = document.getElementById("submit-leave-form");
+  submitLeaveForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("startDate", startDate);
+    formData.append("endDate", endDate);
+    formData.append("reason", reason);
+
+    const fileInput = document.getElementById("file");
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      formData.append('file', file);
+    }
+    console.log(formData)
+    async function fetchData() {
+      try {
+        const response = await fetch("/api/leave-report", {
+          method: 'POST',
+          body: formData
+        });
+        const dataNoti = await response.text();
+        if (response.status === 201) {
+          alert(dataNoti);
+        } else {
+          alert(dataNoti);
         }
+      } catch (error) {
+        console.log("Error: ", error);
       }
-      // Fetch function
-      let setSchedule = async (startDate, endDate) => {
-        console.log(startDate + "  " + endDate);
-        clearTableContent();
-        await axios
-          .post("/api/worker/schedules", {
-            startDate: startDate,
-            endDate: endDate,
-          })
-          .then((res) => {
-            // Get the table element
-            const table = document.getElementById("timeTable");
-            data = res.data;
-            console.log(data);
-            // Iterate over each API entry
-            data.forEach((entry) => {
-              const { order, workDay, timeSlot, workers } = entry;
-              console.log(entry);
-              // Extract day and slot from workDay and timeSlot
-              const day = new Date(workDay).getDay(); // 0 (Sunday) to 6 (Saturday)
-              const slot = timeSlot.timeSlotId; // Adjust index to match table row index
+    }
+    fetchData();
+  })
 
-              // Get the table cell for the specific day and slot
-              const cell = table.rows[slot + 1].cells[day];
+</script>
 
-              // Create a string to display the worker names
-              const workerNames = workers
-                .map((worker) => `${worker.firstName} ${worker.lastName}`)
-                .join("<br>");
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  // Function to clear table data everytime fetching data
+  function clearTableContent() {
+    const table = document.getElementById("timeTable");
+    const rows = table.rows;
+    const rowCount = rows.length;
 
-              console.log(order.account.address.buildingBlock);
-              // Set the worker names as the cell content
-              cell.innerHTML =
-                workerNames +
-                "<br>" +
-                order.account.address.buildingBlock +
-                order.account.address.buildingRoom;
-            });
-          })
-          .catch((error) => console.log(error));
-      };
+    // Iterate over each row in the table
+    for (let i = 2; i < rowCount; i++) {
+      const cells = rows[i].cells;
+      const cellCount = cells.length;
 
-      window.addEventListener("load", setOptionByCurrentDate);
-
-      function setOptionByCurrentDate() {
-        // Get the current date
-        var currentDate = new Date();
-
-        // Define the start date of the range
-        var startDate = new Date("2023-01-02"); // The start date of your range
-
-        // Calculate the difference in days between the current date and the start date
-        var diffDays = Math.floor(
-          (currentDate - startDate) / (1000 * 60 * 60 * 24)
-        );
-
-        // Calculate the option index based on the difference in days
-        var optionIndex = Math.ceil((diffDays + 1) / 7); // Add 1 to adjust for the first option starting from the startDate itself
-
-        // Get the <select> element
-        var weekSelect = document.getElementById("weekSelect");
-
-        // Set the selected option
-        weekSelect.selectedIndex = optionIndex - 1;
-        updateWeekDates();
+      // Iterate over each cell in the row
+      for (let j = 1; j < cellCount; j++) {
+        const cell = cells[j];
+        // Clear the content of the cell
+        if (cell.innerHTML !== "-") {
+          cell.innerHTML = "-";
+        }
+        // Or use the following line if you want to clear the HTML content of the cell:
+        // cell.innerHTML = '';
       }
+    }
+  }
+  // Fetch function
+  let setSchedule = async (startDate, endDate) => {
+    console.log(startDate + "  " + endDate);
+    clearTableContent();
+    await axios
+            .post("/api/worker/schedules", {
+              startDate: startDate,
+              endDate: endDate,
+            })
+            .then((res) => {
+              // Get the table element
+              const table = document.getElementById("timeTable");
+              data = res.data;
+              console.log(data);
+              // Iterate over each API entry
+              data.forEach((entry) => {
+                const { order, workDay, timeSlot, workers } = entry;
+                console.log(entry);
+                // Extract day and slot from workDay and timeSlot
+                const day = new Date(workDay).getDay(); // 0 (Sunday) to 6 (Saturday)
+                const slot = timeSlot.timeSlotId; // Adjust index to match table row index
 
-      // Get the <select> element
-      var weekSelect = document.getElementById("weekSelect");
+                // Get the table cell for the specific day and slot
+                const cell = table.rows[slot + 1].cells[day];
 
-      // Attach event listener to the <select> element
-      weekSelect.addEventListener("change", updateWeekDates);
-      function updateWeekDates() {
-        // Get the selected option value
-        var selectedOption = document.getElementById("weekSelect").value;
+                // Create a string to display the worker names
+                const workerNames = workers
+                        .map((worker) => `${worker.firstName} ${worker.lastName}`)
+                        .join("<br>");
 
-        // Parse the selected option value to get the start and end dates
-        var startDate = new Date("2023-01-02"); // The start date of your range
-        startDate.setDate(startDate.getDate() + (selectedOption - 1) * 7); // Adjust the start date based on the selected option
-        var endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + 6); // Calculate the end date by adding 6 days
+                console.log(order.account.address.buildingBlock);
+                // Set the worker names as the cell content
+                cell.innerHTML =
+                        workerNames +
+                        "<br>" +
+                        order.account.address.buildingBlock +
+                        order.account.address.buildingRoom;
+              });
+            })
+            .catch((error) => console.log(error));
+  };
 
-        // Update the week dates in the table
-        // Set tuesday
-        let tuesday = new Date(startDate);
-        tuesday.setDate(startDate.getDate() + 1);
-        // Set webnesday
-        let webnesday = new Date(startDate);
-        webnesday.setDate(startDate.getDate() + 2);
-        // Set thursday
-        let thursday = new Date(startDate);
-        thursday.setDate(startDate.getDate() + 3);
-        // Set friday
-        let friday = new Date(startDate);
-        friday.setDate(startDate.getDate() + 4);
-        // Set saturday
-        let saturday = new Date(startDate);
-        saturday.setDate(startDate.getDate() + 5);
+  window.addEventListener("load", setOptionByCurrentDate);
 
-        document.getElementById("mondaydate").textContent =
-          formatDate(startDate);
-        document.getElementById("tuesdaydate").textContent =
-          formatDate(tuesday);
-        document.getElementById("wednesdaydate").textContent =
-          formatDate(webnesday);
-        document.getElementById("thursdaydate").textContent =
-          formatDate(thursday);
-        document.getElementById("fridaydate").textContent = formatDate(friday);
-        document.getElementById("saturdaydate").textContent =
-          formatDate(saturday);
-        document.getElementById("sundaydate").textContent = formatDate(endDate);
+  function setOptionByCurrentDate() {
+    // Get the current date
+    var currentDate = new Date();
 
-        setSchedule(
-          formatDateWithYear(startDate),
-          formatDateWithYear(endDate)
-        ).then(() => console.log("cool"));
-      }
+    // Define the start date of the range
+    var startDate = new Date("2023-01-02"); // The start date of your range
 
-      function formatDate(date) {
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        return ("0" + day).slice(-2) + "/" + ("0" + month).slice(-2);
-      }
-      function formatDateWithYear(date) {
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        return (
-          year + "-" + ("0" + month).slice(-2) + "-" + ("0" + day).slice(-2)
-        );
-      }
-    </script>
-  </body>
+    // Calculate the difference in days between the current date and the start date
+    var diffDays = Math.floor(
+            (currentDate - startDate) / (1000 * 60 * 60 * 24)
+    );
+
+    // Calculate the option index based on the difference in days
+    var optionIndex = Math.ceil((diffDays + 1) / 7); // Add 1 to adjust for the first option starting from the startDate itself
+
+    // Get the <select> element
+    var weekSelect = document.getElementById("weekSelect");
+
+    // Set the selected option
+    weekSelect.selectedIndex = optionIndex - 1;
+    updateWeekDates();
+  }
+
+  // Get the <select> element
+  var weekSelect = document.getElementById("weekSelect");
+
+  // Attach event listener to the <select> element
+  weekSelect.addEventListener("change", updateWeekDates);
+  function updateWeekDates() {
+    // Get the selected option value
+    var selectedOption = document.getElementById("weekSelect").value;
+
+    // Parse the selected option value to get the start and end dates
+    var startDate = new Date("2023-01-02"); // The start date of your range
+    startDate.setDate(startDate.getDate() + (selectedOption - 1) * 7); // Adjust the start date based on the selected option
+    var endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 6); // Calculate the end date by adding 6 days
+
+    // Update the week dates in the table
+    // Set tuesday
+    let tuesday = new Date(startDate);
+    tuesday.setDate(startDate.getDate() + 1);
+    // Set webnesday
+    let webnesday = new Date(startDate);
+    webnesday.setDate(startDate.getDate() + 2);
+    // Set thursday
+    let thursday = new Date(startDate);
+    thursday.setDate(startDate.getDate() + 3);
+    // Set friday
+    let friday = new Date(startDate);
+    friday.setDate(startDate.getDate() + 4);
+    // Set saturday
+    let saturday = new Date(startDate);
+    saturday.setDate(startDate.getDate() + 5);
+
+    document.getElementById("mondaydate").textContent =
+            formatDate(startDate);
+    document.getElementById("tuesdaydate").textContent =
+            formatDate(tuesday);
+    document.getElementById("wednesdaydate").textContent =
+            formatDate(webnesday);
+    document.getElementById("thursdaydate").textContent =
+            formatDate(thursday);
+    document.getElementById("fridaydate").textContent = formatDate(friday);
+    document.getElementById("saturdaydate").textContent =
+            formatDate(saturday);
+    document.getElementById("sundaydate").textContent = formatDate(endDate);
+
+    setSchedule(
+            formatDateWithYear(startDate),
+            formatDateWithYear(endDate)
+    ).then(() => console.log("cool"));
+  }
+
+  function formatDate(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    return ("0" + day).slice(-2) + "/" + ("0" + month).slice(-2);
+  }
+  function formatDateWithYear(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    return (
+            year + "-" + ("0" + month).slice(-2) + "-" + ("0" + day).slice(-2)
+    );
+  }
+</script>
+</body>
 </html>
