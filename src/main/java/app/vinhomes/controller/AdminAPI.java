@@ -153,13 +153,15 @@ public class AdminAPI {
 
     @GetMapping(value = "/getAccountInfo/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Account getAccountById(@PathVariable String ID) {
+        System.out.println("inside get Account info");
         Account account = accountRepository.findById(Long.parseLong(ID)).get();
         return account;
     }
 
-    @PostMapping(value = "/getAccountPhonenumber", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Phone> getPhonenumberByAccount(@RequestBody Account account) {
-        List<Phone> phoneList = phoneRepository.findByAccount(account);
+    @GetMapping(value = "/getAccountPhonenumber/{accountID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Phone> getPhonenumberByAccount(@PathVariable long accountID) {
+        System.out.println("inside get phone number");
+        List<Phone> phoneList = phoneRepository.findByAccountId(accountID);
         return phoneList;
     }
 
@@ -288,10 +290,10 @@ public class AdminAPI {
         return ResponseEntity.status(HttpStatus.OK).body(error);
     }
 
-    @PostMapping(value = "/getWorkerStatus", produces = MediaType.APPLICATION_JSON_VALUE)
-    public WorkerStatus getWorkerStatus(@RequestBody Account account) {
+    @GetMapping(value = "/getWorkerStatus/{account_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WorkerStatus getWorkerStatus(@PathVariable long account_id) {
         System.out.println("get in address");
-        WorkerStatus workerStatus = workerStatusRepository.findByAccount(account);
+        WorkerStatus workerStatus = workerStatusRepository.findWorkerStatusById(account_id);
         return workerStatus;
 
     }

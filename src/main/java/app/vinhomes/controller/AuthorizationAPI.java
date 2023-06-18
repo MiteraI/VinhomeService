@@ -22,6 +22,7 @@ public class AuthorizationAPI {
     private AccountRepository accountRepository;
     @Autowired
     private AuthenticationService authenticationService;
+
     @PostMapping(value = "/login",consumes = MediaType.ALL_VALUE)
     public String login( HttpServletRequest request, HttpServletResponse response) {
         System.out.println("inside login");
@@ -39,4 +40,5 @@ public class AuthorizationAPI {
             return "fail";
         }
     }
+
 }
