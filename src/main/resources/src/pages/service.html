@@ -24,6 +24,15 @@
           </button>
         </div>
 
+        <div>
+          <ul class="flex list-none space-x-20">
+            <li class="text-xl font-medium text-white"><a href="/">Home</a></li>
+            <li class="text-xl font-medium text-white"><a href="#about">About</a></li>
+            <li class="text-xl font-medium text-white"><a href="#service">Service</a></li>
+            <li class="text-xl font-medium text-white"><a href="#footer">Contact</a></li>
+          </ul>
+        </div>
+
         <div class="profile-btn flex items-center justify-center flex-col w-44">
           <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
             class="text-white w-full h-inherit bg-white hover:bg-blue-800 focus:outline-0 focus:ring-0 font-medium rounded-lg text-sm px-2 py-2 text-center inline-flex items-center justify-between dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -62,16 +71,14 @@
         </div>
       </div>
 
-      <div class="lg:hidden xl:hidden md:hidden lg:h-[0px] xl:h-[0px] md:h-[0px] sm:block xm:block">
-        <div class="flex justify-between px-3 py-4">
+      <div class="lg:hidden xl:hidden md:hidden lg:h-0 xl:h-0 md:h-0 sm:block xm:block">
+        <div class="flex justify-between items-center px-3 py-4">
           <div>
-            <a class="text-5xl font-extrabold text-white" href="./index.html">SuperClean</a>
-            <button class="xm:block md:hidden" id="toggle-button">
-              <img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
-              <img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
-            </button>
+            <a class="text-5xl font-extrabold text-white sm:text-[30px] xm:text-[20px]"
+              href="./index.html">SuperClean</a>
           </div>
-          <button class="bars-toggle text-[2rem] text-white"><i class="fa fa-bars"></i></button>
+          <button class="bars-toggle text-[2rem] text-white sm:text-[30px] xm:text-[20px]"><i
+              class="fa fa-bars"></i></button>
         </div>
 
         <ul class="list-none transition-all duration-300 ease-linear overflow-hidden links lg:h-0 md:h-0 xl:h-0">
@@ -87,14 +94,15 @@
     </nav>
   </header>
 
-  <div class="content-body xl:mx-28 lg:mx-28 md:mx-28 sm:mx-0 xm:mx-0">
+  <div class="content-body mt-7 xl:mx-28 lg:mx-28 md:mx-28 sm:mx-0 xm:mx-0">
 
     <p class="text-center text-4xl text-blue-bootstrap">Our services for cleaning</p>
     <br />
-    <div class="xl:block lg:block md:block sm:hidden xm:hidden">
+    <div class="block">
       <section class="flex-col items-center justify-center" id="service">
 
-        <div class="grid grid-cols-2 gap-5 justify-center place-items-center">
+        <div
+          class="grid justify-center place-items-center lg:grid-cols-2 lg:gap-5 xl:grid-cols-2 xl:gap-5 md:grid-cols-1">
           <div class="w-[75%] space-y-6 flex-col items-center justify-center text-center mb-[35px]">
             <img class="mx-auto" src="../assets/images/service-1.jpg" alt="cleaning house" />
 
@@ -175,51 +183,6 @@
       </section>
     </div>
 
-    <div
-      class="sm:flex sm:justify-center sm:items-center xm:flex xm:justify-center xm:items-center xl:hidden lg:hidden md:hidden">
-      <table class="table-fixed border-collapse border border-slate-500 w-[90%]">
-        <thead>
-          <tr>
-            <th class="text-center border border-slate-500">Service</th>
-            <th class="text-center border border-slate-500 w-[60%]">Description</th>
-            <th class="text-center border border-slate-500">Order Now!</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-center border border-slate-500 text-[13px]">40m<sup>2</sup> House</td>
-            <td class="text-justify border border-slate-500 text-[13px] px-3 py-2">Lorem ipsum dolor sit amet
-              consectetur
-              adipisicing elit.
-              Optio iure necessitatibus suscipit soluta
-              doloribus ex provident magnam fuga enim maiores!</td>
-            <td class="text-center border border-slate-500"><a href="#" class="hover:underline">ORDER</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center border border-slate-500 text-[13px]">50m<sup>2</sup> House</td>
-            <td class="text-justify border border-slate-500 text-[13px] px-3 py-2">Lorem ipsum dolor sit amet
-              consectetur
-              adipisicing elit.
-              Optio iure necessitatibus suscipit soluta
-              doloribus ex provident magnam fuga enim maiores!</td>
-            <td class="text-center border border-slate-500">
-              <a href="https://youtu.be/xvFZjo5PgG0" class="hover:underline">ORDER</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center border border-slate-500 text-[13px]">60m<sup>2</sup> House</td>
-            <td class="text-justify border border-slate-500 text-[13px] px-3 py-2">Lorem ipsum dolor sit amet
-              consectetur
-              adipisicing elit.
-              Optio iure necessitatibus suscipit soluta
-              doloribus ex provident magnam fuga enim maiores!</td>
-            <td class="text-center border border-slate-500"><a href="#" class="hover:underline">ORDER</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 
   <script>
@@ -242,6 +205,7 @@
     console.log("profileBtn.height: " + profileBtn.getBoundingClientRect().height)
 
     console.log(listElement[0].getBoundingClientRect().height)
+
     for (let i = 0; i < listElement.length; i++) {
       listHeight += listElement[i].getBoundingClientRect().height;
     };
@@ -252,6 +216,7 @@
       console.log("clicked")
       dropDownMenu.classList.toggle("hidden")
     })
+    
     barsToggle.addEventListener('click', () => {
       if (listHeight == 0) {
         for (let i = 0; i < listElement.length; i++) {
