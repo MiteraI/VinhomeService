@@ -6,18 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../static/tailwind/font.css" />
-  <link rel="stylesheet" href="../static/tailwind/index.css" />
+  <link rel="stylesheet" href="../font.css" />
+  <link rel="stylesheet" href="../dist/index.css" />
   <title>Service name goes here</title>
 </head>
 
 <body class="overflow-x-hidden h-[100%] w-[100%]">
-  <!-- <header class="bg-blue-bootstrap lg:p-8 xl:p-8 md:p-8 sm:pb-0 sm:px-3 sm:pt-0 xm:pb-0 xm:px-3 xm:pt-0" id="Home">
+  <header class="bg-blue-bootstrap lg:p-8 xl:p-8 md:p-8 sm:pb-0 sm:px-3 sm:pt-0 xm:pb-0 xm:px-3 xm:pt-0" id="Home">
     <nav class="navBar lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
       <div
         class="lg:flex md:flex xl:flex xl:items-center lg:items-center md:items-center xl:justify-between lg:justify-between md:justify-between sm:hidden xm:hidden">
         <div>
-          <a class="logo text-5xl font-extrabold text-white" href="/">SuperClean</a>
+          <a class="logo text-5xl font-extrabold text-white" href="./index.html">SuperClean</a>
+          <button class="xm:block md:hidden" id="toggle-button">
+            <img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
+            <img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
+          </button>
         </div>
 
         <div>
@@ -34,7 +38,7 @@
             class="w-full h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 font-medium rounded-lg text-sm px-2 py-2 text-center inline-flex items-center justify-between "
             type="button">
             <span class="w-[20%] border-2 rounded-full border-blue-bootstrap">
-              <img src="../static/assets/images/user.png" alt="user-pfp" class="via-blue-bootstrap">
+              <img src="../../static/assets/images/user.png" alt="user-pfp" class="via-blue-bootstrap">
             </span>
             <span
               class="w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]">TeriyakiBoyz</span>
@@ -71,7 +75,8 @@
       <div class="lg:hidden xl:hidden md:hidden lg:h-0 xl:h-0 md:h-0 sm:block xm:block">
         <div class="flex justify-between items-center px-3 py-4">
           <div>
-            <a class="text-5xl font-extrabold text-white sm:text-[30px] xm:text-[20px]" href="/">SuperClean</a>
+            <a class="text-5xl font-extrabold text-white sm:text-[30px] xm:text-[20px]"
+              href="./index.html">SuperClean</a>
           </div>
           <button class="bars-toggle text-[2rem] text-white sm:text-[30px] xm:text-[20px]"><i
               class="fa fa-bars"></i></button>
@@ -88,8 +93,7 @@
         </ul>
       </div>
     </nav>
-  </header> -->
-  <header th:replace="~{./fragments/header.html}"></header>
+  </header>
 
   <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
 
@@ -98,7 +102,7 @@
         <div class="">
           <div class="bg-blue-400 flex justify-center items-center py-[5%] rounded-lg">
             <div class=" w-[40%]"><img class="object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
-                src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt="" srcset="">
+                src="../assets/images/Keanu-Reeves-5939c06.jpg" alt="" srcset="">
             </div>
           </div>
         </div>
@@ -118,72 +122,61 @@
       <div class="edit-form-container w-[60%] pl-[2%] pointer-events-none">
         <form class="edit-profile-form">
           <label for="">Username<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="text" name="txtUsername" value="" th:placeholder="${acc != null} ? ${acc.accountName}"
+          <input type="text" name="username" value="" placeholder="TeriyakiBoyz"
             class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
 
           <label for="">Email<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="text" name="txtEmail" value="" th:placeholder="${acc != null} ? ${acc.email}"
+          <input type="text" name="email" value="" placeholder="teriyakiboyz@tokyo.drift"
             class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
 
           <label for="">First Name</label><br>
-          <span class="mb-3 flex">
-            <input type="text" name="txtFirstname" value="" th:placeholder="${acc != null} ? ${acc.firstName}"
-              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
-            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+          <span class="mb-3 flex"><input type="text" name="firstName" value="" placeholder="teriyaki"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize"><i
+              class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
               title="you can't edit this field"></i></span>
 
           <label for="">Last Name</label><br>
-          <span class="mb-3 flex">
-            <input type="text" name="txtLastname" value="" th:placeholder="${acc != null} ? ${acc.lastName}"
-              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
-            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+          <span class="mb-3 flex"><input type="text" name="lastName" value="" placeholder="boyz"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize"><i
+              class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
               title="you can't edit this field"></i></span>
 
           <label for="">Date of Birth<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="date" name="txtDate" value="" th:placeholde="${#dates.format(acc.dob, 'dd/MM/yyyy')}"
+          <input type="date" name="dob" value="" placeholder="1999/01/01"
             class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
 
           <label for="">Phone<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="text" name="txtPhone" value="" placeholder="012345678"
+          <input type="text" name="phone" value="" placeholder="012345678"
             class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
 
           <div class="mb-3 w-[100%] flex items-center">
             <div class="w-[100%]">
               <label for="">Room</label><br>
-              <span class="mb-3 flex">
-                <input type="text" name="txtRoom" value="" th:placeholder="${address != null} ? ${address.buildingRoom}"
-                  class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
-                <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+              <span class="mb-3 flex"><input type="text" name="room" value="" placeholder="401"
+                  class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0"><i
+                  class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
                   title="you can't edit this field"></i></span>
             </div>
 
             <div class="ml-[6%] w-inherit">
               <label>Block</label><br>
               <div class="flex">
-                <span class="prohibit-input-radio py-2 flex flex-[.5]">
-                  <input class="scale-[1.3]" type="radio" value="A" name="radioBlock"
-                    th:checked="${address.buildingBlock} == A">
-                  <span class="ml-[3%]">
-                    Block A</span>
-                </span>
-                <span class="prohibit-input-radio py-2 flex flex-[.5]">
-                  <input class="scale-[1.3]" type="radio" value="B" name="radioBlock"
-                    th:checked="${address.buildingBlock} == B">
-                  <span class="ml-[3%]">
-                    Block B</span>
-                </span>
-                <span class="prohibit-input-radio py-2 flex flex-[.5]">
-                  <input class="scale-[1.3]" type="radio" value="C" name="radioBlock"
-                    th:checked="${address.buildingBlock} == C">
-                  <span class="ml-[3%]">
-                    Block C</span>
-                </span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]"><input class="scale-[1.3]" type="radio" value="A"
+                    name="btnRadio" checked><span class="ml-[3%]">
+                    Block A</span></span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]"><input class="scale-[1.3]" type="radio" value="B"
+                    name="btnRadio"><span class="ml-[3%]">
+                    Block B</span></span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]"><input class="scale-[1.3]" type="radio" value="C"
+                    name="btnRadio"><span class="ml-[3%]">
+                    Block C</span></span>
               </div>
             </div>
           </div>
           <div class="flex justify-end ">
-            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500">Cancel</button>
-            <button class="submit-btn px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
+            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500"
+              type="reset">Cancel</button>
+            <button class="px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
           </div>
         </form>
 
@@ -195,7 +188,34 @@
 
   </div>
 
-  <footer th:replace="~{./fragments/footer.html}"></footer>
+  <footer class="flex items-center justify-between bg-blue-bootstrap px-28 py-10" id="footer">
+    <div>
+      <a class="text-5xl font-extrabold text-white" href="#home">SuperClean</a>
+      <button class="xm:block md:hidden" id="toggle-button">
+        <img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
+        <img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
+      </button>
+    </div>
+    <div class="text-white">
+      <p>Contact us</p>
+      <ul>
+        <li>
+          <img class="mr-5 inline w-6 fill-white" src="../assets/svg/phone-rotary-svgrepo-com.svg" alt="phone_svg" />0
+          856
+          721 175
+        </li>
+        <li>
+          <img class="fill-w mr-5 inline w-6" src="../assets/svg/mail-svgrepo-com.svg"
+            alt="mail_svg" />example@gmail.com
+        </li>
+      </ul>
+    </div>
+    <div>
+      <a href="#"><button class="cursor-pointer rounded-full border-none bg-yello-info px-12 py-6">
+          <span class="font-bold">Join us</span>
+        </button></a>
+    </div>
+  </footer>
 
   <script>
     const editFormContainer = document.querySelector('.edit-form-container')
