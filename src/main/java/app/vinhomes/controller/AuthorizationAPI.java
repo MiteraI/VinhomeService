@@ -22,22 +22,23 @@ public class AuthorizationAPI {
     private AccountRepository accountRepository;
     @Autowired
     private AuthenticationService authenticationService;
-//    @PostMapping(value = "/login",consumes = MediaType.ALL_VALUE)
-//    public String login( HttpServletRequest request, HttpServletResponse response) {
-//        System.out.println("inside login");
-//        String username = request.getParameter("username");
-//        String password = request.getParameter("password");
-//        AuthenticationRequest requestForToken  = new AuthenticationRequest(username,password);
-//        try{
-//            Account loginStatus = authenticationService.authenticate(requestForToken);
-//            if(loginStatus == null){
-//                return "fail";
-//            }
-//            return "success";
-//        }catch (Exception e){
-//            System.out.println("Login fail, some stuff happen");
-//            return "fail";
-//
-//        }
-//    }
+
+    @PostMapping(value = "/login",consumes = MediaType.ALL_VALUE)
+    public String login( HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("inside login");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        AuthenticationRequest requestForToken  = new AuthenticationRequest(username,password);
+        try{
+            Account loginStatus = authenticationService.authenticate(requestForToken);
+            if(loginStatus == null){
+                return "fail";
+            }
+            return "success";
+        }catch (Exception e){
+            System.out.println("Login fail, some stuff happen");
+            return "fail";
+        }
+    }
+
 }

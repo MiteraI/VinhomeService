@@ -101,5 +101,12 @@ public class PageController {
     @RequestMapping(value = "/detail")
     public String detail() { return "Detail"; }
 
-
+    @RequestMapping(value = "/vnpay",method = RequestMethod.GET)
+    public String vnpay(){
+        return "vnpay";
+    }
+    @RequestMapping(value = "/vnpayreturn",method = RequestMethod.GET)
+    public String vnpayreturn(){
+        return "vnpayreturn";
+    }
 }
