@@ -41,9 +41,9 @@ public class VNPayService {
     public String getBankCode_CheckCOD_VNpay(JsonNode jsonNode, HttpServletRequest request) {
         try {
             String transactionMethod = jsonNode.get("paymentId").asText();//request.getParameter("transactionMethod");//
-
-            String bankCode =  request.getParameter("bankcode");
-            if (transactionMethod.equals("COD")) {
+            String getPaymentMethod = paymentRepository.findById(Long.parseLong(transactionMethod)).get().getPaymentName().trim();
+            String bankCode = "";// request.getParameter("bankcode");
+            if (getPaymentMethod.equals("COD")) {
                 return bankCode;
             } else {
                 //bankCode = jsonNode.get("bankcode").asText();
@@ -363,7 +363,27 @@ public class VNPayService {
         System.out.println(response.toString());
         return ResponseEntity.ok().body(response);
     }
+    public void saveTransaction_COD(String order_id,String Payment_id) {
+        try{
+            long parsedOrderId = Long.parseLong(order_id);
+            long parsedPaymentId = Long.parseLong(Payment_id);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            Transaction toSaveTransaction =
+                    Transaction.builder()
+                            .paymentMethod(paymentRepository.findById(parsedPaymentId).get().getPaymentName().trim())
+                            .transactionId(getOrder.getOrderId())
+                            .order(getOrder)
+                            .status(TransactionStatus.PENDING)
+                            .build();
+            System.out.println(toSaveTransaction);
+            transactionRepository.save(toSaveTransaction);
+        }catch (NumberFormatException e){
+            System.out.println("ERROR in VNPAY service: "+ e.getMessage());
+        } catch (Exception e){
+            System.out.println("ERROR in VNPAY service: "+ e.getMessage());
+        }
 
+    }
 
 
 }

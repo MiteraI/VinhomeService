@@ -31,6 +31,7 @@ public class TransactionService {
     private OrderRepository orderRepository;
     @Autowired
     private VNPayService vnPayService;
+
     public List<Map<String,String>> getAllTransactionAndFormat(){
         List<Transaction> getAllTransaction = transactionRepository.findAll();
         List<Map<String,String>> returnAsListJsonFormat = new LinkedList<>();
@@ -119,6 +120,14 @@ public class TransactionService {
             String getAccountName = getOrder.getAccount().getAccountName();
             String transactionDate =String.valueOf(getTransaction.getVnpTransactionDate());
             int amount =(int) getOrder.getPrice();
+            if(getTransaction.getPaymentMethod().equals("COD")){
+                System.out.println("Yes cancel COD order");
+                getOrder.setStatus(OrderStatus.CANCEL);
+                getTransaction.setStatus(TransactionStatus.FAIL);
+                orderRepository.save(getOrder);
+                transactionRepository.save(getTransaction);
+                return ResponseEntity.ok().body("YES, order Canceled, still in acceptable time policy");
+            }
             ResponseEntity callingResult = vnPayService.refund(vnp_txtRef,transactionDate,amount,getAccountName,request,response);
             if(callingResult.getStatusCode().is2xxSuccessful()){
                 //tach tung phan trong body ra thanh tung cuc de lay response code
@@ -135,10 +144,10 @@ public class TransactionService {
                 }
                 else{
                     System.out.println("fail to refund, try again");
-                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("FAIL TO REFUND, TRY AGAIN");
+                    return ResponseEntity.status(HttpStatus.OK).body("FAIL TO REFUND, TRY AGAIN");
                 }
             } else{
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("VNPAY SERVICE ERROR");
+                return ResponseEntity.status(HttpStatus.OK).body("VNPAY SERVICE ERROR, TRY AGAIN LATER");
             }
         }   catch (Exception e){
             System.out.println(e.getMessage());

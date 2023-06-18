@@ -65,20 +65,21 @@ public class TransactionAPI {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR EXCEPTION IN API");
     }
     /// for customer under 2 hours
-    @PostMapping(value = "/cancelOrder/refundTransaction")// from client
-    public ResponseEntity<String> cancel_refundVNPAY(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping(value = "/cancelOrder/refundTransaction/{orderId}")// from client
+    public ResponseEntity<String> cancel_refundVNPAY(@PathVariable String orderId,HttpServletRequest request, HttpServletResponse response) {
         ///// heree we will check to see if the order is over 2 hour policy, if it is over 2 hours, only send requets to admin
         //// then admin will reconsidered
         // this will be sent by the customer who want to be refunded under 2 hours policy
         try {
-            String getOrderId = request.getParameter("order_id");
+            //String getOrderId = request.getParameter("order_id");
+            String getOrderId = orderId;
             boolean checkPolicyRefund = transactionService.checkIfOver_2_hourPolicy(getOrderId);
             // true means yes, allow refund
             // false mean no, no refund, only change time, MAYBE
             if (checkPolicyRefund) {
-                ResponseEntity callingResult = transactionService.refundVNpayWithOrderID(getOrderId, request, response);
+                ResponseEntity<String> callingResult = transactionService.refundVNpayWithOrderID(getOrderId, request, response);
                 if (callingResult.getStatusCode().is2xxSuccessful()) {
-                    return ResponseEntity.ok().body(callingResult.getBody().toString().trim());
+                    return ResponseEntity.ok().body(callingResult.getBody().trim());
                 } else {
                     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
                 }

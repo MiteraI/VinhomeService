@@ -3,6 +3,8 @@ package app.vinhomes.vnpay.controller;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.service.OrderService;
+import app.vinhomes.service.PaymentService;
+import app.vinhomes.service.TransactionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -30,7 +32,7 @@ public class VNpayController extends HttpServlet {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private PaymentService paymentService;
     private String errorURL = "/";
     @CrossOrigin//origins = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html")
     @PostMapping//@RequestParam JsonNode jsonNode ,
@@ -61,12 +63,14 @@ public class VNpayController extends HttpServlet {
         int amount =(int) vnpayService.getServicePriceFromOrder(orderID)* 100;
         if(amount <= 0){
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("invalid money ");
-        }
+        }//////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////
         String bankCode = vnpayService.getBankCode_CheckCOD_VNpay(jsonNode,req);        //String bankCode = "VNBANK";
         if( bankCode == null){
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("bankcode is empty, this will be fixed later") ;
             //TODO quan li neu chon thanh toan COD thay vi VNPAY
         }else if(bankCode.isEmpty()){// this mean this is COD, not vnpay, so we dont have to redirect it to vnpay site
+            vnpayService.saveTransaction_COD(orderID,transactionMethodID);
             return ResponseEntity.ok().body("pay by COD, procede to go back main page");
             //TODO neu la COD thi lam gi tiep, ko tiep tuc gui thong tin cho vnpay
         }
