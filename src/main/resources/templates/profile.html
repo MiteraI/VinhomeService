@@ -1,474 +1,516 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeLeaf.org">
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="h-[100%] w-[100%]">
 
 <head>
-    <meta charset="UTF-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title th:text="${acc != null} ? ${acc.accountName} + '\'s profile' : ''"></title>
-    <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control">
-    <meta content="no-cache" http-equiv="Pragma">
-    <meta content="0" http-equiv="Expires">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet"/>
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
-    <style>
-        body {font-family: Arial, Helvetica, sans-serif;}
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${acc != null} ? ${acc.accountName} + '\'s profile' : ''"></title>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <link rel="stylesheet" href="../static/bootstrap-5.0.2-dist/css/bootstrap.css">
-  <style>
-    .edit_btn:hover,
-    .submit_btn:hover,
-    .reset-pwd:hover {
-      background-color: aqua;
-    }
-
-        /* The Modal (background) */
-        .modal {
-          display: none; /* Hidden by default */
-          position: fixed; /* Stay in place */
-          z-index: 1; /* Sit on top */
-          padding-top: 100px; /* Location of the box */
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 100%; /* Full width */
-          height: 100%; /* Full height */
-          overflow: auto; /* Enable scroll if needed */
-          background-color: rgb(0,0,0); /* Fallback color */
-          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content */
-        .modal-content {
-          position: relative;
-          width: 60%; /* Set width size */
-          background-color: #fefefe;
-          margin: auto;
-          padding: 0;
-          width: 40%;
-          height: 20%;
-          border: 1px solid #888;
-          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-          -webkit-animation-name: animatetop;
-          -webkit-animation-duration: 0.4s;
-          animation-name: animatetop;
-          animation-duration: 0.4s
-        }
-
-        /* Add Animation */
-        @-webkit-keyframes animatetop {
-          from {top:-300px; opacity:0}
-          to {top:0; opacity:1}
-        }
-
-        @keyframes animatetop {
-          from {top:-300px; opacity:0}
-          to {top:0; opacity:1}
-        }
-
-        /* The Close Button */
-        .close {
-          color: white;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-          color: #000;
-          text-decoration: none;
-          cursor: pointer;
-        }
-
-        .modal-header {
-          padding: 2px 16px;
-          font-size: 20px;
-          background-color: #3a3a3a;
-          color: white;
-        }
-
-        .modal-body {
-            padding: 2px 16px;
-            color: #fffef7;
-        }
-
-        .modal-footer {
-          padding-left: 10px;
-          background-color: #636363;
-          color: white;
-        }
-    </style>
-
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css" />
+  <link rel="stylesheet" href="../static/tailwind/index.css" />
+  <title>Service name goes here</title>
 </head>
 
-<body class="min-vh-100 d-flex align-items-center justify-content-center">
-<div class=" container w-75 border rounded">
-    <div class="d-flex">
-        <div class="me-3">
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-            <!--get account id-->
-            <input id="accID" th:value="${acc != null} ? ${acc.accountId} : ''" type="hidden">
-            <script>
-            const accountID = document.getElementById("accID").value;
-            axios
-                .get("http://localhost:8080/images/getAvatar/avatar.png?time=" + new Date().getTime())
-<!--                .get("http://2cedcd6c980412.lhr.life/images/getAvatar/avatar.png?time=" + new Date().getTime())-->  //FOR PUBLISH SERVER//
-                .then((response) => {
-                    console.log(response.data);
-                    document.getElementById("avatar").src = response.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            </script>
-            <img alt="avatar" class="avatar" id="avatar" loading="lazy" src=""
-                 style="height: 150px; width: 150px; object-fit: cover; object-position: 100% 0; border-radius: 50%; margin-bottom: 10px;">
-            <script defer src="https://cdn.crop.guide/loader/l.js?c=TJTGWG"></script>
+<body class="overflow-x-hidden h-[100%] w-[100%]">
+
+  <header class="bg-blue-bootstrap lg:p-8 xl:p-8 md:p-8 sm:pb-0 sm:px-3 sm:pt-0 xm:pb-0 xm:px-3 xm:pt-0" id="Home">
+    <nav class="navBar lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
+      <div
+        class="lg:flex md:flex xl:flex xl:items-center lg:items-center md:items-center xl:justify-between lg:justify-between md:justify-between sm:hidden xm:hidden">
+        <div>
+          <a class="logo text-5xl font-extrabold text-white" href="/">SuperClean</a>
         </div>
-        <!-- The Modal -->
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close">&times;</span>
-                    <h2 id="modalHeader"></h2>
-                </div>
-                <div class="modal-body">
-                    <p id="modalBody"></p>
-                </div>
-                <div class="modal-footer">
-                    <p id="modalFooter"></p>
-                </div>
+
+        <div>
+          <ul class="flex list-none space-x-20">
+            <li class="text-xl font-medium text-white"><a href="/">Home</a></li>
+            <li class="text-xl font-medium text-white"><a href="#about">About</a></li>
+            <li class="text-xl font-medium text-white"><a href="#service">Service</a></li>
+            <li class="text-xl font-medium text-white"><a href="#footer">Contact</a></li>
+          </ul>
+        </div>
+        <!-- Profile links -->
+
+        <div th:unless="${session.loginedUser}">
+          <a href="/login"><button
+              class="cursor-pointer rounded-xl border-none bg-white px-10 py-4 font-extrabold text-blue-bootstrap">
+              Login
+            </button></a>
+        </div>
+
+        <div th:if="${session.loginedUser}" class="profile-btn flex items-center justify-center flex-col w-44">
+          <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
+            class="w-full h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 font-medium rounded-lg text-sm px-2 py-2 text-center inline-flex items-center justify-between "
+            type="button">
+            <span class="w-[20%] border-2 rounded-full border-blue-bootstrap">
+              <img src="../../static/assets/images/user.png" alt="user-pfp" class="pfp via-blue-bootstrap">
+            </span>
+            <span
+              class="username w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
+              th:text="${session.loginedUser.accountName}"></span>
+            <svg class="w-[10%] h-4" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <div id="dropdownDivider" class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44">
+            <ul class="absolute w-inherit rounded-lg border-2 border-blue-700 bg-white"
+              aria-labelledby="dropdownDividerButton">
+              <li class="relative">
+                <a href="/profile"
+                  class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-t-lg"><i
+                    class="fa fa-user mr-2"></i>Profile</a>
+              </li>
+              <li class="relative">
+                <a href="/order-history"
+                  class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300"><i
+                    class="fa fa-history mr-2"></i>Order History</a>
+              </li>
+              <li class="relative">
+
+                <a href="/logout"
+                  class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-b-lg "><i
+                    class="fa fa-sign-out mr-2"></i>Log Out</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:hidden xl:hidden md:hidden lg:h-[0px] xl:h-[0px] md:h-[0px] sm:block xm:block">
+        <div class="flex justify-between px-3 py-4">
+          <div>
+            <a class="text-5xl font-extrabold text-white" href="./index.html">SuperClean</a>
+          </div>
+          <button class="bars-toggle text-[2rem] text-white"><i class="fa fa-bars"></i></button>
+        </div>
+
+        <ul class="list-none transition-all duration-300 ease-linear overflow-hidden links lg:h-0 md:h-0 xl:h-0">
+          <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i
+                class="fa fa-user mr-2"></i>Profile</a></li>
+          <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i
+                class="fa fa-history mr-2"></i>Orders
+              History</a></li>
+          <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i
+                class="fa fa-sign-out mr-2"></i>Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
+
+    <div class="mx-10 my-8 h-[100%] flex">
+      <div class="w-[40%] h-[100%]">
+        <div class="">
+          <div class="bg-blue-400 flex justify-center items-center py-[5%] rounded-lg">
+            <div class=" w-[40%]"><img class="pfp object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
+                src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt="" srcset="">
             </div>
+          </div>
         </div>
 
-        <form>
-            <input accept="image/*" class="input-file" id="file" name="file" type="file"/>
-            <input class="upload_btn float-end btn border-info mt-1 mb-1" id="uploadBtn" onclick="uploadAvatar()"
-                   style="box-shadow: none;"
-                   type="button" value="upload">
-        </form>
-    </div>
-    <form class="profile_form">
-        <table class="table table-bordered mb-0">
-            <tr>
-                <td class="text-end pe-4">Username</td>
-                <td class="td_data"><span class="span_data ms-2"
-                                          th:text="${acc != null} ? ${acc.accountName} : ''"></span>
-                </td>
-            </tr>
+        <div class="flex flex-col items-center">
+          <button
+            class="edit-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Edit
+            Profile</button>
+          <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium"><a
+              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Reset
+              Password</a></button>
+          <button
+            class="change-pfp-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Change
+            Profile
+            Picture</button>
+          <div class="upload-btn-container hidden w-[50%] mt-7 flex flex-col items-center">
+            <span class="w-[100%] flex justify-center">
+              <label for="upload-file"
+                class="browse-pfp-btn w-[50%] bg-slate-300 hover:bg-slate-400 rounded-lg text-xl font-medium py-[1%] flex-1 text-center mr-[1%] flex justify-center">
+                <span class="flex justify-center items-center"><i class="fa fa-upload mr-[5%]"
+                    aria-hidden="true"></i>Browse</span>
+              </label>
+              <input type="file" class="hidden" value="" id="upload-file">
+              <button
+                class="upload-pfp-btn w-[50%] bg-green-300 hover:bg-green-400 py-[1%] px-[2%] rounded-lg text-xl font-medium flex-1 ml-[1%]">Upload</button>
+            </span>
+            <button
+              class="cancel-pfp-btn mt-7 bg-red-300 hover:bg-red-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Cancel
+            </button>
+          </div>
 
-            <tr>
-                <td class="text text-end pe-4">Password</td>
-                <td class="td_data"><span class="span_data txt_pwd ms-2 w-100"
-                                          th:text="${acc != null} ? ${acc.password} : ''"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="text-end pe-4">First Name</td>
-                <td class="td_data"><span class="span_data ms-2"
-                                          th:text="${acc != null} ? ${acc.firstName} : ''"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="text-end pe-4">Last Name</td>
-                <td class="td_data"><span class="span_data ms-2" th:text="${acc != null} ? ${acc.lastName} : ''"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="text-end pe-4">Date of birth</td>
-                <td class="td_data"><span class="span_data ms-2" th:text="${acc != null} ? ${acc.dob} : ''"></span></td>
-            </tr>
-
-            <tr>
-                <td class="text-end pe-4">Email</td>
-                <td class="td_data"><span class="span_data ms-2" th:text="${acc != null} ? ${acc.email} : ''"></span>
-                </td>
-            </tr>
-
-
-        </table>
-        <input class="cancel_btn float-end d-none btn border-danger ms-1 mt-1 mb-1" style="box-shadow: none"
-               type="button"
-               value="cancel">
-        <input class="edit_btn float-end btn border-info mt-1 mb-1" style="box-shadow: none;" type="button"
-               value="edit">
-        <a class="btn btn-primary float-start mt-1 mb-1" href="/homepage" style="box-shadow: none;">Back to homepage</a>
-    </form>
-</div>
-
-<script>
-  const txtPassword = document.querySelector('.txt_pwd');
-  const profileForm = document.querySelector('.profile_form');
-  const tdData = document.querySelectorAll('.td_data');
-  const spanData = document.querySelectorAll('.span_data');
-  const editBtn = document.querySelector('.edit_btn');
-  const cancelBtn = document.querySelector('.cancel_btn');
-  let arrData = [...spanData].map(data => data.textContent);
-  let spanClassArr = ["d-flex", "align-items-center", "justify-content-center"]
-  let p = txtPassword.textContent;
-  let hidden = "";
-  let tmp = ""
-
-  for (let i = 0; i < txtPassword.textContent.length; i++) {
-    hidden += "●";
-  }
-  tmp = hidden
-  txtPassword.textContent = hidden;
-  console.log(tmp);
-
-  cancelBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    hidden = "";
-    for (let i = 0; i < tdData.length; i++) {
-      if (i == 1) {
-        spanData[i].classList.remove(...spanClassArr)
-        p = arrData[i];
-        const inputPassword = document.querySelector('.input_pwd');
-        for (let i = 0; i < inputPassword.value.length; i++) {
-          hidden += "●";
-        }
-        txtPassword.textContent = hidden;
-        tmp = hidden;
-        spanData[i].classList.add('ms-2')
-        spanData[i].innerHTML = `${txtPassword.textContent}`
-      }
-      else {
-        spanData[i].classList.add('ms-2')
-        spanData[i].innerHTML = `${arrData[i]} `
-      }
-    }
-    cancelBtn.classList.remove('d-block')
-    cancelBtn.classList.add('d-none')
-    editBtn.value = 'edit'
-  })
-
-  editBtn.addEventListener('click', (e) => {
-    e.preventDefault()
-    cancelBtn.classList.remove('d-none')
-    cancelBtn.classList.add('d-block')
-    editBtn.value = 'submit'
-    for (let i = 0; i < spanData.length; i++) {
-      if (i == 1) {
-        spanData[i].classList.remove('ms-2')
-        spanData[i].classList.add(...spanClassArr)
-        spanData[i].innerHTML = `<input class="input_data input_pwd w-100" type="text" value="${hidden}" /><button type="button" class="border-start-0 bg-transparent"><i class="fa fa-eye-slash"></i></button>`
-        const inputPassword = document.querySelector('.input_pwd');
-        const eyeSlash = document.querySelector('.fa-eye-slash');
-        eyeSlash.addEventListener('click', () => {
-          eyeSlash.classList.toggle('fa-eye-slash');
-          eyeSlash.classList.toggle('fa-eye');
-          inputPassword.value = p;
-          p = tmp;
-          tmp = inputPassword.value;
-        })
-      }
-      else {
-        spanData[i].classList.remove('ms-2')
-        spanData[i].innerHTML = `<input class="input_data w-100" type="text" value="${arrData[i]}" />`
-      }
-    }
-    editBtn.addEventListener('submit', (e) => {
-      console.log("click");
-    })
-  })
-
-function uploadAvatar() {
-    var modal = document.getElementById("myModal");
-    var span = document.getElementsByClassName("close")[0];
-    var modalBody = document.getElementById("modalBody");
-    var modalHeader = document.getElementById("modalHeader");
-    var modalFooter = document.getElementById("modalFooter");
-
-    var fileInput = document.getElementById('file');
-    var filename = fileInput.files[0].name;
-    //UPLOAD BUT MULTIPART//
-    var formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-    formData.append('filename', filename);
-    var id = document.getElementById('accID').value;
-    axios.post('http://localhost:8080/images/avatar', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then(function (response) {
-      console.log(response);
-      if (response.status == 200) {
-        modal.style.display = "block";
-        modalHeader.innerHTML = "Success!";
-        modalBody.innerHTML = "Upload avatar successfully!";
-        modalBody.style.color = "green";
-        modalFooter.innerHTML = "Note: It may take from 30 secs to 1 min to update your avatar. Clear your browser cache if you don't see the change.";
-      }
-    }).catch(function (error) {
-          console.log(error);
-            modal.style.display = "block";
-            modalHeader.innerHTML = "Failed!";
-            modalBody.innerHTML = "Upload avatar failed!";
-            modalBody.style.color = "red";
-        });
-
-                // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modal.style.display = "none";
-          location.reload(true);
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-            location.reload(true);
-          }
-        }
-    }
-
-</script>
-=======
-<div class="container card border-danger" style="border-radius: 1%; border: 1px solid red;">
-  <div class="card-body">
-    <form class="profile_form">
-      <div class="row">
-        <div class="mt-1 mb-1 p-0 d-flex flex-column" style="height: 200px; width: 200px; margin-left: 1%;"><img
-                src="../static/img/user.png" alt="" class="border border-dark"
-                style="padding: 2px; object-fit: cover; margin-bottom: 5px; height: 80%; width: 80%;">
-          <input type="button" class="btn-info" value="Change Profile Picture" style="width: 80%; font-size: 15px;">
+          <div class="mt-7">
+            <p class="img-file-name hidden"></p>
+          </div>
 
         </div>
       </div>
-      <hr>
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">Username</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-          <span th:text="${acc != null} ? ${acc.accountName} : ''" class="span_data"></span>
-          <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                  title="click to edit" onclick="editBtnClicked(0)"><i class="fas fa-pen"></i></button>
-        </div>
-      </div>
-      <hr>
 
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">Email</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-          <span th:text="${acc != null} ? ${acc.email} : ''" class="span_data"></span>
-          <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                  title="click to edit" onclick="editBtnClicked(1)"><i class="fas fa-pen"></i></button>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">First Name</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-          <span th:text="${acc != null} ? ${acc.firstName} : ''" class="span_data"></span>
-          <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                  title="click to edit" onclick="editBtnClicked(2)"><i class="fas fa-pen"></i></button>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">Last Name</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-          <span th:text="${acc != null} ? ${acc.lastName} : ''" class="span_data"></span>
-          <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                  title="click to edit" onclick="editBtnClicked(3)"><i class="fas fa-pen"></i></button>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">Date of birth</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-          <span th:text="${acc != null} ? ${acc.dob} : ''" class="span_data"></span>
-          <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                  title="click to edit" onclick="editBtnClicked(4)"><i class="fas fa-pen"></i></button>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">Address</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-            <span class="">
-              <div class="form-group d-flex">
-                <label class="me-2">Room: </label>
-                <div th:text="${address != null} ? ${address.buildingRoom} : ''" class="me-3 span_data">
-                </div>
-                <label class="me-2">Block:</label>
-                <div th:text="${address != null} ? ${address.buildingBlock} : ''" class="span_data"></div>
-                <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                        title="click to edit" onclick="editBtnClicked(5)"><i class="fas fa-pen"></i></button>
-              </div>
+      <div class="edit-form-container w-[60%] pl-[2%] pointer-events-none">
+        <form class="edit-profile-form">
+          <label for="">Username<span
+              class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtUsername" value="" th:placeholder="${acc != null} ? ${acc.accountName}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
+
+          <label for="">Email<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtEmail" value="" th:placeholder="${acc != null} ? ${acc.email}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
+
+          <label for="">First Name</label><br>
+          <span class="mb-3 flex">
+            <input type="text" th:placeholder="${acc != null} ? ${acc.firstName}"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
+            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+              title="you can't edit this field"></i></span>
+
+          <label for="">Last Name</label><br>
+          <span class="mb-3 flex">
+            <input type="text" th:placeholder="${acc != null} ? ${acc.lastName}"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
+            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+              title="you can't edit this field"></i></span>
+
+          <label for="">Date of Birth<span
+              class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtDate" value="" th:placeholder="${acc != null} ? ${acc.dob}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
+
+          <label for="">Phone<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <div class="mb-3 w-[100%]">
+            <span class="flex">
+              <input type="text" name="txtPhone" value="" th:placeholder="${phone != null} ? ${phone[0].number}"
+                class="profile-form-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
+              <input type="hidden" name="txtPhoneId" th:value="${phone != null} ? ${phone[0].phoneId}">
+              <i
+                class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 pr-3 cursor-pointer"></i>
             </span>
 
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="error-message fst-italic text-danger d-none" style="margin-left: 25%;font-size: 13px;">fvdavdvasds
-        </div>
-        <div class="col-sm-3">
-          <h6 class="mb-0">Phone</h6>
-        </div>
-        <div class="div_data col-sm-9 text-secondary">
-          <span class="span_data" th:text="${phone != null} ? ${phone[0].number} : ''"></span>
-          <input type="hidden" name="txtPhoneId" class="d-none" th:value="${phone != null} ? ${phone[0].phoneId} : ''">
-          <button class="edit_btn border-0 bg-transparent position-absolute" style="right: 2%" type="button"
-                  title="click to edit" onclick="editBtnClicked(6)"><i class="fas fa-pen"></i></button>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-sm-12">
-          <input type="hidden" name="uid" class="id" th:value="${acc != null} ? ${acc.accountId} : ''">
+            <div id="phoneDropdownContainer"
+              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative mt-[-1.3%]">
+              <ul class="absolute w-inherit h-[7.5rem] border-2 bg-transparent overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton">
+                <li class="relative">
+                  <span class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</span>
+                </li>
+              </ul>
+            </div>
+          </div>
 
-          <input type="submit" class="submit_btn btn border-info mt-1 mb-1" style="box-shadow: none;" value="Save">
-          <button class="reset-pwd btn border-info mt-1 mb-1" type="button" title="click to edit"><a href="/resetpwd"
-                                                                                                     class="text-black text-decoration-none" target="_blank">
-            Reset Password</a></button>
+          <div class="mb-3 w-[100%] flex items-center">
+            <div class="w-[100%]">
+              <label for="">Room</label><br>
+              <span class="mb-3 flex">
+                <input type="text" th:placeholder="${address != null} ? ${address.buildingRoom}"
+                  class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
+                <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+                  title="you can't edit this field"></i></span>
+            </div>
 
-        </div>
+            <div class="ml-[6%] w-inherit">
+              <label>Block</label><br>
+              <div class="flex">
+                <span class="prohibit-input-radio py-2 flex flex-[.5]">
+                  <input class="scale-[1.3]" type="radio" value="A" th:checked="${address.buildingBlock} == A">
+                  <input type="hidden" class="uid" th:value="${acc != null} ? ${acc.accountId}">
+                  <span class="ml-[3%]">
+                    Block A</span>
+                </span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]">
+                  <input class="scale-[1.3]" type="radio" value="B" th:checked="${address.buildingBlock} == B">
+                  <span class="ml-[3%]">
+                    Block B</span>
+                </span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]">
+                  <input class="scale-[1.3]" type="radio" value="C" th:checked="${address.buildingBlock} == C">
+                  <span class="ml-[3%]">
+                    Block C</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-end ">
+            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500">Cancel</button>
+            <button type="submit"
+              class="submit-btn px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
+          </div>
+        </form>
+
       </div>
-    </form>
+
+    </div>
+
+
+
   </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="../static/js/editProfile.js"></script>
+
+
+  <script>
+    const editFormContainer = document.querySelector('.edit-form-container')
+    const editBtn = document.querySelector('.edit-btn')
+    const errorMassage = document.querySelectorAll('.error-message')
+
+    const profileForm = document.querySelector('.edit-profile-form');
+    const profileFormInput = document.querySelectorAll('.profile-form-input');
+    const prohibitInput = document.querySelectorAll('.prohibit-input')
+    const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
+    const profileBtn = document.querySelector('.profile-btn')
+    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+    const pfp = document.querySelectorAll('.pfp')
+    const placeholderValue = [...profileFormInput].map(input => input.placeholder)
+
+    const cancelBtn = document.querySelector('.cancel-btn')
+    const changePfpBtn = document.querySelector('.change-pfp-btn')
+    const cancelPfpBtn = document.querySelector('.cancel-pfp-btn')
+
+    const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
+    const dropDownMenu = document.querySelector('#dropdownDivider')
+
+    const logo = document.querySelector('.logo');
+    const logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
+    const logoFontSize = parseFloat(logoStyle);
+
+    const uid = document.querySelector('.uid').value;
+    const userName = document.querySelector('.username')
+    const uploadFile = document.getElementById('upload-file')
+    const uploadPfpBtn = document.querySelector('.upload-pfp-btn')
+    const uploadBtnContainer = document.querySelector('.upload-btn-container')
+
+    const imgFileName = document.querySelector('.img-file-name')
+
+    const submitBtn = document.querySelector('.submit-btn');
+
+    var _validFileExtensions = [".jpg", ".jpeg", ".png"];
+
+    let canEdit = false
+    let i = 0
+
+    profileBtn.style.height = `${logoFontSize}px`
+
+
+
+    cancelBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+
+      errorMassage.forEach(err => {
+        err.classList.add('hidden')
+      })
+
+      profileFormInput.forEach(input => {
+        input.value = ''
+        input.placeholder = placeholderValue[i]
+        i++
+      });
+      i = 0;
+      profileFormInput[2].type = 'text'
+      editFormContainer.classList.add('pointer-events-none')
+    })
+
+    editBtn.addEventListener('click', (e) => {
+      canEdit = true
+      errorMassage.forEach(err => {
+        err.classList.add('hidden')
+      })
+      editFormContainer.classList.remove('pointer-events-none')
+      profileFormInput.forEach(input => {
+        input.value = placeholderValue[i]
+        input.placeholder = ''
+        i++
+      });
+      i = 0
+      profileFormInput[2].type = 'date'
+    })
+
+    profileFormInput.forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (canEdit === false) {
+          e.preventDefault()
+        }
+
+        e.returnValue = true
+        for (let i = 0; i < prohibitInput.length; i++) {
+          prohibitInput[i].value = ''
+        }
+      })
+    })
+
+    prohibitInput.forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.keyCode === 9) {
+          e.returnValue = true
+        } else {
+          e.preventDefault()
+        }
+      })
+    })
+
+    prohibitInputRadio.forEach(radio => {
+      radio.addEventListener('click', (e) => {
+        e.preventDefault()
+      })
+    })
+
+    phoneDropDownButton.addEventListener('click', (e) => {
+      phoneDropdownContainer.classList.toggle('hidden')
+    })
+
+    dropDownMenuBtn.addEventListener('click', () => {
+      console.log("clicked")
+      dropDownMenu.classList.toggle("hidden")
+    })
+
+    function hideDropDown() {
+      document.onclick = () => {
+        phoneDropdownContainer.classList.add('hidden')
+        dropDownMenu.classList.add('hidden')
+      }
+    }
+
+    changePfpBtn.addEventListener('click', () => {
+      uploadBtnContainer.classList.toggle('hidden')
+      changePfpBtn.classList.toggle('hidden')
+    })
+
+    cancelPfpBtn.addEventListener('click', () => {
+      uploadFile.value = ''
+      uploadFile.files.length = 0
+      imgFileName.innerHTML = ''
+      imgFileName.classList.add('hidden')
+      console.log(uploadFile.files.length)
+      console.log(uploadFile.value)
+      uploadBtnContainer.classList.toggle('hidden')
+      changePfpBtn.classList.toggle('hidden')
+    })
+
+    uploadPfpBtn.addEventListener('click', (e) => {
+      if (checkFileExist() === false) {
+        imgFileName.innerHTML = 'there is no image to upload'
+        imgFileName.classList.add('italic', 'text-red-500')
+        imgFileName.classList.remove('hidden')
+        e.preventDefault()
+      } else {
+        e.returnValue = true
+        console.log(uploadFile.value)
+        console.log(uploadFile.files.length)
+      }
+
+    })
+
+    const checkFileExist = () => {
+      if (uploadFile.files.length == 0) {
+        return false
+      }
+      return true
+    }
+
+    console.log(uid)
+
+    // profileForm.addEventListener('submit', async (e) => {
+    //   i = 0
+    //   e.preventDefault()
+    //   submitBtn.disabled = true
+    //   const form_data = new FormData(profileForm);
+    //   const data = Object.fromEntries(form_data);
+
+    //   const response = await fetch(`/changeProfile/${uid}`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(data)
+    //     });
+
+    //   if (response.status == 400) {
+    //     i = 0
+    //     error_message = await response.json()
+    //     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+    //     console.log(error_message);
+    //     for (var key in error_message) {
+    //       if (error_message[key]) {
+    //         errorMassage[i].classList.remove('hidden')
+    //         errorMassage[i].innerHTML = '❌ ' + error_message[key];
+    //       }
+    //       else {
+    //         errorMassage[i].innerHTML = ''
+    //       }
+    //       console.log(`${i}: ${error_message[key]}`)
+    //       i++;
+
+    //     }
+    //     i = 0
+    //     submitBtn.disabled = false
+
+    //   } else if (response.status == 200) {
+    //     i = 0
+    //     error_message = await response.json()
+    //     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+    //     console.log(error_message)
+    //     errorMassage.forEach(err => {
+    //       err.classList.add('hidden')
+    //     })
+    //     for (var key in error_message) {
+    //       console.log(placeholderValue[i])
+    //       placeholderValue[i] = error_message[key]
+    //       i += 1;
+    //     }
+    //     i = 0
+    //     userName.innerHTML = placeholderValue[0]
+    //     alert("successfully update profile")
+    //     submitBtn.disabled = false
+
+    //   } else if (response.status == 500) {
+    //     error_message = await response.json()
+    //     var list = document.getElementsByClassName("error-message");
+    //     var i = 0;
+    //     submitBtn.disabled = false
+    //     alert("something wrong with server side, please try again later");
+    //   }
+    // })
+
+    uploadFile.onchange = function ValidateSingleInput() {
+      console.log();
+      imgFileName.innerHTML = ''
+      imgFileName.classList.remove('italic', 'text-red-500')
+      var sFileName = uploadFile.value;
+      console.log("sFileName:" + sFileName);
+      if (sFileName.length > 0) {
+        console.log("sFileName.length:" + sFileName.length);
+        var blnValid = false;
+        for (var j = 0; j < _validFileExtensions.length; j++) {
+          var sCurExtension = _validFileExtensions[j];
+          console.log("sCurExtension: " + sCurExtension);
+          if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() === sCurExtension.toLowerCase()) {
+            imgFileName.innerHTML += `Image name: ${sFileName.split(/(\\|\/)/g).pop()}`
+            imgFileName.classList.remove('hidden')
+            blnValid = true;
+            break;
+          }
+        }
+
+        if (!blnValid) {
+          imgFileName.innerHTML = ''
+          imgFileName.classList.add('hidden')
+          alert("Sorry, " + sFileName.split(/(\\|\/)/g).pop() + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+          uploadFile.value = "";
+          return false;
+        }
+      }
+      var tgt = window.event.srcElement
+      var file = tgt.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.addEventListener("loadend", () => {
+        pfp.forEach(p => {
+          p.src = reader.result;
+        })
+      });
+      return true;
+    }
+
+  </script>
+
+
 </body>
 
 </html>

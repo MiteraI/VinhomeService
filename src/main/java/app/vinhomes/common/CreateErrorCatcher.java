@@ -18,9 +18,9 @@ public class CreateErrorCatcher {
     private String firstnameErr;
     private String lastnameErr;
     private String dateErr;
+    private String phonenumberErr;
     private String addressErr;
     private List<String> addressAddr;
-    private String phonenumberErr;
 
     public CreateErrorCatcher(String usernameErr, String emailErr, String firstnameErr, String lastnameErr, String dateErr, List<String> addressAddr, String phonenumberErr) {
         this.usernameErr = usernameErr;
