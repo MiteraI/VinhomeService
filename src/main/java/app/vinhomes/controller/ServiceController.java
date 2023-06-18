@@ -78,8 +78,14 @@ public class ServiceController {
         if (priceStr.isEmpty()) {
             price = service.getPrice();
         }
+        else if (!priceStr.isEmpty()) {
+            price = Double.parseDouble(priceStr);
+        }
         if (numOfPeopleStr.isEmpty()) {
             numOfPeople = service.getNumOfPeople();
+        }
+        else if (!numOfPeopleStr.isEmpty()) {
+            numOfPeople = Integer.parseInt(numOfPeopleStr);
         }
         if (description.isEmpty()) {
             description = service.getDescription();
