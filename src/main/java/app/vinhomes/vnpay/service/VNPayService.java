@@ -10,6 +10,7 @@ import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.repository.order.PaymentRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import app.vinhomes.vnpay.config.ConfigVNpay;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,9 +38,9 @@ public class VNPayService {
     private TransactionRepository transactionRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-    public String getBankCode_CheckCOD_VNpay(HttpServletRequest request) {
+    public String getBankCode_CheckCOD_VNpay(JsonNode jsonNode, HttpServletRequest request) {
         try {
-            String transactionMethod = request.getParameter("transactionMethod");//jsonNode.get("paymentId").asText();
+            String transactionMethod = jsonNode.get("paymentId").asText();//request.getParameter("transactionMethod");//
 
             String bankCode =  request.getParameter("bankcode");
             if (transactionMethod.equals("COD")) {
@@ -84,13 +85,13 @@ public class VNPayService {
             Order getOrder = orderRepository.findById(orderId).get();
             if(getOrder != null){
                 Transaction toSaveTransaction =
-                Transaction.builder()
-                        .vnpTxnRef(vnp_txnRef)
-                        .paymentMethod(paymentRepository.findById(Long.valueOf(paymentMethodID)).get().getPaymentName().toString())
-                        .transactionId(getOrder.getOrderId())
-                        .order(getOrder)
-                        .status(TransactionStatus.PENDING)
-                        .build();
+                        Transaction.builder()
+                                .vnpTxnRef(vnp_txnRef)
+                                .paymentMethod(paymentRepository.findById(Long.valueOf(paymentMethodID)).get().getPaymentName().toString())
+                                .transactionId(getOrder.getOrderId())
+                                .order(getOrder)
+                                .status(TransactionStatus.PENDING)
+                                .build();
                 System.out.println(toSaveTransaction);
 
                 System.out.println("done build transaction, now safe");
@@ -125,12 +126,12 @@ public class VNPayService {
     }
     public boolean checkOrderStatus(Order order){
         try{
-             OrderStatus status = order.getStatus();
-             if(status.equals(OrderStatus.PENDING)){
-                 return true;
-             }else{
-                 return false;
-             }
+            OrderStatus status = order.getStatus();
+            if(status.equals(OrderStatus.PENDING)){
+                return true;
+            }else{
+                return false;
+            }
         }catch (Exception e){
             return false;
         }
@@ -227,9 +228,9 @@ public class VNPayService {
             String vnp_Version = "2.1.0";
             String vnp_Command = "querydr";
             String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
-                    String vnp_TxnRef = vnp_txnRef;//req.getParameter("order_id");
+            String vnp_TxnRef = vnp_txnRef;//req.getParameter("order_id");
             String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
-                    String vnp_TransDate = String.valueOf(transactionDate);//req.getParameter("trans_date");//vnp_payday
+            String vnp_TransDate = String.valueOf(transactionDate);//req.getParameter("trans_date");//vnp_payday
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -293,14 +294,15 @@ public class VNPayService {
         String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
 //        02: Giao dịch hoàn trả toàn phần (vnp_TransactionType=02)
 //        03: Giao dịch hoàn trả một phần (vnp_TransactionType=03)
+
         String vnp_TransactionType = transactionTypeValue ;//req.getParameter("vnp_TransactionType")
-            String vnp_TxnRef = vnp_txnRef;//req.getParameter("order_id");
-            int amount = getAmount*100 ;//Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;10000000
+        String vnp_TxnRef = vnp_txnRef;//req.getParameter("order_id");
+        int amount = getAmount*100 ;//Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;10000000
         String vnp_Amount = String.valueOf(amount);
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
         String vnp_TransactionNo = "";
         String vnp_TransactionDate =transactionDate;//String.valueOf(20230616094041l) ;//req.getParameter("trans_date"); //
-            String vnp_CreateBy = user;
+        String vnp_CreateBy = user;
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
@@ -362,4 +364,9 @@ public class VNPayService {
         return ResponseEntity.ok().body(response);
     }
 
+
+
 }
+
+
+

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -49,7 +50,7 @@ public class OrderService {
     private LeaveRepository leaveRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-    private Order officialCreateOrder( HttpServletRequest request) {//JsonNode orderJson,
+    private Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {//
         System.out.println("inside OfficialCreateOrder");
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
@@ -60,20 +61,20 @@ public class OrderService {
         Account account = accountRepository.findById(sessionAccount.getAccountId()).get();
 
         //Assigning service
-        Long serviceId = Long.parseLong(request.getParameter("serviceId") ); //orderJson.get("serviceId").asLong();
+        Long serviceId =orderJson.get("serviceId").asLong(); //Long.parseLong(request.getParameter("serviceId") ); //
 
         Service service = serviceRepository.findById(serviceId).get();
 
         //Assigning timeslot
-        Long timeId = Long.valueOf(request.getParameter("optionTime")); //orderJson.get("timeId").asLong();
+        Long timeId =orderJson.get("timeId").asLong();// Long.valueOf(request.getParameter("optionTime")); //
         TimeSlot timeSlot = timeSlotRepository.findById(timeId).get();
 
         //Assigning Payment
-        Long paymentId = Long.valueOf(request.getParameter("transactionMethod"));//orderJson.get("paymentId").asLong();
+        Long paymentId = orderJson.get("paymentId").asLong();//Long.valueOf(request.getParameter("transactionMethod"));//
         Payment payment = paymentRepository.findById(paymentId).get();
 
         //Assigning schedule
-        String day = request.getParameter("day"); //orderJson.get("day").asText();
+        String day =orderJson.get("day").asText();// request.getParameter("day"); //
         Schedule schedule = Schedule.builder()
                 .workDay(LocalDate.parse(day))
                 .timeSlot(timeSlot)
@@ -169,29 +170,36 @@ public class OrderService {
         schedule.setOrder(order);
         return orderRepository.save(order);
     }
-    public ResponseEntity<String> createOrder(  HttpServletRequest request) {//JsonNode orderJSON,
-        System.out.println("inside createOrder");
-        LocalDate parsedDate = LocalDate.parse(request.getParameter("day"));//orderJSON.get("day").asText()
-        LocalTime startTime = timeSlotRepository.findById(Long.valueOf(request.getParameter("optionTime"))).get().getStartTime();//orderJSON.get("timeId").asLong()
-        LocalDateTime orderedTime = parsedDate.atTime(startTime);
-        if (parsedDate.isBefore(LocalDate.now())) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
-        }
-
-        if (orderedTime.isBefore(LocalDateTime.now())) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
-        }
-
-        Order order = this.officialCreateOrder( request);//orderJSON,
-        System.out.println("pass official create order");
-        if (order == null) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
-        } else {
-            if (order.getAccount() == null) {
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Have not logged in");
+    public ResponseEntity<String> createOrder(JsonNode orderJSON, HttpServletRequest request) {//JsonNode orderJSON,
+        try {
+            System.out.println("inside createOrder");
+            LocalDate parsedDate = LocalDate.parse(orderJSON.get("day").asText());//request.getParameter("day")
+            LocalTime startTime = timeSlotRepository.findById(Long.valueOf(orderJSON.get("timeId").asLong())).get().getStartTime();////request.getParameter("optionTime"))
+            LocalDateTime orderedTime = parsedDate.atTime(startTime);
+            if (parsedDate.isBefore(LocalDate.now())) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
             }
-            return ResponseEntity.ok(order.getOrderId().toString());
+            if (orderedTime.isBefore(LocalDateTime.now())) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
+            }
+            Order order = this.officialCreateOrder(orderJSON, request);//
+            System.out.println("pass official create order");
+            if (order == null) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
+            } else {
+                if (order.getAccount() == null) {
+                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Have not logged in");
+                }
+                return ResponseEntity.ok(order.getOrderId().toString());
+            }
+        }catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+        }catch (DateTimeParseException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
         }
+
     }
     public Order getOrderById(String order_id){
         try{
@@ -206,4 +214,5 @@ public class OrderService {
             return null;
         }
     }
+
 }

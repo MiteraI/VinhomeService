@@ -32,8 +32,9 @@ public class VNpayController extends HttpServlet {
     @Autowired
     private TransactionRepository transactionRepository;
     private String errorURL = "/";
+    @CrossOrigin//origins = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html")
     @PostMapping//@RequestParam JsonNode jsonNode ,
-    public ResponseEntity<String> createPayment( HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public ResponseEntity<String> createPayment(@RequestBody JsonNode jsonNode , HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "billpayment";
@@ -41,24 +42,27 @@ public class VNpayController extends HttpServlet {
         ////////////////////////////////////////////////////////////
         String orderID = null;
 
-        String transactionMethodID = req.getParameter("transactionMethod");//jsonNode.get("paymentId").asText();
-        String dayfromFormOrderService= req.getParameter("day") ;//jsonNode.get("day").asText();
-        if(transactionMethodID != null){
-            ResponseEntity<String> response = orderService.createOrder(req);// this return resp status + ORDER ID!!
+        String transactionMethodID = jsonNode.get("paymentId").asText();//req.getParameter("transactionMethod");//
+        String dayfromFormOrderService= jsonNode.get("day").asText();//req.getParameter("day") ;
+        if( transactionMethodID !=""){//transactionMethodID != null ||
+            ResponseEntity<String> response = orderService.createOrder(jsonNode,req);// this return resp status + ORDER ID!!
             if(response.getStatusCode().is2xxSuccessful())    {
                 System.out.println(response.getBody());
                 orderID =response.getBody();
             }else{
                 System.out.println("order id is not assigned");
+                System.out.println(response.getBody());
                 return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("fail to aquire orderID") ;
             }
+        }else{
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("choose your payment method"  );
         }
         ////////////////////////////////////////////////////////////////
         int amount =(int) vnpayService.getServicePriceFromOrder(orderID)* 100;
         if(amount <= 0){
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("invalid money ");
         }
-        String bankCode = vnpayService.getBankCode_CheckCOD_VNpay(req);        //String bankCode = "VNBANK";
+        String bankCode = vnpayService.getBankCode_CheckCOD_VNpay(jsonNode,req);        //String bankCode = "VNBANK";
         if( bankCode == null){
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("bankcode is empty, this will be fixed later") ;
             //TODO quan li neu chon thanh toan COD thay vi VNPAY
@@ -143,10 +147,11 @@ public class VNpayController extends HttpServlet {
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         //resp.getWriter().write(gson.toJson(job));
-        resp.sendRedirect(paymentUrl);
+//        vnpayService.redirectTest(resp,paymentUrl);
+        //resp.sendRedirect(paymentUrl);
         //RedirectView redirectView = new RedirectView();
         //redirectView.setUrl(payreturn redirectView;
-        return ResponseEntity.ok().body(paymentUrl);
+        return ResponseEntity.ok().body(paymentUrl.toString().trim());
     }
 
 

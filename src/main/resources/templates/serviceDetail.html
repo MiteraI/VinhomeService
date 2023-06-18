@@ -283,7 +283,7 @@
 
         // createData(serviceId, PaymentId, TimeSlotId, date);
         // console.log(dataObj)
-/*        const form = document.getElementById("")//my-form
+        const form = document.getElementById("my-form")//
 
         form.addEventListener("submit", function (event) {
             event.preventDefault();
@@ -294,26 +294,38 @@
                     //'Content-Type': 'application/x-www-form-urlencoded'
                     'Content-Type': 'application/json'
                 },
-                //body:JSON.stringify(giveData)
+                body:JSON.stringify(giveData)
             })
                 .then((res) => {
                     if (res.status === 200) {
                         document.getElementById("formContainer").style.display = 'none';
                         alert("You have ordered successfully");
                         console.log("Successful");
-
+                        return res.text()
+                        //var body = res.text()
+                        //console.log(body)
+                        //console.log(res.body.json())
+                        //window.location.replace(`${res.body}`);
                     }
                     else {
                         console.log("Fail");
                         alert("Fail in ordering");
                     }
                 })
+                .then((text)=> {
+                if(text.includes("http")){
+                    console.log(text)
+                    window.location.replace(text)
+                }
+                
+            })
                 .catch((err) => {
                     if (err.response.status === 401) {
                         console.log("Exception")
                     }
                 })
-        })*/
+        })///////////////////////////////////
+        ////////////*/
 
         const cancelButton = document.getElementById("btnCancel");
         cancelButton.addEventListener("click", function (event) {

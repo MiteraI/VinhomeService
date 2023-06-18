@@ -6,9 +6,8 @@ import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
-import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
-import app.vinhomes.service.AccountService;
+import app.vinhomes.security.email.email_service.EmailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/createAccountAPI")
 public class CreateAccountAPI {
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private AccountService accountService;
+
     @Autowired
     private PhoneRepository phoneRepository;
     @Autowired
@@ -36,6 +32,8 @@ public class CreateAccountAPI {
 
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping(value = "/createAccountCustomer/{rolenumber}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForCustomer(@RequestBody JsonNode request, @PathVariable int rolenumber) {
@@ -96,6 +94,9 @@ public class CreateAccountAPI {
             System.out.println("save account");
             phone.setAccount(account);
             phoneRepository.save(phone);System.out.println("save phone");
+            //////////send verification
+            emailService.sendSimpleVerficationEmail(response);
+            //////////send verification
         } catch (DateTimeException e) {
             System.out.println("cant parse date");
             System.out.println(e);

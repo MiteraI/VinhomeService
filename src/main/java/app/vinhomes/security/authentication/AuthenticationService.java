@@ -21,12 +21,11 @@ public class AuthenticationService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
 
     public Account register(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         var savedAccount = accountRepository.save(account);
-            tokenService.createTokenEntity(account.getEmail());
+//            tokenService.createTokenEntity(account.getEmail());
         return savedAccount;
     }
 
