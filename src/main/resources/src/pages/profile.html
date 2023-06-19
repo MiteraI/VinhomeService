@@ -12,16 +12,13 @@
 </head>
 
 <body class="overflow-x-hidden h-[100%] w-[100%]">
+
   <header class="bg-blue-bootstrap lg:p-8 xl:p-8 md:p-8 sm:pb-0 sm:px-3 sm:pt-0 xm:pb-0 xm:px-3 xm:pt-0" id="Home">
     <nav class="navBar lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
       <div
         class="lg:flex md:flex xl:flex xl:items-center lg:items-center md:items-center xl:justify-between lg:justify-between md:justify-between sm:hidden xm:hidden">
         <div>
-          <a class="logo text-5xl font-extrabold text-white" href="./index.html">SuperClean</a>
-          <button class="xm:block md:hidden" id="toggle-button">
-            <img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
-            <img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
-          </button>
+          <a class="logo text-5xl font-extrabold text-white" href="/">SuperClean</a>
         </div>
 
         <div>
@@ -32,8 +29,16 @@
             <li class="text-xl font-medium text-white"><a href="#footer">Contact</a></li>
           </ul>
         </div>
+        <!-- Profile links -->
 
-        <div class="profile-btn flex items-center justify-center flex-col w-44">
+        <div th:unless="${session.loginedUser}">
+          <a href="/login"><button
+              class="cursor-pointer rounded-xl border-none bg-white px-10 py-4 font-extrabold text-blue-bootstrap">
+              Login
+            </button></a>
+        </div>
+
+        <div th:if="${session.loginedUser}" class="profile-btn flex items-center justify-center flex-col w-44">
           <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
             class="w-full h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 font-medium rounded-lg text-sm px-2 py-2 text-center inline-flex items-center justify-between "
             type="button">
@@ -41,7 +46,8 @@
               <img src="../../static/assets/images/user.png" alt="user-pfp" class="via-blue-bootstrap">
             </span>
             <span
-              class="w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]">TeriyakiBoyz</span>
+              class="username w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
+              th:text="${session.loginedUser.accountName}"></span>
             <svg class="w-[10%] h-4" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -57,7 +63,7 @@
                     class="fa fa-user mr-2"></i>Profile</a>
               </li>
               <li class="relative">
-                <a href="/yourOrders"
+                <a href="/order-history"
                   class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300"><i
                     class="fa fa-history mr-2"></i>Order History</a>
               </li>
@@ -72,14 +78,12 @@
         </div>
       </div>
 
-      <div class="lg:hidden xl:hidden md:hidden lg:h-0 xl:h-0 md:h-0 sm:block xm:block">
-        <div class="flex justify-between items-center px-3 py-4">
+      <div class="lg:hidden xl:hidden md:hidden lg:h-[0px] xl:h-[0px] md:h-[0px] sm:block xm:block">
+        <div class="flex justify-between px-3 py-4">
           <div>
-            <a class="text-5xl font-extrabold text-white sm:text-[30px] xm:text-[20px]"
-              href="./index.html">SuperClean</a>
+            <a class="text-5xl font-extrabold text-white" href="./index.html">SuperClean</a>
           </div>
-          <button class="bars-toggle text-[2rem] text-white sm:text-[30px] xm:text-[20px]"><i
-              class="fa fa-bars"></i></button>
+          <button class="bars-toggle text-[2rem] text-white"><i class="fa fa-bars"></i></button>
         </div>
 
         <ul class="list-none transition-all duration-300 ease-linear overflow-hidden links lg:h-0 md:h-0 xl:h-0">
@@ -111,8 +115,9 @@
           <button
             class="edit-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Edit
             Profile</button>
-          <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Reset
-            Password</button>
+          <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium"><a
+              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Reset
+              Password</a></button>
           <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Change
             Profile
             Picture</button>
@@ -121,62 +126,103 @@
 
       <div class="edit-form-container w-[60%] pl-[2%] pointer-events-none">
         <form class="edit-profile-form">
-          <label for="">Username<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="text" name="username" value="" placeholder="TeriyakiBoyz"
-            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
+          <label for="">Username<span
+              class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtUsername" value="" th:placeholder="${acc != null} ? ${acc.accountName}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
 
-          <label for="">Email<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="text" name="email" value="" placeholder="teriyakiboyz@tokyo.drift"
-            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
+          <label for="">Email<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtEmail" value="" th:placeholder="${acc != null} ? ${acc.email}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
 
           <label for="">First Name</label><br>
-          <span class="mb-3 flex"><input type="text" name="firstName" value="" placeholder="teriyaki"
-              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize"><i
-              class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+          <span class="mb-3 flex">
+            <input type="text" th:placeholder="${acc != null} ? ${acc.firstName}"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
+            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
               title="you can't edit this field"></i></span>
 
           <label for="">Last Name</label><br>
-          <span class="mb-3 flex"><input type="text" name="lastName" value="" placeholder="boyz"
-              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize"><i
-              class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+          <span class="mb-3 flex">
+            <input type="text" th:placeholder="${acc != null} ? ${acc.lastName}"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
+            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
               title="you can't edit this field"></i></span>
 
-          <label for="">Date of Birth<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="date" name="dob" value="" placeholder="1999/01/01"
-            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
+          <label for="">Date of Birth<span
+              class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtDate" value="" th:placeholder="${acc != null} ? ${acc.dob}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
 
-          <label for="">Phone<span class="error-message italic text-red-500 ml-1">err</span></label><br>
-          <input type="text" name="phone" value="" placeholder="012345678"
-            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3">
+          <label for="">Phone<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <div class="mb-3 w-[100%]">
+            <span class="flex">
+              <input type="text" name="txtPhone" value="" th:placeholder="${phone != null} ? ${phone[0].number}"
+                class="profile-form-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
+              <input type="hidden" name="txtPhoneId" th:value="${phone != null} ? ${phone[0].phoneId}">
+              <i
+                class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 pr-3 cursor-pointer"></i>
+            </span>
+
+            <div id="phoneDropdownContainer"
+              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative mt-[-1.3%]">
+              <ul class="absolute w-inherit h-[7.5rem] border-2 bg-slate-200 overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton">
+                <li class="relative">
+                  <a class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</a>
+                </li>
+                <li class="relative">
+                  <a class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</a>
+                </li>
+                <li class="relative">
+                  <a class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</a>
+                </li>
+                <li class="relative">
+                  <a class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</a>
+                </li>
+                <li class="relative">
+                  <a class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</a>
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <div class="mb-3 w-[100%] flex items-center">
             <div class="w-[100%]">
               <label for="">Room</label><br>
-              <span class="mb-3 flex"><input type="text" name="room" value="" placeholder="401"
-                  class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0"><i
-                  class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+              <span class="mb-3 flex">
+                <input type="text" th:placeholder="${address != null} ? ${address.buildingRoom}"
+                  class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
+                <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
                   title="you can't edit this field"></i></span>
             </div>
 
             <div class="ml-[6%] w-inherit">
               <label>Block</label><br>
               <div class="flex">
-                <span class="prohibit-input-radio py-2 flex flex-[.5]"><input class="scale-[1.3]" type="radio" value="A"
-                    name="btnRadio" checked><span class="ml-[3%]">
-                    Block A</span></span>
-                <span class="prohibit-input-radio py-2 flex flex-[.5]"><input class="scale-[1.3]" type="radio" value="B"
-                    name="btnRadio"><span class="ml-[3%]">
-                    Block B</span></span>
-                <span class="prohibit-input-radio py-2 flex flex-[.5]"><input class="scale-[1.3]" type="radio" value="C"
-                    name="btnRadio"><span class="ml-[3%]">
-                    Block C</span></span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]">
+                  <input class="scale-[1.3]" type="radio" value="A" th:checked="${address.buildingBlock} == A">
+                  <input type="hidden" class="uid" th:value="${acc != null} ? ${acc.accountId}">
+                  <span class="ml-[3%]">
+                    Block A</span>
+                </span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]">
+                  <input class="scale-[1.3]" type="radio" value="B" th:checked="${address.buildingBlock} == B">
+                  <span class="ml-[3%]">
+                    Block B</span>
+                </span>
+                <span class="prohibit-input-radio py-2 flex flex-[.5]">
+                  <input class="scale-[1.3]" type="radio" value="C" th:checked="${address.buildingBlock} == C">
+                  <span class="ml-[3%]">
+                    Block C</span>
+                </span>
               </div>
             </div>
           </div>
           <div class="flex justify-end ">
-            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500"
-              type="reset">Cancel</button>
-            <button class="px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
+            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500">Cancel</button>
+            <button type="submit"
+              class="submit-btn px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
           </div>
         </form>
 
@@ -188,43 +234,20 @@
 
   </div>
 
-  <footer class="flex items-center justify-between bg-blue-bootstrap px-28 py-10" id="footer">
-    <div>
-      <a class="text-5xl font-extrabold text-white" href="#home">SuperClean</a>
-      <button class="xm:block md:hidden" id="toggle-button">
-        <img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
-        <img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
-      </button>
-    </div>
-    <div class="text-white">
-      <p>Contact us</p>
-      <ul>
-        <li>
-          <img class="mr-5 inline w-6 fill-white" src="../assets/svg/phone-rotary-svgrepo-com.svg" alt="phone_svg" />0
-          856
-          721 175
-        </li>
-        <li>
-          <img class="fill-w mr-5 inline w-6" src="../assets/svg/mail-svgrepo-com.svg"
-            alt="mail_svg" />example@gmail.com
-        </li>
-      </ul>
-    </div>
-    <div>
-      <a href="#"><button class="cursor-pointer rounded-full border-none bg-yello-info px-12 py-6">
-          <span class="font-bold">Join us</span>
-        </button></a>
-    </div>
-  </footer>
 
   <script>
     const editFormContainer = document.querySelector('.edit-form-container')
     const editBtn = document.querySelector('.edit-btn')
+    const errorMassage = document.querySelectorAll('.error-message')
 
+    const profileForm = document.querySelector('.edit-profile-form');
     const profileFormInput = document.querySelectorAll('.profile-form-input');
     const prohibitInput = document.querySelectorAll('.prohibit-input')
     const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
     const profileBtn = document.querySelector('.profile-btn')
+    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+    const placeholderValue = [...profileFormInput].map(input => input.placeholder)
 
     const cancelBtn = document.querySelector('.cancel-btn')
 
@@ -235,25 +258,46 @@
     const logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
     const logoFontSize = parseFloat(logoStyle);
 
+    const uid = document.querySelector('.uid').value;
+    const userName = document.querySelector('.username')
+
+    const submitBtn = document.querySelector('.submit-btn');
 
     let canEdit = false
+    let i = 0
 
     profileBtn.style.height = `${logoFontSize}px`
 
     cancelBtn.addEventListener('click', (e) => {
       e.preventDefault()
+
+      errorMassage.forEach(err => {
+        err.classList.add('hidden')
+      })
+
       profileFormInput.forEach(input => {
         input.value = ''
+        input.placeholder = placeholderValue[i]
+        i++
       });
+      i = 0;
+      profileFormInput[2].type = 'text'
       editFormContainer.classList.add('pointer-events-none')
     })
 
     editBtn.addEventListener('click', (e) => {
       canEdit = true
+      errorMassage.forEach(err => {
+        err.classList.add('hidden')
+      })
       editFormContainer.classList.remove('pointer-events-none')
       profileFormInput.forEach(input => {
-        input.value = input.getAttribute('placeholder') == null ? '' : input.getAttribute('placeholder')
+        input.value = placeholderValue[i]
+        input.placeholder = ''
+        i++
       });
+      i = 0
+      profileFormInput[2].type = 'date'
     })
 
     profileFormInput.forEach(input => {
@@ -285,11 +329,88 @@
       })
     })
 
+    phoneDropDownButton.addEventListener('click', (e) => {
+      phoneDropdownContainer.classList.toggle('hidden')
+    })
+
     dropDownMenuBtn.addEventListener('click', () => {
       console.log("clicked")
       dropDownMenu.classList.toggle("hidden")
     })
+
+    function hideDropDown() {
+      document.onclick = () => {
+        phoneDropdownContainer.classList.add('hidden')
+        dropDownMenu.classList.add('hidden')
+      }
+    }
+
+    console.log(uid)
+
+    // profileForm.addEventListener('submit', async (e) => {
+    //   i = 0
+    //   e.preventDefault()
+    //   submitBtn.disabled = true
+    //   const form_data = new FormData(profileForm);
+    //   const data = Object.fromEntries(form_data);
+
+    //   const response = await fetch(`/changeProfile/${uid}`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(data)
+    //     });
+
+    //   if (response.status == 400) {
+    //     i = 0
+    //     error_message = await response.json()
+    //     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+    //     console.log(error_message);
+    //     for (var key in error_message) {
+    //       if (error_message[key]) {
+    //         errorMassage[i].classList.remove('hidden')
+    //         errorMassage[i].innerHTML = '❌ ' + error_message[key];
+    //       }
+    //       else {
+    //         errorMassage[i].innerHTML = ''
+    //       }
+    //       console.log(`${i}: ${error_message[key]}`)
+    //       i++;
+
+    //     }
+    //     i = 0
+    //     submitBtn.disabled = false
+
+    //   } else if (response.status == 200) {
+    //     i = 0
+    //     error_message = await response.json()
+    //     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+    //     console.log(error_message)
+    //     errorMassage.forEach(err => {
+    //       err.classList.add('hidden')
+    //     })
+    //     for (var key in error_message) {
+    //       console.log(placeholderValue[i])
+    //       placeholderValue[i] = error_message[key]
+    //       i += 1;
+    //     }
+    //     i = 0
+    //     userName.innerHTML = placeholderValue[0]
+    //     alert("successfully update profile")
+    //     submitBtn.disabled = false
+
+    //   } else if (response.status == 500) {
+    //     error_message = await response.json()
+    //     var list = document.getElementsByClassName("error-message");
+    //     var i = 0;
+    //     submitBtn.disabled = false
+    //     alert("something wrong with server side, please try again later");
+    //   }
+    // })
   </script>
+
 
 </body>
 

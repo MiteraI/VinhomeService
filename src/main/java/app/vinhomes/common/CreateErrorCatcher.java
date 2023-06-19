@@ -32,13 +32,10 @@ public class CreateErrorCatcher {
         this.phonenumberErr = phonenumberErr;
     }
 
-    public CreateErrorCatcher(String usernameErr, String emailErr, String firstnameErr, String lastnameErr, String dateErr, String addressErr, String phonenumberErr) {
+    public CreateErrorCatcher(String usernameErr, String emailErr, String dateErr, String phonenumberErr) {
         this.usernameErr = usernameErr;
         this.emailErr = emailErr;
-        this.firstnameErr = firstnameErr;
-        this.lastnameErr = lastnameErr;
         this.dateErr = dateErr;
-        this.addressErr = addressErr;
         this.phonenumberErr = phonenumberErr;
     }
 
