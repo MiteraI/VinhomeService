@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${services != null} ? ${services.serviceCategoryName} : ''"></title>
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/index.css">
+
+</head>
+
+<body class="overflow-x-hidden">
+  <header th:replace="~{./fragments/header.html}"></header>
+  <div class="mt-6 mx-28">
+    <p class="text-center text-4xl text-blue-bootstrap">Our services for <span
+        th:text="${services != null} ? ${services.serviceCategoryName} : ''"></span></p>
+    <br />
+    <div class="block mt-6">
+      <section class="flex-col items-center justify-center" id="service">
+
+        <div class="grid justify-center place-items-center grid-cols-2 gap-5">
+
+          <div class="w-[75%] space-y-6 flex-col items-center justify-center text-center mb-[35px]"
+            th:each="service: ${services.services}">
+            <img class="mx-auto" src="../static/assets/images/service-1.jpg" alt="cleaning house" />
+
+            <p class="text-2xl text-blue-bootstrap" th:text="${service != null} ? ${service.serviceName} : ''">House
+              cleaning</p>
+
+            <div>
+              <p class="text-justify">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iure necessitatibus suscipit soluta
+                doloribus ex provident magnam fuga enim maiores!
+              </p>
+            </div>
+            <br />
+            <div>
+              <a href="#"><button class="cursor-pointer rounded-xl border-none bg-yello-info px-8 py-2">
+                  <span class="font-bold">ORDER</span>
+                </button></a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+  </div>
+  <footer th:replace="~{./fragments/footer.html}"></footer>
+  <script>
+    // var logo = document.querySelector('.logo');
+    // var logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
+    // var logoFontSize = parseFloat(logoStyle);
+    const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
+    const dropDownMenu = document.querySelector('#dropdownDivider')
+    const navBar = document.querySelector('.navBar')
+    const profileBtn = document.querySelector('.profile-btn')
+    // const barsToggle = document.querySelector('.bars-toggle')
+    // const list = document.querySelector('.links')
+    // const listElement = list.getElementsByTagName('li')
+    let navBarHeight = navBar.getBoundingClientRect().height;
+    // let listHeight = 0
+    // list.style.height = 0
+
+    // console.log("font-size: " + logoFontSize)
+
+    console.log("profileBtn.height: " + profileBtn.getBoundingClientRect().height)
+
+    // console.log(listElement[0].getBoundingClientRect().height)
+    // for (let i = 0; i < listElement.length; i++) {
+    //     listHeight += listElement[i].getBoundingClientRect().height;
+    // };
+    profileBtn.style.height = `${navBarHeight}px`
+    console.log(navBarHeight)
+
+    dropDownMenuBtn.addEventListener('click', () => {
+      console.log("clicked")
+      dropDownMenu.classList.toggle("hidden")
+    })
+  </script>
+</body>
+
+</html>

@@ -42,10 +42,11 @@
 
             <!-- 2 service category -->
             <div class="flex justify-around">
-                <div class="w-2/6 flex-col space-y-6 text-center">
+                <div class="w-2/6 flex-col space-y-6 text-center" th:each="c : ${category}">
                     <img class="mx-auto" src="../static/assets/images/service-1.jpg" alt="cleaning house" />
 
-                    <p class="text-2xl text-blue-bootstrap">House cleaning</p>
+                    <p class="text-2xl text-blue-bootstrap"
+                        th:text="${category != null} ? ${c.serviceCategoryName} : ''">House cleaning</p>
 
                     <div>
                         <p>
@@ -56,30 +57,13 @@
                     </div>
                     <br />
                     <div>
-                        <a href="#"><button class="cursor-pointer rounded-xl border-none bg-yello-info px-8 py-2">
+                        <a th:href="@{/category-services/{id}(id=${c.serviceCategoryId})}"><button
+                                class="cursor-pointer rounded-xl border-none bg-yello-info px-8 py-2">
                                 <span class="font-bold">LEARN MORE</span>
                             </button></a>
                     </div>
                 </div>
-                <div class="w-2/6 flex-col space-y-6 text-center">
-                    <img class="mx-auto" src="../static/assets/images/service-4.jpg" alt="cleaning house" />
 
-                    <p class="text-2xl text-blue-bootstrap">Appliances cleaning</p>
-
-                    <div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iure necessitatibus suscipit
-                            soluta
-                            doloribus ex provident magnam fuga enim maiores!
-                        </p>
-                    </div>
-                    <br />
-                    <div>
-                        <a href="#"><button class="cursor-pointer rounded-xl border-none bg-yello-info px-8 py-2">
-                                <span class="font-bold">LEARN MORE</span>
-                            </button></a>
-                    </div>
-                </div>
             </div>
         </section>
     </div>
@@ -90,7 +74,11 @@
         const navBar = document.querySelector('.navBar')
         const profileBtn = document.querySelector('.profile-btn')
         let navBarHeight = navBar.getBoundingClientRect().height;
-        profileBtn.style.height = `${navBarHeight}px`
+
+        console.log("profileBtn.height: " + profileBtn.getBoundingClientRect().height)
+
+        console.log(navBarHeight)
+
         dropDownMenuBtn.addEventListener('click', () => {
             console.log("clicked")
             dropDownMenu.classList.toggle("hidden")

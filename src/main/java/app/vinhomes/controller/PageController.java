@@ -7,6 +7,7 @@ import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +27,9 @@ public class PageController {
 
     @Autowired
     private ServiceRepository serviceRepository;
+
+    @Autowired
+    private ServiceCategoryRepository serviceCategoryRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -49,6 +53,8 @@ public class PageController {
                 return "staff";
             }
         }
+        model.addAttribute("category", serviceCategoryRepository.findAll());
+        System.out.println(serviceCategoryRepository.findAll());
         return "homepage";
     }
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -59,6 +65,13 @@ public class PageController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegister() {
         return "register";
+    }
+
+    @RequestMapping(value = "/category-services/{id}", method = RequestMethod.GET)
+    public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model){
+        model.addAttribute("services", serviceCategoryRepository.findById(categoryId).get());
+        System.out.println(serviceCategoryRepository.findById(categoryId).get());
+        return "categoryservices";
     }
 
     @RequestMapping(value = "/service/{id}", method = RequestMethod.GET)

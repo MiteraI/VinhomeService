@@ -4,7 +4,7 @@
     <div
       class="lg:flex md:flex xl:flex xl:items-center lg:items-center md:items-center xl:justify-between lg:justify-between md:justify-between sm:hidden xm:hidden">
       <div>
-        <a class="logo text-5xl font-extrabold text-white" href="./index.html">SuperClean</a>
+        <a class="logo text-5xl font-extrabold text-white" href="/">SuperClean</a>
       </div>
 
       <div>
@@ -31,7 +31,7 @@
           <span class="w-[20%] border-2 rounded-full border-blue-bootstrap">
             <img src="../../static/assets/images/user.png" alt="user-pfp" class="via-blue-bootstrap">
           </span>
-          <span class="w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
+          <span class="username w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
             th:text="${session.loginedUser.accountName}"></span>
           <svg class="w-[10%] h-4" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
@@ -52,7 +52,7 @@
                   class="fa fa-history mr-2"></i>Order History</a>
             </li>
             <li class="relative">
-              
+
               <a href="/logout"
                 class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-b-lg "><i
                   class="fa fa-sign-out mr-2"></i>Log Out</a>
