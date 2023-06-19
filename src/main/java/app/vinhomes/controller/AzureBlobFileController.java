@@ -3,6 +3,7 @@ package app.vinhomes.controller;
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.service.AzureBlobAdapter;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -10,6 +11,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +50,27 @@ public class AzureBlobFileController {
         return ResponseEntity.ok(fileName);
     }
 
+
+    @PostMapping("/offdays")
+    public ResponseEntity<String> uploadOffdays
+            (@RequestParam MultipartFile file, HttpSession session)
+            throws IOException {
+        Account sessionAccount = (Account) session.getAttribute("loginedUser");
+        String fileName = azureBlobAdapter.uploadOffdays(file, session);
+        return ResponseEntity.ok(fileName);
+    }
+
+    //THIS TO ENCODE THE PASSWORD OF ACCOUNT//
+    //ONLY USE WHEN PASS IS READABLE AND NEED TO ENCODE//
+    //AFTER ENCODE, THE PASS WILL BE UNREADABLE//
+    //MAKE SURE TO CHANGE ACCID BELOW//
+    @GetMapping("/encode")
+    public void encode() {
+        Account acc = accountRepository.findById(3L).get();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        acc.setPassword(encoder.encode(acc.getPassword()));
+        accountRepository.save(acc);
+    }
     @GetMapping
     public ResponseEntity<List<String>> getAllBlobs() {
 
@@ -106,4 +130,5 @@ public class AzureBlobFileController {
         String url = azureBlobAdapter.getURLFolder(fileName);
         return ResponseEntity.ok(url);
     }
+
 }
