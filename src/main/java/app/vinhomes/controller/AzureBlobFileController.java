@@ -51,15 +51,6 @@ public class AzureBlobFileController {
     }
 
 
-    @PostMapping("/offdays")
-    public ResponseEntity<String> uploadOffdays
-            (@RequestParam MultipartFile file, HttpSession session)
-            throws IOException {
-        Account sessionAccount = (Account) session.getAttribute("loginedUser");
-        String fileName = azureBlobAdapter.uploadOffdays(file, session);
-        return ResponseEntity.ok(fileName);
-    }
-
     //THIS TO ENCODE THE PASSWORD OF ACCOUNT//
     //ONLY USE WHEN PASS IS READABLE AND NEED TO ENCODE//
     //AFTER ENCODE, THE PASS WILL BE UNREADABLE//
