@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -159,13 +161,15 @@ public class AdminAPI {
 
     @GetMapping(value = "/getAccountInfo/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Account getAccountById(@PathVariable String ID) {
+        System.out.println("inside get Account info");
         Account account = accountRepository.findById(Long.parseLong(ID)).get();
         return account;
     }
 
-    @PostMapping(value = "/getAccountPhonenumber", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Phone> getPhonenumberByAccount(@RequestBody Account account) {
-        List<Phone> phoneList = phoneRepository.findByAccount(account);
+    @GetMapping(value = "/getAccountPhonenumber/{accountID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Phone> getPhonenumberByAccount(@PathVariable long accountID) {
+        System.out.println("inside get phone number");
+        List<Phone> phoneList = phoneRepository.findByAccountId(accountID);
         return phoneList;
     }
 
@@ -294,10 +298,10 @@ public class AdminAPI {
         return ResponseEntity.status(HttpStatus.OK).body(error);
     }
 
-    @PostMapping(value = "/getWorkerStatus", produces = MediaType.APPLICATION_JSON_VALUE)
-    public WorkerStatus getWorkerStatus(@RequestBody Account account) {
+    @GetMapping(value = "/getWorkerStatus/{account_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WorkerStatus getWorkerStatus(@PathVariable long account_id) {
         System.out.println("get in address");
-        WorkerStatus workerStatus = workerStatusRepository.findByAccount(account);
+        WorkerStatus workerStatus = workerStatusRepository.findWorkerStatusById(account_id);
         return workerStatus;
 
     }
@@ -308,6 +312,5 @@ public class AdminAPI {
         List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAll();
         return serviceCategoryList;
     }
-
 
 }

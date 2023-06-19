@@ -162,7 +162,7 @@
                     <a class="dropdown-item" href="/yourOrders"><i class="fa fa-shopping-cart me-3"></i>Orders</a>
                     <div class="dropdown-divider"></div>
                     <form action="/logout">
-                        <a class="logout_btn dropdown-item" href="#"><i class="fa fa-sign-out me-3"></i><button type="submit">Logout</button></a>
+                        <button type="submit">Logout</button>
                     </form>
                 </div>
             </li>
@@ -239,8 +239,8 @@
     const navBarLi = navbar_nav.getElementsByTagName('li');
     const categoryIcon = ["fas fa-broom", "fas fa-wrench"]
 
-    window.addEventListener('DOMContentLoaded', getSessionData, false)
-    logoutBtn.addEventListener('click', logOut, false)
+     window.addEventListener('DOMContentLoaded', getSessionData, false)
+    // logoutBtn.addEventListener('click', logOut, false)
 
     //get all category from localhost:8080/api/category
     const getCategory = async () => {

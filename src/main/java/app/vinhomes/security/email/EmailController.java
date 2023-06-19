@@ -2,7 +2,9 @@ package app.vinhomes.security.email;
 
 
 import app.vinhomes.security.email.email_service.EmailService;
+
 import app.vinhomes.security.email.email_service.TokenService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,13 +16,17 @@ import org.springframework.web.bind.annotation.*;
 public class EmailController {
     @Autowired
     private EmailService emailService;
+
     @Autowired
     private TokenService tokenService;
+
     private String emailParameter = "email";
     @PostMapping("/sendMail")
     public ResponseEntity<?> sendMail(HttpServletRequest request) {
         try{
+
             emailService.sendSimpleVerficationEmail(request.getParameter("email"));
+
         }catch (Exception e){
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("somethingwrong");
@@ -28,6 +34,7 @@ public class EmailController {
         System.out.println("yes nothing broke Yet");
         return ResponseEntity.ok().body("yes send success");
     }
+
     @GetMapping(value = "/verification")
     public ResponseEntity<String> checkEmailVerification(HttpServletRequest request){
         try{
@@ -50,12 +57,15 @@ public class EmailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR on server");
         }
     }
+
     @GetMapping
     public ResponseEntity<?> getTokenMap(){
         return ResponseEntity.ok().body(emailService.getTokenEntityMap()    );
     }
+
     @GetMapping(value = "/getUrl")
     public String testGetCurrentUrl(HttpServletRequest request){
         return emailService.getSiteURL(request);
     }
+
 }

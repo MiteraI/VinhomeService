@@ -1,5 +1,6 @@
 package app.vinhomes.unittest;
 
+
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.type_enum.OrderStatus;
@@ -32,6 +33,7 @@ public class test {
     private int plusHour;
     @Autowired
     private VNPayService VNPayService;
+
 //    @Value("${twilio.expiration}")
     private int expired = 120000;
 
@@ -43,17 +45,20 @@ public class test {
     @Test
     @Disabled
     void testTransactionRepo(){
+
         //List<Transaction> transactionList= transactionRepository.findAll();
         //int size = transactionList.size();
     }
     @Test
     void testTransaction(){
         VNPayService.BuildTransactionThroughOrder(
+
             37,
                 "123123",
                 "8"
         );
     }
+
     @Test
     void testTransactionRepoFunction(){
         //Transaction transaction = VNPayService.getTransaction("23226995");
@@ -105,4 +110,5 @@ public class test {
         System.out.println(timeAfter2.isBefore(time));
         System.out.println(timeAfter2.isAfter(time));
     }
+
 }

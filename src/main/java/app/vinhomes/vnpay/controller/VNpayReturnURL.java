@@ -1,5 +1,6 @@
 package app.vinhomes.vnpay.controller;
 
+
 import app.vinhomes.entity.Order;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.vnpay.service.VNPayService;
@@ -12,21 +13,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.UnsupportedEncodingException;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import app.vinhomes.vnpay.config.*;
 
+
 import static java.lang.System.out;
 
 @Controller
+
 @RequestMapping(value = "/vnpay/returnurl")
 public class VNpayReturnURL {
     @Autowired
     private ConfigVNpay config;
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private VNPayService VNpayService;
 
@@ -35,6 +40,7 @@ public class VNpayReturnURL {
     public String getReturnUrl(HttpServletRequest request) {
         try {
             out.println("inside return url");
+
             Map fields = new HashMap();
             JsonObject json = new JsonObject();
             for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
@@ -42,7 +48,9 @@ public class VNpayReturnURL {
                 String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
                 if ((fieldValue != null) && (fieldValue.length() > 0)) {
                     fields.put(fieldName, fieldValue);
+
                     out.println(fieldName + "               " + fieldValue);
+
                 }
             }
             String vnp_SecureHash = request.getParameter("vnp_SecureHash");
@@ -105,6 +113,7 @@ public class VNpayReturnURL {
             throw new RuntimeException(e);
         } catch (Exception e) {
             return "redirect:/transactionReturn?message=error on serverside, please make another order";
+
         }
     }
 }
