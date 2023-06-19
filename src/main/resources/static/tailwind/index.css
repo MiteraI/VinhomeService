@@ -1186,14 +1186,10 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-yello-info {
+
+.bg-yellow-info {
   --tw-bg-opacity: 1;
   background-color: rgb(255 209 47 / var(--tw-bg-opacity));
-}
-
-.bg-yellow-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(161 98 7 / var(--tw-bg-opacity));
 }
 
 .via-blue-bootstrap {

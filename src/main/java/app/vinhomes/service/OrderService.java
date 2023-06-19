@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static app.vinhomes.common.SessionUserCaller.getSessionUser;
+
 @org.springframework.stereotype.Service
 public class OrderService {
     @Autowired
@@ -42,6 +44,10 @@ public class OrderService {
     private LeaveRepository leaveRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
+    public List<Order> getCustomerOrder(HttpServletRequest request) {
+        Account loginedUser = getSessionUser(request);
+        return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
+    }
     public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");

@@ -68,29 +68,14 @@
     </div>
     <footer th:replace="~{./fragments/footer.html}"></footer>
     <script>
-        // var logo = document.querySelector('.logo');
-        // var logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
-        // var logoFontSize = parseFloat(logoStyle);
         const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
         const dropDownMenu = document.querySelector('#dropdownDivider')
         const navBar = document.querySelector('.navBar')
         const profileBtn = document.querySelector('.profile-btn')
-        // const barsToggle = document.querySelector('.bars-toggle')
-        // const list = document.querySelector('.links')
-        // const listElement = list.getElementsByTagName('li')
         let navBarHeight = navBar.getBoundingClientRect().height;
-        // let listHeight = 0
-        // list.style.height = 0
-
-        // console.log("font-size: " + logoFontSize)
 
         console.log("profileBtn.height: " + profileBtn.getBoundingClientRect().height)
 
-        // console.log(listElement[0].getBoundingClientRect().height)
-        // for (let i = 0; i < listElement.length; i++) {
-        //     listHeight += listElement[i].getBoundingClientRect().height;
-        // };
-        profileBtn.style.height = `${navBarHeight}px`
         console.log(navBarHeight)
 
         dropDownMenuBtn.addEventListener('click', () => {
