@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../dist/index.css" />
+		<link rel="stylesheet" href="../font.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<title>Order Details</title>
+	</head>
+	<body class="overflow-x-hidden">
+		<section class="mx-48 my-10 flex space-x-10">
+			<div class="w-1/3">
+				<img class="rounded-lg" src="../assets/images/about.jpg" alt="working" />
+			</div>
+			<div class="w-2/3 space-y-6">
+				<h1 class="text-4xl font-semibold">House Cleaning</h1>
+				<p>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, magnam error! Commodi placeat sunt distinctio,
+					voluptatum odit vero assumenda at.
+				</p>
+				<ul class="space-y-4">
+					<li>Work day: <span>1-1-2023</span></li>
+					<li>Payment method: <span>VNPay</span></li>
+					<li>Price: <span>150$</span></li>
+					<li>Status: <span class="text-blue-bootstrap">Pending</span></li>
+				</ul>
+			</div>
+		</section>
+		<section class="mx-48 my-10 space-y-4 rounded-lg border-2 border-black bg-gray-100 p-6">
+			<h2 class="text-center text-2xl font-semibold">Worker List</h2>
+			<table class="w-full table-auto">
+				<thead>
+					<tr>
+						<th class="border-r-2 border-black">First Name</th>
+						<th>Last Name</th>
+					</tr>
+				</thead>
+				<tbody class="text-center">
+					<tr>
+						<td class="py-2 border-r-2 border-black">Josh</td>
+						<td class="py-2">Xinton</td>
+					</tr>
+					<tr>
+						<td class="py-2 border-r-2 border-black">Jeff</td>
+						<td class="py-2 ">Jev</td>
+					</tr>
+					<tr>
+						<td class="py-2 border-r-2 border-black">John</td>
+						<td class="py-2">Cena</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section class="rating-and-comment mx-48 my-10 flex-col space-y-3">
+			<h4 class="text-center text-xl font-semibold">Add a comment</h4>
+			<div>
+				<input type="radio" name="rating" value="1" id="1" class="hidden" /><label for="1"
+					><i class="fa-regular fa-star text-yellow-info"></i
+				></label>
+				<input type="radio" name="rating" value="2" id="2" class="hidden" /><label for="2"
+					><i class="fa-regular fa-star text-yellow-info"></i
+				></label>
+				<input type="radio" name="rating" value="3" id="3" class="hidden" /><label for="3"
+					><i class="fa-regular fa-star text-yellow-info"></i
+				></label>
+				<input type="radio" name="rating" value="4" id="4" class="hidden" /><label for="4"
+					><i class="fa-regular fa-star text-yellow-info"></i
+				></label>
+				<input type="radio" name="rating" value="5" id="5" class="hidden" /><label for="5"
+					><i class="fa-regular fa-star text-yellow-info"></i
+				></label>
+			</div>
+			<div>
+				<textarea
+					class="form-control w-full rounded-lg border-2 border-black p-6"
+					placeholder="Write your feedback to us..."
+					rows="4"
+				></textarea>
+			</div>
+
+			<div class="flex justify-end">
+				<button class="rounded-md bg-green-success px-8 py-2 text-white" id="sendComment">
+					Send
+				</button>
+			</div>
+		</section>
+		<script>
+			const radios = document.getElementsByName("rating");
+			const stars = document.getElementsByClassName("fa-star");
+			const changeStar = (stars, numOfStars) => {
+				for (i = 0; i < 5; i++) {
+					if (stars[i].classList.contains("fa")) {
+						stars[i].classList.replace("fa", "fa-regular");
+					}
+				}
+				for (i = 0; i < numOfStars; i++) {
+					stars[i].classList.replace("fa-regular", "fa");
+				}
+			};
+			document.getElementsByName("rating").forEach((button) =>
+				button.addEventListener("change", () => {
+					switch (button.value) {
+						case "1":
+							changeStar(stars, 1);
+							break;
+						case "2":
+							changeStar(stars, 2);
+							break;
+						case "3":
+							changeStar(stars, 3);
+							break;
+						case "4":
+							changeStar(stars, 4);
+							break;
+						case "5":
+							changeStar(stars, 5);
+							break;
+					}
+				})
+			);
+		</script>
+	</body>
+</html>

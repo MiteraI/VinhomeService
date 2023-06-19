@@ -48,6 +48,11 @@ public class OrderService {
         Account loginedUser = getSessionUser(request);
         return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
     }
+
+    public Order getCustomerOrderDetails(HttpServletRequest request, Long orderId) {
+        Account loginedUser = getSessionUser(request);
+        return orderRepository.findByAccount_AccountIdAndOrderId(loginedUser.getAccountId(), orderId);
+    }
     public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
