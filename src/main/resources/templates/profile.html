@@ -12,6 +12,7 @@
 </head>
 
 <body class="overflow-x-hidden h-[100%] w-[100%]">
+
   <header th:replace="~{./fragments/header.html}"></header>
 
   <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
@@ -70,11 +71,26 @@
             class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
 
           <label for="">Phone<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
-          <span class="mb-3 flex">
-            <input type="text" name="txtPhone" value="" th:placeholder="${phone != null} ? ${phone[0].number}"
-              class="profile-form-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
-            <input type="hidden" name="txtPhoneId" th:value="${phone != null} ? ${phone[0].phoneId}">
-            <i class="fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"></i></span>
+          <div class="mb-3 w-[100%]">
+            <span class="flex">
+              <input type="text" name="txtPhone" value="" th:placeholder="${phone != null} ? ${phone[0].number}"
+                class="profile-form-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
+              <input type="hidden" name="txtPhoneId" th:value="${phone != null} ? ${phone[0].phoneId}">
+              <i
+                class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 pr-3 cursor-pointer"></i>
+            </span>
+
+            <div id="phoneDropdownContainer"
+              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
+              <ul class="absolute w-inherit h-[7.5rem] rounded-lg border-2 bg-slate-200 overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton" th:each="fone : ${phone}">
+                <li class="relative">
+                  <span class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer"
+                    th:text="${phone != null} ? ${fone.number}"></span>
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <div class="mb-3 w-[100%] flex items-center">
             <div class="w-[100%]">
@@ -122,7 +138,6 @@
 
 
   </div>
-
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script>
@@ -135,6 +150,8 @@
     const prohibitInput = document.querySelectorAll('.prohibit-input')
     const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
     const profileBtn = document.querySelector('.profile-btn')
+    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
     const placeholderValue = [...profileFormInput].map(input => input.placeholder)
 
     const cancelBtn = document.querySelector('.cancel-btn')
@@ -217,10 +234,21 @@
       })
     })
 
+    phoneDropDownButton.addEventListener('click', (e) => {
+      phoneDropdownContainer.classList.toggle('hidden')
+    })
+
     dropDownMenuBtn.addEventListener('click', () => {
       console.log("clicked")
       dropDownMenu.classList.toggle("hidden")
     })
+
+    function hideDropDown() {
+      document.onclick = () => {
+        phoneDropdownContainer.classList.add('hidden')
+        dropDownMenu.classList.add('hidden')
+      }
+    }
 
     console.log(uid)
 
