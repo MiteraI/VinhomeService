@@ -123,7 +123,7 @@ public class LeaveController {
                 String newFilename = "";  // Specify the new file name here
                 String extension = StringUtils.getFilenameExtension(originalFilename);
                 newFilename = startDateStr + "_" + workerStatus.getWorkerStatusId() + "." + extension;
-                String Url = "https://imagesforservice.blob.core.windows.net/images/leave/" + newFilename;
+                String Url = "https://imagescleaningservice.blob.core.windows.net/images/leave/" + newFilename;
                 LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason,Url );
 
                 blobContainerClient = blobServiceClient.getBlobContainerClient("images/leave");
