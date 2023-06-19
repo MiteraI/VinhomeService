@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="../dist/index.css" />
+	<link rel="stylesheet" href="../static/tailwind/index.css" />
 	<title>Document</title>
 </head>
 
@@ -15,10 +15,6 @@
 				<!-- Navbar Brand -->
 				<div>
 					<a class="text-5xl font-extrabold text-white" href="#Home">SuperClean</a>
-					<button class="xm:block md:hidden" id="toggle-button">
-						<img class="" id="open-icon" src="../assets/icon-hamburger.svg" alt="" />
-						<img class="hidden" id="close-icon" src="../assets/icon-close.svg" alt="" />
-					</button>
 				</div>
 				<!-- Navlinks list -->
 				<div>
@@ -68,73 +64,68 @@
 			</svg>
 		</div>
 
-			<input
-				class="w-full bg-slate-300"
-				type="search"
-				name="servicename"
-				id="searchbar"
-				style="color: black"
-				placeholder="Searching..."
-			/>
-		</section>
-		<section class="orderlist mx-48 my-10 flex-col">
-			<div class="my-10 flex-col">
-				<p class="rounded-t-lg bg-green-success p-2 font-semibold text-white">&emsp; Completed</p>
-				<div class="flex rounded-b-lg border-2 p-4 space-x-6">
-					<div class="  w-1/6">
-						<img class="h-full w-full" src="../assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
-					</div>
-					<div class="  w-2/6">
-						<p>Television Cleaning</p>
-						<p>16/06/2023</p>
-					</div>
-					<div class="  flex w-3/6 items-start justify-between">
-						<span>300.000 VND</span>
-						<div class="space-x-5">
-							<button class="rounded-xl bg-yello-info px-3 py-1">Order Again</button>
-							<button class="rounded-xl bg-yello-info px-3 py-1">View Details</button>
-						</div>
+		<input class="w-full bg-slate-300" type="search" name="servicename" id="searchbar" style="color: black"
+			placeholder="Searching..." />
+	</section>
+	<section class="orderlist mx-48 my-10 flex-col">
+		<div class="my-10 flex-col">
+			<p class="rounded-t-lg bg-green-success p-2 font-semibold text-white">&emsp; Completed</p>
+			<div class="flex rounded-b-lg border-2 p-4 space-x-6">
+				<div class="  w-1/6">
+					<img class="h-full w-full" src="../static/assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
+				</div>
+				<div class="  w-2/6">
+					<p>Television Cleaning</p>
+					<p>16/06/2023</p>
+				</div>
+				<div class="  flex w-3/6 items-start justify-between">
+					<span>300.000 VND</span>
+					<div class="space-x-5">
+						<button class="rounded-xl bg-yello-info px-3 py-1">Order Again</button>
+						<button class="rounded-xl bg-yello-info px-3 py-1">View Details</button>
 					</div>
 				</div>
 			</div>
-			<div class="my-10 flex-col">
-				<p class="rounded-t-lg bg-red-cancel p-2 font-semibold text-white">&emsp; Cancelled</p>
-				<div class="flex rounded-b-lg border-2 p-4 space-x-6">
-					<div class="  w-1/6">
-						<img class="h-full w-full" src="../assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
-					</div>
-					<div class="  w-2/6">
-						<p>Television Cleaning</p>
-						<p>16/06/2023</p>
-					</div>
-					<div class="  flex w-3/6 items-start justify-between">
-						<span>300.000 VND</span>
-						<div class="space-x-5">
-							<button class="rounded-xl bg-yello-info px-3 py-1">Order Again</button>
-							<button class="rounded-xl bg-yello-info px-3 py-1">View Details</button>
-						</div>
+		</div>
+		<div class="my-10 flex-col">
+			<p class="rounded-t-lg bg-red-cancel p-2 font-semibold text-white">&emsp; Cancelled</p>
+			<div class="flex rounded-b-lg border-2 p-4 space-x-6">
+				<div class="  w-1/6">
+					<img class="h-full w-full" src="../static/assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
+				</div>
+				<div class="  w-2/6">
+					<p>Television Cleaning</p>
+					<p>16/06/2023</p>
+				</div>
+				<div class="  flex w-3/6 items-start justify-between">
+					<span>300.000 VND</span>
+					<div class="space-x-5">
+						<button class="rounded-xl bg-yello-info px-3 py-1">Order Again</button>
+						<button class="rounded-xl bg-yello-info px-3 py-1">View Details</button>
 					</div>
 				</div>
 			</div>
-			<div class="my-10 flex-col">
-				<p class="rounded-t-lg bg-blue-bootstrap p-2 font-semibold text-white">&emsp; Pending</p>
-				<div class="flex rounded-b-lg border-2 p-4 space-x-6">
-					<div class="w-1/6">
-						<img class="h-full w-full" src="../assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
-					</div>
-					<div class="w-2/6">
-						<p>Television Cleaning</p>
-						<p>16/06/2023</p>
-					</div>
-					<div class="flex w-3/6 items-start justify-between">
-						<span>300.000 VND</span>
-						<div class="space-x-5">
-							<button class="rounded-xl bg-red-cancel px-3 py-1">Cancel</button>
-							<button class="rounded-xl bg-yello-info px-3 py-1">View Details</button>
-						</div>
+		</div>
+		<div class="my-10 flex-col">
+			<p class="rounded-t-lg bg-blue-bootstrap p-2 font-semibold text-white">&emsp; Pending</p>
+			<div class="flex rounded-b-lg border-2 p-4 space-x-6">
+				<div class="w-1/6">
+					<img class="h-full w-full" src="../static/assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
+				</div>
+				<div class="w-2/6">
+					<p>Television Cleaning</p>
+					<p>16/06/2023</p>
+				</div>
+				<div class="flex w-3/6 items-start justify-between">
+					<span>300.000 VND</span>
+					<div class="space-x-5">
+						<button class="rounded-xl bg-red-cancel px-3 py-1">Cancel</button>
+						<button class="rounded-xl bg-yello-info px-3 py-1">View Details</button>
 					</div>
 				</div>
 			</div>
-		</section>
-	</body>
+		</div>
+	</section>
+</body>
+
 </html>
