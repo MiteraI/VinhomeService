@@ -309,7 +309,6 @@
     const navBarLi = navbar_nav.getElementsByTagName('li');
     const categoryIcon = ["fas fa-broom", "fas fa-wrench"]
 
-     window.addEventListener('DOMContentLoaded', getSessionData, false)
     // logoutBtn.addEventListener('click', logOut, false)
 
     //get all category from localhost:8080/api/category
@@ -337,25 +336,26 @@
     // if the session exist hide login btn, show category and profile
     // else hide category and profile and show login btn
     function getSessionData() {
-        fetch('/api/order/getSession')
-            .then(response => response.json())
-            .then(data => {
-                navBarLi[0].classList.add('d-none');
-                navBarLi[1].classList.remove('d-none');
-                navBarLi[2].classList.remove('d-none');
-            })
-            .catch((err) => {
-                navBarLi[0].classList.remove('d-none');
-                navBarLi[1].classList.add('d-none');
-                navBarLi[2].classList.add('d-none');
-            })
-    };
+            fetch('/api/order/getSession')
+                .then(response => response.json())
+                .then(data => {
+                    navBarLi[0].classList.add('d-none');
+                    navBarLi[1].classList.remove('d-none');
+                    navBarLi[2].classList.remove('d-none');
+                })
+                .catch((err) => {
+                    navBarLi[0].classList.remove('d-none');
+                    navBarLi[1].classList.add('d-none');
+                    navBarLi[2].classList.add('d-none');
+                })
+        };
 
     // make a post request to localhost:8080/api/logout to delete all existed session and logout
     function logOut() {
         fetch('/api/logout', { method: 'POST' }).then(window.location.replace("/"))
     }
     getCategory()
+    getSessionData()
 </script>
 </body>
 
