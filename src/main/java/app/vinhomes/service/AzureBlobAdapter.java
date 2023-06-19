@@ -75,46 +75,7 @@ public class AzureBlobAdapter {
         blob.upload(multipartFile.getInputStream(),
                 multipartFile.getSize());
         return multipartFile.getOriginalFilename();
-    }
-
-    //THIS TO UPLOAD OFFDAYS FILES TO AZURE BLOB//
-    //1. CHECK IF FILE IS EMPTY OR DUPLICATE
-    //2. UPLOAD FILE TO CONTAINER images/offdays/accountId AND KEEP THE FILE NAME USING MULTIPARTFILE
-    //3. FILENAME WILL BE OFFDAY_ACCOUNTID_UPLOADIMAGEDATE.png//
-    public String uploadOffdays(MultipartFile multipartFile, HttpSession session)
-            throws IOException {
-        //get session//
-        Account sessionAccount = (Account) session.getAttribute("loginedUser");
-
-        //create blob if not exist//
-        blobContainerClient = blobServiceClient.getBlobContainerClient("images/offdays/" + sessionAccount.getAccountId());
-
-        //check null and empty//
-        if (multipartFile == null || multipartFile.isEmpty()) {
-            System.out.println("File is empty");
-            return null;
-        }
-        BlobClient blob = blobContainerClient
-                .getBlobClient("avatar.png");
-        //get file from images folder then upload to container images//
-        blob.deleteIfExists();
-        Date date = new Date(System.currentTimeMillis());
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("dd-MM-yyyy");
-        String strDate = formatter.format(date);
-        BlobClient blob = blobContainerClient
-                .getBlobClient("offday_" + sessionAccount.getAccountId() + "_" + sessionAccount.getAccountName() + "_" + strDate + ".png");
-        //get file from images folder then upload to container images//
-        //if file exist then add (number) to file name//
-        int i = 1;
-        while (blob.exists()) {
-            blob = blobContainerClient
-                    .getBlobClient("offday_" + sessionAccount.getAccountId() + "_" + sessionAccount.getAccountName() + "_" + strDate + "(" + i + ")" + ".png");
-            i++;
-        }
-        blob.upload(multipartFile.getInputStream(),
-                multipartFile.getSize());
-        return multipartFile.getOriginalFilename();
-    }
+    } 
 
     //THIS TO DOWNLOAD FILE FROM CONTAINER images//
     //1. GET FILE FROM CONTAINER images//
