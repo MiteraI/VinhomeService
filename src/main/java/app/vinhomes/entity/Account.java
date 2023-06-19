@@ -43,7 +43,6 @@ public class Account implements UserDetails {
 
     @Column(name = "account_name", nullable = false)
     private String accountName;
-
     @Column(name = "pwd", nullable = false)
     private String password;
 
@@ -105,6 +104,7 @@ public class Account implements UserDetails {
             cascade = CascadeType.ALL
     )
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JsonIgnore
     @JsonManagedReference
     private WorkerStatus workerStatus;
@@ -130,7 +130,8 @@ public class Account implements UserDetails {
     }
     @Override
     public String getPassword(){
-        return password;}
+        return password;
+    }
 
 
     @Override

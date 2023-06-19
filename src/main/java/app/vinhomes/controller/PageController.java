@@ -191,5 +191,18 @@ public class PageController {
     @RequestMapping(value = "/homepage")
     public String homepage() { return "homepage"; }
 
+    @RequestMapping(value = "/vnpay",method = RequestMethod.GET)
+    public String vnpay(){
+        return "vnpay";
+    }
+    @RequestMapping(value = "/vnpayreturn",method = RequestMethod.GET)
+    public String vnpayreturn(){
+        return "vnpayreturn";
+    }
+
+    @RequestMapping(value = "/transactionReturn", method = RequestMethod.GET)
+    public String transactionReturn (){
+        return "transactionReturn";
+    }
 
 }

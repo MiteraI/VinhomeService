@@ -3,6 +3,7 @@ package app.vinhomes.entity;
 import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
+import app.vinhomes.entity.type_enum.OrderStatus;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +30,9 @@ public class Order {
     private double price;
 
     @Column(nullable = false)
-    private int status; //0 - pending, 1 - cancel, 2 - complete
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+    //private int status; //0 - pending, 1 - cancel, 2 - complete
 
     @Basic
     @Temporal(TemporalType.TIMESTAMP)

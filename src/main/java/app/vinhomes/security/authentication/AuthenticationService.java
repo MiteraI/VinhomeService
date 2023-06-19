@@ -3,6 +3,7 @@ package app.vinhomes.security.authentication;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.security.email.email_service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +21,14 @@ public class AuthenticationService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     public Account register(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         var savedAccount = accountRepository.save(account);
+
+            tokenService.createTokenEntity(account.getEmail());
+
         return savedAccount;
     }
 
@@ -37,13 +42,10 @@ public class AuthenticationService {
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
         var account = accountRepository.findByAccountName(request.getUsername());
-        System.out.println();
         if (account == null) {
             return account;
         }
-
      return null;
-
     }
 
 

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 
 @Configuration
@@ -25,6 +26,8 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
+                .cors()
+                .and()
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login")
@@ -68,4 +71,8 @@ public class SecurityConfig {
     public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
         return new ServletListenerRegistrationBean<HttpSessionListener>(new CustomerSessionListener());
     }
+
+
+
 }
+
