@@ -105,7 +105,7 @@ public class CreateAccountAPI {
             Account response = authenticationService.register(acc);
             System.out.println("save account");
 
-            phone.setAccount(account);
+            phone.setAccount(acc);
             phoneRepository.save(phone);System.out.println("save phone");
             //////////send verification
             emailService.sendSimpleVerficationEmail(response);

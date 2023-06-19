@@ -33,9 +33,6 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
-    private String vnp_txnRef;
-    private long vnp_TransactionDate;
-
     @OneToOne(
             cascade = CascadeType.MERGE
     )

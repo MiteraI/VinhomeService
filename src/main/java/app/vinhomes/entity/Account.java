@@ -68,6 +68,17 @@ public class Account implements UserDetails {
     )
     private int accountStatus;
 
+
+    @Column(
+            name = "is_Enabled",
+            nullable = false,
+            columnDefinition = "integer default 0"
+    )
+    private int isEnable;/////0 = inactive, 1 = acttive
+
+
+
+
     @Column(nullable = false)
     private int role;
 

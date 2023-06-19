@@ -66,12 +66,10 @@ public class ValidationAndBuilder {
             if(getOrder != null){
                 Transaction toSaveTransaction =
                 Transaction.builder()
-                        .vnp_txnRef(vnp_txnRef)
+                        .vnpTxnRef(vnp_txnRef)
                         .paymentMethod(paymentRepository.findById(Long.valueOf(paymentMethodID)).get().toString())
                         .transactionId(getOrder.getOrderId())
                         .order(getOrder)
-                        .bankCode("")
-                        .vnp_TransactionDate(0)
                         .build();
                 System.out.println(toSaveTransaction);
 
