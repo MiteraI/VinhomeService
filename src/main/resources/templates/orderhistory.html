@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Order history</title>
+    <link rel="stylesheet" href="../static/tailwind/index.css" />
+  </head>
+  <body>
+    <header th:replace="~{./fragments/header.html}"></header>
+    <section class="filterbar mx-48 my-10 flex justify-around rounded-xl bg-blue-bootstrap p-2">
+      <span class="font-bold text-white">All Order</span>
+      <span class="font-bold text-white">Pending</span>
+      <span class="font-bold text-white">Completed</span>
+      <span class="font-bold text-white">Cancelled</span>
+    </section>
+    <section class="searchbar mx-48 flex items-center space-x-3 rounded-xl bg-slate-300 p-1">
+      <div class="mx-4 w-8">
+        <svg
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 50 50"
+                xml:space="preserve"
+                fill="#000000"
+        >
+					<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+						<path
+                                fill="#000000"
+                                d="M20.745,32.62c2.883,0,5.606-1.022,7.773-2.881L39.052,40.3c0.195,0.196,0.452,0.294,0.708,0.294 c0.255,0,0.511-0.097,0.706-0.292c0.391-0.39,0.392-1.023,0.002-1.414L29.925,28.319c3.947-4.714,3.717-11.773-0.705-16.205 c-2.264-2.27-5.274-3.52-8.476-3.52s-6.212,1.25-8.476,3.52c-4.671,4.683-4.671,12.304,0,16.987 C14.533,31.37,17.543,32.62,20.745,32.62z M13.685,13.526c1.886-1.891,4.393-2.932,7.06-2.932s5.174,1.041,7.06,2.932 c3.895,3.905,3.895,10.258,0,14.163c-1.886,1.891-4.393,2.932-7.06,2.932s-5.174-1.041-7.06-2.932 C9.791,23.784,9.791,17.431,13.685,13.526z"
+                        ></path>
+					</g>
+				</svg>
+      </div>
+      <input
+              class="w-full bg-slate-300"
+              type="search"
+              name="servicename"
+              id="searchbar"
+              placeholder="Searching..."
+      />
+    </section>
+    <section th:each="order : ${orderList}" class="mx-48 my-10">
+      <div th:if="${order.status == 0}" class="pending my-10 flex-col">
+        <!-- Render div for pending orders -->
+        <p class="rounded-t-lg bg-blue-bootstrap p-2 font-semibold text-white">
+          &emsp; Pending
+        </p>
+        <div class="flex rounded-b-lg border-2 p-4 space-x-6">
+          <div class="w-1/6">
+            <img
+              class="h-full w-full"
+              src="../assets/images/clean-tv-screen.jpg"
+              alt="tv-cleaning"
+            />
+          </div>
+          <div class="w-2/6">
+            <p th:text="${order.service.serviceName}"></p>
+            <p th:text="${order.createTime}"></p>
+          </div>
+          <div class="flex w-3/6 items-start justify-between">
+            <span th:text="${order.price} + ' VND'"></span>
+            <div class="space-x-5">
+              <button class="rounded-xl bg-red-cancel px-3 py-1">Cancel</button>
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:if="${order.status == 1}" class="completed my-10 flex-col">
+        <!-- Render div for completed orders -->
+        <p class="rounded-t-lg bg-green-success p-2 font-semibold text-white">
+          &emsp; Completed
+        </p>
+        <div class="flex rounded-b-lg border-2 p-4 space-x-6">
+          <div class="w-1/6">
+            <img
+              class="h-full w-full"
+              src="../assets/images/clean-tv-screen.jpg"
+              alt="tv-cleaning"
+            />
+          </div>
+          <div class="w-2/6">
+            <p th:text="${order.service.serviceName}"></p>
+            <p th:text="${order.createTime}"></p>
+          </div>
+          <div class="flex w-3/6 items-start justify-between">
+            <span th:text="${order.price}  + ' VND'"></span>
+            <div class="space-x-5">
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                Order Again
+              </button>
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:if="${order.status == 2}" class="cancelled my-10 flex-col">
+        <p class="rounded-t-lg bg-red-cancel p-2 font-semibold text-white">
+          &emsp; Cancelled
+        </p>
+        <div class="flex rounded-b-lg border-2 p-4 space-x-6">
+          <div class="w-1/6">
+            <img
+              class="h-full w-full"
+              src="../assets/images/clean-tv-screen.jpg"
+              alt="tv-cleaning"
+            />
+          </div>
+          <div class="w-2/6">
+            <p th:text="${order.service.serviceName}"></p>
+            <p th:text="${order.createTime}"></p>
+          </div>
+          <div class="flex w-3/6 items-start justify-between">
+            <span th:text="${order.price}  + ' VND'"></span>
+            <div class="space-x-5">
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                Order Again
+              </button>
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer th:replace="~{./fragments/footer.html}"></footer>
+    <script>
+      const dropDownMenuBtn = document.querySelector("#dropdownDividerButton");
+      const dropDownMenu = document.querySelector("#dropdownDivider");
+      const navBar = document.querySelector(".navBar");
+      const profileBtn = document.querySelector(".profile-btn");
+      let navBarHeight = navBar.getBoundingClientRect().height;
+      profileBtn.style.height = `${navBarHeight}px`;
+      dropDownMenuBtn.addEventListener("click", () => {
+        console.log("clicked");
+        dropDownMenu.classList.toggle("hidden");
+      });
+    </script>
+  </body>
+</html>
