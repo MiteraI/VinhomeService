@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class CustomerPage {
@@ -15,6 +16,12 @@ public class CustomerPage {
     @GetMapping(value = "/order-history")
     public String customerOrder(HttpServletRequest request, Model model) {
         model.addAttribute("orderList", orderService.getCustomerOrder(request));
-        return "orderhistory";
+        return "order-history";
+    }
+
+    @GetMapping(value = "/order-history/{orderId}")
+    public String customerOrderDetails(@PathVariable Long orderId, HttpServletRequest request, Model model) {
+        model.addAttribute("order", orderService.getCustomerOrderDetails(request, orderId));
+        return "order-details";
     }
 }
