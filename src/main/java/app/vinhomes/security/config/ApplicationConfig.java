@@ -33,13 +33,21 @@ public class ApplicationConfig  {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                Optional<Account> account = accountRepository.findUsername(username);
-                if(account != null){
-                    System.out.println("IN USER DETAIL SERVICE,yes found in db");
-                    return new User(account.get().getUsername(),account.get().getPassword(),roleToAuthority(account.get().getRole()));
-                }
-                else{
+                try{
+                    Optional<Account> account = accountRepository.findUsername(username);
+                    if(account != null){
+                        System.out.println("IN USER DETAIL SERVICE,yes found in db");
+                        return new User(account.get().getUsername(),account.get().getPassword(),roleToAuthority(account.get().getRole()));
+                    }
+                    else{
+                        System.out.println("not in db");
+                        return null;
+                    }
+                }catch (UsernameNotFoundException e){
                     System.out.println("not in db");
+                    return null;
+                }catch (Exception e){
+                    System.out.println("ERROR in load username");
                     return null;
                 }
             }

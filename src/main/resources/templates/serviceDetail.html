@@ -100,17 +100,7 @@
                     <hr>
                 </div>
             </div>
-            <!--            <style>-->
-            <!--                .rating-container {-->
-            <!--                    display: inline-block;-->
-            <!--                }-->
-            <!--                .star {-->
-            <!--                    color: gold;-->
-            <!--                }-->
-            <!--            </style>-->
-            <!--                <div class="rating-container">-->
-            <!--                    <label>Rating:</label>-->
-            <!--                </div>-->
+
         </div>
     </div>
 </div>
@@ -122,7 +112,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" style="text-align: center">Order Service</h5>
-                        <form id="my-form">
+                        <form id="my-form" action="/vnpay/createPayment" method="post">
                             <!-- Form fields and content -->
                             <div class="form-group" style="margin-bottom: 15px">
                                 <label for="customerName">Customer Name:</label>
@@ -131,7 +121,7 @@
                             <div class="form-group" style="margin-bottom: 15px" >
                                 <label for="ServiceName1">Service name:</label>
                                 <input id="ServiceName1" style="line-height: 15px;" th:field="${service.serviceName}" >
-                                <input type="hidden" th:value="${service.serviceId}" id="serviceName">
+                                <input type="hidden" name="serviceId" th:value="${service.serviceId}" id="serviceName">
                             </div>
                             <label for="timeSlot">Time Slot</label>
                             <div class="form-group" style="margin-left: 20px; margin-bottom: 15px;" id="timeSlot">
@@ -214,30 +204,6 @@
         }
     </style>
 
-<!--<script th:inline="javascript">-->
-<!--    var orders = [[${ordersByService}]] ;-->
-
-<!--    orders.forEach(function(order) {-->
-<!--        var rating = order.rating;-->
-<!--        var container = document.createElement("div");-->
-<!--        container.className = "rating-container";-->
-<!--        container.style.display = 'inline-block';-->
-<!--        var label = document.createElement('label');-->
-<!--        label.textContent = "Rating:";-->
-<!--        var ratingElement = document.querySelector('.rating-container');-->
-
-
-<!--        for (var i = 0; i < rating; i++) {-->
-<!--            var star = document.createElement('i');-->
-<!--            star.classList.add('bi', 'bi-star', 'star');-->
-<!--            star.classList.add('bi-star-fill');-->
-<!--            star.color = 'gold';-->
-<!--            container.appendChild(star);-->
-<!--            container.appendChild(label);-->
-<!--        }-->
-<!--        ratingElement.appendChild(document.createElement('br'))-->
-<!--    });-->
-<!--</script>-->
     <script>
         const service = document.getElementById("serviceName");
         serviceId = service.value;
@@ -247,9 +213,7 @@
             serviceId: serviceId,
             day: "",
             timeId: ""
-            //////// MINH : Add Attribute
-            ////////,transactionMethod: ""
-            //////// MINH : Add Attribute
+
 
         };
         fetch("/api/order/timeSlot")
@@ -309,7 +273,6 @@
                         if (this.checked) {
                             giveData.paymentId = this.value;
                             console.log(giveData.paymentId);
-
                         }
                     })
                 })
@@ -321,7 +284,7 @@
 
         // createData(serviceId, PaymentId, TimeSlotId, date);
         // console.log(dataObj)
-        const form = document.getElementById("my-form")
+        const form = document.getElementById("my-form")//
 
         form.addEventListener("submit", function (event) {
             event.preventDefault();
@@ -339,18 +302,31 @@
                         document.getElementById("formContainer").style.display = 'none';
                         alert("You have ordered successfully");
                         console.log("Successful");
+                        return res.text()
+                        //var body = res.text()
+                        //console.log(body)
+                        //console.log(res.body.json())
+                        //window.location.replace(`${res.body}`);
                     }
                     else {
                         console.log("Fail");
                         alert("Fail in ordering");
                     }
                 })
+                .then((text)=> {
+                if(text.includes("http")){
+                    console.log(text)
+                    window.location.replace(text)
+                }
+                
+            })
                 .catch((err) => {
                     if (err.response.status === 401) {
                         console.log("Exception")
                     }
                 })
-        })
+        })///////////////////////////////////
+        ////////////*/
 
         const cancelButton = document.getElementById("btnCancel");
         cancelButton.addEventListener("click", function (event) {

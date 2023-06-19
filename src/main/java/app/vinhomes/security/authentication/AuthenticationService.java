@@ -26,7 +26,9 @@ public class AuthenticationService {
     public Account register(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         var savedAccount = accountRepository.save(account);
+
             tokenService.createTokenEntity(account.getEmail());
+
         return savedAccount;
     }
 
@@ -40,13 +42,10 @@ public class AuthenticationService {
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
         var account = accountRepository.findByAccountName(request.getUsername());
-        System.out.println();
         if (account == null) {
             return account;
         }
-
      return null;
-
     }
 
 

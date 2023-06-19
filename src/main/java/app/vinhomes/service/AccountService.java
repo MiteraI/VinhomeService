@@ -1,8 +1,6 @@
 package app.vinhomes.service;
 
 import app.vinhomes.common.ErrorChecker;
-
-import app.vinhomes.joinentity.JoinAccountInfo;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
@@ -89,13 +87,4 @@ public class AccountService {
         return false;
 
     }
-    public JoinAccountInfo getCustomerWithPhoneAndAddress(long id){
-        Account account = accountRepository.findById(id).get();
-        List<Phone> phoneList = phoneRepository.findByAccount(account);
-        Address address = account.getAddress();
-        //List<Address> addressList = new ArrayList<>();
-        JoinAccountInfo accountInfo = new JoinAccountInfo(account,phoneList,address);
-        return accountInfo;
-    }
-
 }
