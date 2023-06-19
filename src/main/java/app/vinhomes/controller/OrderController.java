@@ -2,6 +2,7 @@ package app.vinhomes.controller;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.repository.*;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/order")
@@ -115,9 +118,22 @@ public class OrderController {
         return orderRepository.findAllByService_ServiceId(serviceId);
     }
 
-    @GetMapping("/getSession")
-    public Account getUsername(HttpSession session) {
-        return (Account) session.getAttribute("loginedUser");
+    @GetMapping(value = "/getSession", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Account> getUsername(HttpSession session) {
+        System.out.println("4");
+        System.out.println("get session");
+        return ResponseEntity.status(HttpStatus.OK).body((Account) session.getAttribute("loginedUser"));
+    }
+
+    @GetMapping(value = "/getSession/{option}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPhone(@PathVariable("option") String option, HttpSession session){
+        switch (option.toLowerCase()){
+            case "f":
+                return  ResponseEntity.status(HttpStatus.OK).body((ArrayList<Phone>) session.getAttribute("phone"));
+            default:
+                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("this option not exist");
+        }
+
     }
 
     @PostMapping(value = "/review/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -152,7 +168,6 @@ public class OrderController {
         }
     }
 }
-
 
 
 

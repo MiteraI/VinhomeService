@@ -41,8 +41,11 @@ public class SecurityConfig {
                         .key("anythingyoulike")
                 )
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/UserRestController/**").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAuthority("0"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/worker").hasAuthority("1"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
+
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/admin/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/admin").hasAuthority("2"))
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
@@ -51,7 +54,7 @@ public class SecurityConfig {
                         .addLogoutHandler(securityContextLogoutHandler())
                         .logoutSuccessHandler(simpleLogoutSuccesesHandler())
                         .invalidateHttpSession(true)
-                        )
+                )
 //                .logoutUrl("/api/logout")
         ;
         return httpSecurity.build();
@@ -70,4 +73,6 @@ public class SecurityConfig {
     }
 
 
+
 }
+

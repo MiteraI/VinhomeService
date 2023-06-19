@@ -48,7 +48,10 @@ public class Schedule {
             referencedColumnName = "order_id"
     )
     @ToString.Exclude
-    @JsonBackReference
+    @JsonIgnoreProperties({
+            "orderId","schedule","status","service"
+            ,"payment","rating","comment"
+    })
     @MapsId
     private Order order;
 
