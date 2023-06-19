@@ -188,5 +188,8 @@ public class PageController {
         return url;
     }
 
+    @RequestMapping(value = "/homepage")
+    public String homepage() { return "homepage"; }
+
 
 }
