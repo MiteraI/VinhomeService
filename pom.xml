@@ -91,11 +91,6 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.0.Final</version>
 		</dependency>
-
-
-=======
->>>>>>> f3799d3315787490222de0f2180c30a3ba348bc3
-
 	</dependencies>
 
 	<dependencyManagement>
