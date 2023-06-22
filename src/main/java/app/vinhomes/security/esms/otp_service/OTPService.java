@@ -3,9 +3,11 @@ package app.vinhomes.security.esms.otp_service;
 import app.vinhomes.security.esms.otp_dto.OTPAttribute;
 import app.vinhomes.security.esms.otp_dto.OTPStatus;
 import app.vinhomes.security.esms.otp_dto.PasswordResetResponseDTO;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Service
+//@SuppressFBWarnings(value = "DMI_RANDOM_USED_ONLY_ONCE")
 public class OTPService {
     private final String OTPpattern = "000000";
     private final int integerBound = 999999;
@@ -61,6 +64,13 @@ public class OTPService {
         return new DecimalFormat(OTPpattern)
                 .format(new Random().nextInt(integerBound));
     }
+//    private String generateOTP() {
+//        SecureRandom secRandom = new SecureRandom();
+//
+//        byte[] result = new byte[32];
+//        secRandom.nextBytes(result);
+//        return Hex.encodeHexString(result);
+//    }
     private boolean checkIfMoreThanOneOrExistOneOTP(String phonenumber){
         try{
             OTPAttribute attribute = OTPMap.get(phonenumber);

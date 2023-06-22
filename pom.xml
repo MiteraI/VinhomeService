@@ -117,6 +117,19 @@
 			<version>8.0.0.Final</version>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs-annotations</artifactId>
+			<version>4.7.3</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
 
 
 
@@ -148,6 +161,8 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+
 		</plugins>
 	</build>
 

@@ -49,7 +49,7 @@ public class VNpayController extends HttpServlet {
 
         String transactionMethodID = jsonNode.get("paymentId").asText();//req.getParameter("transactionMethod");//
         String dayfromFormOrderService= jsonNode.get("day").asText();//req.getParameter("day") ;
-        if( transactionMethodID !=""){//transactionMethodID != null ||
+        if( transactionMethodID !=""){//transactionMethodID != null ||transactionMethodID.equals("")
             ResponseEntity<String> response = orderService.createOrder(jsonNode,req);// this return resp status + ORDER ID!!
             if(response.getStatusCode().is2xxSuccessful())    {
                 System.out.println(response.getBody());

@@ -108,7 +108,9 @@ public class OrderService {
             for (Account availableWorker : workerAccounts) {
                 boolean isOff = false;
                 for (Account offWorker : offWorkerAccounts) {
-                    if (offWorker.getAccountId() == availableWorker.getAccountId()) {
+                    //long offId = offWorker.getAccountId();
+                    //long avaId = availableWorker.getAccountId();
+                    if (offWorker.getAccountId() == availableWorker.getAccountId() ) {//offId == avaId
                         isOff = true;
                         break;
                     }
