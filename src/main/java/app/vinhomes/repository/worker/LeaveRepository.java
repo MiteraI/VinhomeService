@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface LeaveRepository extends JpaRepository<Leave, Long> {
     List<Leave> findByLeaveDay(LocalDate offDay);
+    List<Leave> findByAccount_AccountId(Long id);
 }

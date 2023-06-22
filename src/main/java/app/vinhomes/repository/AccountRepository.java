@@ -25,4 +25,5 @@ select a from Account a
 """)
     Optional<Account> findUsername(String account_name);
 
+    Account findByAccountId (Long id);
 }

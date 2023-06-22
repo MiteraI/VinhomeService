@@ -50,14 +50,6 @@ public class AzureBlobFileController {
         return ResponseEntity.ok(fileName);
     }
 
-    @PostMapping("/offdays")
-    public ResponseEntity<String> uploadOffdays
-            (@RequestParam MultipartFile file, HttpSession session)
-            throws IOException {
-        Account sessionAccount = (Account) session.getAttribute("loginedUser");
-        String fileName = azureBlobAdapter.uploadOffdays(file, session);
-        return ResponseEntity.ok(fileName);
-    }
 
     //THIS TO ENCODE THE PASSWORD OF ACCOUNT//
     //ONLY USE WHEN PASS IS READABLE AND NEED TO ENCODE//
@@ -70,7 +62,6 @@ public class AzureBlobFileController {
         acc.setPassword(encoder.encode(acc.getPassword()));
         accountRepository.save(acc);
     }
-
     @GetMapping
     public ResponseEntity<List<String>> getAllBlobs() {
 
@@ -122,4 +113,13 @@ public class AzureBlobFileController {
         String url = azureBlobAdapter.getAvatar(fileName, session);
         return ResponseEntity.ok(url);
     }
+
+    @GetMapping("/getURLFolder/{fileName}")
+    public ResponseEntity<String> getURL
+            (@PathVariable String fileName) {
+
+        String url = azureBlobAdapter.getURLFolder(fileName);
+        return ResponseEntity.ok(url);
+    }
+
 }
