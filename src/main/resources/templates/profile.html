@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeLeaf.org" class="h-[100%] w-[100%]">
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="h-[100%] w-[100%]">
 
 <head>
   <meta charset="UTF-8" />
@@ -9,8 +10,20 @@
   <link rel="stylesheet" href="../static/tailwind/font.css" />
   <link rel="stylesheet" href="../static/tailwind/index.css" />
   <title>Service name goes here</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css" />
+  <link rel="stylesheet" href="../static/tailwind/index.css" />
+  <title>Service name goes here</title>
 </head>
 
+<body class="overflow-x-hidden h-[100%] w-[100%]">
+
+  <header th:replace="~{./fragments/header.html}"></header>
+
+  <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
 <body class="overflow-x-hidden h-[100%] w-[100%]">
 
   <header th:replace="~{./fragments/header.html}"></header>
@@ -151,7 +164,20 @@
           </div>
         </form>
 
+            </div>
+          </div>
+          <div class="flex justify-end ">
+            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500">Cancel</button>
+            <button type="submit"
+              class="submit-btn px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
+          </div>
+        </form>
+
       </div>
+
+    </div>
+
+
 
     </div>
 

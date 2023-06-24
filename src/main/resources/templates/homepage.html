@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <title>Homepage</title>
     <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/tailwind/font.css">
+    <link rel="stylesheet" href="../static/tailwind/index.css">
     <link rel="stylesheet" href="../static/tailwind/font.css">
     <link rel="stylesheet" href="../static/tailwind/index.css">
 
@@ -17,52 +20,42 @@
         <section class="flex space-x-8" id="about">
             <div class="w-2/6">
                 <img src="../static/assets/images/about.jpg" alt="people are cleaning" />
+<body class="overflow-x-hidden">
+    <header th:replace="~{./fragments/header.html}"></header>
+    <div class="content-body mx-28 my-20 space-y-28">
+        <!-- About us section -->
+        <section class="flex space-x-8" id="about">
+            <div class="w-2/6">
+                <img src="../static/assets/images/about.jpg" alt="people are cleaning" />
             </div>
-            <div class="h-full w-4/6 space-y-14 p-2">
-                <p class="text-4xl text-blue-bootstrap">We guarantee <span class="font-bold">excellence</span></p>
-                <p class="text-xl text-strong-gray">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet soluta fugiat quis corporis
-                    repellendus
-                    dolore facere architecto id debitis molestias, dolores maxime exercitationem reprehenderit
-                    voluptatum
-                    quo
-                    vero quasi. Itaque, ab cupiditate. Placeat, accusamus veniam. Porro vel ratione obcaecati iure sint,
-                    dolores
-                    a, eius ad corporis amet iste maiores consectetur repellendus.
-                </p>
+        </div>
+    </div>
+</section>
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <h2>About Us</h2>
+                <p>Welcome to our website! We are a passionate team dedicated to providing quality products and
+                    excellent service to our customers.</p>
+                <p>Learn more about our story and what sets us apart.</p>
+                <a href="#contact" class="btn btn-primary">Contact Us</a>
             </div>
-        </section>
-
-        <!-- Service category section -->
-        <section class="flex-col items-center justify-center space-y-6" id="service">
-            <p class="text-center text-2xl text-strong-gray">Our services</p>
-
-            <p class="text-center text-4xl text-blue-bootstrap">Practice with <span class="font-bold">Love</span></p>
-            <br />
-
-            <!-- 2 service category -->
-            <div class="flex justify-around">
-                <div class="w-2/6 flex-col space-y-6 text-center" th:each="c : ${category}">
-                    <img class="mx-auto" src="../static/assets/images/service-1.jpg" alt="cleaning house" />
-
-                    <p class="text-2xl text-blue-bootstrap"
-                        th:text="${category != null} ? ${c.serviceCategoryName} : ''">House cleaning</p>
-
-                    <div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iure necessitatibus suscipit
-                            soluta
-                            doloribus ex provident magnam fuga enim maiores!
-                        </p>
-                    </div>
-                    <br />
-                    <div>
-                        <a th:href="@{/category-services/{id}(id=${c.serviceCategoryId})}"><button
-                                class="cursor-pointer rounded-xl border-none bg-yellow-info px-8 py-2">
-                                <span class="font-bold">LEARN MORE</span>
-                            </button></a>
-                    </div>
-                </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <h1>Our Services</h1>
+        <table class="table table-bordered" id="tableService">
+            <thead class="thead-dark">
+            <tr>
+                <th class="col-1">Service</th>
+                <th class="col-2">Price</th>
+                <th class="col-1">Detail</th>
+            </tr>
+            </thead>
+            <tbody>
 
             </div>
         </section>

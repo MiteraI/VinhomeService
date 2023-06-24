@@ -9,6 +9,7 @@ import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,9 @@ public class PageController {
     private ServiceCategoryRepository serviceCategoryRepository;
 
     @Autowired
+    private ServiceCategoryRepository serviceCategoryRepository;
+
+    @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
@@ -56,6 +60,8 @@ public class PageController {
                 return "staff";
             }
         }
+        model.addAttribute("category", serviceCategoryRepository.findAll());
+        System.out.println(serviceCategoryRepository.findAll());
         model.addAttribute("category", serviceCategoryRepository.findAll());
         System.out.println(serviceCategoryRepository.findAll());
         return "homepage";
