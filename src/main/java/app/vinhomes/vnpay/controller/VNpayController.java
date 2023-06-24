@@ -2,7 +2,10 @@ package app.vinhomes.vnpay.controller;
 
 
 import app.vinhomes.entity.Transaction;
+import app.vinhomes.event.event_storage.StartOrderCountDown;
+import app.vinhomes.event.listener_storage.OnCreateOrder;
 import app.vinhomes.repository.TransactionRepository;
+import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.OrderService;
 import app.vinhomes.service.PaymentService;
 import app.vinhomes.service.TransactionService;
@@ -14,8 +17,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import app.vinhomes.vnpay.config.ConfigVNpay;
 import app.vinhomes.vnpay.service.*;
@@ -24,22 +30,25 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
 @RequestMapping("/vnpay/createPayment")
 public class VNpayController extends HttpServlet {
     @Autowired
-
     private VNPayService vnpayService;
     @Autowired
     private OrderService orderService;
     @Autowired
     private PaymentService paymentService;
-    private String errorURL = "/";
-    @CrossOrigin//origins = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html")
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @PostMapping//@RequestParam JsonNode jsonNode ,
-    public ResponseEntity<String> createPayment(@RequestBody JsonNode jsonNode , HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public ResponseEntity<String> createPayment(@RequestBody JsonNode jsonNode,Authentication authentication, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "billpayment";
@@ -47,9 +56,22 @@ public class VNpayController extends HttpServlet {
         ////////////////////////////////////////////////////////////
         String orderID = null;
 
+
+
+
+        System.out.println("Inside vnpay "+authentication.getName());
+        boolean checking = securityService.checkIfEnabledFromAuthentication(authentication);
+        if(checking){
+            System.out.println("yes this account has been enabled");
+        }else{
+            System.out.println("this account has not been enabled");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("not yet enable account");
+        }
+
+
         String transactionMethodID = jsonNode.get("paymentId").asText();//req.getParameter("transactionMethod");//
         String dayfromFormOrderService= jsonNode.get("day").asText();//req.getParameter("day") ;
-        if( transactionMethodID !=""){//transactionMethodID != null ||transactionMethodID.equals("")
+        if( transactionMethodID != ""){//transactionMethodID != null ||transactionMethodID.equals("")
             ResponseEntity<String> response = orderService.createOrder(jsonNode,req);// this return resp status + ORDER ID!!
             if(response.getStatusCode().is2xxSuccessful())    {
                 System.out.println(response.getBody());
@@ -160,9 +182,7 @@ public class VNpayController extends HttpServlet {
         //////////////////////////////////////////////////////////////////////////////////////////
         //resp.getWriter().write(gson.toJson(job));
 //        vnpayService.redirectTest(resp,paymentUrl);
-        //resp.sendRedirect(paymentUrl);
-        //RedirectView redirectView = new RedirectView();
-        //redirectView.setUrl(payreturn redirectView;
+        eventPublisher.publishEvent(new StartOrderCountDown(LocalDateTime.now(),getTransactionObj.getTransactionId()));
         return ResponseEntity.ok().body(paymentUrl.toString().trim());
 
     }

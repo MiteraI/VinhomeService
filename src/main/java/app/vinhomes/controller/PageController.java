@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -204,5 +205,16 @@ public class PageController {
     public String transactionReturn (){
         return "transactionReturn";
     }
-
+    @RequestMapping(value = "/verification/{username}",method = RequestMethod.GET)
+    public String verification(@PathVariable String username){
+        return "redirect:/verificationMethod?username="+username;
+    }
+    @RequestMapping(value = "/verificationMethod")
+    public String verificationMethodReturn(){
+        return "verificationMethod";
+    }
+    @RequestMapping(value = "/TESTBED",method = RequestMethod.GET)
+    public String TESTBED(){
+        return "TESTBED";
+    }
 }

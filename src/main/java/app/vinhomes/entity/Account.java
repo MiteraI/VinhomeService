@@ -162,6 +162,10 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        if(isEnable == 1){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

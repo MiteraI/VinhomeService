@@ -50,6 +50,7 @@ public class EmailController {
             else{
                 //TODO : do something after check mail succeses
                 System.out.println(message);
+
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("yes validated success");
             }
         }catch (Exception e){

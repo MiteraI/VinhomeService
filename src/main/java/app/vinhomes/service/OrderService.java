@@ -221,5 +221,13 @@ public class OrderService {
             return null;
         }
     }
-
+    public boolean updateOrderByObject(Order order){
+        try{
+            orderRepository.save(order);
+            return true;
+        }catch (Exception e){
+            System.out.println("update error: "+ e.getMessage());
+            return false;
+        }
+    }
 }

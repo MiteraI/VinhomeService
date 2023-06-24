@@ -2,9 +2,12 @@ package app.vinhomes.security.authentication;
 
 
 import app.vinhomes.entity.Account;
+import app.vinhomes.event.event_storage.SendEmailOnCreateAccount;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.security.email.email_service.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +25,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+
 
     public Account register(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));

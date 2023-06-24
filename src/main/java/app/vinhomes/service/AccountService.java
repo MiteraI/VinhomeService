@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,5 +88,27 @@ public class AccountService {
         }
         return false;
 
+    }
+    public Account getCurrentlyLogginAccount(Authentication authentication){
+        System.out.println("inside getCurrentlyLogginAccount");
+        Account account = null;
+        String username = null;
+        try{
+            Object principle = authentication.getPrincipal();
+            if (principle instanceof UserDetails) {
+                username = ( (UserDetails) principle). getUsername();
+                account = accountRepository.findByAccountName(username);
+                return account;
+            } else {
+                username = principle.toString();
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public Account getAccountByUsername(String username)throws NullPointerException{
+        return accountRepository.findUsername(username).get();
     }
 }

@@ -11,6 +11,7 @@ import app.vinhomes.vnpay.service.VNPayService;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -134,7 +135,7 @@ public class TransactionService {
                 String[] getBodyToArray = callingResult.getBody().toString().split(",");
                 String getResponseCode
                         = Arrays.stream(getBodyToArray).toList().get(2).split(":")[1];/// lay response code trong doan string
-                if(getResponseCode != "00"){// chi moi  ma 00 la hop le, con lai la do loi xay ra nen se xu ly khac
+                if(getResponseCode.equals("\"00\"") ){
                     System.out.println("yes refund sent and success, wait for the bank to response");
                     getOrder.setStatus(OrderStatus.CANCEL);
                     getTransaction.setStatus(TransactionStatus.FAIL);
@@ -184,6 +185,22 @@ public class TransactionService {
         }catch (NoSuchElementException e){
             System.out.println("inside transactionService:  "+e.getMessage());
             return null;
+        }
+    }
+    public Transaction getTransactionById(long id){
+        try{
+            return transactionRepository.findById(id).get();
+        }catch (Exception e){
+            return null;
+        }
+    }
+    public boolean updateTransactionByObject(Transaction transaction){
+        try {
+            transactionRepository.save(transaction);
+            return true;
+        }catch (Exception e){
+            System.out.println("update error: "+ e.getMessage());
+            return false;
         }
     }
 }

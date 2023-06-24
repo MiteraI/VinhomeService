@@ -1,13 +1,11 @@
 package app.vinhomes.security.esms.otp_service;
 
 import app.vinhomes.security.esms.otp_dto.OTPAttribute;
-import app.vinhomes.security.esms.otp_dto.OTPStatus;
-import app.vinhomes.security.esms.otp_dto.PasswordResetResponseDTO;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.codec.binary.Hex;
+import app.vinhomes.security.esms.otp_dto.EnumOTPStatus;
+import app.vinhomes.security.esms.otp_dto.OTPResponseStatus;
+
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +19,7 @@ public class OTPService {
     private final int integerBound = 999999;
     private final Map<String, OTPAttribute> OTPMap = new HashMap<>();
     private final long expriredTimeSecond = 1000*60 ;
-    public PasswordResetResponseDTO OTPPasswordReset(String phonenumber) {
+    public OTPResponseStatus generateOTPCode_Message(String phonenumber) {
         try {
             boolean checkIfPhonenumberExist = checkIfMoreThanOneOrExistOneOTP(phonenumber);
             if(checkIfPhonenumberExist){
@@ -33,9 +31,9 @@ public class OTPService {
             System.out.println(messageBody);
             OTPAttribute otpAttribute = new OTPAttribute(OTP,getExpired());
             OTPMap.put(phonenumber,otpAttribute);
-            return  new PasswordResetResponseDTO(OTPStatus.CREATED,messageBody);
+            return  new OTPResponseStatus(EnumOTPStatus.CREATED,messageBody);
         }catch (Exception e){
-            return  new PasswordResetResponseDTO(OTPStatus.FAIL,e.getMessage());
+            return  new OTPResponseStatus(EnumOTPStatus.FAIL,e.getMessage());
         }
     }
 
@@ -64,13 +62,7 @@ public class OTPService {
         return new DecimalFormat(OTPpattern)
                 .format(new Random().nextInt(integerBound));
     }
-//    private String generateOTP() {
-//        SecureRandom secRandom = new SecureRandom();
-//
-//        byte[] result = new byte[32];
-//        secRandom.nextBytes(result);
-//        return Hex.encodeHexString(result);
-//    }
+
     private boolean checkIfMoreThanOneOrExistOneOTP(String phonenumber){
         try{
             OTPAttribute attribute = OTPMap.get(phonenumber);

@@ -1,8 +1,10 @@
 package app.vinhomes.security.email.email_service;
 
 import app.vinhomes.entity.Account;
+import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.security.email.email_dto.TokenEntity;
 
+import app.vinhomes.service.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,10 @@ import java.util.Map;
 @Service
 public class EmailService   {
     @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
     private JavaMailSender javaMailSender;
+
     @Value("${spring.mail.username}")
     private String sender;
     @Autowired
@@ -91,10 +96,27 @@ public class EmailService   {
             return "ERROR: token expired";// out of date
         }else{
             if(getTokenEntity.getTokenvalue().equals(tokenValue)){
-                return "SUCCESS";
+                boolean isUpdateSuccess = updateAccountStatus(emailTo);
+                if(isUpdateSuccess){
+                    return "SUCCESS";
+                }
+                return "ERROR";
             }else{
                 return "ERROR: token not match";
             }
+        }
+    }
+    private boolean updateAccountStatus(String emailTo){
+        try{
+            Account getAccount = accountRepository.findByEmailEquals(emailTo);
+            if(getAccount != null){
+                getAccount.setIsEnable(1);
+                accountRepository.save(getAccount);
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            return false;
         }
     }
     public Map<String,TokenEntity> getTokenEntityMap(){

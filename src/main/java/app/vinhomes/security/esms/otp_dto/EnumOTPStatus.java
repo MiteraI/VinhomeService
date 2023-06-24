@@ -1,5 +1,5 @@
 package app.vinhomes.security.esms.otp_dto;
 
-public enum OTPStatus {
+public enum EnumOTPStatus {
     CREATED,FAIL;
 }

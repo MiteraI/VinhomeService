@@ -1,5 +1,6 @@
 package app.vinhomes.security.config;
 
+import app.vinhomes.CustomerSessionListener;
 import jakarta.servlet.http.HttpSessionListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -9,8 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+
+import static org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive.COOKIES;
 
 
 @Configuration
@@ -26,8 +30,8 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
-                .cors()
-                .and()
+                .cors().disable()
+                //.and()
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login")
@@ -43,15 +47,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/UserRestController/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
-
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/admin/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/admin").hasAuthority("2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
                         .logoutUrl("/logout")
                         .addLogoutHandler(simpleLogoutHandler)
                         .addLogoutHandler(securityContextLogoutHandler())
+                        .addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES)))
                         .logoutSuccessHandler(simpleLogoutSuccesesHandler())
                         .invalidateHttpSession(true)
                 )
@@ -71,7 +76,6 @@ public class SecurityConfig {
     public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
         return new ServletListenerRegistrationBean<HttpSessionListener>(new CustomerSessionListener());
     }
-
 
 
 }

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordResetResponseDTO
+public class OTPResponseStatus
 {
-    private OTPStatus status;
+    private EnumOTPStatus status;
     private String message;
 }
