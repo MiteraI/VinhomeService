@@ -102,12 +102,11 @@
             </span>
 
             <div id="phoneDropdownContainer"
-              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
-              <ul class="absolute w-inherit h-[7.5rem] rounded-lg border-2 bg-slate-200 overflow-y-scroll"
-                aria-labelledby="dropdownDividerButton" th:each="fone : ${phone}">
+              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative mt-[-1.3%]">
+              <ul class="absolute w-inherit h-[7.5rem] border-2 bg-transparent overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton">
                 <li class="relative">
-                  <span class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer"
-                    th:text="${phone != null} ? ${fone.number}"></span>
+                  <span class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</span>
                 </li>
               </ul>
             </div>
@@ -159,6 +158,7 @@
 
 
   </div>
+
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script>
@@ -322,68 +322,68 @@
 
     console.log(uid)
 
-    // profileForm.addEventListener('submit', async (e) => {
-    //   i = 0
-    //   e.preventDefault()
-    //   submitBtn.disabled = true
-    //   const form_data = new FormData(profileForm);
-    //   const data = Object.fromEntries(form_data);
+    profileForm.addEventListener('submit', async (e) => {
+      i = 0
+      e.preventDefault()
+      submitBtn.disabled = true
+      const form_data = new FormData(profileForm);
+      const data = Object.fromEntries(form_data);
 
-    //   const response = await fetch(`/changeProfile/${uid}`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify(data)
-    //     });
+      const response = await fetch(`/changeProfile/${uid}`,
+        {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
 
-    //   if (response.status == 400) {
-    //     i = 0
-    //     error_message = await response.json()
-    //     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
-    //     console.log(error_message);
-    //     for (var key in error_message) {
-    //       if (error_message[key]) {
-    //         errorMassage[i].classList.remove('hidden')
-    //         errorMassage[i].innerHTML = '❌ ' + error_message[key];
-    //       }
-    //       else {
-    //         errorMassage[i].innerHTML = ''
-    //       }
-    //       console.log(`${i}: ${error_message[key]}`)
-    //       i++;
+      if (response.status == 400) {
+        i = 0
+        error_message = await response.json()
+        error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+        console.log(error_message);
+        for (var key in error_message) {
+          if (error_message[key]) {
+            errorMassage[i].classList.remove('hidden')
+            errorMassage[i].innerHTML = '❌ ' + error_message[key];
+          }
+          else {
+            errorMassage[i].innerHTML = ''
+          }
+          console.log(`${i}: ${error_message[key]}`)
+          i++;
 
-    //     }
-    //     i = 0
-    //     submitBtn.disabled = false
+        }
+        i = 0
+        submitBtn.disabled = false
 
-    //   } else if (response.status == 200) {
-    //     i = 0
-    //     error_message = await response.json()
-    //     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
-    //     console.log(error_message)
-    //     errorMassage.forEach(err => {
-    //       err.classList.add('hidden')
-    //     })
-    //     for (var key in error_message) {
-    //       console.log(placeholderValue[i])
-    //       placeholderValue[i] = error_message[key]
-    //       i += 1;
-    //     }
-    //     i = 0
-    //     userName.innerHTML = placeholderValue[0]
-    //     alert("successfully update profile")
-    //     submitBtn.disabled = false
+      } else if (response.status == 200) {
+        i = 0
+        error_message = await response.json()
+        error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
+        console.log(error_message)
+        errorMassage.forEach(err => {
+          err.classList.add('hidden')
+        })
+        for (var key in error_message) {
+          console.log(placeholderValue[i])
+          placeholderValue[i] = error_message[key]
+          i += 1;
+        }
+        i = 0
+        userName.innerHTML = placeholderValue[0]
+        alert("successfully update profile")
+        submitBtn.disabled = false
 
-    //   } else if (response.status == 500) {
-    //     error_message = await response.json()
-    //     var list = document.getElementsByClassName("error-message");
-    //     var i = 0;
-    //     submitBtn.disabled = false
-    //     alert("something wrong with server side, please try again later");
-    //   }
-    // })
+      } else if (response.status == 500) {
+        error_message = await response.json()
+        var list = document.getElementsByClassName("error-message");
+        var i = 0;
+        submitBtn.disabled = false
+        alert("something wrong with server side, please try again later");
+      }
+    })
 
     uploadFile.onchange = function ValidateSingleInput() {
       console.log();
