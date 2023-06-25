@@ -47,7 +47,9 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+
+                    </tbody>
                 </table>
                 <div class="row">
                     <div class="col-lg-12 border border-dark">
@@ -99,14 +101,21 @@
                     rows="4"></textarea> </div>
             <div class="comment-btn mt-2">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="pull-left"> <button class="btn btn-success btn-sm"
                                 onclick="callCancelService()">Cancel</button> </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-success pay-order btn-sm" onclick="payService()"
+                                id="PAY-ORDER">PAY</button>
+                        </div>
+                    </div>
+                    <div class="col-4">
                         <div class="pull-right"> <button class="btn btn-success send btn-sm" id="sendComment">Send <i
                                     class="fa fa-long-arrow-right ml-1"></i></button> </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -117,7 +126,12 @@
         let paramOrderId = window.location.search;
         console.log(paramOrderId);
         let urlParam = new URLSearchParams(paramOrderId);
-
+        const giveData = {
+            paymentId: "",
+            serviceId: "",
+            day: "",
+            timeId: ""
+        };
 
         //get order detail based on order id//
         axios
@@ -149,6 +163,15 @@
                     </tr>
                 `;
                 document.querySelector("#order-table tbody").innerHTML = output;
+                ////////////////////// minh them vao //////////////////////
+                //////////////////////              //////////////////////
+                giveData.serviceId = order.service.serviceId
+                giveData.paymentId = order.payment.paymentId
+                giveData.day = order.schedule.workDay
+                giveData.timeId = order.schedule.timeSlot.timeSlotId
+                console.log(giveData)
+                //////////////////////              //////////////////////
+                //////////////////////              //////////////////////
             })
             .catch((err) => console.error(err));
 
@@ -325,6 +348,14 @@
                         console.log("Exception")
                     }
                 })
+        }
+    
+        function payService(){
+            axios
+                .get("http://localhost:8080/transaction//refundTransaction/" + urlParam.get("orderId"))
+                .then((resp) => {
+
+                }).then()
         }
     </script>
 </body>

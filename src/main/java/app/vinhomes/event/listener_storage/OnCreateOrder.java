@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -23,7 +24,7 @@ public class OnCreateOrder {
     @Autowired
     private TransactionService transactionService;
     @EventListener
-    public boolean countingTransactionTimeout(StartOrderCountDown event){
+    public CompletableFuture<String> countingTransactionTimeout(StartOrderCountDown event){
         try {
             System.out.println("INSIDE counting transaction, start waiting for a period of time");
             long transactionId = event.getTransactionId();
@@ -33,25 +34,31 @@ public class OnCreateOrder {
                 if(timePeriod >= ORDER_TIMEOUT){
                     Transaction getTransaction = transactionService.getTransactionById(transactionId);
                     if(getTransaction != null){
-                        System.out.println("order timeout");
-                        Order getOrder = getTransaction.getOrder();
-                        getTransaction.setStatus(TransactionStatus.FAIL);
-                        getOrder.setStatus(OrderStatus.CANCEL);
-                        boolean orderStat = orderService.updateOrderByObject(getOrder);
-                        boolean transactionStat = transactionService.updateTransactionByObject(getTransaction);
-                        System.out.println("INSIDE counting transaction, end thread ");
-                        return true;
+                        if(getTransaction.getStatus().equals(TransactionStatus.PENDING) &&
+                        getTransaction.getOrder().getStatus().equals(OrderStatus.PENDING)){
+                            System.out.println("order timeout");
+                            Order getOrder = getTransaction.getOrder();
+                            getTransaction.setStatus(TransactionStatus.FAIL);
+                            getOrder.setStatus(OrderStatus.CANCEL);
+                            boolean orderStat = orderService.updateOrderByObject(getOrder);
+                            boolean transactionStat = transactionService.updateTransactionByObject(getTransaction);
+                            System.out.println("INSIDE counting transaction, end thread ");
+                            //return true;
+                            return CompletableFuture.completedFuture("CompletableFuture return when finish");
+                        }
                     }else{
                         System.out.println("order not yet timeout");
-                       // timePeriod=event.getSecondTimeLeft();
-                        return false;
+                        //return false;
+                        return CompletableFuture.completedFuture("CompletableFuture return when finish");
                     }
                 }
-                return false;
+                //return false;
+            return CompletableFuture.completedFuture("CompletableFuture return when finish");
             //}
         } catch (InterruptedException e) {
             System.out.println("Inside thread: "+e.getMessage());
-            return false;
+            //return false;
+            return CompletableFuture.completedFuture("CompletableFuture return when Exception");
         }
     }
 }
