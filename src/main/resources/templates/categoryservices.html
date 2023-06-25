@@ -154,7 +154,7 @@
     const starsContainer = document.querySelectorAll('.stars-container')
 
     const navBar = document.querySelector('.navBar')
-    const profileBtn = document.querySelector('.profile-btn')
+    const profileBtn = document.querySelector('.profile-btn') == null ? null : document.querySelector('.profile-btn')
     const percentageText = document.querySelectorAll('.percentage-text')
     // const barsToggle = document.querySelector('.bars-toggle')
     // const list = document.querySelector('.links')
@@ -211,12 +211,15 @@
     // for (let i = 0; i < listElement.length; i++) {
     //     listHeight += listElement[i].getBoundingClientRect().height;
     // };
-    profileBtn.style.height = `${navBarHeight}px`
+    if (profileBtn != null) {
+      profileBtn.style.height = `${navBarHeight}px`
 
-    dropDownMenuBtn.addEventListener('click', () => {
-      console.log("clicked")
-      dropDownMenu.classList.toggle("hidden")
-    })
+      dropDownMenuBtn.addEventListener('click', () => {
+        console.log("clicked")
+        dropDownMenu.classList.toggle("hidden")
+      })
+
+    }
 
     for (let i = 0; i < starsContainer.length; i++) {
       starsContainer[i].addEventListener('mouseover', (e) => {
