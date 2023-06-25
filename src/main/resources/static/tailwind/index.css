@@ -977,6 +977,10 @@ video {
   width: inherit;
 }
 
+.w-fit {
+  width: fit-content;
+}
+
 .w-0 {
   width: 0px;
 }
