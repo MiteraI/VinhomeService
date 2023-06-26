@@ -81,6 +81,41 @@
 			</div>
 		</section>
      <footer th:replace="~{./fragments/footer.html}"></footer>
+  <script>
+	  	const radios = document.getElementsByName("rating");
+			const stars = document.getElementsByClassName("fa-star");
+			const changeStar = (stars, numOfStars) => {
+				for (i = 0; i < 5; i++) {
+					if (stars[i].classList.contains("fa")) {
+						stars[i].classList.replace("fa", "fa-regular");
+					}
+				}
+				for (i = 0; i < numOfStars; i++) {
+					stars[i].classList.replace("fa-regular", "fa");
+				}
+			};
+			document.getElementsByName("rating").forEach((button) =>
+				button.addEventListener("change", () => {
+					switch (button.value) {
+						case "1":
+							changeStar(stars, 1);
+							break;
+						case "2":
+							changeStar(stars, 2);
+							break;
+						case "3":
+							changeStar(stars, 3);
+							break;
+						case "4":
+							changeStar(stars, 4);
+							break;
+						case "5":
+							changeStar(stars, 5);
+							break;
+					}
+				})
+			);
+  </script>
   </body>
 </html>
 

@@ -1,9 +1,6 @@
 /*
 ! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com
 */
-/*
-! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com
-*/
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -1187,6 +1184,10 @@ video {
   border-radius: 0.75rem;
 }
 
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
 .rounded-b-lg {
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
@@ -1267,9 +1268,9 @@ video {
   background-color: rgb(0 123 255 / var(--tw-bg-opacity));
 }
 
-.bg-gray-100 {
+.bg-gray-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
 .bg-gray-700 {
@@ -1363,6 +1364,10 @@ video {
 .object-cover {
   -o-object-fit: cover;
   object-fit: cover;
+}
+
+.fill-yellow-info {
+  fill: #FFD12F;
 }
 
 .p-0 {
@@ -1632,11 +1637,6 @@ video {
   display: contents;
 }
 
-.after\:text-\[\]::after {
-  content: var(--tw-content);
-  color: ;
-}
-
 .after\:text-\[\#f8ce0b\]::after {
   content: var(--tw-content);
   --tw-text-opacity: 1;
@@ -1825,6 +1825,11 @@ video {
     margin-right: 5rem;
   }
 
+  .md\:mx-28 {
+    margin-left: 7rem;
+    margin-right: 7rem;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -1839,6 +1844,10 @@ video {
 
   .md\:h-\[0px\] {
     height: 0px;
+  }
+
+  .md\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   .md\:items-center {
@@ -1860,6 +1869,11 @@ video {
     margin-right: 5rem;
   }
 
+  .lg\:mx-28 {
+    margin-left: 7rem;
+    margin-right: 7rem;
+  }
+
   .lg\:flex {
     display: flex;
   }
@@ -1876,12 +1890,20 @@ video {
     height: 0px;
   }
 
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .lg\:items-center {
     align-items: center;
   }
 
   .lg\:justify-between {
     justify-content: space-between;
+  }
+
+  .lg\:gap-5 {
+    gap: 1.25rem;
   }
 
   .lg\:p-8 {
@@ -1893,6 +1915,11 @@ video {
   .xl\:mx-20 {
     margin-left: 5rem;
     margin-right: 5rem;
+  }
+
+  .xl\:mx-28 {
+    margin-left: 7rem;
+    margin-right: 7rem;
   }
 
   .xl\:flex {
@@ -1911,12 +1938,20 @@ video {
     height: 0px;
   }
 
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .xl\:items-center {
     align-items: center;
   }
 
   .xl\:justify-between {
     justify-content: space-between;
+  }
+
+  .xl\:gap-5 {
+    gap: 1.25rem;
   }
 
   .xl\:p-8 {

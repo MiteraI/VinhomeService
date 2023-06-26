@@ -9,7 +9,7 @@ import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
-import app.vinhomes.repository.order.ServiceCategoryRepository;
+
 import app.vinhomes.repository.order.ServiceRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,18 +73,7 @@ public class PageController {
 
     @RequestMapping(value = "/category-services/{id}", method = RequestMethod.GET)
     public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model){
-        List<Service> serviceWithSameCategory = new ArrayList<>();
-        List<Integer> serviceId = new ArrayList<>();
-        List<Integer> avgStartEachService = new ArrayList<>();
-        serviceWithSameCategory = serviceRepository.findByServiceCategory_serviceCategoryId(categoryId);
-        serviceId = serviceWithSameCategory.stream().map(s -> s.getServiceId().intValue()).collect(Collectors.toList());
         model.addAttribute("services", serviceCategoryRepository.findById(categoryId).get());
-        System.out.println("pc's serviceId.size is: " + serviceId.size());
-        System.out.println("avg rating of each service: " + avgRatingForEachService(serviceId));
-        System.out.println(categoryId);
-        System.out.println(serviceCategoryRepository.findById(categoryId).get());
-        System.out.println(serviceRepository.findByServiceCategory_serviceCategoryId(categoryId).get(0).getServiceId());
-
         return "categoryservices";
     }
 

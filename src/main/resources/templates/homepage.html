@@ -46,7 +46,7 @@
                     <img class="mx-auto" src="../static/assets/images/service-1.jpg" alt="cleaning house" />
 
                     <p class="text-2xl text-blue-bootstrap"
-                        th:text="${category != null} ? ${c.serviceCategoryName} : ''">House cleaning</p>
+                        th:text="${category != null} ? ${c.serviceCategoryName} : ''"></p>
 
                     <div>
                         <p>
@@ -68,18 +68,6 @@
         </section>
     </div>
     <footer th:replace="~{./fragments/footer.html}"></footer>
-    <script>
-        const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
-        const dropDownMenu = document.querySelector('#dropdownDivider')
-        const navBar = document.querySelector('.navBar')
-        const profileBtn = document.querySelector('.profile-btn')
-        let navBarHeight = navBar.getBoundingClientRect().height;
-        profileBtn.style.height = `${navBarHeight}px`
-        dropDownMenuBtn.addEventListener('click', () => {
-            console.log("clicked")
-            dropDownMenu.classList.toggle("hidden")
-        })
-    </script>
 </body>
 
 </html>
