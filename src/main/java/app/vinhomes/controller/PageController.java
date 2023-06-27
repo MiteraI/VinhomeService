@@ -164,7 +164,6 @@ public class PageController {
             if (session.getAttribute("phone") != null) {
                 fone = (ArrayList<Phone>) session.getAttribute("phone");
                 System.out.println("fone's size: " + fone.size());
-
             }
         }
         return fone;
@@ -174,7 +173,6 @@ public class PageController {
     public String yourOrder() {
         return "viewOrder";
     }
-
     @RequestMapping(value = "/detail")
     public String detail(@RequestParam Optional<Long> orderId, @RequestParam Optional<Long> userId, HttpServletRequest request, Model model) {
         Account acc = getSessionAccount(request);

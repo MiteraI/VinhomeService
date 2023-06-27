@@ -126,11 +126,12 @@ public class OrderService {
 
         //Get order that is in the work day and timeslot the user chose with the job cate to find busy worker
         List<Order> orders = orderRepository.
-                findAllBySchedule_WorkDayAndSchedule_TimeSlotAndService_ServiceCategory(
+                findAllBySchedule_WorkDayAndSchedule_TimeSlotAndService_ServiceCategoryAndStatus(
                         schedule.getWorkDay()
                         , timeSlot
                         //Find serviceCate / job to know the workers
                         , serviceCategoryRepository.findById(service.getServiceCategory().getServiceCategoryId()).get()
+                        , OrderStatus.PENDING
                 );
 
         //Get busy worker list to exclude from the worker account list -> free workers ready to be assigned
@@ -233,7 +234,6 @@ public class OrderService {
             return false;
         }
     }
-
     public boolean checkIfOrderIsPending_IsExist(String orderId){
         try{
             long parsedOrderId = Long.parseLong(orderId);
