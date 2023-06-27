@@ -1,14 +1,12 @@
 package app.vinhomes.unittest;
 
 import app.vinhomes.AsyncConfig;
-import app.vinhomes.AsyncMethod;
-import app.vinhomes.event.event_storage.StartOrderCountDown;
-import app.vinhomes.event.listener_storage.OnCreateOrder;
-import com.sun.jna.WString;
+
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationEventPublisher;
+
 
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
@@ -16,7 +14,7 @@ import java.util.concurrent.*;
 @SpringBootTest
 public class asyncTest {
     @Autowired
-    private AsyncMethod asyncMethod;
+    private asyncClass asyncMethod;
     @Autowired
     private AsyncConfig asyncConfig;
 

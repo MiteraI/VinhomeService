@@ -1,18 +1,26 @@
 package app.vinhomes.security.esms;
 
+import app.vinhomes.controller.PageController;
+import app.vinhomes.entity.Account;
+import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.security.esms.otp_dto.EnumOTPStatus;
 import app.vinhomes.security.esms.otp_dto.OTPResponseStatus;
 import app.vinhomes.security.esms.otp_service.ESMSservice;
 import app.vinhomes.security.esms.otp_service.OTPService;
+import app.vinhomes.service.AccountService;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 @RestController
 @RequestMapping(value = "/esms")
@@ -24,6 +32,12 @@ public class ESMSController {
     private ESMSservice service;
     @Autowired
     private OTPService otpService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private PhoneRepository phoneRepository;
+    @Autowired
+    private PageController pageController;
     @PostMapping(value = "/sendnormal")
     public ResponseEntity<?> sendESMS(HttpServletRequest request) throws IOException {
         System.out.println("in send normal sms");
@@ -32,34 +46,33 @@ public class ESMSController {
         String result = service.sendGetJSON(phonenumber,message);
         return ResponseEntity.ok().body(result);
     }
-    @PostMapping(value = "/sendotp")
-    public ResponseEntity<?> sendOTP(HttpServletRequest request) throws IOException {
-        System.out.println("in sent OTP");
-        boolean checkIfParameterExist = request.getParameter(phoneParameterName).isEmpty();
-        String phonenumber = checkIfParameterExist ? "" : request.getParameter(phoneParameterName);
-        if(phonenumber.length() != 10){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid phonenumber");
-        }
-        OTPResponseStatus OTP = otpService.generateOTPCode_Message(phonenumber);
-        if(OTP.getStatus().equals(EnumOTPStatus.CREATED)){
-            return ResponseEntity.ok().body(service.sendGetJSON(phonenumber,OTP.getMessage()));
-        }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something wrong when cooking OTP");
-        }
-    }
-    @PostMapping(value = "/validateOTP")
-    public ResponseEntity<?> validateOTP(HttpServletRequest request) {
+    @PostMapping(value = "/validateOTP",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> validateOTP(@RequestBody JsonNode jsonNode, HttpServletRequest request) {
         try{
             System.out.println("in validate OTP");
-            boolean checkPhoneParamExist = request.getParameter(phoneParameterName).isEmpty();
-            String phonenumber = checkPhoneParamExist ? "" : request.getParameter(phoneParameterName);
-            String OTP =  request.getParameter(OTPParameterName);
-            if(phonenumber.length() != 10){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("WHY THERE ARE NO PHONE NUMBER IN THIS, IT SUPPOSE TO SEND BACK WITH PHONE NUMBER INCLUDED ");
+            String username = jsonNode.get("accountname").asText().trim();
+            Account getAccount = accountService.getAccountByUsername(username);
+            if(getAccount == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("NO Account found");
             }
-            return ResponseEntity.ok().body(otpService.validateOTP(OTP,phonenumber));
+            String phonenumber =  phoneRepository.findByAccountId(getAccount.getAccountId()).get(0).getNumber();
+            System.out.println(phonenumber);
+            String OTP =  jsonNode.get("OTP").asText().trim();//request.getParameter(OTPParameterName);
+            System.out.println(OTP);
+            if(phonenumber.length() != 10 && phonenumber.length() != 12){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is not legit, your phone lenght is: "+ phonenumber.length()+", which is not legit ");
+            }
+            System.out.println("now validate OTP");
+            String returnValidation =otpService.validateOTP(OTP,phonenumber);
+            if(returnValidation.startsWith("ERROR:")){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(returnValidation);
+            }else{
+                accountService.setEnableToAccount(getAccount);
+                pageController.updateSessionAccount(request);
+                return ResponseEntity.status(HttpStatus.OK).body(returnValidation);
+            }
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("asdfdsfa");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR: Bad request, not sure what happent");
         }
 
     }

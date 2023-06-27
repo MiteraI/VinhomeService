@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Configuration // this will pick up this class and try to implement and inject all the bean we
-        // declared in this config
 @RequiredArgsConstructor// this when we need to inject some beans
 public class ApplicationConfig  {
     private final AccountRepository accountRepository;

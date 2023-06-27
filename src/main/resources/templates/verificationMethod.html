@@ -9,6 +9,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <style>
     .otc {
@@ -124,10 +126,11 @@
             <h1 class="text-center">
                 SMS
             </h1>
+            <div id="SMSMESSAGE" class="container-fluid text-center text-danger" style="visibility: hidden;">sadf</div>
             <div class="container position-absolute top-50 translate-middle-y">
                 <form class="otc" name="one-time-code" action="#">
-                    <fieldset>
-                        <legend class="text-primary text-center">Validation Code</legend>
+                    <legend class="text-primary text-center">Validation Code</legend>
+                    <fieldset class="container d-flex justify-content-around">
                         <label for="otc-1">Number 1</label>
                         <label for="otc-2">Number 2</label>
                         <label for="otc-3">Number 3</label>
@@ -136,34 +139,39 @@
                         <label for="otc-6">Number 6</label>
                         <!-- https://developer.apple.com/documentation/security/password_autofill/enabling_password_autofill_on_an_html_input_element -->
                         <div>
-                            <input type="number" pattern="[0-9]*" value="" inputtype="numeric"
+                            <input class="otp-input" type="number" pattern="[0-9]*" value="" inputtype="numeric"
                                 autocomplete="one-time-code" id="otc-1" required>
-                            <input type="number" pattern="[0-9]*" min="0" max="9" maxlength="1" value=""
-                                inputtype="numeric" id="otc-2" required>
-                            <input type="number" pattern="[0-9]*" min="0" max="9" maxlength="1" value=""
-                                inputtype="numeric" id="otc-3" required>
-                            <input type="number" pattern="[0-9]*" min="0" max="9" maxlength="1" value=""
-                                inputtype="numeric" id="otc-4" required>
-                            <input type="number" pattern="[0-9]*" min="0" max="9" maxlength="1" value=""
-                                inputtype="numeric" id="otc-5" required>
-                            <input type="number" pattern="[0-9]*" min="0" max="9" maxlength="1" value=""
-                                inputtype="numeric" id="otc-6" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-2" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-3" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-4" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-5" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-6" required>
                         </div>
                     </fieldset>
+                    <div class="d-flex justify-content-center text-bold justify-content-center align-items-center text-danger"
+                        id="timer" style="display: block;">
+
+                    </div>
                 </form>
             </div>
             <div class="container position-absolute bottom-0 start-50 translate-middle">
                 <div class="d-flex justify-content-around align-items-center  pb-4">
-                    <button class="btn btn-primary text-white " onclick="getHomePage()">
-                        Home
+                    <button class="btn btn-primary text-white " onclick="goBackChoosingMethod()">
+                        Back
                     </button>
+
                     <button class="btn btn-primary text-white " onclick="verify()">
                         verify
                     </button>
-
-                    <button class="btn btn-primary text-white " onclick="resent()">
-                        Resent
+                    <button class="btn btn-primary text-white " onclick="getHomePage()">
+                        Home
                     </button>
+
                 </div>
 
             </div>
@@ -243,40 +251,80 @@
     in1.addEventListener('input', splitNumber);
 </script>
 <script>
+    //setTimeout(function() {
+    //   alert('hello world'); 
+    //}, 1);
+    const otpSize = 6;
+    function verify() {
+        var sendBody = {
+            accountname: username,
+            OTP: otp_merge
+        }
+        var otp_list_input = document.getElementsByClassName("otp-input")
+        console.log(otp_list_input)
+        var otp_merge = "";
+        for (var i = 0; i < otpSize; i++) {
+            if (otp_list_input[i].value == "") {
 
-    async function verify() {
-        var response2 = await fetch(`http://localhost:8080/esms/validateOTP`, {
+            } else {
+                console.log(otp_list_input[i].value);
+                otp_merge = otp_merge.concat(otp_list_input[i].value);
+                console.log(otp_merge)
+            }
+        }
+        sendBody.OTP = otp_merge
+        console.log(sendBody.accountname + "   " + sendBody.OTP)
+        var response2 = fetch(`http://localhost:8080/esms/validateOTP`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
+            body: JSON.stringify(sendBody)
+        }).then(response => {
+            var responseStatus = response.status;
+            var toText = response.text()
+            if (responseStatus < 200 || responseStatus > 300) {
+                document.getElementById("SMSMESSAGE").innerText = toText
+                document.getElementById("SMSMESSAGE").style.color = "red";
+                document.getElementById("SMSMESSAGE").style.visibility = "visible";
+            } else {
+                breakFlag = true;
+                document.getElementById("SMSMESSAGE").innerText = toText
+                document.getElementById("SMSMESSAGE").style.color = "green";
+                document.getElementById("timer").style.visibility = "hidden";
+                alert("success, press ok to go back homepage")
+                console.log("pass alert")
+                delay(1000).
+                then(() =>{
+                    console.log("inside delay")
+                    getHomePage()})
+            }
         })
-        var responseStatus = await response2.status;
-        if (responseStatus <= 200 || responseStatus >= 300) {
-            alert("invalid OTP")
-        } else {
-            alert("success, press ok to go back homepage")
-            fetch(`http://localhost:8080/`)
-            //window.location.replace="/"
-        }
     };
-    var press = 0;
-    function resent() {
-        press += 1;
-        console.log(press)
-        delay(2000)
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+    function goBackChoosingMethod() {
+        breakFlag = true;
+        console.log(breakFlag)
+        methodDiv.style.display = "block";
+        SMSDiv.style.display = "none";
     }
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
-</script>
-<script>
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    var OTPTimeout;
+    var breakFlag = false;
     const queryString = window.location.search;
     const username = new URLSearchParams(queryString).get('username'); console.log(username)
     const methodDiv = document.getElementById("METHOD");
     const SMSDiv = document.getElementById("SMS")
-    function chooseMethod() {
+
+
+    async function chooseMethod() {
         var methods = document.getElementsByName("btnRadioVerification");
         var value;
         for (var i = 0; i < methods.length; i++) {
@@ -286,23 +334,70 @@
             }
         }
         console.log(value)
-        fetch(`http://localhost:8080/createAccountAPI/verificationMethod/${username}/${value}`,{method:"POST"})
-            .then(reponse => {
-                if (reponse.status >= 200 || reponse.status <= 300) {
-                    if (value == "EMAIL") {
-                        alert("yes, already send to your mail, check if you see mail, if not, try again later in profile")
-                    } else {
-                        methodDiv.style.display = "none";
-                        SMSDiv.style.display = "block";
-                    }
-                } else {
-                    alert("go back to homepage, error in sending verification, try again in profile")
+        var response = await fetch(`http://localhost:8080/createAccountAPI/verificationMethod/${username}/${value}`, { method: "POST" })
+        var status = await response.status
+        var toText = await response.text()
+        console.log(toText)
+        if (status >= 200 || status <= 300) {
+            if (value == "EMAIL") {
+                alert("yes, already send to your mail, check if you see mail, if not, try again later in profile")
+                console.log("pass alert")
+                delay(1000).
+                then(() =>{
+                    console.log("inside delay")
+                    getHomePage()})
+            } else {
+                methodDiv.style.display = "none";
+                SMSDiv.style.display = "block";
+                breakFlag = false; console.log(breakFlag)
+                document.getElementById("timer").innerText = "";
+                document.getElementById("SMSMESSAGE").style.visibility = "hidden";
+                var otp_list_input = document.getElementsByClassName("otp-input")
+                //console.log(otp_list_input)
+                var otp_merge = "";
+                for (var i = 0; i < otpSize; i++) {
+                    otp_list_input[i].value = "";
+                    otp_list_input[i].innerText = "";
                 }
-            })
+                toText = toText.split("=")
+                OTPTimeout = toText[1];
+                console.log(OTPTimeout)
+                alert("yes, already send sms: " + OTPTimeout)
+
+                //////////////////////// clock ////////////////////////
+
+                //////////////////////// clock ////////////////////////
+            }
+        } else {
+            alert("go back to homepage, error in sending verification, try again in profile")
+        }
+        var time_limit = OTPTimeout;
+        var time_out = startTimer(time_limit)
+        return;
     }
-    function getHomePage(){
-        window.location.replace(`http://localhost:8080`)
+    function startTimer(duration) {
+        //var timer = duration;
+        var timer = setInterval(function () {
+            console.log(breakFlag)
+            if (breakFlag == false) {
+                if (duration == 0) {
+                    $('#timer').html('Time Over');
+                } else {
+                    $('#timer').html("OTP invalid in: " + duration + "s");
+                    duration -= 1;
+                }
+            } else {
+                console.log("inside clear interval")
+                clearInterval(timer);
+                return;
+            }
+        }, 1000);
     }
+
+    function getHomePage() {
+        window.location.replace(`/`)
+    }
+
 </script>
 
 </html>

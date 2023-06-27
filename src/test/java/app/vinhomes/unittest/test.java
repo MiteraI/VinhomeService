@@ -1,11 +1,14 @@
 package app.vinhomes.unittest;
 
 
+import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.event.event_storage.StartOrderCountDown;
 import app.vinhomes.event.listener_storage.OnCreateOrder;
+import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.security.email.email_service.EmailService;
 import app.vinhomes.vnpay.service.VNPayService;
 import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Disabled;
@@ -40,11 +43,16 @@ public class test {
     private int plusHour;
     @Value("${time.order_timeout}")
     private long ORDER_TIMEOUT;
+    @Value("${time.otp_timeout}")
+    private int OTP_TIMEOUT_SECOND;
     @Autowired
     private VNPayService VNPayService;
-
+    @Autowired
+    private AccountRepository  accountRepository;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private EmailService emailService;
     private int expired = 120000;
 
     @Test
@@ -138,11 +146,18 @@ public class test {
     @Test
     @Disabled
     void testAsyncOrderTimeout() throws InterruptedException {
-
         applicationEventPublisher.publishEvent(new StartOrderCountDown(LocalDateTime.now(),8l));
         Thread.sleep(10000l);
         System.out.println("main thread open");
         Thread.sleep(20000l);
     }
-
+    @Test
+    void testOTP(){
+        System.out.println(OTP_TIMEOUT_SECOND);
+    }
+    @Test
+    void testSendmailTemplate(){
+        Account account =  accountRepository.findById(27l).get();
+        emailService.sendMailWithTemplate(account);
+    }
 }

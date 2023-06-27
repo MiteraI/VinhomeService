@@ -8,13 +8,16 @@ import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -26,6 +29,7 @@ public class AccountService {
     private AddressRepository addressRepository;
     @Autowired
     private PhoneRepository phoneRepository;
+
 
     public ResponseEntity<List<Account>> updateAccountById(JsonNode request){
         ErrorChecker errorChecker = new ErrorChecker();
@@ -111,4 +115,10 @@ public class AccountService {
     public Account getAccountByUsername(String username)throws NullPointerException{
         return accountRepository.findUsername(username).get();
     }
+    public void setEnableToAccount(Account account){
+        account.setIsEnable(1);
+        accountRepository.save(account);
+        System.out.println("account is enabled through sms, you can get order now");
+    }
+
 }

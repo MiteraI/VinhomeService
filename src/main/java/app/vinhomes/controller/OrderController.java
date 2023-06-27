@@ -44,32 +44,6 @@ public class OrderController {
         return orderRepository.findAll();
     }
 
-    //    @PostMapping(value = "/createorder")
-//    public ResponseEntity<String> createOrder(@RequestBody JsonNode orderJSON, HttpServletRequest request) {
-//        LocalDate parsedDate = LocalDate.parse(orderJSON.get("day").asText());
-//        LocalTime startTime = timeSlotRepository.findById(orderJSON.get("timeId").asLong()).get().getStartTime();
-//        LocalDateTime orderedTime = parsedDate.atTime(startTime);
-//        //Date received is before now then "Date is in the past"
-//        if (parsedDate.isBefore(LocalDate.now())) {
-//            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
-//        }
-//
-//        if (orderedTime.isBefore(LocalDateTime.now())) {
-//            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
-//        }
-//
-//        Order order = orderService.officialCreateOrder(orderJSON, request);
-//        if (order == null) {
-//            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
-//        } else {
-//            if (order.getAccount() == null) return ResponseEntity
-//                    .status(HttpStatus.SERVICE_UNAVAILABLE)
-//                    .body("Have not logged in");
-//            return ResponseEntity.ok("Order created with Id " + order.getOrderId());
-//        }
-//    }
-
-
     @PostMapping(value = "/ratecomment")
     public ResponseEntity<String> rate(@RequestBody JsonNode rateJson) {
 
@@ -121,8 +95,11 @@ public class OrderController {
 
     @GetMapping(value = "/getSession", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Account> getUsername(HttpSession session) {
-        System.out.println("4");
+        //System.out.println("4");
         System.out.println("get session");
+        Account getAccount = (Account) session.getAttribute("loginedUser");
+        getAccount = accountRepository.findById(getAccount.getAccountId()).get();
+        session.setAttribute("loginedUser",getAccount);
         return ResponseEntity.status(HttpStatus.OK).body((Account) session.getAttribute("loginedUser"));
     }
 

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordResetDTO {
+public class OTP_Sms_DTO {
     private String phoneNumber;
     private String oneTimePassword;
 }

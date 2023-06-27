@@ -127,7 +127,7 @@ public class TransactionService {
                 getTransaction.setStatus(TransactionStatus.FAIL);
                 orderRepository.save(getOrder);
                 transactionRepository.save(getTransaction);
-                return ResponseEntity.ok().body("YES, order Canceled, still in acceptable time policy");
+                return ResponseEntity.ok().body("YES, COD ORDER CANCELLED");
             }
             ResponseEntity callingResult = vnPayService.refund(vnp_txtRef,transactionDate,amount,getAccountName,request,response);
             if(callingResult.getStatusCode().is2xxSuccessful()){
@@ -155,23 +155,7 @@ public class TransactionService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR SERVER");
         }
     }
-    public boolean checkIfOver_2_hourPolicy(String orderId){
-        try{
-            long parsedOrderId = Long.parseLong(orderId);
-            Order getOrder = orderRepository.findById(parsedOrderId).get();
-            // neu + 2 tieng ma van before, tuc la da qua 2 tieng => no refund (boolean = true)
-            // else cho refund   (boolean = false)
-            boolean isCreateTimePassLimit =  getOrder.getCreateTime().plusHours(HourPolicy).isBefore(LocalDateTime.now());
-            if(isCreateTimePassLimit == false){
-                return true;
-            }else{
-                return false;
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
+
     public String getVnp_txtRefThroughOrderId(String orderId){
         try{
             long parsedOrderId = Long.parseLong(orderId);
@@ -200,6 +184,21 @@ public class TransactionService {
             return true;
         }catch (Exception e){
             System.out.println("update error: "+ e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean checkIfTransactionIsPending_IsExist(String orderId ){
+        try{
+            Order order = orderRepository.findById(Long.parseLong(orderId)).get();
+            Transaction getTransaction = transactionRepository.findById(order.getOrderId()).get();
+            if(getTransaction.getStatus().equals(TransactionStatus.PENDING)){
+                return true;
+            }
+            return false;
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }

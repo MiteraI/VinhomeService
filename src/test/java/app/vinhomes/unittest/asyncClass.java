@@ -1,8 +1,6 @@
-package app.vinhomes;
+package app.vinhomes.unittest;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -11,8 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Future;
 
-@Service
-public class AsyncMethod {
+public class asyncClass {
     private int time1 = 0;
     public boolean flag = false;
 
@@ -83,4 +80,5 @@ public class AsyncMethod {
     public void setFlag(boolean flag){
         this.flag = flag;
     }
+
 }

@@ -49,11 +49,8 @@ public class CreateAccountAPI {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private EmailService emailService;
-    @Autowired
-    private ESMSservice esmsService;
-    @Autowired
     private OTPService otpService;
+
     @Autowired
     private ApplicationEventPublisher eventPublisher;//CreateErrorCatcher
     @PostMapping(value = "/createAccountCustomer/{rolenumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -146,23 +143,27 @@ public class CreateAccountAPI {
 
 
     @PostMapping(value = "/verificationMethod/{username}/{method}")
-    public ResponseEntity<?> chooseVerficationMethod(@PathVariable String method,@PathVariable String username){
+    public ResponseEntity<String> chooseVerficationMethod(@PathVariable String method,@PathVariable String username){
         try{
+            System.out.println("inside verification method");
             Account account = accountService.getAccountByUsername(username);
+            System.out.println(account);
             if(account == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("asdf");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot found account");
             }
             if(method.equals("EMAIL")){
                 eventPublisher.publishEvent(new SendEmailOnCreateAccount(account));
+                System.out.println("already send email");
+                return ResponseEntity.ok().body("yes send verification success, check yo mail");
             }else if(method.equals("SMS")){
                 eventPublisher.publishEvent(new SendSmsOnCreateAccount(account));
+                System.out.println("already send sms");
+                return ResponseEntity.ok().body("yes send verification success, check yo phone, timeout="+otpService.getOTP_TIMEOUT_SECOND());
             }else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("asdf");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown verification method");
             }
-            return ResponseEntity.ok().body("asdf");
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("asdf");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server Error, try again later");
         }
     }
-
 }

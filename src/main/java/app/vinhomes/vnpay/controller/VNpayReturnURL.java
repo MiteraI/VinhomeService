@@ -24,7 +24,6 @@ import app.vinhomes.vnpay.config.*;
 import static java.lang.System.out;
 
 @Controller
-
 @RequestMapping(value = "/vnpay/returnurl")
 public class VNpayReturnURL {
     @Autowired

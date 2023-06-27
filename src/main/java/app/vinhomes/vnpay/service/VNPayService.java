@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import java.util.*;
 @org.springframework.stereotype.Service
 public class VNPayService {
     private final String transactionTypeValue = "02";
+    private Map<Long, String> orderUrlMap = new HashMap<>();
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
@@ -38,6 +40,7 @@ public class VNPayService {
     private TransactionRepository transactionRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+
     public String getBankCode_CheckCOD_VNpay(JsonNode jsonNode, HttpServletRequest request) {
         try {
             String transactionMethod = jsonNode.get("paymentId").asText();//request.getParameter("transactionMethod");//
@@ -384,7 +387,35 @@ public class VNPayService {
         }
 
     }
+    public Map<Long,String> getAllOrderUrlMap(){
+        return this.orderUrlMap;
+    }
+    public void addOrderUrlMap(Long OrderId,String url){
+        this.orderUrlMap.put(OrderId,url);
+    }
+    public boolean deleteOrderUrlMapItem(String orderId){
+        Map<Long,String> getMap = getAllOrderUrlMap();
+        try{
+            Long parsedOrderId = Long.parseLong(orderId);
+            getMap.remove(parsedOrderId);
+            return true;
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+            return false;
+        }
 
+    }
+    public String getOrderUrlMapByOrderId(String orderId){
+        Map<Long,String> getMap = getAllOrderUrlMap();
+        try{
+            Long parsedOrderId = Long.parseLong(orderId);
+            String getUrl = getMap.get(parsedOrderId);
+            return getUrl;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 
 }
 

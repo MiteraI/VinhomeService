@@ -73,18 +73,25 @@ public class TransactionAPI {
         try {
             //String getOrderId = request.getParameter("order_id");
             String getOrderId = orderId;
-            boolean checkPolicyRefund = transactionService.checkIfOver_2_hourPolicy(getOrderId);
+            boolean checkPolicyRefund = orderService.checkIfOver_2_hourPolicy(getOrderId);
             // true means yes, allow refund
             // false mean no, no refund, only change time, MAYBE
+            System.out.println("inside cancel and refund order");
             if (checkPolicyRefund) {
-                ResponseEntity<String> callingResult = transactionService.refundVNpayWithOrderID(getOrderId, request, response);
-                if (callingResult.getStatusCode().is2xxSuccessful()) {
-                    return ResponseEntity.ok().body(callingResult.getBody().trim());
-                } else {
-                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
+                boolean check_if_order_legit_for_refund = orderService.checkIfOrderLegitForRefund(orderId);
+                if(check_if_order_legit_for_refund){
+                    ResponseEntity<String> callingResult = transactionService.refundVNpayWithOrderID(getOrderId, request, response);
+                    if (callingResult.getStatusCode().is2xxSuccessful()) {
+                        return ResponseEntity.ok().body(callingResult.getBody().trim());
+                    } else {
+                        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
+                    }
+                }else{
+                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ORDER NOT LEGIT FOR REFUND");
                 }
             } else {
                 //TODO call for admin permission to refund, or just change time
+                this.InvalidCancelOrder.add(orderService.getOrderById(orderId));
                 if (getOrderId != null) {
                     // add invalid order cancelation to a list for admin to consider, this is optional, can be changed
                     Order getOrder = orderService.getOrderById(getOrderId);
@@ -102,6 +109,4 @@ public class TransactionAPI {
     public List<Order> getInvalidCancelOrder() {
         return this.InvalidCancelOrder;
     }
-
-
 }

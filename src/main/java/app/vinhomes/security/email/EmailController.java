@@ -16,17 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class EmailController {
     @Autowired
     private EmailService emailService;
-
     @Autowired
     private TokenService tokenService;
-
     private String emailParameter = "email";
     @PostMapping("/sendMail")
     public ResponseEntity<?> sendMail(HttpServletRequest request) {
         try{
-
-            emailService.sendSimpleVerficationEmail(request.getParameter("email"));
-
+            //emailService.sendSimpleVerficationEmail(request.getParameter("email"));
         }catch (Exception e){
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("somethingwrong");

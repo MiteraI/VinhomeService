@@ -17,7 +17,6 @@ public class SimpleLogoutHandler implements org.springframework.security.web.aut
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         System.out.println("inside logoutHandler");
-        System.out.println("security context before session destroy: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         SecurityContextHolder.clearContext();
         HttpSession session = request.getSession(false);
         if (session != null) {

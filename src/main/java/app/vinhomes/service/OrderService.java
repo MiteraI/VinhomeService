@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,8 @@ import java.util.NoSuchElementException;
 
 @org.springframework.stereotype.Service
 public class OrderService {
+    @Value("${time.hourpolicy}")
+    private int HourPolicy;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -230,4 +233,53 @@ public class OrderService {
             return false;
         }
     }
+
+    public boolean checkIfOrderIsPending_IsExist(String orderId){
+        try{
+            long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            if(getOrder.getStatus().equals(OrderStatus.PENDING)){
+                return true;
+            }
+            return false;
+        }catch (NullPointerException e){
+            return false;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+    public boolean checkIfOver_2_hourPolicy(String orderId){
+        try{
+            long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            // neu + 2 tieng ma van before, tuc la da qua 2 tieng => no refund (boolean = true)
+            // else cho refund   (boolean = false)
+            boolean isCreateTimePassLimit =  getOrder.getCreateTime().plusHours(HourPolicy).isBefore(LocalDateTime.now());
+            if(isCreateTimePassLimit == false){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    public boolean checkIfOrderLegitForRefund(String orderId){
+        try{
+            long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            if(getOrder.getStatus().equals(OrderStatus.CANCEL)|| getOrder.getStatus().equals(OrderStatus.SUCCESS)){
+                return false;
+            }else{
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+
 }

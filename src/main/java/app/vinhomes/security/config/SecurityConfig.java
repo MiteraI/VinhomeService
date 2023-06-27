@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
@@ -30,8 +32,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
-                .cors().disable()
-                //.and()
+                .cors().and()
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login")
@@ -51,6 +52,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/admin/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/admin").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").hasAnyAuthority("1","0","2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/verification").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/verificationMethod").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
                         .logoutUrl("/logout")
@@ -60,7 +67,6 @@ public class SecurityConfig {
                         .logoutSuccessHandler(simpleLogoutSuccesesHandler())
                         .invalidateHttpSession(true)
                 )
-//                .logoutUrl("/api/logout")
         ;
         return httpSecurity.build();
     }
@@ -72,11 +78,11 @@ public class SecurityConfig {
     public SecurityContextLogoutHandler securityContextLogoutHandler(){
         return new SecurityContextLogoutHandler();
     }
-    @Bean
-    public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
-        return new ServletListenerRegistrationBean<HttpSessionListener>(new CustomerSessionListener());
-    }
 
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
 
 }
 
