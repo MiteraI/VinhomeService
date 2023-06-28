@@ -854,6 +854,10 @@ video {
   height: 200px;
 }
 
+.h-\[1\.68\] {
+  height: 1.68rem;
+}
+
 .h-\[2px\] {
   height: 2px;
 }
@@ -916,6 +920,10 @@ video {
 
 .w-44 {
   width: 11rem;
+}
+
+.w-\[1\.68\]{
+  width: 1.68rem
 }
 
 .w-6 {

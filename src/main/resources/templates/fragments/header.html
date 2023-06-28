@@ -30,8 +30,8 @@
                 <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
                         class="w-full h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 font-medium rounded-lg text-sm px-2 py-2 text-center inline-flex items-center justify-between "
                         type="button">
-          <span class="w-[20%] border-2 rounded-full border-blue-bootstrap">
-            <img src="../../static/assets/images/user.png" alt="user-pfp" class="via-blue-bootstrap">
+          <span class="w-[20%] ">
+            <img src="../../static/assets/images/user.png" alt="user-pfp" class="pfp border-2 rounded-full border-blue-bootstrap h-[1.68] w-[1.68] object-cover">
           </span>
                     <span class="username w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
                           th:text="${session.loginedUser.accountName}"></span>
@@ -90,11 +90,18 @@
         const dropDownMenu = document.querySelector('#dropdownDivider')
         const navBar = document.querySelector('.navBar')
         const profileBtn = document.querySelector('.profile-btn')
+
+        const logo = document.querySelector('.logo');
+        const logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
+        const logoFontSize = parseFloat(logoStyle);
+
         let navBarHeight = navBar.getBoundingClientRect().height;
-        profileBtn.style.height = `${navBarHeight}px`
+
+        profileBtn.style.height = `${logoFontSize}px`
+
         dropDownMenuBtn.addEventListener('click', () => {
-            console.log("clicked")
-            dropDownMenu.classList.toggle("hidden")
+          console.log("clicked")
+          dropDownMenu.classList.toggle("hidden")
         })
 
 </script>

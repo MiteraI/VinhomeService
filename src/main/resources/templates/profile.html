@@ -169,7 +169,6 @@
     const profileFormInput = document.querySelectorAll('.profile-form-input');
     const prohibitInput = document.querySelectorAll('.prohibit-input')
     const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
-    const profileBtn = document.querySelector('.profile-btn')
     const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
     const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
     const pfp = document.querySelectorAll('.pfp')
@@ -179,12 +178,8 @@
     const changePfpBtn = document.querySelector('.change-pfp-btn')
     const cancelPfpBtn = document.querySelector('.cancel-pfp-btn')
 
-    const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
-    const dropDownMenu = document.querySelector('#dropdownDivider')
 
-    const logo = document.querySelector('.logo');
-    const logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
-    const logoFontSize = parseFloat(logoStyle);
+
 
     const uid = document.querySelector('.uid').value;
     const userName = document.querySelector('.username')
@@ -201,7 +196,7 @@
     let canEdit = false
     let i = 0
 
-    profileBtn.style.height = `${logoFontSize}px`
+
 
     cancelBtn.addEventListener('click', (e) => {
       e.preventDefault()
@@ -268,10 +263,6 @@
       phoneDropdownContainer.classList.toggle('hidden')
     })
 
-    dropDownMenuBtn.addEventListener('click', () => {
-      console.log("clicked")
-      dropDownMenu.classList.toggle("hidden")
-    })
 
     function hideDropDown() {
       document.onclick = () => {
