@@ -24,12 +24,12 @@ import org.springframework.data.util.ParameterTypes;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
@@ -53,6 +53,8 @@ public class test {
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private VNPayService vnPayService;
     private int expired = 120000;
 
     @Test
@@ -159,5 +161,34 @@ public class test {
     void testSendmailTemplate(){
         Account account =  accountRepository.findById(27l).get();
         emailService.sendMailWithTemplate(account);
+    }
+    @Test
+    void testGetUrlTime(){
+        Map<Long,String>  getMap  = new HashMap<>();
+        getMap.put(1l,"https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=10000000&vnp_BankCode=VNBANK&vnp_Command=pay&vnp_CreateDate=20230627222249&vnp_CurrCode=VND&vnp_ExpireDate=20230627222449&vnp_IpAddr=0%3A0%3A0%3A0%3A0%3A0%3A0%3A1&vnp_Locale=vn&vnp_OrderInfo=Thanh+toan+don+hang%3A24943851&vnp_OrderType=billpayment&vnp_ReturnUrl=http%3A%2F%2Flocalhost%3A8080%2Fvnpay%2Freturnurl&vnp_TmnCode=BIDAHJ80&vnp_TxnRef=24943851&vnp_Version=2.1.0&vnp_SecureHash=675f34197851a4c04f02ca352ba2b9f473178b8075227c74052262511c8faa251634e3b4dd186fd4852c9bcf391f38130775dd1617d9b7a1940c9533dca1d68d");
+        String[] getSplitString = getMap.get(1l).split("&");
+        for(String item : getSplitString){
+        }
+        System.out.println(getSplitString[5]);
+        String getExpiredDate = getSplitString[5].split("=")[1];
+        //System.out.println(getExpiredDate);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        try{
+            long parsedDate  = Long.parseLong(getExpiredDate);
+            System.out.println(parsedDate);
+            Date fixDateToString = format.parse(getExpiredDate);
+            Date timeNow = new Date(System.currentTimeMillis());
+            System.out.println(fixDateToString);
+            System.out.println(timeNow);
+            boolean checkIfExpired = fixDateToString.before(timeNow);
+            System.out.println(checkIfExpired);
+            if(checkIfExpired){
+                System.out.println("order has been expired");
+            }
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

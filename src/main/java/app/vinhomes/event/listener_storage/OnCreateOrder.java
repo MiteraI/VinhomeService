@@ -56,11 +56,14 @@ public class OnCreateOrder {
                         System.out.println("TIMEOUT DELETE SUCCESS AFTER "+timePeriod+" SECONDs");
                         return CompletableFuture.completedFuture("CompletableFuture return when finish");
                     }
+                    System.out.println("async transaction has already been cancelled");
+                    return CompletableFuture.completedFuture("async transaction has already been cancelled");
                 } else {
-                    System.out.println("order not yet timeout");
+                    System.out.println("async transaction null");
                     return CompletableFuture.completedFuture("CompletableFuture return when finish");
                 }
             }
+            System.out.println("order not yet timeout");
             return CompletableFuture.completedFuture("CompletableFuture return when finish");
         } catch (InterruptedException e) {
             System.out.println("Inside thread: " + e.getMessage());

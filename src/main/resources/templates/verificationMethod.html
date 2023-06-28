@@ -255,7 +255,7 @@
     //   alert('hello world'); 
     //}, 1);
     const otpSize = 6;
-    function verify() {
+    async function verify() {
         var sendBody = {
             accountname: username,
             OTP: otp_merge
@@ -274,15 +274,16 @@
         }
         sendBody.OTP = otp_merge
         console.log(sendBody.accountname + "   " + sendBody.OTP)
-        var response2 = fetch(`http://localhost:8080/esms/validateOTP`, {
+        var response = await fetch(`http://localhost:8080/esms/validateOTP`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(sendBody)
-        }).then(response => {
-            var responseStatus = response.status;
-            var toText = response.text()
+        })
+        
+            var responseStatus = await response.status;
+            var toText = await response.text()
             if (responseStatus < 200 || responseStatus > 300) {
                 document.getElementById("SMSMESSAGE").innerText = toText
                 document.getElementById("SMSMESSAGE").style.color = "red";
@@ -299,7 +300,7 @@
                     console.log("inside delay")
                     getHomePage()})
             }
-        })
+        
     };
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));

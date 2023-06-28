@@ -1,25 +1,31 @@
 package app.vinhomes.controller;
 
 
+import app.vinhomes.CustomerSessionListener;
 import app.vinhomes.entity.Account;
 import app.vinhomes.repository.AccountRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-public class ResetPwdController {
+import java.util.List;
 
+@RestController
+@RequestMapping
+public class ResetPwdController {
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CustomerSessionListener customerSessionListener;
 
     @RequestMapping(value = "/resetPwd/{uid}", method = RequestMethod.POST)
     public ResponseEntity<String> resetPwd(@PathVariable("uid") Long uid, @RequestBody JsonNode data, HttpServletRequest request){
@@ -49,5 +55,9 @@ public class ResetPwdController {
         }
 
 
+    }
+    @GetMapping(value = "/getallsession",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<HttpSession> test(){
+        return customerSessionListener.getActiveSessions();
     }
 }

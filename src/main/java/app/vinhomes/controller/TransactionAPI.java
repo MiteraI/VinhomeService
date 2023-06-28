@@ -67,9 +67,6 @@ public class TransactionAPI {
     /// for customer under 2 hours
     @GetMapping(value = "/cancelOrder/refundTransaction/{orderId}")// from client
     public ResponseEntity<String> cancel_refundVNPAY(@PathVariable String orderId,HttpServletRequest request, HttpServletResponse response) {
-        ///// heree we will check to see if the order is over 2 hour policy, if it is over 2 hours, only send requets to admin
-        //// then admin will reconsidered
-        // this will be sent by the customer who want to be refunded under 2 hours policy
         try {
             //String getOrderId = request.getParameter("order_id");
             String getOrderId = orderId;

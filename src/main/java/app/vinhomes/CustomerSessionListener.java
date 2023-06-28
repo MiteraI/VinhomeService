@@ -1,18 +1,16 @@
 package app.vinhomes;
 
 
-import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//@WebListener
+
 @Component
 public class CustomerSessionListener implements HttpSessionListener  {
     private static int SESSION_TIMEOUT = 200;
@@ -22,7 +20,6 @@ public class CustomerSessionListener implements HttpSessionListener  {
         SESSION_HASH_MAP.forEach((id,sessions) -> {
             System.out.println(id+"  "+sessions);
         });
-        //return this.SESSION_HASH_MAP.forEach();
         return new ArrayList<>(SESSION_HASH_MAP.values());
     }
     public void destroyAllSession(){
@@ -41,13 +38,12 @@ public class CustomerSessionListener implements HttpSessionListener  {
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         se.getSession().setMaxInactiveInterval(SESSION_TIMEOUT);
-        System.out.println("session created");
+        System.out.println("session created: "+se.getSession().getId());
         SESSION_HASH_MAP.put(se.getSession().getId(),se.getSession());
-        //getActiveSessions();
     }
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        System.out.println("session destroyed");
+        System.out.println("session destroyed: "+ se.getSession().getId() );
         SESSION_HASH_MAP.remove(se.getSession().getId());
         se.getSession().invalidate();
     }

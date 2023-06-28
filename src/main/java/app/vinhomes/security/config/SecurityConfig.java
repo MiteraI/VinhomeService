@@ -79,10 +79,6 @@ public class SecurityConfig {
         return new SecurityContextLogoutHandler();
     }
 
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
-    }
 
 }
 

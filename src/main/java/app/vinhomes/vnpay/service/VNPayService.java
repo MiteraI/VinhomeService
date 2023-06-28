@@ -54,11 +54,11 @@ public class VNPayService {
                 System.out.println(bankCode);
                 return bankCode;
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("error with getting bank code");
             System.out.println(e.getMessage());
             return null;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("error with get transaction_method");
             System.out.println(e.getMessage());
             return null;
@@ -73,7 +73,7 @@ public class VNPayService {
                 Service service = serviceRepository.findById(orderRepository.findById(id).get().getService().getServiceId()).get();
                 System.out.println(service);
                 double price = Double.parseDouble(String.valueOf(service.getPrice()));
-                return price ;
+                return price;
             } else {
                 return -1;
             }
@@ -83,10 +83,11 @@ public class VNPayService {
             return -1;
         }
     }
-    public Transaction BuildTransactionThroughOrder(long orderId, String vnp_txnRef,String paymentMethodID){
-        try{
+
+    public Transaction BuildTransactionThroughOrder(long orderId, String vnp_txnRef, String paymentMethodID) {
+        try {
             Order getOrder = orderRepository.findById(orderId).get();
-            if(getOrder != null){
+            if (getOrder != null) {
                 Transaction toSaveTransaction =
                         Transaction.builder()
                                 .vnpTxnRef(vnp_txnRef)
@@ -100,10 +101,10 @@ public class VNPayService {
                 System.out.println("done build transaction, now safe");
                 return transactionRepository.save(toSaveTransaction);
             }
-        }catch (NullPointerException e){
-            System.out.println("WHY cant find Order with its own ID, major error    "+e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("WHY cant find Order with its own ID, major error    " + e.getMessage());
             return null;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("something happen when savein transaction, might be due to not having enough fields");
             return null;
         }
@@ -111,50 +112,53 @@ public class VNPayService {
         return null;
     }
 
-    public boolean getOrderStatusThrough_vnp_txnRef(String vnp_txnRef){
+    public boolean getOrderStatusThrough_vnp_txnRef(String vnp_txnRef) {
         System.out.println("inside checking order status after vnpay return response");
-        Transaction getTransaction ;//= transactionRepository;
+        Transaction getTransaction;//= transactionRepository;
         return false;
     }
-    public Order getOrderByVnp_txnRef(String vnp_txnref){
-        try{
+
+    public Order getOrderByVnp_txnRef(String vnp_txnref) {
+        try {
             long getOrderID = transactionRepository.findByVnpTxnRef(vnp_txnref).getOrder().getOrderId();
             Order getOrder = orderRepository.findById(getOrderID).get();
             return getOrder;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
-    public boolean checkOrderStatus(Order order){
-        try{
+
+    public boolean checkOrderStatus(Order order) {
+        try {
             OrderStatus status = order.getStatus();
-            if(status.equals(OrderStatus.PENDING)){
+            if (status.equals(OrderStatus.PENDING)) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
-    public boolean updateTransaction_OrderFound(Order order, String responseCode, String payDay, String vnp_BankCode){
+
+    public boolean updateTransaction_OrderFound(Order order, String responseCode, String payDay, String vnp_BankCode) {
         /// return true means SAVE SUCCESS, NO EXCEPTION THROWN
         /// false mean EXCEPTION || STATUS != PENDING
-        try{
+        try {
             long parsedPayday = Long.parseLong(payDay);
             Transaction getTransaction = transactionRepository.findById(order.getOrderId()).get();
             getTransaction.setBankCode(vnp_BankCode);
             getTransaction.setVnpTransactionDate(parsedPayday);
-            if(order.getStatus().equals(OrderStatus.PENDING) && getTransaction.getStatus().equals(TransactionStatus.PENDING)){
+            if (order.getStatus().equals(OrderStatus.PENDING) && getTransaction.getStatus().equals(TransactionStatus.PENDING)) {
                 /// both needs to be pending, because
                 /// if order cancel, or transaction happen or sth, we dont need to call update
-                if(responseCode.equals("00")){
+                if (responseCode.equals("00")) {
                     getTransaction.setStatus(TransactionStatus.SUCCESS);
                     transactionRepository.save(getTransaction);
                     return true;
-                }else{
+                } else {
                     order.setStatus(OrderStatus.CANCEL);
                     getTransaction.setStatus(TransactionStatus.FAIL);
                     transactionRepository.save(getTransaction);
@@ -163,68 +167,71 @@ public class VNPayService {
                 }
             }
             return false;
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             return false;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return false;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
-    public String clientResponseBuilder(Order order, String vnp_txtRef){
-        try{
+
+    public String clientResponseBuilder(Order order, String vnp_txtRef) {
+        try {
             Transaction getTransaction = transactionRepository.findByVnpTxnRef(vnp_txtRef);
             String orderStatus = order.getStatus().toString();
             String orderService = order.getService().getServiceName();
-            String orderPrice =String.valueOf(order.getPrice());
-            String orderTimeSlot ="from "+ order.getSchedule().getTimeSlot().getStartTime().toString().trim()+" to "
-                    +order.getSchedule().getTimeSlot().getEndTime().toString().trim();
+            String orderPrice = String.valueOf(order.getPrice());
+            String orderTimeSlot = "from " + order.getSchedule().getTimeSlot().getStartTime().toString().trim() + " to "
+                    + order.getSchedule().getTimeSlot().getEndTime().toString().trim();
             String orderCreated = order.getCreateTime().toString();
             String transactionBankCode = getTransaction.getBankCode();
             String transactionPaymentMethod = getTransaction.getPaymentMethod();
             String transactionStatus = getTransaction.getStatus().toString();
             Map<String, String> returnParam = new HashMap<>();
-            returnParam.put("orderStatus",orderStatus);
-            returnParam.put("orderService",orderService);
-            returnParam.put("orderPrice",orderPrice);
-            returnParam.put("orderTimeSlot",orderTimeSlot);
-            returnParam.put("orderCreated",orderCreated);
-            returnParam.put("transactionBankCode",transactionBankCode);
-            returnParam.put("transactionPaymentMethod",transactionPaymentMethod);
-            returnParam.put("transactionStatus",transactionStatus);
+            returnParam.put("orderStatus", orderStatus);
+            returnParam.put("orderService", orderService);
+            returnParam.put("orderPrice", orderPrice);
+            returnParam.put("orderTimeSlot", orderTimeSlot);
+            returnParam.put("orderCreated", orderCreated);
+            returnParam.put("transactionBankCode", transactionBankCode);
+            returnParam.put("transactionPaymentMethod", transactionPaymentMethod);
+            returnParam.put("transactionStatus", transactionStatus);
             ListIterator<String> keySets = returnParam.keySet().stream().toList().listIterator();
             StringBuffer builderReturnParam = new StringBuffer("");
-            while(keySets.hasNext()){
-                String key = keySets.next();System.out.print(key);
+            while (keySets.hasNext()) {
+                String key = keySets.next();
+                System.out.print(key);
                 String value = returnParam.get(key);
-                builderReturnParam.append(key +"="+value);
+                builderReturnParam.append(key + "=" + value);
                 if (keySets.hasNext()) {
                     builderReturnParam.append('&');
                 }
             }
             System.out.println(builderReturnParam);
             return builderReturnParam.toString().trim();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("error in response builder");
             return null;
         }
     }
-    public void cancelOrder_TransactionWhenServerError(Order order,String vnp_txnRef){
-        try{
+
+    public void cancelOrder_TransactionWhenServerError(Order order, String vnp_txnRef) {
+        try {
             order.setStatus(OrderStatus.CANCEL);
             Transaction getTransaction = transactionRepository.findByVnpTxnRef(vnp_txnRef);
             getTransaction.setStatus(TransactionStatus.FAIL);
             orderRepository.save(order);
             transactionRepository.save(getTransaction);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public ResponseEntity<String> queryVNPAY(String vnp_txnRef,long transactionDate,HttpServletRequest req , HttpServletResponse resp) throws IOException {
+    public ResponseEntity<String> queryVNPAY(String vnp_txnRef, long transactionDate, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //Command:querydr
         try {
             String vnp_RequestId = ConfigVNpay.getRandomNumber(8);
@@ -241,7 +248,7 @@ public class VNPayService {
             //20230616094041
             String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
             // 63562614
-            JsonObject vnp_Params = new JsonObject ();
+            JsonObject vnp_Params = new JsonObject();
 
             vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
             vnp_Params.addProperty("vnp_Version", vnp_Version);
@@ -255,8 +262,8 @@ public class VNPayService {
             String hash_Data = vnp_RequestId + "|" + vnp_Version + "|" + vnp_Command + "|" + vnp_TmnCode + "|" + vnp_TxnRef + "|" + vnp_TransDate + "|" + vnp_CreateDate + "|" + vnp_IpAddr + "|" + vnp_OrderInfo;
             String vnp_SecureHash = ConfigVNpay.hmacSHA512(ConfigVNpay.vnp_HashSecret, hash_Data.toString());
             vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
-            URL url = new URL (ConfigVNpay.vnp_apiUrl);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            URL url = new URL(ConfigVNpay.vnp_apiUrl);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
@@ -280,11 +287,12 @@ public class VNPayService {
             ////////print message
             System.out.println(response.toString());
             return ResponseEntity.ok().body(response.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR SERVER");
         }
     }
+
     public ResponseEntity<?> refund(String vnp_txnRef,
                                     String transactionDate,
                                     int getAmount,
@@ -298,13 +306,13 @@ public class VNPayService {
 //        02: Giao dịch hoàn trả toàn phần (vnp_TransactionType=02)
 //        03: Giao dịch hoàn trả một phần (vnp_TransactionType=03)
 
-        String vnp_TransactionType = transactionTypeValue ;//req.getParameter("vnp_TransactionType")
+        String vnp_TransactionType = transactionTypeValue;//req.getParameter("vnp_TransactionType")
         String vnp_TxnRef = vnp_txnRef;//req.getParameter("order_id");
-        int amount = getAmount*100 ;//Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;10000000
+        int amount = getAmount * 100;//Integer.parseInt(req.getParameter("amount"))*100;//150000 * 100;10000000
         String vnp_Amount = String.valueOf(amount);
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
         String vnp_TransactionNo = "";
-        String vnp_TransactionDate =transactionDate;//String.valueOf(20230616094041l) ;//req.getParameter("trans_date"); //
+        String vnp_TransactionDate = transactionDate;//String.valueOf(20230616094041l) ;//req.getParameter("trans_date"); //
         String vnp_CreateBy = user;
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -312,7 +320,7 @@ public class VNPayService {
 
         String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
 
-        JsonObject vnp_Params = new JsonObject ();
+        JsonObject vnp_Params = new JsonObject();
         //63562614
         //20230616094041
         vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
@@ -324,8 +332,7 @@ public class VNPayService {
         vnp_Params.addProperty("vnp_Amount", vnp_Amount);
         vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
 
-        if(vnp_TransactionNo != null && !vnp_TransactionNo.isEmpty())
-        {
+        if (vnp_TransactionNo != null && !vnp_TransactionNo.isEmpty()) {
             vnp_Params.addProperty("vnp_TransactionNo", "{get value of vnp_TransactionNo}");
         }
 
@@ -342,8 +349,8 @@ public class VNPayService {
 
         vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
 
-        URL url = new URL (ConfigVNpay.vnp_apiUrl);
-        HttpURLConnection con = (HttpURLConnection)url.openConnection();
+        URL url = new URL(ConfigVNpay.vnp_apiUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
         con.setDoOutput(true);
@@ -366,8 +373,9 @@ public class VNPayService {
         System.out.println(response.toString());
         return ResponseEntity.ok().body(response);
     }
-    public void saveTransaction_COD(String order_id,String Payment_id) {
-        try{
+
+    public void saveTransaction_COD(String order_id, String Payment_id) {
+        try {
             long parsedOrderId = Long.parseLong(order_id);
             long parsedPaymentId = Long.parseLong(Payment_id);
             Order getOrder = orderRepository.findById(parsedOrderId).get();
@@ -380,43 +388,78 @@ public class VNPayService {
                             .build();
             System.out.println(toSaveTransaction);
             transactionRepository.save(toSaveTransaction);
-        }catch (NumberFormatException e){
-            System.out.println("ERROR in VNPAY service: "+ e.getMessage());
-        } catch (Exception e){
-            System.out.println("ERROR in VNPAY service: "+ e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("ERROR in VNPAY service: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("ERROR in VNPAY service: " + e.getMessage());
         }
 
     }
-    public Map<Long,String> getAllOrderUrlMap(){
+
+    public Map<Long, String> getAllOrderUrlMap() {
         return this.orderUrlMap;
     }
-    public void addOrderUrlMap(Long OrderId,String url){
-        this.orderUrlMap.put(OrderId,url);
+
+    public void addOrderUrlMap(Long OrderId, String url) {
+        this.orderUrlMap.put(OrderId, url);
     }
-    public boolean deleteOrderUrlMapItem(String orderId){
-        Map<Long,String> getMap = getAllOrderUrlMap();
-        try{
+
+    public boolean deleteOrderUrlMapItem(String orderId) {
+        Map<Long, String> getMap = getAllOrderUrlMap();
+        try {
             Long parsedOrderId = Long.parseLong(orderId);
             getMap.remove(parsedOrderId);
             return true;
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             return false;
         }
 
     }
-    public String getOrderUrlMapByOrderId(String orderId){
-        Map<Long,String> getMap = getAllOrderUrlMap();
-        try{
-            Long parsedOrderId = Long.parseLong(orderId);
-            String getUrl = getMap.get(parsedOrderId);
+////////////////////// get order expried time//////////////////////
+    public String getOrderUrlMapByOrderId(Long orderId) {
+        Map<Long, String> getMap = getAllOrderUrlMap();
+        try {
+            String getUrl = getMap.get(orderId);
+            if(getUrl == null || getUrl.isBlank()){
+                return null;
+            }
             return getUrl;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
 
+    public String getCreateTimeFromUrlMap(Long order_Id) {
+        String getUrl = getOrderUrlMapByOrderId(order_Id);
+        if(getUrl == null || getUrl.isBlank()){
+            return null;
+        }else {
+            String[] getSplitUrl = getUrl.split("&");
+            System.out.println(getSplitUrl[5]);
+            String getExpiredDate = getSplitUrl[5].split("=")[1];
+            return getExpiredDate;
+        }
+    }
+    public boolean checkTransactionExpired(String expiredDate){
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date parseExpiredDate = format.parse(expiredDate);
+            Date currentTime  = new Date(System.currentTimeMillis());
+            if(parseExpiredDate.before(currentTime)){
+                System.out.println("yes transaction expired");
+                return true;
+            }else{
+                System.out.println("no transaction not expired");
+                return false;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    ////////////////////// get order expried time//////////////////////
 }
 
 

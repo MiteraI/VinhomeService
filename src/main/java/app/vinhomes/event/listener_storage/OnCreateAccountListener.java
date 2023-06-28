@@ -59,6 +59,5 @@ public class OnCreateAccountListener {
             System.out.println("error in listener send sms: "+ e.getMessage());
             return false;
         }
-
     }
 }
