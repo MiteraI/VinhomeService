@@ -15,6 +15,12 @@
 
   <header th:replace="~{./fragments/header.html}"></header>
 
+  <div class="bg-orange-500 mx-20 my-7 py-5 px-4 relative flex items-center">
+    <span class="">Please verify this phone number: <span class="ml-1 font-semibold"
+        th:text="${phone != null} ? ${phone[0].number} : ''">1234567890</span></span>
+    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black">Verify</button>
+  </div>
+
   <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
 
     <div class="mx-10 my-8 h-[100%] flex">
@@ -22,7 +28,7 @@
         <div class="">
           <div class="bg-blue-400 flex justify-center items-center py-[5%] rounded-lg">
             <div class=" w-[40%]"><img class="pfp object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
-                src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt="" srcset="">
+                src="../static/assets/images/user.png" alt="" srcset="">
             </div>
           </div>
         </div>
@@ -95,18 +101,19 @@
           <div class="mb-3 w-[100%]">
             <span class="flex">
               <input type="text" name="txtPhone" value="" th:placeholder="${phone != null} ? ${phone[0].number}"
-                class="profile-form-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
+                class="phoneInput profile-form-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 focus:outline-0">
               <input type="hidden" name="txtPhoneId" th:value="${phone != null} ? ${phone[0].phoneId}">
               <i
                 class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 pr-3 cursor-pointer"></i>
             </span>
 
             <div id="phoneDropdownContainer"
-              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative mt-[-1.3%]">
-              <ul class="absolute w-inherit h-[7.5rem] border-2 bg-transparent overflow-y-scroll"
-                aria-labelledby="dropdownDividerButton">
+              class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
+              <ul class="absolute w-inherit h-[7.5rem] border-2 border-black bg-slate-200 overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton" th:each="fone: ${phone}">
                 <li class="relative">
-                  <span class="block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer">1234567890</span>
+                  <span class="phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer"
+                    th:text="${phone != null} ? ${fone.number} : ''">1234567890</span>
                 </li>
               </ul>
             </div>
@@ -171,6 +178,8 @@
     const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
     const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
     const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+    const phoneSpan = document.querySelectorAll('.phoneSpan')
+    const phoneInput = document.querySelector('.phoneInput')
     const pfp = document.querySelectorAll('.pfp')
     const placeholderValue = [...profileFormInput].map(input => input.placeholder)
 
@@ -260,6 +269,7 @@
     })
 
     phoneDropDownButton.addEventListener('click', (e) => {
+      e.preventDefault()
       phoneDropdownContainer.classList.toggle('hidden')
     })
 
@@ -307,6 +317,17 @@
       }
       return true
     }
+
+    console.log(phoneSpan.length)
+
+    phoneSpan.forEach(p => {
+      p.addEventListener('click', (e) => {
+        e.preventDefault()
+        phoneInput.value = p.innerHTML
+        phoneDropdownContainer.classList.toggle('hidden')
+
+      })
+    })
 
     console.log(uid)
 
