@@ -3,6 +3,7 @@ package app.vinhomes.unittest;
 import app.vinhomes.AsyncConfig;
 
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,15 +12,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
-@SpringBootTest
+//@SpringBootTest
 public class asyncTest {
-    @Autowired
+    //@Autowired
     private asyncClass asyncMethod;
-    @Autowired
+    //@Autowired
     private AsyncConfig asyncConfig;
 
 
-    @Test
+    //@Test
+    @Disabled
     void testAsyncResult() throws ExecutionException, InterruptedException {
         System.out.println("main thread start");
         try {

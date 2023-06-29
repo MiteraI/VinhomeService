@@ -51,10 +51,7 @@ public class ResetPwdController {
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your password suck");
-
         }
-
-
     }
     @GetMapping(value = "/getallsession",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<HttpSession> test(){

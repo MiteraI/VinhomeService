@@ -1,6 +1,7 @@
 package app.vinhomes.unittest;
 
 
+import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
@@ -9,6 +10,7 @@ import app.vinhomes.event.event_storage.StartOrderCountDown;
 import app.vinhomes.event.listener_storage.OnCreateOrder;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.security.email.email_service.EmailService;
+import app.vinhomes.service.AccountService;
 import app.vinhomes.vnpay.service.VNPayService;
 import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Disabled;
@@ -18,10 +20,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.data.util.ParameterTypes;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.text.ParseException;
@@ -39,6 +49,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 //@ExtendWith(MockitoExtension.class)// this is to replace the mock config, not sure
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class test {
+@Autowired
+    private ErrorChecker errorChecker;
+    @Autowired
+    private AccountService accountService ;//= new AccountService();
+
+    @Value("${mail.mailType.verification}")
+    private String VERIFICATION_MAIL;
+    @Value("${mail.mailType.forgetAccount}")
+    private String FORGETACCOUNT_MAIL;
+
     @Value("${time.hourpolicy}")
     private int plusHour;
     @Value("${time.order_timeout}")
@@ -53,8 +73,7 @@ public class test {
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private EmailService emailService;
-    @Autowired
-    private VNPayService vnPayService;
+
     private int expired = 120000;
 
     @Test
@@ -63,15 +82,9 @@ public class test {
         assertThat(expired).isEqualTo(120000);
     }
 
+
     @Test
     @Disabled
-    void testTransactionRepo() {
-
-        //List<Transaction> transactionList= transactionRepository.findAll();
-        //int size = transactionList.size();
-    }
-
-    @Test
     void testTransaction() {
         VNPayService.BuildTransactionThroughOrder(
 
@@ -81,13 +94,9 @@ public class test {
         );
     }
 
-    @Test
-    void testTransactionRepoFunction() {
-        //Transaction transaction = VNPayService.getTransaction("23226995");
-        //System.out.println(transaction);
-    }
 
     @Test
+    @Disabled
     void testGetParamName() {
         try {
             Field[] list = Order.class.getDeclaredFields();
@@ -125,6 +134,7 @@ public class test {
     }
 
     @Test
+    @Disabled
     void plusTime() {
         LocalDateTime time = LocalDateTime.now();
         LocalDateTime timeAfter2 = time.plusHours(2);
@@ -136,6 +146,7 @@ public class test {
     }
 
     @Test
+    @Disabled
     void testDuration() {
         System.out.println(ORDER_TIMEOUT);
         LocalDateTime from = LocalDateTime.now();
@@ -154,15 +165,18 @@ public class test {
         Thread.sleep(20000l);
     }
     @Test
+    @Disabled
     void testOTP(){
         System.out.println(OTP_TIMEOUT_SECOND);
     }
     @Test
+    @Disabled
     void testSendmailTemplate(){
         Account account =  accountRepository.findById(27l).get();
-        emailService.sendMailWithTemplate(account);
+        emailService.sendMailWithTemplate(account,FORGETACCOUNT_MAIL);
     }
     @Test
+    @Disabled
     void testGetUrlTime(){
         Map<Long,String>  getMap  = new HashMap<>();
         getMap.put(1l,"https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=10000000&vnp_BankCode=VNBANK&vnp_Command=pay&vnp_CreateDate=20230627222249&vnp_CurrCode=VND&vnp_ExpireDate=20230627222449&vnp_IpAddr=0%3A0%3A0%3A0%3A0%3A0%3A0%3A1&vnp_Locale=vn&vnp_OrderInfo=Thanh+toan+don+hang%3A24943851&vnp_OrderType=billpayment&vnp_ReturnUrl=http%3A%2F%2Flocalhost%3A8080%2Fvnpay%2Freturnurl&vnp_TmnCode=BIDAHJ80&vnp_TxnRef=24943851&vnp_Version=2.1.0&vnp_SecureHash=675f34197851a4c04f02ca352ba2b9f473178b8075227c74052262511c8faa251634e3b4dd186fd4852c9bcf391f38130775dd1617d9b7a1940c9533dca1d68d");
@@ -190,5 +204,22 @@ public class test {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+    @Test
+    @Disabled
+    void testChangePassword(){
+        accountService.changePassword(27l,"123new","123");
+    }
+    @Test
+    void getImage() throws IOException {
+        ClassPathResource getImage = new ClassPathResource("src/assets/images/service-1.jpg");
+        //ByteArrayInputStream inputStream = new ByteArrayInputStream(getImage.getContentAsByteArray());
+        ByteArrayResource getByte = new ByteArrayResource(getImage.getContentAsByteArray());
+        System.out.println("success: "+getImage.getPath()+"  filename: "+getImage.getFilename());
+        FileSystemResource resource = new FileSystemResource(new File("src/assets/images/service-1.jpg"));
+        System.out.println(resource.getFilename());
+        Account account =  accountRepository.findById(27l).get();
+        emailService.sendMailWithTemplate(account,FORGETACCOUNT_MAIL);
+        //InputStreamSource inputStreamSource = getImage.getInputStream();//new ByteArrayResource();
     }
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<style>
+
+</style>
+<body style="background-color: antiquewhite;">
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="container">
+        <h3 style="color:blue;">Hello,<span th:text="${firstname}"></span> <span th:text="${lastname}"></span> </h3>
+        <p>
+            This is your username and password, please change it as soon as you enter your account
+        </p>
+        <p>
+            username: <span th:text="${username}"></span><br>
+            password: <span th:text="${password}"></span><br>
+            <img src="cid:image.png"  />
+        </p>
+
+        <br>
+        <p>
+            Regards, also please note your password again <br/>
+            <em>Vinhome Cleaning Service</em>
+        </p>
+        <br>
+    </div>
+</div>
+</body>
+</html>

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,12 +25,15 @@ import java.util.List;
 public class AccountService {
 
     @Autowired
+    private ErrorChecker errorChecker;
+    @Autowired
     private AccountRepository accountRepository ;
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
     private PhoneRepository phoneRepository;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<List<Account>> updateAccountById(JsonNode request){
         ErrorChecker errorChecker = new ErrorChecker();
@@ -120,5 +124,48 @@ public class AccountService {
         accountRepository.save(account);
         System.out.println("account is enabled through sms, you can get order now");
     }
-
+    public String changePassword_ForgetAccountService(Account account){
+        try{
+            String generatedPassword = "123";/// can be replaced with some random generated password
+            account.setPassword(passwordEncoder.encode(generatedPassword));
+            accountRepository.save(account);
+            return generatedPassword;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public String changePassword(Long accountId,String oldPassword,String newPassword){
+        try{
+            Account getAccount = accountRepository.findByAccountId(accountId);
+            if(getAccount != null){
+                String getPassword = getAccount.getPassword();
+                if(passwordEncoder.matches(oldPassword,getPassword)){
+                    System.out.println("old password matches current password in database");
+                    if(oldPassword.equals(newPassword)){
+                        System.out.println("ERROR new password is the same as the old one");
+                        return "ERROR new password is the same as the old one";
+                    }
+                    String getError = errorChecker.checkPassword(newPassword);
+                    System.out.println(getError);
+                    if(getError.equals("") == false){
+                        return "ERROR "+getError;
+                    }else{
+                        System.out.println("all condition are met, your new pass is: "+newPassword);
+                        getAccount.setPassword(passwordEncoder.encode(newPassword));
+                        accountRepository.save(getAccount);
+                        return "";
+                    }
+                }else{
+                    System.out.println("ERROR old password DO NOT matches current password in database");
+                    return "ERROR old password dont match yo input password";
+                }
+            }else{
+                return "ERROR cannot found your account, try re-login";
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "ERROR server error: ";
+        }
+    }
 }

@@ -11,6 +11,7 @@ import app.vinhomes.security.esms.otp_dto.OTPResponseStatus;
 import app.vinhomes.security.esms.otp_service.ESMSservice;
 import app.vinhomes.security.esms.otp_service.OTPService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OnCreateAccountListener {
+
+    @Value("${mail.mailType.verification}")
+    private String VERIFICATION_MAIL;
+
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -31,7 +36,7 @@ public class OnCreateAccountListener {
         Account getAccount = event.getFreshAccount();
         try{
             System.out.println("inside listener send email async ");
-            emailService.sendMailWithTemplate(getAccount);
+            emailService.sendMailWithTemplate(getAccount,VERIFICATION_MAIL);
             return true;
         }catch (Exception e){
             System.out.println("error in listener send email: "+ e.getMessage());

@@ -233,13 +233,18 @@ public class PageController {
         return "redirect:/verificationMethod?username=" + username;
     }
 
-    @RequestMapping(value = "/verificationMethod")
+    @RequestMapping(value = "/verificationMethod",method = RequestMethod.GET)
     public String verificationMethodReturn() {
         return "verificationMethod";
+    }
+    @RequestMapping(value = "/forget_Account",method = RequestMethod.GET)
+    public String forgetAccount(){
+        return "forgetAccount";
     }
 
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)
     public String TESTBED() {
         return "TESTBED";
     }
+
 }

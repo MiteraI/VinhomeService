@@ -6,36 +6,69 @@ import app.vinhomes.security.email.email_dto.TokenEntity;
 
 import app.vinhomes.service.AccountService;
 import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.*;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class EmailService   {
+
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
     private SpringTemplateEngine templateEngine;
+    @Autowired
+    private AccountService accountService;
 
     @Value("${spring.mail.username}")
     private String sender;
+    @Value("${mail.mailType.verification}")
+    private String VERIFICATION_MAIL;
+    @Value("${mail.mailType.forgetAccount}")
+    private String FORGETACCOUNT_MAIL;
+    @Value("${mail.mailType.orderFinish}")
+    private String ORDERFINISH_MAIL;
     @Autowired
     private TokenService tokenService;
     private final Map<String, TokenEntity> tokenEntityMap = new HashMap<>();
+    public String sendMailWithTemplate(Account account,String mailType){
+        try {
+            if(mailType.equals(VERIFICATION_MAIL)){
+                verificationMailBuilder(account);
+            }else if(mailType.equals(FORGETACCOUNT_MAIL)){
+                forgetAccountMailBuilder(account);
+            }else if(mailType.equals(ORDERFINISH_MAIL)){
+                System.out.println("orderfinish_mail");
+            }else {
+                return "ERROR";
+            }
+            return "SUCCESS send email";
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "ERROR while Sending Mail";
+        }
+    }
     public String sendSimpleVerficationEmail(Account account){
         TokenEntity tokenEntity = tokenService.createTokenEntity(account.getEmail());
         try {
@@ -57,10 +90,10 @@ public class EmailService   {
             return "Error while Sending Mail";
         }
     }
-    public String sendMailWithTemplate(Account account){
-        TokenEntity tokenEntity = tokenService.createTokenEntity(account.getEmail());
-        try {
 
+    private void verificationMailBuilder(Account account){
+        try{
+            TokenEntity tokenEntity = tokenService.createTokenEntity(account.getEmail());
             MimeMessage mailMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
             String urlParam = "emailTo="+account.getEmail().toString().trim()+"&tokenValue="+tokenEntity.getTokenvalue();
@@ -73,18 +106,42 @@ public class EmailService   {
             helper.setFrom(sender);
             helper.setTo(account.getEmail());
             mailMessage.setSubject("Test email Verification token");
-            String html = templateEngine.process("verificationTemplate",context);
+            String html = templateEngine.process("MAIL_verification",context);
             helper.setText(html,true);
             tokenEntityMap.put(account.getEmail(),tokenEntity);
             javaMailSender.send(mailMessage);
-            return "send success";
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            return "Error while Sending Mail";
+        } catch (MessagingException e) {
+            System.out.println("ERROR inside verification mail builder"+e.getMessage());
         }
     }
+    private void forgetAccountMailBuilder(Account account){
+        try{
+            MimeMessage mailMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("username",account.getAccountName());
+            context.setVariable("firstname",account.getFirstName());
+            context.setVariable("lastname",account.getLastName());
+            String getGeneratedPassword = accountService.changePassword_ForgetAccountService(account);
+            context.setVariable("password",getGeneratedPassword);
+            context.setVariable("image","imageSource");
+            helper.setFrom(sender);
+            helper.setTo(account.getEmail());
+            mailMessage.setSubject("forget Account");
+            String html = templateEngine.process("MAIL_forgetAccount",context);
+            helper.setText(html,true);
 
+
+            ClassPathResource getImage = new ClassPathResource("src/assets/images/service-1.jpg");
+            Resource resource1 = getImage;
+            helper.addInline("image.png",resource1,"image/png");
+
+            System.out.println("pass image source, about to send email");
+            javaMailSender.send(mailMessage);
+        }catch (MessagingException e){
+            System.out.println("ERROR inside verification mail builder"+e.getMessage());
+        }
+    }
 //    public String sendSimpleVerficationEmail(String emailTo){// for testing, can enter real email to test on postman
 //        TokenEntity tokenEntity = tokenService.createTokenEntity(emailTo);
 //        try {
