@@ -1,0 +1,404 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+<style>
+    .otc {
+        position: relative;
+        width: 320px;
+        margin: 0 auto;
+    }
+
+    .otc fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* .otc fieldset div {
+	display: flex;
+	align-items: center;
+} */
+
+    .otc legend {
+        margin: 0 auto 1em;
+        /* //color: #5555FF; */
+    }
+
+    input[type="number"] {
+        width: .82em;
+        line-height: 1;
+        margin: .1em;
+        /* padding: 8px 0 4px; */
+        font-size: 2.65em;
+        text-align: center;
+        appearance: textfield;
+        -webkit-appearance: textfield;
+        border: 2px solid black;
+        /* color: purple; */
+        border-radius: 4px;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* 2 group of 3 items */
+    input[type="number"]:nth-child(n+4) {
+        order: 2;
+    }
+
+    .otc div::before {
+        content: '';
+        height: 2px;
+        width: 24px;
+        margin: 0 .25em;
+        order: 1;
+        background: white;
+    }
+
+    /* From: https://gist.github.com/ffoodd/000b59f431e3e64e4ce1a24d5bb36034 */
+    .otc label {
+        border: 0 !important;
+        clip: rect(1px, 1px, 1px, 1px) !important;
+        -webkit-clip-path: inset(50%) !important;
+        clip-path: inset(50%) !important;
+        height: 1px !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1px !important;
+        white-space: nowrap !important;
+    }
+
+    body,
+    html {
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<body>
+    <div class="container-fluid ">
+        <div id="METHOD"
+            class="border border-1 border-dark rounded col-12 vh-100 vw-100 position-absolute bottom-0 start-50 translate-middle  "
+            style="max-width: 50%;max-height: 50%; display: block;">
+            <h1 class="text-center">
+                Choose Verification method
+            </h1>
+            <div class="container position-absolute top-50 translate-middle-y">
+                <input type="radio" name="btnRadioVerification" value="SMS"> SMS <br>
+                <input type="radio" name="btnRadioVerification" value="EMAIL" checked> EMAIL <br>
+            </div>
+            <div
+                class="container position-absolute bottom-0 start-50 translate-middle d-flex justify-content-around align-items-center">
+                <button class="btn btn-primary text-white " onclick="getHomePage()">
+                    Home
+                </button>
+                <button class="btn btn-primary text-white " onclick="chooseMethod()">
+                    next
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  ">
+        <div id="SMS"
+            class="border border-1 border-dark rounded col-12 vh-100 vw-100 position-absolute bottom-0 start-50 translate-middle  "
+            style="max-width: 50%;max-height: 50%; display: none;">
+            <h1 class="text-center">
+                SMS
+            </h1>
+            <div id="SMSMESSAGE" class="container-fluid text-center text-danger" style="visibility: hidden;">sadf</div>
+            <div class="container position-absolute top-50 translate-middle-y">
+                <form class="otc" name="one-time-code" action="#">
+                    <legend class="text-primary text-center">Validation Code</legend>
+                    <fieldset class="container d-flex justify-content-around">
+                        <label for="otc-1">Number 1</label>
+                        <label for="otc-2">Number 2</label>
+                        <label for="otc-3">Number 3</label>
+                        <label for="otc-4">Number 4</label>
+                        <label for="otc-5">Number 5</label>
+                        <label for="otc-6">Number 6</label>
+                        <!-- https://developer.apple.com/documentation/security/password_autofill/enabling_password_autofill_on_an_html_input_element -->
+                        <div>
+                            <input class="otp-input" type="number" pattern="[0-9]*" value="" inputtype="numeric"
+                                autocomplete="one-time-code" id="otc-1" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-2" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-3" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-4" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-5" required>
+                            <input class="otp-input" type="number" pattern="[0-9]*" min="0" max="9" maxlength="1"
+                                value="" inputtype="numeric" id="otc-6" required>
+                        </div>
+                    </fieldset>
+                    <div class="d-flex justify-content-center text-bold justify-content-center align-items-center text-danger"
+                        id="timer" style="display: block;">
+
+                    </div>
+                </form>
+            </div>
+            <div class="container position-absolute bottom-0 start-50 translate-middle">
+                <div class="d-flex justify-content-around align-items-center  pb-4">
+                    <button class="btn btn-primary text-white " onclick="goBackChoosingMethod()">
+                        Back
+                    </button>
+
+                    <button class="btn btn-primary text-white " onclick="verify()">
+                        verify
+                    </button>
+                    <button class="btn btn-primary text-white " onclick="getHomePage()">
+                        Home
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let in1 = document.getElementById('otc-1'),
+        ins = document.querySelectorAll('input[type="number"]'),
+        splitNumber = function (e) {
+            let data = e.data || e.target.value; // Chrome doesn't get the e.data, it's always empty, fallback to value then.
+            if (!data) return; // Shouldn't happen, just in case.
+            if (data.length === 1) return; // Here is a normal behavior, not a paste action.
+            popuNext(e.target, data);
+            //for (i = 0; i < data.length; i++ ) { ins[i].value = data[i]; }
+        },
+        popuNext = function (el, data) {
+            el.value = data[0]; // Apply first item to first input
+            data = data.substring(1); // remove the first char.
+            if (el.nextElementSibling && data.length) {
+                // Do the same with the next element and next data
+                popuNext(el.nextElementSibling, data);
+            }
+        };
+
+    ins.forEach(function (input) {
+        /**
+         * Control on keyup to catch what the user intent to do.
+         * I could have check for numeric key only here, but I didn't.
+         */
+        input.addEventListener('keyup', function (e) {
+            // Break if Shift, Tab, CMD, Option, Control.
+            if (e.keyCode === 16 || e.keyCode == 9 || e.keyCode == 224 || e.keyCode == 18 || e.keyCode == 17) {
+                return;
+            }
+
+            // On Backspace or left arrow, go to the previous field.
+            if ((e.keyCode === 8 || e.keyCode === 37) && this.previousElementSibling && this.previousElementSibling.tagName === "INPUT") {
+                this.previousElementSibling.select();
+            } else if (e.keyCode !== 8 && this.nextElementSibling) {
+                this.nextElementSibling.select();
+            }
+
+            // If the target is populated to quickly, value length can be > 1
+            if (e.target.value.length > 1) {
+                splitNumber(e);
+            }
+        });
+
+        /**
+         * Better control on Focus
+         * - don't allow focus on other field if the first one is empty
+         * - don't allow focus on field if the previous one if empty (debatable)
+         * - get the focus on the first empty field
+         */
+        input.addEventListener('focus', function (e) {
+            // If the focus element is the first one, do nothing
+            if (this === in1) return;
+
+            // If value of input 1 is empty, focus it.
+            if (in1.value == '') {
+                in1.focus();
+            }
+
+            // If value of a previous input is empty, focus it.
+            // To remove if you don't wanna force user respecting the fields order.
+            if (this.previousElementSibling.value == '') {
+                this.previousElementSibling.focus();
+            }
+        });
+    });
+
+    /**
+     * Handle copy/paste of a big number.
+     * It catches the value pasted on the first field and spread it into the inputs.
+     */
+    in1.addEventListener('input', splitNumber);
+</script>
+<script>
+    //setTimeout(function() {
+    //   alert('hello world'); 
+    //}, 1);
+    const otpSize = 6;
+    async function verify() {
+        var sendBody = {
+            accountname: username,
+            OTP: otp_merge
+        }
+        var otp_list_input = document.getElementsByClassName("otp-input")
+        console.log(otp_list_input)
+        var otp_merge = "";
+        for (var i = 0; i < otpSize; i++) {
+            if (otp_list_input[i].value == "") {
+
+            } else {
+                console.log(otp_list_input[i].value);
+                otp_merge = otp_merge.concat(otp_list_input[i].value);
+                console.log(otp_merge)
+            }
+        }
+        sendBody.OTP = otp_merge
+        console.log(sendBody.accountname + "   " + sendBody.OTP)
+        var response = await fetch(`http://localhost:8080/esms/validateOTP`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(sendBody)
+        })
+        
+            var responseStatus = await response.status;
+            var toText = await response.text()
+            if (responseStatus < 200 || responseStatus > 300) {
+                document.getElementById("SMSMESSAGE").innerText = toText
+                document.getElementById("SMSMESSAGE").style.color = "red";
+                document.getElementById("SMSMESSAGE").style.visibility = "visible";
+            } else {
+                breakFlag = true;
+                document.getElementById("SMSMESSAGE").innerText = toText
+                document.getElementById("SMSMESSAGE").style.color = "green";
+                document.getElementById("timer").style.visibility = "hidden";
+                alert("success, press ok to go back homepage")
+                console.log("pass alert")
+                delay(1000).
+                then(() =>{
+                    console.log("inside delay")
+                    getHomePage()})
+            }
+        
+    };
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+    function goBackChoosingMethod() {
+        breakFlag = true;
+        console.log(breakFlag)
+        methodDiv.style.display = "block";
+        SMSDiv.style.display = "none";
+    }
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    var OTPTimeout;
+    var breakFlag = false;
+    const queryString = window.location.search;
+    const username = new URLSearchParams(queryString).get('username'); console.log(username)
+    const methodDiv = document.getElementById("METHOD");
+    const SMSDiv = document.getElementById("SMS")
+
+
+    async function chooseMethod() {
+        var methods = document.getElementsByName("btnRadioVerification");
+        var value;
+        for (var i = 0; i < methods.length; i++) {
+            if (methods[i].checked) {
+                // get value, set checked flag or do whatever you need to
+                value = methods[i].value;
+            }
+        }
+        console.log(value)
+        var response = await fetch(`http://localhost:8080/createAccountAPI/verificationMethod/${username}/${value}`, { method: "POST" })
+        var status = await response.status
+        var toText = await response.text()
+        console.log(toText)
+        if (status >= 200 || status <= 300) {
+            if (value == "EMAIL") {
+                alert("yes, already send to your mail, check if you see mail, if not, try again later in profile")
+                console.log("pass alert")
+                delay(1000).
+                then(() =>{
+                    console.log("inside delay")
+                    getHomePage()})
+            } else {
+                methodDiv.style.display = "none";
+                SMSDiv.style.display = "block";
+                breakFlag = false; console.log(breakFlag)
+                document.getElementById("timer").innerText = "";
+                document.getElementById("SMSMESSAGE").style.visibility = "hidden";
+                var otp_list_input = document.getElementsByClassName("otp-input")
+                //console.log(otp_list_input)
+                var otp_merge = "";
+                for (var i = 0; i < otpSize; i++) {
+                    otp_list_input[i].value = "";
+                    otp_list_input[i].innerText = "";
+                }
+                toText = toText.split("=")
+                OTPTimeout = toText[1];
+                console.log(OTPTimeout)
+                alert("yes, already send sms: " + OTPTimeout)
+
+                //////////////////////// clock ////////////////////////
+
+                //////////////////////// clock ////////////////////////
+            }
+        } else {
+            alert("go back to homepage, error in sending verification, try again in profile")
+        }
+        var time_limit = OTPTimeout;
+        var time_out = startTimer(time_limit)
+        return;
+    }
+    function startTimer(duration) {
+        //var timer = duration;
+        var timer = setInterval(function () {
+            console.log(breakFlag)
+            if (breakFlag == false) {
+                if (duration == 0) {
+                    $('#timer').html('Time Over');
+                } else {
+                    $('#timer').html("OTP invalid in: " + duration + "s");
+                    duration -= 1;
+                }
+            } else {
+                console.log("inside clear interval")
+                clearInterval(timer);
+                return;
+            }
+        }, 1000);
+    }
+
+    function getHomePage() {
+        window.location.replace(`/`)
+    }
+
+</script>
+
+</html>
