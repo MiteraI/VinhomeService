@@ -11,7 +11,9 @@ import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.service.ServiceTypeService;
 import jakarta.persistence.criteria.CriteriaBuilder;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
@@ -28,7 +30,8 @@ import java.util.stream.Collectors;
 
 @Controller
 public class PageController {
-
+    @Autowired
+    private ServiceTypeService typeService;
     @Autowired
     private ServiceRepository serviceRepository;
 
@@ -77,18 +80,11 @@ public class PageController {
         return "categoryservices";
     }
 
-    @RequestMapping(value = "/service/{id}", method = RequestMethod.GET)
-    public String prepareOrder (@PathVariable("id") Long serviceId, Model model, HttpServletRequest request) {
-        if(request.getSession() != null){
-            HttpSession session = request.getSession(false);
-            Account acc = (Account)  session.getAttribute("loginedUser");
-            model.addAttribute("acc", acc);
-        }
-        String cateName = request.getParameter("cname");
-        model.addAttribute("cateName", cateName);
-        model.addAttribute("service", serviceRepository.getServicesByServiceId(serviceId));
+    @RequestMapping(value = "/service/{serviceId}")
+    public String prepareOrder (@PathVariable("serviceId") Long serviceId, Model model, HttpServletRequest request) {
+        model.addAttribute("service", typeService.getServiceType(serviceId));
         model.addAttribute("ordersByService", orderRepository.findAllByService_ServiceId(serviceId));
-        return "serviceDetail";
+        return "service-details";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)

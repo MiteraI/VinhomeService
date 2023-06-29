@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/tailwind/form.css"/>
+    <link rel="stylesheet" href="../static/font.css"/>
+</head>
+<body>
+<div>
+    <form class="mx-48 my-10 rounded-lg border-2 border-black " id="order-form">
+        <div class="flex justify-center rounded-t-lg bg-yellow-info">
+            <h1 class="px-8 py-4 font-bold text-xl">Order Service</h1>
+        </div>
+        <div class="p-8 space-y-2">
+            <p>Service name: <span>House cleaning</span></p>
+            <p>Price: <span>100$</span></p>
+            <label for="timeSlot">Time Slot:</label>
+            <div id="timeSlot"></div>
+            <label for="payment">Payment:</label>
+            <div id="payment"></div>
+        </div>
+        <div class="px-8 pb-8">
+            <label for="date">Date: </label>
+            <input class="border-2" type="date" id="date" name="day"/>
+        </div>
+        <br><br>
+    </form>
+</div>
+<script>
+  const paymentDiv = document.getElementById('payment');
+  const timeSlotDiv = document.getElementById('timeSlot');
+
+  fetch("api/order/timeSlot")
+  .then(response => response.json())
+  .then(data => {
+
+    // Create radio buttons for each time slot
+    data.forEach(timeSlot => {
+      const radioBtn = document.createElement('input');
+      radioBtn.type = 'radio';
+      radioBtn.name = 'timeSlot';
+      radioBtn.value = timeSlot.timeSlotId;
+
+      const label = document.createElement('label');
+      label.textContent = `  ${timeSlot.startTime} - ${timeSlot.endTime}`;
+
+      // Append radio button and label to the timeSlotDiv
+      timeSlotDiv.appendChild(radioBtn);
+      timeSlotDiv.appendChild(label);
+      timeSlotDiv.appendChild(document.createElement('br'));
+    });
+  })
+  .catch(error => {
+    console.log('Error fetching time slots:', error);
+  });
+
+  fetch("api/order/payment")
+  .then(response => response.json())
+  .then(data => {
+    const selectPayment = document.createElement('select');
+    selectPayment.name = 'payment';
+    selectPayment.classList.add('border-2');
+
+
+    // Create option elements for each payment option
+    data.forEach(payment => {
+      const option = document.createElement('option');
+      option.value = payment.paymentId;
+      option.textContent = payment.paymentName;
+
+      // Append each option to the select element
+      selectPayment.appendChild(option);
+    });
+
+    // Append the select element to the paymentDiv
+    paymentDiv.appendChild(selectPayment);
+  })
+  .catch(error => {
+    console.log('Error fetching payment options:', error);
+  });
+
+</script>
+</body>
+</html>

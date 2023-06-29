@@ -62,7 +62,14 @@
           <button class="bg-yellow-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-yellow-400">Order</button>
         </div>
       </div>
-    </section>
+      <div class="mt-2 text-2xl">₫100.000</div>
+      <div class="flex flex-1 items-end justify-end">
+        <button class="bg-blue-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-blue-400"><a
+                th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a></button>
+        <button class="bg-yellow-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-yellow-400" id="order-btn">Order</button>
+      </div>
+    </div>
+  </section>
 
 
 
