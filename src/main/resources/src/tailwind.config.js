@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./pages/*.{html,js}", "./*{html,js}"],
+  content: [
+    "./pages/*.{html,js}", "./*{html,js}",
+    "../templates/**/*.html", "../static/js/*.js"
+  ],
   theme: {
     screens: {
       xm: '250px',
@@ -14,10 +17,17 @@ module.exports = {
       colors: {
         'blue-bootstrap': '#007BFF',
         'strong-gray': '#535151',
-        'yello-info': '#FFD12F'
+        'yellow-info': '#FFD12F',
+        'red-cancel': '#DC3545',
+        'green-success': '#28A745'
+      },
+      width: {
+        'inherit': 'inherit'
+      },
+      height: {
+        'inherit': 'inherit'
       }
     },
   },
   plugins: [],
 }
-

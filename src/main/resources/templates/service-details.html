@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="${service.serviceName}"></title>
+    <link rel="stylesheet" href="../static/tailwind/font.css" />
+    <link rel="stylesheet" href="../static/tailwind/index.css" />
+  </head>
+  <body>
+    <header th:replace="~{./fragments/header.html}"></header>
+
+    <section
+      class="mx-48 my-10 flex flex-col space-y-6 rounded-lg border-2 border-black p-8"
+    >
+      <div class="flex space-x-6">
+        <img
+          src="../static/assets/images/about.jpg"
+          class="w-1/4 rounded-lg"
+          alt="service's imgage"
+        />
+        <div class="space-y-4">
+             <input
+              type="hidden"
+              th:value="${service.serviceId}"
+              id="serviceId"
+            />
+          <h2 class="text-xl font-bold" th:text="${service.serviceName}"></h2>
+          <p
+            th:if="${service.description != null}"
+            th:text="${service.description}"
+          ></p>
+          <p th:unless="${service.description != null}">
+            No description available
+          </p>
+          <p>
+            Price:
+            <span class="text-blue-bootstrap" th:text="${service.price}"></span>
+          </p>
+          <p>
+            Number of workers:
+            <span
+              class="text-blue-bootstrap"
+              th:text="${service.numOfPeople}"
+            ></span>
+          </p>
+          <p>Category: <span class="text-blue-bootstrap">Cleaning</span></p>
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button
+          class="rounded-lg bg-blue-bootstrap px-8 py-2 text-left text-white"
+          id="order-btn"
+        >
+          Order
+        </button>
+      </div>
+    </section>
+    <section class="mx-48 my-20">
+      <h1 class="m-4 text-2xl font-bold">Comments</h1>
+      <div class="space-y-12 rounded-xl border-2 border-black p-16">
+        <div
+          class="flex space-x-6 border-b-2 border-black pb-6"
+          th:each="order : ${ordersByService}"
+          th:if="${order.rating != 0}"
+        >
+          <img
+            src="../static/assets/images/user.png"
+            class="h-[50px] w-[50px] rounded-full"
+            alt="user's avatar"
+          />
+          <div>
+            <h2
+              class="text-lg font-bold"
+              th:text="${order.Account.accountName}"
+            ></h2>
+            <p th:text="${order.comment}"></p>
+            <br />
+            <p th:text="${order.rating}"></p>
+          </div>
+          <br />
+        </div>
+      </div>
+    </section>
+    <section th:replace="~{./fragments/order-form.html}"></section>
+    <footer th:replace="~{./fragments/footer.html}"></footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Execute the fetchData function after the segment is loaded
+        loadOrderForm();
+      });
+    </script>
+  </body>
+</html>
