@@ -36,7 +36,8 @@ public class ServiceController {
 
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
-    
+
+    @Autowired
     private RatingService ratingService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

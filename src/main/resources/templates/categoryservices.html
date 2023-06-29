@@ -1,84 +1,98 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeLeaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title
+      th:text="${services != null} ? ${services.serviceCategoryName} : ''"
+    ></title>
+    <script
+      src="https://kit.fontawesome.com/097aba0852.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../static/tailwind/index.css" />
+    <link rel="stylesheet" href="../static/tailwind/font.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <title th:text="${services != null} ? ${services.serviceCategoryName} : ''"></title>
-  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../static/tailwind/index.css">
-  <link rel="stylesheet" href="../static/tailwind/font.css">
+    <style>
+      .stars-outer {
+        display: inline-block;
+        position: relative;
+        font-family: FontAwesome;
+      }
 
-  <style>
-    .stars-outer {
-      display: inline-block;
-      position: relative;
-      font-family: FontAwesome;
-    }
+      .stars-outer::after {
+        content: "\f006 \f006 \f006 \f006 \f006";
+      }
 
-    .stars-outer::after {
-      content: "\f006 \f006 \f006 \f006 \f006";
-    }
+      .stars-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 0;
+      }
 
-    .stars-inner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 0;
-    }
+      .stars-inner::after {
+        content: "\f005 \f005 \f005 \f005 \f005";
+        color: #f8ce0b;
+      }
+    </style>
+  </head>
 
-    .stars-inner::after {
-      content: "\f005 \f005 \f005 \f005 \f005";
-      color: #f8ce0b;
-    }
-  </style>
-</head>
+  <body class="overflow-x-hidden">
+    <header th:replace="~{./fragments/header.html}"></header>
 
-<body class="overflow-x-hidden">
-  <header th:replace="~{./fragments/header.html}"></header>
+    <div class="content-body my-7 mx-48">
+      <p class="text-center text-4xl text-blue-bootstrap">
+        Our services for cleaning
+      </p>
+      <br />
 
-  <div class="content-body my-7 mx-48">
-
-    <p class="text-center text-4xl text-blue-bootstrap">Our services for cleaning</p>
-    <br />
-
-    <section class="flex mt-6 rounded-lg border-2 border-blue-300" th:each="service: ${services.services}">
-      <div class="w-1/3 px-2 py-2">
-        <img class="rounded-lg w-full h-full object-cover" src="../static/assets/images/service-4.jpg" alt="working">
-      </div>
-      <div class="w-full mx-4 space-y-3 py-2 flex flex-col">
-        <h1 class="text-2xl font-semibold" th:text="${service != null} ? ${service.serviceName} : ''">40m2 House</h1>
-        <p class="text-1xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, magnam error! Commodi placeat sunt
-          distinctio,
-          voluptatum odit vero assumenda at.
-        </p>
-        <div th:replace="~{./fragments/rating.html}"></div>
-        <div class="mt-2 text-2xl" th:text="${service != null} ? '₫' + ${service.price} + '00' : ''"></div>
-        <div class="flex flex-1 items-end justify-end">
-          <button class="bg-blue-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-blue-400"><a
-              th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a></button>
-          <button class="bg-yellow-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-yellow-400">Order</button>
+      <section
+        class="flex mt-6 rounded-lg border-2 border-blue-300"
+        th:each="service: ${services.services}"
+      >
+        <div class="w-1/3 px-2 py-2">
+          <img
+            class="rounded-lg w-full h-full object-cover"
+            src="../static/assets/images/service-4.jpg"
+            alt="working"
+          />
         </div>
-      </div>
-      <div class="mt-2 text-2xl">₫100.000</div>
-      <div class="flex flex-1 items-end justify-end">
-        <button class="bg-blue-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-blue-400"><a
-                th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a></button>
-        <button class="bg-yellow-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-yellow-400" id="order-btn">Order</button>
-      </div>
+        <div class="w-full mx-4 space-y-3 py-2 flex flex-col">
+          <h1
+            class="text-2xl font-semibold"
+            th:text="${service != null} ? ${service.serviceName} : ''"
+          >
+          </h1>
+          <p class="text-1xl">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam,
+            magnam error! Commodi placeat sunt distinctio, voluptatum odit vero
+            assumenda at.
+          </p>
+          <div th:replace="~{./fragments/rating.html}"></div>
+          <div
+            class="mt-2 text-2xl"
+            th:text="${service != null} ? '₫' + ${service.price} + '00' : ''"
+          ></div>
+          <div class="flex flex-1 items-end justify-end">
+            <button
+              class="bg-blue-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-blue-400"
+            >
+              <a th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a>
+            </button>
+            <button
+              class="bg-yellow-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-yellow-400"
+            >
+              Order
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
-  </section>
 
-
-
-  </div>
-
-  <footer th:replace="~{./fragments/footer.html}"></footer>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="../static/js/rating.js"></script>
-
-</body>
-
+    <footer th:replace="~{./fragments/footer.html}"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../static/js/rating.js"></script>
+  </body>
 </html>

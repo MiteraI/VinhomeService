@@ -43,7 +43,7 @@
     />
 </section>
 <section th:each="order : ${orderList}" class="mx-48 my-10">
-    <div th:if="${order.status == 0}" class="pending my-10 flex-col">
+    <div th:if="${order.status == T(app.vinhomes.entity.type_enum.OrderStatus).PENDING}" class="pending my-10 flex-col">
         <!-- Render div for pending orders -->
         <p class="rounded-t-lg bg-blue-bootstrap p-2 font-semibold text-white">
             &emsp; Pending
@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <div th:if="${order.status == 1}" class="completed my-10 flex-col">
+    <div th:if="${order.status == T(app.vinhomes.entity.type_enum.OrderStatus).SUCCESS}" class="completed my-10 flex-col">
         <!-- Render div for completed orders -->
         <p class="rounded-t-lg bg-green-success p-2 font-semibold text-white">
             &emsp; Completed
@@ -105,7 +105,7 @@
             </div>
         </div>
     </div>
-    <div th:if="${order.status == 2}" class="cancelled my-10 flex-col">
+    <div th:if="${order.status == T(app.vinhomes.entity.type_enum.OrderStatus).CANCEL}" class="cancelled my-10 flex-col">
         <p class="rounded-t-lg bg-red-cancel p-2 font-semibold text-white">
             &emsp; Cancelled
         </p>
@@ -138,18 +138,5 @@
     </div>
 </section>
 <footer th:replace="~{./fragments/footer.html}"></footer>
-<script>
-      const dropDownMenuBtn = document.querySelector("#dropdownDividerButton");
-      const dropDownMenu = document.querySelector("#dropdownDivider");
-      const navBar = document.querySelector(".navBar");
-      const profileBtn = document.querySelector(".profile-btn");
-      let navBarHeight = navBar.getBoundingClientRect().height;
-      profileBtn.style.height = `${navBarHeight}px`;
-      dropDownMenuBtn.addEventListener("click", () => {
-        console.log("clicked");
-        dropDownMenu.classList.toggle("hidden");
-      });
-
-</script>
 </body>
 </html>

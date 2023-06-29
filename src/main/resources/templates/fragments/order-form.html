@@ -69,7 +69,7 @@
           day: document.getElementById("date").value,
           serviceId: document.getElementById("serviceId").value,
         };
-        fetch("/api/order/createorder", {
+        fetch("/vnpay/createPayment", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

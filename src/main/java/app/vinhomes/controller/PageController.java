@@ -89,6 +89,7 @@ public class PageController {
     @RequestMapping(value = "/service/{serviceId}")
     public String prepareOrder (@PathVariable("serviceId") Long serviceId, Model model, HttpServletRequest request) {
         model.addAttribute("service", typeService.getServiceType(serviceId));
+        model.addAttribute("category", typeService.getServiceCateByServiceId(serviceId));
         model.addAttribute("ordersByService", orderRepository.findAllByService_ServiceId(serviceId));
         return "service-details";
     }

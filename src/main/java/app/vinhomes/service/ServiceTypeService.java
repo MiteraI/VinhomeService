@@ -1,5 +1,6 @@
 package app.vinhomes.service;
 
+import app.vinhomes.entity.order.ServiceCategory;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,5 +14,8 @@ public class ServiceTypeService {
     private ServiceRepository serviceRepository;
     public Service getServiceType(Long serviceId) {
         return serviceRepository.findById(serviceId).get();
+    }
+    public ServiceCategory getServiceCateByServiceId(Long serviceId) {
+        return serviceRepository.findById(serviceId).get().getServiceCategory();
     }
 }
