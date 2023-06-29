@@ -1,8 +1,6 @@
 package app.vinhomes.service;
 
 import app.vinhomes.common.ErrorChecker;
-
-import app.vinhomes.joinentity.JoinAccountInfo;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
@@ -10,22 +8,32 @@ import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @org.springframework.stereotype.Service
 public class AccountService {
 
     @Autowired
+    private ErrorChecker errorChecker;
+    @Autowired
     private AccountRepository accountRepository ;
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
     private PhoneRepository phoneRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<List<Account>> updateAccountById(JsonNode request){
         ErrorChecker errorChecker = new ErrorChecker();
@@ -89,13 +97,75 @@ public class AccountService {
         return false;
 
     }
-    public JoinAccountInfo getCustomerWithPhoneAndAddress(long id){
-        Account account = accountRepository.findById(id).get();
-        List<Phone> phoneList = phoneRepository.findByAccount(account);
-        Address address = account.getAddress();
-        //List<Address> addressList = new ArrayList<>();
-        JoinAccountInfo accountInfo = new JoinAccountInfo(account,phoneList,address);
-        return accountInfo;
+    public Account getCurrentlyLogginAccount(Authentication authentication){
+        System.out.println("inside getCurrentlyLogginAccount");
+        Account account = null;
+        String username = null;
+        try{
+            Object principle = authentication.getPrincipal();
+            if (principle instanceof UserDetails) {
+                username = ( (UserDetails) principle). getUsername();
+                account = accountRepository.findByAccountName(username);
+                return account;
+            } else {
+                username = principle.toString();
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
     }
 
+    public Account getAccountByUsername(String username)throws NullPointerException{
+        return accountRepository.findUsername(username).get();
+    }
+    public void setEnableToAccount(Account account){
+        account.setIsEnable(1);
+        accountRepository.save(account);
+        System.out.println("account is enabled through sms, you can get order now");
+    }
+    public String changePassword_ForgetAccountService(Account account){
+        try{
+            String generatedPassword = "123";/// can be replaced with some random generated password
+            account.setPassword(passwordEncoder.encode(generatedPassword));
+            accountRepository.save(account);
+            return generatedPassword;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public String changePassword(Long accountId,String oldPassword,String newPassword){
+        try{
+            Account getAccount = accountRepository.findByAccountId(accountId);
+            if(getAccount != null){
+                String getPassword = getAccount.getPassword();
+                if(passwordEncoder.matches(oldPassword,getPassword)){
+                    System.out.println("old password matches current password in database");
+                    if(oldPassword.equals(newPassword)){
+                        System.out.println("ERROR new password is the same as the old one");
+                        return "ERROR new password is the same as the old one";
+                    }
+                    String getError = errorChecker.checkPassword(newPassword);
+                    System.out.println(getError);
+                    if(getError.equals("") == false){
+                        return "ERROR "+getError;
+                    }else{
+                        System.out.println("all condition are met, your new pass is: "+newPassword);
+                        getAccount.setPassword(passwordEncoder.encode(newPassword));
+                        accountRepository.save(getAccount);
+                        return "";
+                    }
+                }else{
+                    System.out.println("ERROR old password DO NOT matches current password in database");
+                    return "ERROR old password dont match yo input password";
+                }
+            }else{
+                return "ERROR cannot found your account, try re-login";
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "ERROR server error: ";
+        }
+    }
 }

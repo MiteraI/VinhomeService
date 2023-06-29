@@ -1,5 +1,6 @@
 package app.vinhomes.security.config;
 
+import app.vinhomes.CustomerSessionListener;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
@@ -24,11 +25,11 @@ import java.util.List;
 @Component
 public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
+    private CustomerSessionListener customerSessionListener;
+    @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private AddressRepository addressRepository;
-
     @Autowired
     private PhoneRepository phoneRepository;
     private SimpleUrlAuthenticationSuccessHandler pageController =
@@ -53,6 +54,7 @@ public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
             if (authorityName.equals("2")) {
                 System.out.println("2");
                 request.getSession().setAttribute("loginedUser",account);
+                //customerSessionListener.
                 this.pageController.onAuthenticationSuccess(request,response,authentication);
                 return;
             } else if (authorityName.equals("1")) {

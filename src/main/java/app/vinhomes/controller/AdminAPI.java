@@ -1,5 +1,6 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.entity.Transaction;
 import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
@@ -14,18 +15,25 @@ import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.worker.WorkerStatusRepository;
 import app.vinhomes.service.AccountService;
+import app.vinhomes.service.TransactionService;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.JsonObject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -47,6 +55,8 @@ public class AdminAPI {
     private ServiceCategoryRepository serviceCategoryRepository;
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private TransactionService transactionService;
 
     @PostMapping(value = "/createAccountWorker/{rolenumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForWorker(@RequestBody JsonNode request,

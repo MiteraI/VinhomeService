@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Detail</title>
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" rel="stylesheet">
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" rel="stylesheet">
     <script crossorigin="anonymous" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!--css for rating-->
     <link href="../static/css/detail.css" rel="stylesheet">
@@ -15,128 +15,144 @@
 </head>
 
 <body>
-<!--make detail page with bootstrap with left is service image with service name and right is detail -->
-<div class="container" style="margin-top: 100px;">
-    <a href="/">Back to homepage</a>
-    <h1 style="margin-bottom: 30px; text-align:center;">Your Order Detail</h1>
+    <!--make detail page with bootstrap with left is service image with service name and right is detail -->
+    <div class="container" style="margin-top: 100px;">
+        <a href="/">Back to homepage</a>
+        <h1 style="margin-bottom: 30px; text-align:center;">Your Order Detail</h1>
 
-    <div class="row">
+        <div class="row">
 
-        <div class="col-sm-6 col-lg-4">
-            <div>
-                <img alt="Service Image" crossorigin="anonymous"
-                     src="https://www.minimaldesksetups.com/wp-content/uploads/2022/11/293302129_1066920367364912_1474394010024187611_n-768x960.jpg"
-                     style="width: 70%; height: 100%;">
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-8 border border-dark rounded">
-
-            <h2>Order Detail</h2>
-            <!--design table that has order id, order date, work date, service id, price, payment name, status on same row, below row is service description and more below
-        is rating and comment-->
-            <table class="table" id="order-table">
-                <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Order Date</th>
-                    <th>Work Date</th>
-                    <th>Service Name</th>
-                    <th>Price</th>
-                    <th>Payment Name</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div class="row">
-                <div class="col-lg-12 border border-dark">
-                    <h4 style="text-align: center;">Service Description</h4>
-                    <p id="service-description" style="text-align:center;"></p>
+            <div class="col-sm-6 col-lg-4">
+                <div>
+                    <img alt="Service Image" crossorigin="anonymous"
+                        src="https://www.minimaldesksetups.com/wp-content/uploads/2022/11/293302129_1066920367364912_1474394010024187611_n-768x960.jpg"
+                        style="width: 70%; height: 100%;">
                 </div>
-                <div class="col-lg-12 border border-dark">
-                    <h4 style="text-align:center;">Review</h4>
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-5 border border-dark">
-                            <h5>Rating</h5>
-                            <p id="rating"></p>
-                        </div>
-                        <div class="col-sm-6 col-lg-7 border border-dark">
-                            <h5>Comment</h5>
-                            <p id="comment"></p>
+            </div>
+
+            <div class="col-sm-6 col-lg-8 border border-dark rounded">
+
+                <h2>Order Detail</h2>
+                <!--design table that has order id, order date, work date, service id, price, payment name, status on same row, below row is service description and more below
+        is rating and comment-->
+                <table class="table" id="order-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Order Date</th>
+                            <th>Work Date</th>
+                            <th>Service Name</th>
+                            <th>Price</th>
+                            <th>Payment Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-lg-12 border border-dark">
+                        <h4 style="text-align: center;">Service Description</h4>
+                        <p id="service-description" style="text-align:center;"></p>
+                    </div>
+                    <div class="col-lg-12 border border-dark">
+                        <h4 style="text-align:center;">Review</h4>
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-5 border border-dark">
+                                <h5>Rating</h5>
+                                <p id="rating"></p>
+                            </div>
+                            <div class="col-sm-6 col-lg-7 border border-dark">
+                                <h5>Comment</h5>
+                                <p id="comment"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--last row for list of workers-->
-            <div class="row">
-                <div class="col-sm-6 col-lg-12 border border-dark">
-                    <h4 style="text-align: center;">Workers</h4>
+                <!--last row for list of workers-->
+                <div class="row">
+                    <div class="col-sm-6 col-lg-12 border border-dark">
+                        <h4 style="text-align: center;">Workers</h4>
 
-                    <!--worker table with worker first name, last name and divide into 2 equal column with bootstrap-->
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                        </tr>
-                        </thead>
-                        <tbody id="worker-table-body"></tbody>
-                    </table>
+                        <!--worker table with worker first name, last name and divide into 2 equal column with bootstrap-->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="worker-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--make place for comment and rating using bootstrap-->
+        <div class="rating-and-comment">
+            <h4 style="text-align: center; margin-top: 20px; margin-bottom: 20px">Add a comment</h4>
+            <div class="rating"> <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input
+                    type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input type="radio"
+                    name="rating" value="3" id="3"><label for="3">☆</label> <input type="radio" name="rating" value="2"
+                    id="2"><label for="2">☆</label> <input type="radio" name="rating" value="1" id="1"><label
+                    for="1">☆</label> </div>
+            <div class="comment-area"> <textarea class="form-control" placeholder="what is your view?"
+                    rows="4"></textarea> </div>
+            <div class="comment-btn mt-2">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="pull-left"> <button class="btn btn-success btn-sm"
+                                onclick="callCancelService()">Cancel</button> </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-success pay-order btn-sm" onclick="payService()"
+                                id="PAY-ORDER">PAY</button>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="pull-right"> <button class="btn btn-success send btn-sm" id="sendComment">Send <i
+                                    class="fa fa-long-arrow-right ml-1"></i></button> </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <!--make place for comment and rating using bootstrap-->
-    <div class="rating-and-comment">
-        <h4 style="text-align: center; margin-top: 20px; margin-bottom: 20px">Add a comment</h4>
-        <div class="rating"> <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input
-                type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input type="radio"
-                                                                                            name="rating" value="3" id="3"><label for="3">☆</label> <input type="radio" name="rating" value="2"
-                                                                                                                                                           id="2"><label for="2">☆</label> <input type="radio" name="rating" value="1" id="1"><label
-                for="1">☆</label> </div>
-        <div class="comment-area"> <textarea class="form-control" placeholder="what is your view?"
-                                             rows="4"></textarea> </div>
-        <div class="comment-btn mt-2">
-            <div class="row">
-                <div class="col-6">
-                    <div class="pull-left"> <button class="btn btn-success btn-sm">Cancel</button> </div>
-                </div>
-                <div class="col-6">
-                    <div class="pull-right"> <button class="btn btn-success send btn-sm" id="sendComment">Send <i
-                            class="fa fa-long-arrow-right ml-1"></i></button> </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    let paramOrderId = window.location.search;
-    console.log(paramOrderId);
-    let urlParam = new URLSearchParams(paramOrderId);
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let paramOrderId = window.location.search;
+        console.log(paramOrderId);
+        let urlParam = new URLSearchParams(paramOrderId);
+        const giveData = {
+            paymentId: "",
+            serviceId: "",
+            day: "",
+            timeId: "",
+            orderId: urlParam.get("orderId")
+        };
 
+        //get order detail based on order id//
+        axios
+            .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
+            //check order status and display as text//
+            .then((res) => {
+                let orderStatus = "";
+                if (res.data.status === 0) {
+                    orderStatus = "Pending";
+                } else if (res.data.status === 1) {
+                    orderStatus = "Accepted";
+                } else if (res.data.status === 2) {
+                    orderStatus = "Rejected";
+                } else if (res.data.status === 3) {
+                    orderStatus = "Completed";
+                }
 
-    //get order detail based on order id//
-    axios
-        .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
-        //check order status and display as text//
-        .then((res) => {
-            let orderStatus = "";
-            if (res.data.status === 0) {
-                orderStatus = "Pending";
-            } else if (res.data.status === 1) {
-                orderStatus = "Accepted";
-            } else if (res.data.status === 2) {
-                orderStatus = "Rejected";
-            } else if (res.data.status === 3) {
-                orderStatus = "Completed";
-            }
-
-            const order = res.data;
-            console.log(order);
-            let output = `
+                const order = res.data;
+                console.log(order);
+                let output = `
                     <tr>
                         <td>${order.orderId}</td>
                         <td>${order.createTime}</td>
@@ -147,148 +163,198 @@
                         <td>${orderStatus}</td>
                     </tr>
                 `;
-            document.querySelector("#order-table tbody").innerHTML = output;
-        })
-        .catch((err) => console.error(err));
+                document.querySelector("#order-table tbody").innerHTML = output;
+                ////////////////////// minh them vao //////////////////////
+                //////////////////////              //////////////////////
+                giveData.serviceId = order.service.serviceId
+                giveData.paymentId = order.payment.paymentId
+                giveData.day = order.schedule.workDay
+                giveData.timeId = order.schedule.timeSlot.timeSlotId
+                console.log(giveData)
+                //////////////////////              //////////////////////
+                //////////////////////              //////////////////////
+            })
+            .catch((err) => console.error(err));
 
 
-    //get service description//
-    axios
-        .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
-        .then((res) => {
-            const order = res.data;
-            console.log(order);
-            if (order.service.description == null) {
-                order.service.description = "No description";
-            }
-            let output = `
-                    <p>${order.service.description}</p>
-                `;
-            document.querySelector("#service-description").innerHTML = output;
-        })
-        .catch((err) => console.error(err));
-
-    //get rating and comment by stars//
-    axios
-        .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
-        //5 stars rating//
-        .then((res) => {
-            const order = res.data;
-            console.log(order);
-            let output = "";
-            if (order.rating == 5) {
-                output += `
-                        <p>⭐⭐⭐⭐⭐</p>
-                    `;
-            }
-            //4 stars rating//
-            else if (order.rating == 4) {
-                output += `
-                        <p>⭐⭐⭐⭐</p>
-                    `;
-            }
-            //3 stars rating//
-            else if (order.rating == 3) {
-                output += `
-                        <p>⭐⭐⭐</p>
-                    `;
-            }
-            //2 stars rating//
-            else if (order.rating == 2) {
-                output += `
-                        <p>⭐⭐</p>
-                    `;
-            }
-            //1 stars rating//
-            else if (order.rating == 1) {
-                output += `
-                        <p>⭐</p>
-                    `;
-            }
-            //No rating//
-            else {
-                output += `
-                        <p>No rating</p>
-                    `;
-            }
-            document.querySelector("#rating").innerHTML = output;
-        })
-        .catch((err) => console.error(err));
-
-    //get comment//
-    axios
-        .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
-        .then((res) => {
-            const order = res.data;
-            console.log(order);
-            if (order.comment == null) {
-                order.comment = "No comment";
-            }
-            let output = `
-                    <p>${order.comment}</p>
-                `;
-            document.querySelector("#comment").innerHTML = output;
-        })
-        .catch((err) => console.error(err));
-
-
-    //get all workers and print into worker table as 1 loop//
-    axios
-        .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
-        .then((res) => {
-            const order = res.data;
-            console.log(order);
-            let output = "";
-            order.schedule.workers.forEach((worker) => {
-                if (worker == null) {
-                    output += `
-                            <tr>
-                                <td colspan="2">No worker</td>
-                            </tr>
-                        `;
-                }
-                output += `
-                        <tr>
-                            <td>${worker.firstName}</td>
-                            <td>${worker.lastName}</td>
-                        </tr>
-                    `;
-            });
-            document.querySelector("#worker-table-body").innerHTML = output;
-        })
-        .catch((err) => console.error(err));
-
-    //send comment and rating based on serviceId and accountId//
-    document.querySelector("#sendComment").addEventListener("click", () => {
+        //get service description//
         axios
             .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
             .then((res) => {
                 const order = res.data;
                 console.log(order);
-                let serviceId = order.service.serviceId;
-                let rating = document.querySelector("input[name='rating']:checked").value;
-                let comment = document.querySelector(".comment-area textarea").value;
-
-                axios
-                    .post("http://localhost:8080/api/order/review/" + urlParam.get("orderId"), {
-                        rating: rating,
-                        comment: comment,
-                    })
-                    .then((res) => {
-                        console.log(res.data);
-                        console.log("Review sent to order table");
-                    })
-                    .catch((err) => console.error(err));
-
-                if (res.status === 200) {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 500);
+                if (order.service.description == null) {
+                    order.service.description = "No description";
                 }
+                let output = `
+                    <p>${order.service.description}</p>
+                `;
+                document.querySelector("#service-description").innerHTML = output;
             })
             .catch((err) => console.error(err));
-    });
-</script>
+
+        //get rating and comment by stars//
+        axios
+            .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
+            //5 stars rating//
+            .then((res) => {
+                const order = res.data;
+                console.log(order);
+                let output = "";
+                if (order.rating == 5) {
+                    output += `
+                        <p>⭐⭐⭐⭐⭐</p>
+                    `;
+                }
+                //4 stars rating//
+                else if (order.rating == 4) {
+                    output += `
+                        <p>⭐⭐⭐⭐</p>
+                    `;
+                }
+                //3 stars rating//
+                else if (order.rating == 3) {
+                    output += `
+                        <p>⭐⭐⭐</p>
+                    `;
+                }
+                //2 stars rating//
+                else if (order.rating == 2) {
+                    output += `
+                        <p>⭐⭐</p>
+                    `;
+                }
+                //1 stars rating//
+                else if (order.rating == 1) {
+                    output += `
+                        <p>⭐</p>
+                    `;
+                }
+                //No rating//
+                else {
+                    output += `
+                        <p>No rating</p>
+                    `;
+                }
+                document.querySelector("#rating").innerHTML = output;
+            })
+            .catch((err) => console.error(err));
+
+        //get comment//
+        axios
+            .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
+            .then((res) => {
+                const order = res.data;
+                console.log(order);
+                if (order.comment == null) {
+                    order.comment = "No comment";
+                }
+                let output = `
+                    <p>${order.comment}</p>
+                `;
+                document.querySelector("#comment").innerHTML = output;
+            })
+            .catch((err) => console.error(err));
+
+
+        //get all workers and print into worker table as 1 loop//
+        axios
+            .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
+            .then((res) => {
+                const order = res.data;
+                console.log(order);
+                let output = "";
+                order.schedule.workers.forEach((worker) => {
+                    if (worker == null) {
+                        output += `
+                            <tr>
+                                <td colspan="2">No worker</td>
+                            </tr>
+                        `;
+                    }
+                    output += `
+                        <tr>
+                            <td>${worker.firstName}</td>
+                            <td>${worker.lastName}</td>
+                        </tr>
+                    `;
+                });
+                document.querySelector("#worker-table-body").innerHTML = output;
+            })
+            .catch((err) => console.error(err));
+
+        //send comment and rating based on serviceId and accountId//
+        document.querySelector("#sendComment").addEventListener("click", () => {
+            axios
+                .get("http://localhost:8080/api/order/yourOrders/" + urlParam.get("orderId"))
+                .then((res) => {
+                    const order = res.data;
+                    console.log(order);
+                    let serviceId = order.service.serviceId;
+                    let rating = document.querySelector("input[name='rating']:checked").value;
+                    let comment = document.querySelector(".comment-area textarea").value;
+
+                    axios
+                        .post("http://localhost:8080/api/order/review/" + urlParam.get("orderId"), {
+                            rating: rating,
+                            comment: comment,
+                        })
+                        .then((res) => {
+                            console.log(res.data);
+                            console.log("Review sent to order table");
+                        })
+                        .catch((err) => console.error(err));
+
+                    if (res.status === 200) {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }
+                })
+                .catch((err) => console.error(err));
+        });
+        async function callCancelService() {
+            var response = await fetch("http://localhost:8080/transaction/cancelOrder/refundTransaction/" + urlParam.get("orderId"),
+            {
+                method: "GET"
+            });
+            var status = await response.status;console.log(status)
+            var toText = await response.text();console.log(toText)
+            if(status < 200 || status > 300){
+                console.log("refund fail");
+                alert("refund fail: "+toText)
+            }else{
+                console.log("refund success");
+                alert("refund success: "+toText)
+            }
+
+        }
+
+        async function payService() {
+            var response = await fetch("http://localhost:8080/vnpay/createPayment/test",
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(giveData)
+                });
+            var status = await response.status
+            var message = await response.body
+            var toText = await response.text()
+            console.log(response)
+            console.log(status)
+            //console.log(message.text)
+            console.log(toText)
+            if(status < 200|| status > 300){
+                console.log(" request fail "+toText)
+            }else{
+                console.log(" request success ")
+                window.location.replace(toText)
+            }
+            
+        }
+    </script>
 </body>
 
 </html>

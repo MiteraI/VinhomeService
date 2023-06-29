@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <META HTTP-EQUIV=”refresh” CONTENT=”15″>
     <title>HomePage</title>
     <style>
@@ -139,7 +139,7 @@
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
-        //UNDERLINE APPEAR WHEN HOVER//
+        /* //UNDERLINE APPEAR WHEN HOVER// */
         .underline a {
             text-decoration: none;
             position: relative;
@@ -167,181 +167,182 @@
         .avatar:hover {
             border: 2px solid #f9215e;
         }
-
     </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg position-sticky">
-    <a class="navbar-brand" href="#">KietVin</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    <nav class="navbar navbar-expand-lg position-sticky">
+        <a class="navbar-brand" href="#">KietVin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-            <li class="nav-item d-none">
-                <a class="login_btn nav-link" href="/login"><i class="fa fa-sign-in me-2"></i>Login</a>
-            </li>
-            <li class="nav-item dropdown d-none">
-                <a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 15px;" >
-                    Category
-                </a>
-                <div class="main_categoryList dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
-                </div>
-            </li>
-            <li class="nav-item dropdown d-none">
-<!--                <a class="nav-link dropdown-toggle p" th:text="${acc != null} ? ${acc.accountName} : ''" href="#"-->
-<!--                   id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"-->
-<!--                   aria-expanded="false">-->
-<!--                    <i class="fas fa-user"></i>-->
-<!--                </a>-->
-                <!--AVATAR DROPDOWN BUT NO DROPDOWN ARROW BOOTSTARP-->
-                <a class="nav-link dropdown-toggle p" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="me-3">
-                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-                        <!--get account id-->
-                        <input id="accID" th:value="${acc != null} ? ${acc.accountId} : ''" type="hidden">
-                        <script>
-                        const accountID = document.getElementById("accID").value;
-                        axios
-                            .get("http://localhost:8080/images/getAvatar/avatar.png?time=" + new Date().getTime())
-<!--                            .get("http://2cedcd6c980412.lhr.life/images/getAvatar/avatar.png?time=" + new Date().getTime())-->
-                            .then((response) => {
-                                console.log(response.data);
-                                document.getElementById("avatar").src = response.data;
-                                avatar.onload = function () {
-                                    URL.revokeObjectURL(avatar.src) // free memory
-                                }
-                                setTimeout(function () {
-                                    document.getElementById("avatar").style.display = "block";
-                                }, 500);
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });
-                        </script>
-                        <img alt="avatar" class="avatar" id="avatar" loading="lazy" src=""
-                             style="height: 50px; width: 50px; object-fit: cover; object-position: 100% 0; border-radius: 50%">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item d-none">
+                    <a class="login_btn nav-link" href="/login"><i class="fa fa-sign-in me-2"></i>Login</a>
+                </li>
+                <li class="nav-item dropdown d-none">
+                    <a class="nav-link dropdown-toggle underline" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 15px;">
+                        Category
+                    </a>
+                    <div class="main_categoryList dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
                     </div>
-                </a>
-                <div class="dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="./profile"><i class="fa fa-user me-3"></i>Profile</a>
-                    <a class="dropdown-item" href="/yourOrders"><i class="fa fa-shopping-cart me-3"></i>Orders</a>
-                    <div class="dropdown-divider"></div>
-                    <form action="/logout">
-                        <button type="submit">Logout</button>
-                    </form>
+                </li>
+                <li class="nav-item dropdown d-none">
+                    <!--                <a class="nav-link dropdown-toggle p" th:text="${acc != null} ? ${acc.accountName} : ''" href="#"-->
+                    <!--                   id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"-->
+                    <!--                   aria-expanded="false">-->
+                    <!--                    <i class="fas fa-user"></i>-->
+                    <!--                </a>-->
+                    <!--AVATAR DROPDOWN BUT NO DROPDOWN ARROW BOOTSTARP-->
+                    <a class="nav-link dropdown-toggle p" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="me-3">
+                            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+                            <!--get account id-->
+                            <input id="accID" th:value="${acc != null} ? ${acc.accountId} : ''" type="hidden">
+                            <script>
+                                const accountID = document.getElementById("accID").value;
+                                axios
+                                    .get("http://localhost:8080/images/getAvatar/avatar.png?time=" + new Date().getTime())
+                                    <!--                            .get("http://2cedcd6c980412.lhr.life/images/getAvatar/avatar.png?time=" + new Date().getTime())-->
+                                    .then((response) => {
+                                        console.log(response.data);
+                                        document.getElementById("avatar").src = response.data;
+                                        avatar.onload = function () {
+                                            URL.revokeObjectURL(avatar.src) // free memory
+                                        }
+                                        setTimeout(function () {
+                                            document.getElementById("avatar").style.display = "block";
+                                        }, 500);
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    });
+                            </script>
+                            <img alt="avatar" class="avatar" id="avatar" loading="lazy" src=""
+                                style="height: 50px; width: 50px; object-fit: cover; object-position: 100% 0; border-radius: 50%">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="./profile"><i class="fa fa-user me-3"></i>Profile</a>
+                        <a class="dropdown-item" href="/yourOrders"><i class="fa fa-shopping-cart me-3"></i>Orders</a>
+                        <div class="dropdown-divider"></div>
+                        <form action="/logout">
+                            <button type="submit">Logout</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+
+
+        </div>
+    </nav>
+
+    <section class="main">
+        <div class="container py-5">
+            <div class="row py-4 align-items-center justify-content-center">
+                <div class="col-lg-7 pt-5 text-center">
+                    <h1 class="py-5">Come and book our service</h1>
+                    <button class="btn1">More Tips</button>
                 </div>
-            </li>
-        </ul>
-
-
-    </div>
-</nav>
-
-<section class="main">
-    <div class="container py-5">
-        <div class="row py-4 align-items-center justify-content-center">
-            <div class="col-lg-7 pt-5 text-center">
-                <h1 class="py-5">Come and book our service</h1>
-                <button class="btn1">More Tips</button>
             </div>
         </div>
-    </div>
-</section>
-<section id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3 text-center">
-                <h2>About Us</h2>
-                <p>Welcome to our website! We are a passionate team dedicated to providing quality products and
-                    excellent service to our customers.</p>
-                <p>Learn more about our story and what sets us apart.</p>
-                <a href="#contact" class="btn btn-primary">Contact Us</a>
+    </section>
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 text-center">
+                    <h2>About Us</h2>
+                    <p>Welcome to our website! We are a passionate team dedicated to providing quality products and
+                        excellent service to our customers.</p>
+                    <p>Learn more about our story and what sets us apart.</p>
+                    <a href="#contact" class="btn btn-primary">Contact Us</a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
-<section>
-    <div class="container">
-        <h1>Our Services</h1>
-        <table class="table table-bordered" id="tableService">
-            <thead class="thead-dark">
-            <tr>
-                <th class="col-1">Service</th>
-                <th class="col-2">Price</th>
-                <th class="col-1">Detail</th>
-            </tr>
-            </thead>
-            <tbody>
+    </section>
+    <section>
+        <div class="container">
+            <h1>Our Services</h1>
+            <table class="table table-bordered" id="tableService">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="col-1">Service</th>
+                        <th class="col-2">Price</th>
+                        <th class="col-1">Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-        </table>
-    </div>
-</section>
-<footer class="footer mt-auto py-3 bg-light">
-    <div class="container text-center">
-        <span class="text-muted">© 2023 Your Company. All rights reserved.</span>
-    </div>
-</footer>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© 2023 Your Company. All rights reserved.</span>
+        </div>
+    </footer>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    const categoryList = document.querySelector('.main_categoryList');
-    const table = document.querySelector('.table');
-    const serviceList = document.querySelector('.service_list');
-    const logoutBtn = document.querySelector('.logout_btn');
-    const loginBtn = document.querySelector('.login_btn');
-    const navbar_nav = document.querySelector('.navbar-nav');
-    const navBarLi = navbar_nav.getElementsByTagName('li');
-    const categoryIcon = ["fas fa-broom", "fas fa-wrench"]
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const categoryList = document.querySelector('.main_categoryList');
+        const table = document.querySelector('.table');
+        const serviceList = document.querySelector('.service_list');
+        const logoutBtn = document.querySelector('.logout_btn');
+        const loginBtn = document.querySelector('.login_btn');
+        const navbar_nav = document.querySelector('.navbar-nav');
+        const navBarLi = navbar_nav.getElementsByTagName('li');
+        const categoryIcon = ["fas fa-broom", "fas fa-wrench"];
 
-    // logoutBtn.addEventListener('click', logOut, false)
 
-    //get all category from localhost:8080/api/category
-    const getCategory = async () => {
-        const { data } = await axios.get("/api/category");
-        for (let i = 0; i < data.length; i++) {
-            categoryList.innerHTML +=
-                `<a class=" dropdown-item" href="#"><i class="${categoryIcon[i]} me-3"></i>${data[i].serviceCategoryName}</a>`
-            for (let j = 0; j < data[i].services.length; j++) {
+        // logoutBtn.addEventListener('click', logOut, false)
 
-                let serviceLink = `/service/${data[i].services[j].serviceId}?cname=${data[i].serviceCategoryName}`;
+        //get all category from localhost:8080/api/category
+        const getCategory = async () => {
+            const { data } = await axios.get("/api/category");
+            for (let i = 0; i < data.length; i++) {
+                categoryList.innerHTML +=
+                    `<a class=" dropdown-item" href="#"><i class="${categoryIcon[i]} me-3"></i>${data[i].serviceCategoryName}</a>`
+                for (let j = 0; j < data[i].services.length; j++) {
 
-                table.innerHTML +=
-                    `<tr>
+                    let serviceLink = `/service/${data[i].services[j].serviceId}?cname=${data[i].serviceCategoryName}`;
+
+                    table.innerHTML +=
+                        `<tr>
                             <td>${data[i].services[j].serviceName}</td>
                             <td>${data[i].services[j].price + '$'}</td>
                             <td><a href=${serviceLink}>Detail</a></td>
                         </tr>`
+                }
             }
+
         }
 
-    }
-
-    // get session
-    // if the session exist hide login btn, show category and profile
-    // else hide category and profile and show login btn
-    function getSessionData() {
+        // get session
+        // if the session exist hide login btn, show category and profile
+        // else hide category and profile and show login btn
+        function getSessionData() {
             fetch('/api/order/getSession')
                 .then(response => response.json())
                 .then(data => {
                     navBarLi[0].classList.add('d-none');
                     navBarLi[1].classList.remove('d-none');
-                    navBarLi[2].classList.remove('d-none');
+                    navBarLi[2].classList.remove('d-none'); 
                 })
                 .catch((err) => {
                     navBarLi[0].classList.remove('d-none');
@@ -350,13 +351,15 @@
                 })
         };
 
-    // make a post request to localhost:8080/api/logout to delete all existed session and logout
-    function logOut() {
-        fetch('/api/logout', { method: 'POST' }).then(window.location.replace("/"))
-    }
-    getCategory()
-    getSessionData()
-</script>
+        // make a post request to localhost:8080/api/logout to delete all existed session and logout
+        function logOut() {
+            fetch('/api/logout', { method: 'POST' }).then(window.location.replace("/"))
+        }
+        getCategory()
+        getSessionData()
+    </script>
+
+
 </body>
 
 </html>

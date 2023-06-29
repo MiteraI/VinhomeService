@@ -24,7 +24,7 @@ public class Phone {
     private String number;
 
     @ManyToOne(
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "account_id",

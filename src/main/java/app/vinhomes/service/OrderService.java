@@ -6,6 +6,7 @@ import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
+import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.entity.worker.Leave;
 import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.*;
@@ -16,14 +17,26 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import java.time.format.DateTimeParseException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @org.springframework.stereotype.Service
 public class OrderService {
+    @Value("${time.hourpolicy}")
+    private int HourPolicy;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -42,7 +55,10 @@ public class OrderService {
     private LeaveRepository leaveRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-    public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
+
+    private Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {//
+
+        System.out.println("inside OfficialCreateOrder");
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
         if (sessionAccount == null) {
@@ -52,19 +68,20 @@ public class OrderService {
         Account account = accountRepository.findById(sessionAccount.getAccountId()).get();
 
         //Assigning service
-        Long serviceId = orderJson.get("serviceId").asLong();
+        Long serviceId =orderJson.get("serviceId").asLong(); //Long.parseLong(request.getParameter("serviceId") ); //
+
         Service service = serviceRepository.findById(serviceId).get();
 
         //Assigning timeslot
-        Long timeId = orderJson.get("timeId").asLong();
+        Long timeId =orderJson.get("timeId").asLong();// Long.valueOf(request.getParameter("optionTime")); //
         TimeSlot timeSlot = timeSlotRepository.findById(timeId).get();
 
         //Assigning Payment
-        Long paymentId = orderJson.get("paymentId").asLong();
+        Long paymentId = orderJson.get("paymentId").asLong();//Long.valueOf(request.getParameter("transactionMethod"));//
         Payment payment = paymentRepository.findById(paymentId).get();
 
         //Assigning schedule
-        String day = orderJson.get("day").asText();
+        String day =orderJson.get("day").asText();// request.getParameter("day"); //
         Schedule schedule = Schedule.builder()
                 .workDay(LocalDate.parse(day))
                 .timeSlot(timeSlot)
@@ -94,7 +111,9 @@ public class OrderService {
             for (Account availableWorker : workerAccounts) {
                 boolean isOff = false;
                 for (Account offWorker : offWorkerAccounts) {
-                    if (offWorker.getAccountId() == availableWorker.getAccountId()) {
+                    //long offId = offWorker.getAccountId();
+                    //long avaId = availableWorker.getAccountId();
+                    if (offWorker.getAccountId() == availableWorker.getAccountId() ) {//offId == avaId
                         isOff = true;
                         break;
                     }
@@ -107,11 +126,12 @@ public class OrderService {
 
         //Get order that is in the work day and timeslot the user chose with the job cate to find busy worker
         List<Order> orders = orderRepository.
-                findAllBySchedule_WorkDayAndSchedule_TimeSlotAndService_ServiceCategory(
+                findAllBySchedule_WorkDayAndSchedule_TimeSlotAndService_ServiceCategoryAndStatus(
                         schedule.getWorkDay()
                         , timeSlot
                         //Find serviceCate / job to know the workers
                         , serviceCategoryRepository.findById(service.getServiceCategory().getServiceCategoryId()).get()
+                        , OrderStatus.PENDING
                 );
 
         //Get busy worker list to exclude from the worker account list -> free workers ready to be assigned
@@ -155,8 +175,111 @@ public class OrderService {
                 .service(service)
                 .payment(payment)
                 .schedule(schedule)
+                .status(OrderStatus.PENDING)
                 .build();
         schedule.setOrder(order);
         return orderRepository.save(order);
     }
+
+    public ResponseEntity<String> createOrder(JsonNode orderJSON, HttpServletRequest request) {//JsonNode orderJSON,
+        try {
+            System.out.println("inside createOrder");
+            LocalDate parsedDate = LocalDate.parse(orderJSON.get("day").asText());//request.getParameter("day")
+            LocalTime startTime = timeSlotRepository.findById(Long.valueOf(orderJSON.get("timeId").asLong())).get().getStartTime();////request.getParameter("optionTime"))
+            LocalDateTime orderedTime = parsedDate.atTime(startTime);
+            if (parsedDate.isBefore(LocalDate.now())) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
+            }
+            if (orderedTime.isBefore(LocalDateTime.now())) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
+            }
+            Order order = this.officialCreateOrder(orderJSON, request);//
+            System.out.println("pass official create order");
+            if (order == null) {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
+            } else {
+                if (order.getAccount() == null) {
+                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Have not logged in");
+                }
+                return ResponseEntity.ok(order.getOrderId().toString());
+            }
+        }catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+        }catch (DateTimeParseException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+        }
+
+    }
+    public Order getOrderById(String order_id){
+        try{
+            long parsedOrderId = Long.parseLong(order_id);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            return getOrder;
+        }catch (NoSuchElementException e){
+            System.out.println("erroer in OrderService: "+ e.getMessage());
+            return null;
+        }catch (NumberFormatException e){
+            System.out.println("erroer in OrderService: "+ e.getMessage());
+            return null;
+        }
+    }
+    public boolean updateOrderByObject(Order order){
+        try{
+            orderRepository.save(order);
+            return true;
+        }catch (Exception e){
+            System.out.println("update error: "+ e.getMessage());
+            return false;
+        }
+    }
+    public boolean checkIfOrderIsPending_IsExist(String orderId){
+        try{
+            long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            if(getOrder.getStatus().equals(OrderStatus.PENDING)){
+                return true;
+            }
+            return false;
+        }catch (NullPointerException e){
+            return false;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+    public boolean checkIfOver_2_hourPolicy(String orderId){
+        try{
+            long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            // neu + 2 tieng ma van before, tuc la da qua 2 tieng => no refund (boolean = true)
+            // else cho refund   (boolean = false)
+            boolean isCreateTimePassLimit =  getOrder.getCreateTime().plusHours(HourPolicy).isBefore(LocalDateTime.now());
+            if(isCreateTimePassLimit == false){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    public boolean checkIfOrderLegitForRefund(String orderId){
+        try{
+            long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            if(getOrder.getStatus().equals(OrderStatus.CANCEL)|| getOrder.getStatus().equals(OrderStatus.SUCCESS)){
+                return false;
+            }else{
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+
 }

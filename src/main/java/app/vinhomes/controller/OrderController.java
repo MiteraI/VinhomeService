@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+//@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("RC_REF_COMPARISON")
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
@@ -38,35 +39,9 @@ public class OrderController {
     private AccountRepository accountRepository;
 
 
-
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getAllOrder() {
         return orderRepository.findAll();
-    }
-
-    @PostMapping(value = "/createorder")
-    public ResponseEntity<String> createOrder(@RequestBody JsonNode orderJSON, HttpServletRequest request) {
-        LocalDate parsedDate = LocalDate.parse(orderJSON.get("day").asText());
-        LocalTime startTime = timeSlotRepository.findById(orderJSON.get("timeId").asLong()).get().getStartTime();
-        LocalDateTime orderedTime = parsedDate.atTime(startTime);
-        //Date received is before now then "Date is in the past"
-        if (parsedDate.isBefore(LocalDate.now())) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Date is in the past");
-        }
-
-        if (orderedTime.isBefore(LocalDateTime.now())) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Passed this time");
-        }
-
-        Order order = orderService.officialCreateOrder(orderJSON, request);
-        if (order == null) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
-        } else {
-            if (order.getAccount() == null) return ResponseEntity
-                    .status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body("Have not logged in");
-            return ResponseEntity.ok("Order created with Id " + order.getOrderId());
-        }
     }
 
     @PostMapping(value = "/ratecomment")
@@ -114,14 +89,17 @@ public class OrderController {
     }
 
     @GetMapping(value = "/services/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getOrderbyServiceId (@PathVariable("id") Long serviceId) {
+    public List<Order> getOrderbyServiceId(@PathVariable("id") Long serviceId) {
         return orderRepository.findAllByService_ServiceId(serviceId);
     }
 
     @GetMapping(value = "/getSession", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Account> getUsername(HttpSession session) {
-        System.out.println("4");
+        //System.out.println("4");
         System.out.println("get session");
+        Account getAccount = (Account) session.getAttribute("loginedUser");
+        getAccount = accountRepository.findById(getAccount.getAccountId()).get();
+        session.setAttribute("loginedUser",getAccount);
         return ResponseEntity.status(HttpStatus.OK).body((Account) session.getAttribute("loginedUser"));
     }
 
@@ -137,7 +115,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "/review/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postReview(@PathVariable ("orderId") Long orderId, @RequestBody JsonNode reviewJSON, HttpSession session) {
+    public ResponseEntity<String> postReview(@PathVariable("orderId") Long orderId, @RequestBody JsonNode reviewJSON, HttpSession session) {
         Account account = (Account) session.getAttribute("loginedUser");
         String comment = reviewJSON.get("comment").asText();
         int rating = reviewJSON.get("rating").asInt();
@@ -154,7 +132,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/yourOrders/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Order> getYourOrder(@PathVariable ("orderId") Long orderId, HttpSession session) {
+    public ResponseEntity<Order> getYourOrder(@PathVariable("orderId") Long orderId, HttpSession session) {
         Account account = (Account) session.getAttribute("loginedUser");
         if (account == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);

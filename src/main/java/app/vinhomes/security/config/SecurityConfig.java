@@ -1,5 +1,6 @@
 package app.vinhomes.security.config;
 
+import app.vinhomes.CustomerSessionListener;
 import jakarta.servlet.http.HttpSessionListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -7,9 +8,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+
+import static org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive.COOKIES;
 
 
 @Configuration
@@ -25,6 +32,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
+                .cors().and()
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login")
@@ -40,19 +48,25 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/UserRestController/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
-
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/admin/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/admin").hasAuthority("2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").hasAnyAuthority("1","0","2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/verification").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/verificationMethod").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
                         .logoutUrl("/logout")
                         .addLogoutHandler(simpleLogoutHandler)
                         .addLogoutHandler(securityContextLogoutHandler())
+                        .addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES)))
                         .logoutSuccessHandler(simpleLogoutSuccesesHandler())
                         .invalidateHttpSession(true)
                 )
-//                .logoutUrl("/api/logout")
         ;
         return httpSecurity.build();
     }
@@ -64,8 +78,7 @@ public class SecurityConfig {
     public SecurityContextLogoutHandler securityContextLogoutHandler(){
         return new SecurityContextLogoutHandler();
     }
-    @Bean
-    public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
-        return new ServletListenerRegistrationBean<HttpSessionListener>(new CustomerSessionListener());
-    }
+
+
 }
+

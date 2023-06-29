@@ -51,179 +51,13 @@
 
     </div>
 </nav>
-<!--<nav class="navbar navbar-expand-lg ">-->
-<!--    <a class="navbar-brand" href="#">KietVin</a>-->
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
-<!--            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
 
-<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--        <ul class="navbar-nav m-auto">-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Login</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"-->
-<!--                   aria-haspopup="true" aria-expanded="false">-->
-<!--                    Service-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <a class="dropdown-item" href="#">Action</a>-->
-<!--                    <a class="dropdown-item" href="#">Another action</a>-->
-<!--                    <div class="dropdown-divider"></div>-->
-<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                </div>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--        <form class="form-inline my-2 my-lg-0">-->
-<!--            <input class="px-2 search" type="search" placeholder="Search" aria-label="Search">-->
-<!--            <button class="btn0" type="submit">Search</button>-->
-<!--        </form>-->
-
-
-<!--    </div>-->
-<!--</nav>-->
-
-<!--<div class="container">-->
-<!--    <h1>Order Form</h1>-->
-<!--    <form th:object="${service}">-->
-<!--        <div class="form-group">-->
-<!--            <label for="name">Name:</label>-->
-<!--            <input type="text" class="form-control" id="name" th:field="*{serviceName}">-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--            <label for="email">Email:</label>-->
-<!--            <input type="email" class="form-control" id="email" placeholder="Enter your email">-->
-<!--        </div>-->
-<!--        <div class="form-group" id="radioButtonsContainerTimeSLot">-->
-<!--            <label class="form-label">Time Slot</label>-->
-<!--        </div>-->
-<!--        <div class="form-group" id="radioButtonsContainerPayment">-->
-<!--            <label class="form-label">Payment</label>-->
-
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="date">Date</label>-->
-<!--            <input type="date" id="date">-->
-<!--        </div>-->
-
-<!--        <button type="submit" class="btn btn-primary">Place Order</button>-->
-<!--    </form>-->
-<!--</div>-->
-
-<!--<script>-->
-<!--    // Fetch data from the API-->
-<!--    let paymentId;-->
-<!--    let TimeSlotId;-->
-<!--    fetch('/api/order/timeSlot')-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            // Process the data and generate radio buttons-->
-<!--            const radioButtonsContainerTime = document.getElementById('radioButtonsContainerTimeSLot');-->
-<!--            console.log(data)-->
-<!--            data.forEach(timeSlot => {-->
-<!--                console.log(timeSlot.timeSlotId)-->
-<!--                const radioButtonTime = document.createElement('input');-->
-<!--                radioButtonTime.type = 'radio';-->
-<!--                radioButtonTime.name = 'serviceOptions';-->
-<!--                radioButtonTime.value = timeSlot.timeSlotId;-->
-
-<!--                const labelTime = document.createElement('label');-->
-<!--                labelTime.textContent = timeSlot.startTime + '-' + timeSlot.endTime;-->
-
-<!--                radioButtonsContainerTime.appendChild(radioButtonTime);-->
-<!--                radioButtonsContainerTime.appendChild(labelTime);-->
-<!--                radioButtonsContainerTime.appendChild(document.createElement('br'));-->
-
-<!--                radioButtonTime.addEventListener("change", function () {-->
-<!--                    if (this.checked) {-->
-<!--                        TimeSlotId = this.value;-->
-<!--                        console.log(TimeSlotId)-->
-<!--                    }-->
-<!--                })-->
-<!--            });-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error:', error);-->
-<!--        });-->
-
-<!--    fetch('/api/order/payment')-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            // Process the data and generate radio buttons-->
-<!--            const radioButtonsContainerPayment = document.getElementById('radioButtonsContainerPayment');-->
-<!--            console.log(data)-->
-<!--            data.forEach(option => {-->
-<!--                const radioButtonPayment = document.createElement('input');-->
-<!--                radioButtonPayment.type = 'radio';-->
-<!--                radioButtonPayment.name = 'paymentOption';-->
-<!--                radioButtonPayment.value = option.paymentId;-->
-<!--                radioButtonPayment.id = "payment";-->
-
-<!--                const label = document.createElement('label');-->
-<!--                label.textContent = option.paymentName;-->
-
-<!--                radioButtonsContainerPayment.appendChild(radioButtonPayment);-->
-<!--                radioButtonsContainerPayment.appendChild(label);-->
-<!--                radioButtonsContainerPayment.appendChild(document.createElement('br'));-->
-<!--                radioButtonPayment.addEventListener('change', function () {-->
-<!--                    if (this.checked) {-->
-<!--                        paymentId = this.value;-->
-<!--                        console.log(paymentId)-->
-<!--                    }-->
-<!--                })-->
-<!--            });-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error:', error);-->
-<!--        });-->
-
-<!--    document.getElementById("confirmOrder").addEventListener("click", confirm);-->
-<!--    //const accountName = // lay bang session-->
-<!--    //const serviceName = // sua duoc cai url rewriting-->
-<!--    const date = document.getElementById("date");-->
-<!--    const returnPaymentId = paymentId;-->
-<!--    const returnTimeSlotId = timeSlotId;-->
-
-<!--    let returnData = (accountName, serviceName, date, returnPaymentId, returnTimeSlotId) => {-->
-<!--        const data = {-->
-<!--            accountName,-->
-<!--            serviceName,-->
-<!--            date,-->
-<!--            returnPaymentId,-->
-<!--            returnTimeSlotId-->
-<!--        }-->
-<!--    }-->
-
-
-<!--    function confirm() {-->
-<!--        fetch('/api/...', {-->
-<!--            method: 'POST',-->
-<!--            headers: {-->
-<!--                'Content-Type': 'application/json'-->
-<!--            },-->
-<!--            body: {-->
-<!--                data: returnData()-->
-<!--            }-->
-<!--        }).then(res => {-->
-<!--            if (res.status === 200) {-->
-<!--                window.location.href = '';-->
-<!--            } else {-->
-<!--                console.log("Fail")-->
-<!--                console.log(res.json())-->
-<!--            }-->
-<!--        }).catch(error => console.log(error))-->
-
-
-<!--    }-->
-
-
-<!--</script>-->
-
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
 <div class="container" style="background: white">
     <div class="row border" style="margin-top: 1rem;">
         <div class="col-sm-5">
@@ -266,17 +100,7 @@
                     <hr>
                 </div>
             </div>
-            <!--            <style>-->
-            <!--                .rating-container {-->
-            <!--                    display: inline-block;-->
-            <!--                }-->
-            <!--                .star {-->
-            <!--                    color: gold;-->
-            <!--                }-->
-            <!--            </style>-->
-            <!--                <div class="rating-container">-->
-            <!--                    <label>Rating:</label>-->
-            <!--                </div>-->
+
         </div>
     </div>
 </div>
@@ -288,7 +112,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" style="text-align: center">Order Service</h5>
-                        <form id="my-form">
+                        <form id="my-form" action="/vnpay/createPayment" method="post">
                             <!-- Form fields and content -->
                             <div class="form-group" style="margin-bottom: 15px">
                                 <label for="customerName">Customer Name:</label>
@@ -297,7 +121,7 @@
                             <div class="form-group" style="margin-bottom: 15px" >
                                 <label for="ServiceName1">Service name:</label>
                                 <input id="ServiceName1" style="line-height: 15px;" th:field="${service.serviceName}" >
-                                <input type="hidden" th:value="${service.serviceId}" id="serviceName">
+                                <input type="hidden" name="serviceId" th:value="${service.serviceId}" id="serviceName">
                             </div>
                             <label for="timeSlot">Time Slot</label>
                             <div class="form-group" style="margin-left: 20px; margin-bottom: 15px;" id="timeSlot">
@@ -380,30 +204,6 @@
         }
     </style>
 
-<!--<script th:inline="javascript">-->
-<!--    var orders = [[${ordersByService}]] ;-->
-
-<!--    orders.forEach(function(order) {-->
-<!--        var rating = order.rating;-->
-<!--        var container = document.createElement("div");-->
-<!--        container.className = "rating-container";-->
-<!--        container.style.display = 'inline-block';-->
-<!--        var label = document.createElement('label');-->
-<!--        label.textContent = "Rating:";-->
-<!--        var ratingElement = document.querySelector('.rating-container');-->
-
-
-<!--        for (var i = 0; i < rating; i++) {-->
-<!--            var star = document.createElement('i');-->
-<!--            star.classList.add('bi', 'bi-star', 'star');-->
-<!--            star.classList.add('bi-star-fill');-->
-<!--            star.color = 'gold';-->
-<!--            container.appendChild(star);-->
-<!--            container.appendChild(label);-->
-<!--        }-->
-<!--        ratingElement.appendChild(document.createElement('br'))-->
-<!--    });-->
-<!--</script>-->
     <script>
         const service = document.getElementById("serviceName");
         serviceId = service.value;
@@ -413,6 +213,8 @@
             serviceId: serviceId,
             day: "",
             timeId: ""
+
+
         };
         fetch("/api/order/timeSlot")
             .then(res => res.json())
@@ -454,7 +256,7 @@
 
                     const Payment = document.createElement("input");
                     Payment.type = "radio";
-                    Payment.name = "optionPayment";
+                    Payment.name = "transactionMethod";//"optionPayment";
                     Payment.value = payment.paymentId;
                     console.log(Payment.value)
 
@@ -471,7 +273,6 @@
                         if (this.checked) {
                             giveData.paymentId = this.value;
                             console.log(giveData.paymentId);
-
                         }
                     })
                 })
@@ -483,14 +284,15 @@
 
         // createData(serviceId, PaymentId, TimeSlotId, date);
         // console.log(dataObj)
-        const form = document.getElementById("my-form")
+        const form = document.getElementById("my-form")//
 
         form.addEventListener("submit", function (event) {
             event.preventDefault();
             console.log(giveData)
-            fetch("/api/order/createorder", {
+            fetch("/vnpay/createPayment", { //api/order/createorder
                 method: 'POST',
                 headers: {
+                    //'Content-Type': 'application/x-www-form-urlencoded'
                     'Content-Type': 'application/json'
                 },
                 body:JSON.stringify(giveData)
@@ -500,18 +302,27 @@
                         document.getElementById("formContainer").style.display = 'none';
                         alert("You have ordered successfully");
                         console.log("Successful");
+                        return res.text()
                     }
                     else {
                         console.log("Fail");
                         alert("Fail in ordering");
                     }
                 })
+                .then((text)=> {
+                if(text.includes("http")){
+                    console.log(text)
+                    window.location.replace(text)
+                }
+                
+            })
                 .catch((err) => {
                     if (err.response.status === 401) {
                         console.log("Exception")
                     }
                 })
-        })
+        })///////////////////////////////////
+        ////////////*/
 
         const cancelButton = document.getElementById("btnCancel");
         cancelButton.addEventListener("click", function (event) {
