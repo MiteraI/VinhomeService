@@ -136,9 +136,10 @@ public class OrderController {
 
     }
 
-    @PostMapping(value = "/review/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postReview(@PathVariable ("orderId") Long orderId, @RequestBody JsonNode reviewJSON, HttpSession session) {
+    @PostMapping(value = "/review", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> postReview(@RequestBody JsonNode reviewJSON, HttpSession session) {
         Account account = (Account) session.getAttribute("loginedUser");
+        Long orderId = reviewJSON.get("orderId").asLong();
         String comment = reviewJSON.get("comment").asText();
         int rating = reviewJSON.get("rating").asInt();
         if (account == null) {

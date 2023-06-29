@@ -77,7 +77,6 @@
           body: JSON.stringify(requestBody),
         })
           .then((res) => {
-            console.log(res);
             if (res.status === 200) {
               document.getElementById("order-form").style.display = "none";
               alert("You have ordered successfully");
