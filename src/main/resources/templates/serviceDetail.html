@@ -1,575 +1,666 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-
-</head>
-<body style="background-color: #f8f8f8;">
-<nav class="navbar navbar-expand-lg position-sticky" style="background: white">
-    <a class="navbar-brand" href="/">KietVin</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/097aba0852.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    />
+  </head>
+  <body style="background-color: #f8f8f8">
+    <nav
+      class="navbar navbar-expand-lg position-sticky"
+      style="background: white"
+    >
+      <a class="navbar-brand" href="/">KietVin</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
-    </button>
+      </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <div
+        class="collapse navbar-collapse justify-content-end"
+        id="navbarSupportedContent"
+      >
         <ul class="navbar-nav">
-            <li class="nav-item d-none">
-                <a class="login_btn nav-link" href="/login"><i class="fa fa-sign-in me-2"></i>Login</a>
-            </li>
-            <li class="nav-item dropdown d-none">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Category
-                </a>
-                <div class="main_categoryList dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
-                </div>
-            </li>
-            <li class="nav-item dropdown d-none">
-
-                <a class="nav-link dropdown-toggle p" th:text="${acc != null} ? ${acc.accountName} : ''" href="#"
-                   id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">
-                </a>
-                <div class="dropdown-menu" style="right: 5%;" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/profile"><i class="fa fa-user me-3"></i>Profile</a>
-                    <a class="dropdown-item" href="/yourOrders"><i class="fa fa-shopping-cart me-3"></i>Orders</a>
-                    <div class="dropdown-divider"></div>
-                    <form action="/logout">
-                        <button type="submit">Logout</button>
-                    </form>
-                </div>
-            </li>
+          <li class="nav-item d-none">
+            <a class="login_btn nav-link" href="/login"
+              ><i class="fa fa-sign-in me-2"></i>Login</a
+            >
+          </li>
+          <li class="nav-item dropdown d-none">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Category
+            </a>
+            <div
+              class="main_categoryList dropdown-menu"
+              style="right: 5%"
+              aria-labelledby="navbarDropdown"
+            ></div>
+          </li>
+          <li class="nav-item dropdown d-none">
+            <a
+              class="nav-link dropdown-toggle p"
+              th:text="${acc != null} ? ${acc.accountName} : ''"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+            </a>
+            <div
+              class="dropdown-menu"
+              style="right: 5%"
+              aria-labelledby="navbarDropdown"
+            >
+              <a class="dropdown-item" href="/profile"
+                ><i class="fa fa-user me-3"></i>Profile</a
+              >
+              <a class="dropdown-item" href="/yourOrders"
+                ><i class="fa fa-shopping-cart me-3"></i>Orders</a
+              >
+              <div class="dropdown-divider"></div>
+              <form action="/logout">
+                <button type="submit">Logout</button>
+              </form>
+            </div>
+          </li>
         </ul>
+      </div>
+    </nav>
+    <!--<nav class="navbar navbar-expand-lg ">-->
+    <!--    <a class="navbar-brand" href="#">KietVin</a>-->
+    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+    <!--            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
 
+    <!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+    <!--        <ul class="navbar-nav m-auto">-->
+    <!--            <li class="nav-item active">-->
+    <!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link" href="#">Login</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item dropdown">-->
+    <!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"-->
+    <!--                   aria-haspopup="true" aria-expanded="false">-->
+    <!--                    Service-->
+    <!--                </a>-->
+    <!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+    <!--                    <a class="dropdown-item" href="#">Action</a>-->
+    <!--                    <a class="dropdown-item" href="#">Another action</a>-->
+    <!--                    <div class="dropdown-divider"></div>-->
+    <!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+    <!--                </div>-->
+    <!--            </li>-->
+    <!--        </ul>-->
+    <!--        <form class="form-inline my-2 my-lg-0">-->
+    <!--            <input class="px-2 search" type="search" placeholder="Search" aria-label="Search">-->
+    <!--            <button class="btn0" type="submit">Search</button>-->
+    <!--        </form>-->
 
-    </div>
-</nav>
-<!--<nav class="navbar navbar-expand-lg ">-->
-<!--    <a class="navbar-brand" href="#">KietVin</a>-->
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
-<!--            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
+    <!--    </div>-->
+    <!--</nav>-->
 
-<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--        <ul class="navbar-nav m-auto">-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Login</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"-->
-<!--                   aria-haspopup="true" aria-expanded="false">-->
-<!--                    Service-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <a class="dropdown-item" href="#">Action</a>-->
-<!--                    <a class="dropdown-item" href="#">Another action</a>-->
-<!--                    <div class="dropdown-divider"></div>-->
-<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                </div>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--        <form class="form-inline my-2 my-lg-0">-->
-<!--            <input class="px-2 search" type="search" placeholder="Search" aria-label="Search">-->
-<!--            <button class="btn0" type="submit">Search</button>-->
-<!--        </form>-->
+    <!--<div class="container">-->
+    <!--    <h1>Order Form</h1>-->
+    <!--    <form th:object="${service}">-->
+    <!--        <div class="form-group">-->
+    <!--            <label for="name">Name:</label>-->
+    <!--            <input type="text" class="form-control" id="name" th:field="*{serviceName}">-->
+    <!--        </div>-->
+    <!--        <div class="form-group">-->
+    <!--            <label for="email">Email:</label>-->
+    <!--            <input type="email" class="form-control" id="email" placeholder="Enter your email">-->
+    <!--        </div>-->
+    <!--        <div class="form-group" id="radioButtonsContainerTimeSLot">-->
+    <!--            <label class="form-label">Time Slot</label>-->
+    <!--        </div>-->
+    <!--        <div class="form-group" id="radioButtonsContainerPayment">-->
+    <!--            <label class="form-label">Payment</label>-->
 
+    <!--        </div>-->
+    <!--        <div>-->
+    <!--            <label for="date">Date</label>-->
+    <!--            <input type="date" id="date">-->
+    <!--        </div>-->
 
-<!--    </div>-->
-<!--</nav>-->
+    <!--        <button type="submit" class="btn btn-primary">Place Order</button>-->
+    <!--    </form>-->
+    <!--</div>-->
 
-<!--<div class="container">-->
-<!--    <h1>Order Form</h1>-->
-<!--    <form th:object="${service}">-->
-<!--        <div class="form-group">-->
-<!--            <label for="name">Name:</label>-->
-<!--            <input type="text" class="form-control" id="name" th:field="*{serviceName}">-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--            <label for="email">Email:</label>-->
-<!--            <input type="email" class="form-control" id="email" placeholder="Enter your email">-->
-<!--        </div>-->
-<!--        <div class="form-group" id="radioButtonsContainerTimeSLot">-->
-<!--            <label class="form-label">Time Slot</label>-->
-<!--        </div>-->
-<!--        <div class="form-group" id="radioButtonsContainerPayment">-->
-<!--            <label class="form-label">Payment</label>-->
+    <!--<script>-->
+    <!--    // Fetch data from the API-->
+    <!--    let paymentId;-->
+    <!--    let TimeSlotId;-->
+    <!--    fetch('/api/order/timeSlot')-->
+    <!--        .then(response => response.json())-->
+    <!--        .then(data => {-->
+    <!--            // Process the data and generate radio buttons-->
+    <!--            const radioButtonsContainerTime = document.getElementById('radioButtonsContainerTimeSLot');-->
+    <!--            console.log(data)-->
+    <!--            data.forEach(timeSlot => {-->
+    <!--                console.log(timeSlot.timeSlotId)-->
+    <!--                const radioButtonTime = document.createElement('input');-->
+    <!--                radioButtonTime.type = 'radio';-->
+    <!--                radioButtonTime.name = 'serviceOptions';-->
+    <!--                radioButtonTime.value = timeSlot.timeSlotId;-->
 
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="date">Date</label>-->
-<!--            <input type="date" id="date">-->
-<!--        </div>-->
+    <!--                const labelTime = document.createElement('label');-->
+    <!--                labelTime.textContent = timeSlot.startTime + '-' + timeSlot.endTime;-->
 
-<!--        <button type="submit" class="btn btn-primary">Place Order</button>-->
-<!--    </form>-->
-<!--</div>-->
+    <!--                radioButtonsContainerTime.appendChild(radioButtonTime);-->
+    <!--                radioButtonsContainerTime.appendChild(labelTime);-->
+    <!--                radioButtonsContainerTime.appendChild(document.createElement('br'));-->
 
-<!--<script>-->
-<!--    // Fetch data from the API-->
-<!--    let paymentId;-->
-<!--    let TimeSlotId;-->
-<!--    fetch('/api/order/timeSlot')-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            // Process the data and generate radio buttons-->
-<!--            const radioButtonsContainerTime = document.getElementById('radioButtonsContainerTimeSLot');-->
-<!--            console.log(data)-->
-<!--            data.forEach(timeSlot => {-->
-<!--                console.log(timeSlot.timeSlotId)-->
-<!--                const radioButtonTime = document.createElement('input');-->
-<!--                radioButtonTime.type = 'radio';-->
-<!--                radioButtonTime.name = 'serviceOptions';-->
-<!--                radioButtonTime.value = timeSlot.timeSlotId;-->
+    <!--                radioButtonTime.addEventListener("change", function () {-->
+    <!--                    if (this.checked) {-->
+    <!--                        TimeSlotId = this.value;-->
+    <!--                        console.log(TimeSlotId)-->
+    <!--                    }-->
+    <!--                })-->
+    <!--            });-->
+    <!--        })-->
+    <!--        .catch(error => {-->
+    <!--            console.error('Error:', error);-->
+    <!--        });-->
 
-<!--                const labelTime = document.createElement('label');-->
-<!--                labelTime.textContent = timeSlot.startTime + '-' + timeSlot.endTime;-->
+    <!--    fetch('/api/order/payment')-->
+    <!--        .then(response => response.json())-->
+    <!--        .then(data => {-->
+    <!--            // Process the data and generate radio buttons-->
+    <!--            const radioButtonsContainerPayment = document.getElementById('radioButtonsContainerPayment');-->
+    <!--            console.log(data)-->
+    <!--            data.forEach(option => {-->
+    <!--                const radioButtonPayment = document.createElement('input');-->
+    <!--                radioButtonPayment.type = 'radio';-->
+    <!--                radioButtonPayment.name = 'paymentOption';-->
+    <!--                radioButtonPayment.value = option.paymentId;-->
+    <!--                radioButtonPayment.id = "payment";-->
 
-<!--                radioButtonsContainerTime.appendChild(radioButtonTime);-->
-<!--                radioButtonsContainerTime.appendChild(labelTime);-->
-<!--                radioButtonsContainerTime.appendChild(document.createElement('br'));-->
+    <!--                const label = document.createElement('label');-->
+    <!--                label.textContent = option.paymentName;-->
 
-<!--                radioButtonTime.addEventListener("change", function () {-->
-<!--                    if (this.checked) {-->
-<!--                        TimeSlotId = this.value;-->
-<!--                        console.log(TimeSlotId)-->
-<!--                    }-->
-<!--                })-->
-<!--            });-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error:', error);-->
-<!--        });-->
+    <!--                radioButtonsContainerPayment.appendChild(radioButtonPayment);-->
+    <!--                radioButtonsContainerPayment.appendChild(label);-->
+    <!--                radioButtonsContainerPayment.appendChild(document.createElement('br'));-->
+    <!--                radioButtonPayment.addEventListener('change', function () {-->
+    <!--                    if (this.checked) {-->
+    <!--                        paymentId = this.value;-->
+    <!--                        console.log(paymentId)-->
+    <!--                    }-->
+    <!--                })-->
+    <!--            });-->
+    <!--        })-->
+    <!--        .catch(error => {-->
+    <!--            console.error('Error:', error);-->
+    <!--        });-->
 
-<!--    fetch('/api/order/payment')-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            // Process the data and generate radio buttons-->
-<!--            const radioButtonsContainerPayment = document.getElementById('radioButtonsContainerPayment');-->
-<!--            console.log(data)-->
-<!--            data.forEach(option => {-->
-<!--                const radioButtonPayment = document.createElement('input');-->
-<!--                radioButtonPayment.type = 'radio';-->
-<!--                radioButtonPayment.name = 'paymentOption';-->
-<!--                radioButtonPayment.value = option.paymentId;-->
-<!--                radioButtonPayment.id = "payment";-->
+    <!--    document.getElementById("confirmOrder").addEventListener("click", confirm);-->
+    <!--    //const accountName = // lay bang session-->
+    <!--    //const serviceName = // sua duoc cai url rewriting-->
+    <!--    const date = document.getElementById("date");-->
+    <!--    const returnPaymentId = paymentId;-->
+    <!--    const returnTimeSlotId = timeSlotId;-->
 
-<!--                const label = document.createElement('label');-->
-<!--                label.textContent = option.paymentName;-->
+    <!--    let returnData = (accountName, serviceName, date, returnPaymentId, returnTimeSlotId) => {-->
+    <!--        const data = {-->
+    <!--            accountName,-->
+    <!--            serviceName,-->
+    <!--            date,-->
+    <!--            returnPaymentId,-->
+    <!--            returnTimeSlotId-->
+    <!--        }-->
+    <!--    }-->
 
-<!--                radioButtonsContainerPayment.appendChild(radioButtonPayment);-->
-<!--                radioButtonsContainerPayment.appendChild(label);-->
-<!--                radioButtonsContainerPayment.appendChild(document.createElement('br'));-->
-<!--                radioButtonPayment.addEventListener('change', function () {-->
-<!--                    if (this.checked) {-->
-<!--                        paymentId = this.value;-->
-<!--                        console.log(paymentId)-->
-<!--                    }-->
-<!--                })-->
-<!--            });-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error:', error);-->
-<!--        });-->
+    <!--    function confirm() {-->
+    <!--        fetch('/api/...', {-->
+    <!--            method: 'POST',-->
+    <!--            headers: {-->
+    <!--                'Content-Type': 'application/json'-->
+    <!--            },-->
+    <!--            body: {-->
+    <!--                data: returnData()-->
+    <!--            }-->
+    <!--        }).then(res => {-->
+    <!--            if (res.status === 200) {-->
+    <!--                window.location.href = '';-->
+    <!--            } else {-->
+    <!--                console.log("Fail")-->
+    <!--                console.log(res.json())-->
+    <!--            }-->
+    <!--        }).catch(error => console.log(error))-->
 
-<!--    document.getElementById("confirmOrder").addEventListener("click", confirm);-->
-<!--    //const accountName = // lay bang session-->
-<!--    //const serviceName = // sua duoc cai url rewriting-->
-<!--    const date = document.getElementById("date");-->
-<!--    const returnPaymentId = paymentId;-->
-<!--    const returnTimeSlotId = timeSlotId;-->
+    <!--    }-->
 
-<!--    let returnData = (accountName, serviceName, date, returnPaymentId, returnTimeSlotId) => {-->
-<!--        const data = {-->
-<!--            accountName,-->
-<!--            serviceName,-->
-<!--            date,-->
-<!--            returnPaymentId,-->
-<!--            returnTimeSlotId-->
-<!--        }-->
-<!--    }-->
+    <!--</script>-->
 
-
-<!--    function confirm() {-->
-<!--        fetch('/api/...', {-->
-<!--            method: 'POST',-->
-<!--            headers: {-->
-<!--                'Content-Type': 'application/json'-->
-<!--            },-->
-<!--            body: {-->
-<!--                data: returnData()-->
-<!--            }-->
-<!--        }).then(res => {-->
-<!--            if (res.status === 200) {-->
-<!--                window.location.href = '';-->
-<!--            } else {-->
-<!--                console.log("Fail")-->
-<!--                console.log(res.json())-->
-<!--            }-->
-<!--        }).catch(error => console.log(error))-->
-
-
-<!--    }-->
-
-
-<!--</script>-->
-
-<div class="container" style="background: white">
-    <div class="row border" style="margin-top: 1rem;">
+    <div class="container" style="background: white">
+      <div class="row border" style="margin-top: 1rem">
         <div class="col-sm-5">
-            <img src="../static/img/house1.jpg" style="height: 25rem
-                ; width: 100%; margin: 15px;" alt=""/>
+          <img
+            src="../static/img/house1.jpg"
+            style="height: 25rem; width: 100%; margin: 15px"
+            alt=""
+          />
         </div>
         <div class="col-sm-7">
-            <div style="margin: 10px;">
-                <h2 th:text="${service.serviceName}" ></h2>
-                <p th:text="'Description: ' + ${service.description}" style="font-weight: 500; line-height: 1.8; font-size: 20px;"></p>
-                <p th:text="'Price: ' + ${service.price} + '$'" style="font-weight: 500; line-height: 1.8; font-size: 20px;"></p>
-                <p th:text="'Category Name: ' + ${cateName}" style="font-weight: 500; line-height: 1.8; font-size: 20px;"></p>
-                <div style="text-align: center; margin-top: 4rem">
-                     <div th:if="${session['loginedUser'] == null}">
-                         <button class="btn btn-primary" id="showFormButtonLogin">Order Service</button>
-                     </div>
-                    <div th:unless="${session['loginedUser'] == null}">
-                        <button class="btn btn-primary showFormBtn" id="showFormButton">Order Service</button>
-                    </div>
-                </div>
+          <div style="margin: 10px">
+            <h2 th:text="${service.serviceName}"></h2>
+            <p
+              th:text="'Description: ' + ${service.description}"
+              style="font-weight: 500; line-height: 1.8; font-size: 20px"
+            ></p>
+            <p
+              th:text="'Price: ' + ${service.price} + '$'"
+              style="font-weight: 500; line-height: 1.8; font-size: 20px"
+            ></p>
+            <p
+              th:text="'Category Name: ' + ${cateName}"
+              style="font-weight: 500; line-height: 1.8; font-size: 20px"
+            ></p>
+            <div style="text-align: center; margin-top: 4rem">
+              <div th:if="${session['loginedUser'] == null}">
+                <button class="btn btn-primary" id="showFormButtonLogin">
+                  Order Service
+                </button>
+              </div>
+              <div th:unless="${session['loginedUser'] == null}">
+                <button class="btn btn-primary showFormBtn" id="showFormButton">
+                  Order Service
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<div class="container" style="margin-top: 10px; background-color: white">
-    <div class="row">
+    <div class="container" style="margin-top: 10px; background-color: white">
+      <div class="row">
         <div class="col-sm-12" style="margin-left: 2rem">
-            <h3>Some comments</h3>
+          <h3>Some comments</h3>
         </div>
-    </div>
-    <div class="row" style="margin-top: 10px">
+      </div>
+      <div class="row" style="margin-top: 10px">
         <div class="col-sm-12" th:each="order : ${ordersByService}">
-            <div style="margin-left: 10rem;">
-                <p th:text="${order.comment}" style="line-height: 25px"></p>
-                <div th:if="${order.rating > 0}">
-                    <p>
-                        Rating:
-                        <span style="color: gold" th:each="star : ${#numbers.sequence(1, order.rating)}">&#9733;</span>
-                    </p>
-                    <hr>
-                </div>
+          <div style="margin-left: 10rem">
+            <p th:text="${order.comment}" style="line-height: 25px"></p>
+            <div th:if="${order.rating > 0}">
+              <p>
+                Rating:
+                <span
+                  style="color: gold"
+                  th:each="star : ${#numbers.sequence(1, order.rating)}"
+                  >&#9733;</span
+                >
+              </p>
+              <hr />
             </div>
-            <!--            <style>-->
-            <!--                .rating-container {-->
-            <!--                    display: inline-block;-->
-            <!--                }-->
-            <!--                .star {-->
-            <!--                    color: gold;-->
-            <!--                }-->
-            <!--            </style>-->
-            <!--                <div class="rating-container">-->
-            <!--                    <label>Rating:</label>-->
-            <!--                </div>-->
+          </div>
+          <!--            <style>-->
+          <!--                .rating-container {-->
+          <!--                    display: inline-block;-->
+          <!--                }-->
+          <!--                .star {-->
+          <!--                    color: gold;-->
+          <!--                }-->
+          <!--            </style>-->
+          <!--                <div class="rating-container">-->
+          <!--                    <label>Rating:</label>-->
+          <!--                </div>-->
         </div>
+      </div>
     </div>
-</div>
-<div id="formContainer" class="hidden" style="display: none;">
-    <div class="overlay"></div>
-    <div class="container">
+    <div id="formContainer" class="hidden" style="display: none">
+      <div class="overlay"></div>
+      <div class="container">
         <div class="row justify-content-center align-items-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center">Order Service</h5>
-                        <form id="my-form">
-                            <!-- Form fields and content -->
-                            <div class="form-group" style="margin-bottom: 15px">
-                                <label for="customerName">Customer Name:</label>
-                                <input id="customerName" th:value="${acc != null} ? ${acc.accountName} : ''" style="line-height: 15px;">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 15px" >
-                                <label for="ServiceName1">Service name:</label>
-                                <input id="ServiceName1" style="line-height: 15px;" th:field="${service.serviceName}" >
-                                <input type="hidden" th:value="${service.serviceId}" id="serviceName">
-                            </div>
-                            <label for="timeSlot">Time Slot</label>
-                            <div class="form-group" style="margin-left: 20px; margin-bottom: 15px;" id="timeSlot">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title" style="text-align: center">
+                  Order Service
+                </h5>
+                <form id="my-form">
+                  <!-- Form fields and content -->
+                  <div class="form-group" style="margin-bottom: 15px">
+                    <label for="customerName">Customer Name:</label>
+                    <input
+                      id="customerName"
+                      th:value="${acc != null} ? ${acc.accountName} : ''"
+                      style="line-height: 15px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 15px">
+                    <label for="ServiceName1">Service name:</label>
+                    <input
+                      id="ServiceName1"
+                      style="line-height: 15px"
+                      th:field="${service.serviceName}"
+                    />
+                    <input
+                      type="hidden"
+                      th:value="${service.serviceId}"
+                      id="serviceName"
+                    />
+                  </div>
+                  <label for="timeSlot">Time Slot</label>
+                  <div
+                    class="form-group"
+                    style="margin-left: 20px; margin-bottom: 15px"
+                    id="timeSlot"
+                  ></div>
+                  <label for="payment">Payment</label>
+                  <div
+                    class="form-group"
+                    id="payment"
+                    style="margin-left: 20px; margin-bottom: 15px"
+                  ></div>
+                  <div
+                    class="form-group"
+                    style="margin-left: 20px; margin-bottom: 15px"
+                  >
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="day" />
+                  </div>
 
-                            </div>
-                            <label for="payment">Payment</label>
-                            <div class="form-group" id="payment" style="margin-left: 20px; margin-bottom: 15px">
-
-                            </div>
-                            <div class="form-group" style="margin-left: 20px; margin-bottom: 15px">
-                                <label for="date">Date</label>
-                                <input type="date" id="date" name="day">
-                            </div>
-
-                            <!-- Other form fields go here -->
-                            <div style="text-align: center">
-                                <button type="submit" class="btn btn-primary" id="submitForm">Submit</button>
-                                <button type="submit" class="btn btn-danger" id="btnCancel">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                  <!-- Other form fields go here -->
+                  <div style="text-align: center">
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      id="submitForm"
+                    >
+                      Submit
+                    </button>
+                    <button type="submit" class="btn btn-danger" id="btnCancel">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<script>
+    <script>
+      document
+        .getElementById("showFormButton")
+        .addEventListener("click", function () {
+          var formContainer = document.getElementById("formContainer");
+          formContainer.style.display = "";
 
-    document.getElementById('showFormButton').addEventListener('click', function () {
-        var formContainer = document.getElementById('formContainer');
-        formContainer.style.display = '';
+          // Trigger reflow to enable CSS transition
+          void formContainer.offsetWidth;
 
-        // Trigger reflow to enable CSS transition
-        void formContainer.offsetWidth;
+          formContainer.style.opacity = "1";
+          formContainer.style.pointerEvents = "auto";
+        });
+    </script>
 
-        formContainer.style.opacity = '1';
-        formContainer.style.pointerEvents = 'auto';
-    });
-</script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .hidden {
-            display: none;
-        }
+      .hidden {
+        display: none;
+      }
 
-        #formContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
+      #formContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+      }
 
-        .popup-form {
-            background-color: #fff;
-            width: 400px;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
+      .popup-form {
+        background-color: #fff;
+        width: 400px;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
 
-        .popup-form h2 {
-            margin-bottom: 20px;
-        }
+      .popup-form h2 {
+        margin-bottom: 20px;
+      }
     </style>
 
-<!--<script th:inline="javascript">-->
-<!--    var orders = [[${ordersByService}]] ;-->
+    <!--<script th:inline="javascript">-->
+    <!--    var orders = [[${ordersByService}]] ;-->
 
-<!--    orders.forEach(function(order) {-->
-<!--        var rating = order.rating;-->
-<!--        var container = document.createElement("div");-->
-<!--        container.className = "rating-container";-->
-<!--        container.style.display = 'inline-block';-->
-<!--        var label = document.createElement('label');-->
-<!--        label.textContent = "Rating:";-->
-<!--        var ratingElement = document.querySelector('.rating-container');-->
+    <!--    orders.forEach(function(order) {-->
+    <!--        var rating = order.rating;-->
+    <!--        var container = document.createElement("div");-->
+    <!--        container.className = "rating-container";-->
+    <!--        container.style.display = 'inline-block';-->
+    <!--        var label = document.createElement('label');-->
+    <!--        label.textContent = "Rating:";-->
+    <!--        var ratingElement = document.querySelector('.rating-container');-->
 
-
-<!--        for (var i = 0; i < rating; i++) {-->
-<!--            var star = document.createElement('i');-->
-<!--            star.classList.add('bi', 'bi-star', 'star');-->
-<!--            star.classList.add('bi-star-fill');-->
-<!--            star.color = 'gold';-->
-<!--            container.appendChild(star);-->
-<!--            container.appendChild(label);-->
-<!--        }-->
-<!--        ratingElement.appendChild(document.createElement('br'))-->
-<!--    });-->
-<!--</script>-->
+    <!--        for (var i = 0; i < rating; i++) {-->
+    <!--            var star = document.createElement('i');-->
+    <!--            star.classList.add('bi', 'bi-star', 'star');-->
+    <!--            star.classList.add('bi-star-fill');-->
+    <!--            star.color = 'gold';-->
+    <!--            container.appendChild(star);-->
+    <!--            container.appendChild(label);-->
+    <!--        }-->
+    <!--        ratingElement.appendChild(document.createElement('br'))-->
+    <!--    });-->
+    <!--</script>-->
     <script>
-        const service = document.getElementById("serviceName");
-        serviceId = service.value;
+      const service = document.getElementById("serviceName");
+      serviceId = service.value;
 
-        const giveData = {
-            paymentId: "",
-            serviceId: serviceId,
-            day: "",
-            timeId: ""
-        };
-        fetch("/api/order/timeSlot")
-            .then(res => res.json())
-            .then(data =>  {
-                console.log(data);
-                data.forEach(timeSlot => {
-                    const containTimeSlot = document.getElementById("timeSlot");
+      const giveData = {
+        paymentId: "",
+        serviceId: serviceId,
+        day: "",
+        timeId: "",
+      };
+      fetch("/api/order/timeSlot")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          data.forEach((timeSlot) => {
+            const containTimeSlot = document.getElementById("timeSlot");
 
-                    const time = document.createElement("input");
-                    time.type ='radio';
-                    time.name = 'optionTime';
-                    time.value = timeSlot.timeSlotId;
+            const time = document.createElement("input");
+            time.type = "radio";
+            time.name = "optionTime";
+            time.value = timeSlot.timeSlotId;
 
-                    const timeSlotLabel = document.createElement('label');
-                    timeSlotLabel.textContent = timeSlot.startTime + '-' + timeSlot.endTime;
-                    timeSlotLabel.style.marginLeft = "10px";
+            const timeSlotLabel = document.createElement("label");
+            timeSlotLabel.textContent =
+              timeSlot.startTime + "-" + timeSlot.endTime;
+            timeSlotLabel.style.marginLeft = "10px";
 
-                    containTimeSlot.appendChild(time);
-                    containTimeSlot.appendChild(timeSlotLabel);
-                    containTimeSlot.appendChild(document.createElement('br'));
+            containTimeSlot.appendChild(time);
+            containTimeSlot.appendChild(timeSlotLabel);
+            containTimeSlot.appendChild(document.createElement("br"));
 
-                    time.addEventListener('change', function () {
-                        if (this.checked) {
-                            giveData.timeId = this.value;
-                            console.log(giveData.timeId);
-                        }
-                    })
-                })
-            })
-        fetch ("/api/order/payment")
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                data.forEach(payment => {
-                    const containPayment = document.getElementById("payment");
-                    // const divpayment = document.createElement("div")
-                    // divpayment.style.marginLeft = '20px';
-                    // divpayment.className = "form-group"
+            time.addEventListener("change", function () {
+              if (this.checked) {
+                giveData.timeId = this.value;
+                console.log(giveData.timeId);
+              }
+            });
+          });
+        });
+      fetch("/api/order/payment")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          data.forEach((payment) => {
+            const containPayment = document.getElementById("payment");
+            // const divpayment = document.createElement("div")
+            // divpayment.style.marginLeft = '20px';
+            // divpayment.className = "form-group"
 
-                    const Payment = document.createElement("input");
-                    Payment.type = "radio";
-                    Payment.name = "optionPayment";
-                    Payment.value = payment.paymentId;
-                    console.log(Payment.value)
+            const Payment = document.createElement("input");
+            Payment.type = "radio";
+            Payment.name = "optionPayment";
+            Payment.value = payment.paymentId;
+            console.log(Payment.value);
 
-                    const labelPayment = document.createElement("label");
-                    labelPayment.textContent = payment.paymentName;
-                    labelPayment.style.marginLeft = "10px";
+            const labelPayment = document.createElement("label");
+            labelPayment.textContent = payment.paymentName;
+            labelPayment.style.marginLeft = "10px";
 
+            containPayment.appendChild(Payment);
+            containPayment.appendChild(labelPayment);
+            containPayment.appendChild(document.createElement("br"));
 
-                    containPayment.appendChild(Payment)
-                    containPayment.appendChild(labelPayment);
-                    containPayment.appendChild(document.createElement('br'));
+            Payment.addEventListener("change", function () {
+              if (this.checked) {
+                giveData.paymentId = this.value;
+                console.log(giveData.paymentId);
+              }
+            });
+          });
+        });
+      document.getElementById("date").addEventListener("change", function () {
+        giveData.day = this.value;
+        console.log(giveData.day);
+      });
 
-                    Payment.addEventListener('change', function () {
-                        if (this.checked) {
-                            giveData.paymentId = this.value;
-                            console.log(giveData.paymentId);
+      // createData(serviceId, PaymentId, TimeSlotId, date);
+      // console.log(dataObj)
+      const form = document.getElementById("my-form");
 
-                        }
-                    })
-                })
-            })
-            document.getElementById("date").addEventListener("change", function () {
-                giveData.day = this.value
-                console.log(giveData.day)
-            })
-
-        // createData(serviceId, PaymentId, TimeSlotId, date);
-        // console.log(dataObj)
-        const form = document.getElementById("my-form")
-
-        form.addEventListener("submit", function (event) {
-            event.preventDefault();
-            console.log(giveData)
-            fetch("/api/order/createorder", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify(giveData)
-            })
-                .then((res) => {
-                    if (res.status === 200) {
-                        document.getElementById("formContainer").style.display = 'none';
-                        alert("You have ordered successfully");
-                        console.log("Successful");
-                    }
-                    else {
-                        console.log("Fail");
-                        alert("Fail in ordering");
-                    }
-                })
-                .catch((err) => {
-                    if (err.response.status === 401) {
-                        console.log("Exception")
-                    }
-                })
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        console.log(giveData);
+        fetch("/api/order/createorder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(giveData),
         })
+          .then((res) => {
+            if (res.status === 200) {
+              document.getElementById("formContainer").style.display = "none";
+              alert("You have ordered successfully");
+              console.log("Successful");
+            } else {
+              console.log("Fail");
+              alert("Fail in ordering");
+            }
+          })
+          .catch((err) => {
+            if (err.response.status === 401) {
+              console.log("Exception");
+            }
+          });
+      });
 
-        const cancelButton = document.getElementById("btnCancel");
-        cancelButton.addEventListener("click", function (event) {
-            event.preventDefault();
+      const cancelButton = document.getElementById("btnCancel");
+      cancelButton.addEventListener("click", function (event) {
+        event.preventDefault();
 
-            const divForm = document.getElementById("formContainer");
-            divForm.style.display = 'none';
-        })
-
+        const divForm = document.getElementById("formContainer");
+        divForm.style.display = "none";
+      });
     </script>
     <script>
-        const getSessionIsNull = document.getElementById("showFormButtonLogin");
-        getSessionIsNull.addEventListener('click', function () {
-            window.location.href = '/login';
-        })
-
+      const getSessionIsNull = document.getElementById("showFormButtonLogin");
+      getSessionIsNull.addEventListener("click", function () {
+        window.location.href = "/login";
+      });
     </script>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    const categoryList = document.querySelector('.main_categoryList');
-    const table = document.querySelector('.table');
-    const serviceList = document.querySelector('.service_list');
-    const logoutBtn = document.querySelector('.logout_btn');
-    const loginBtn = document.querySelector('.login_btn');
-    const navbar_nav = document.querySelector('.navbar-nav');
-    const navBarLi = navbar_nav.getElementsByTagName('li');
-    const categoryIcon = ["fas fa-broom", "fas fa-wrench"]
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const categoryList = document.querySelector(".main_categoryList");
+      const table = document.querySelector(".table");
+      const serviceList = document.querySelector(".service_list");
+      const logoutBtn = document.querySelector(".logout_btn");
+      const loginBtn = document.querySelector(".login_btn");
+      const navbar_nav = document.querySelector(".navbar-nav");
+      const navBarLi = navbar_nav.getElementsByTagName("li");
+      const categoryIcon = ["fas fa-broom", "fas fa-wrench"];
 
-    window.addEventListener('DOMContentLoaded', getSessionData, false)
-    logoutBtn.addEventListener('click', logOut, false)
+      window.addEventListener("DOMContentLoaded", getSessionData, false);
+      logoutBtn.addEventListener("click", logOut, false);
 
-    function getSessionData() {
-        fetch('/api/order/getSession')
-            .then(response => response.json())
-            .then(data => {
-                navBarLi[0].classList.add('d-none');
-                navBarLi[1].classList.remove('d-none');
-                navBarLi[2].classList.remove('d-none');
-            })
-            .catch((err) => {
-                navBarLi[0].classList.remove('d-none');
-                navBarLi[1].classList.add('d-none');
-                navBarLi[2].classList.add('d-none');
-            })
-    };
-</script>
-
-</body>
+      function getSessionData() {
+        fetch("/api/order/getSession")
+          .then((response) => response.json())
+          .then((data) => {
+            navBarLi[0].classList.add("d-none");
+            navBarLi[1].classList.remove("d-none");
+            navBarLi[2].classList.remove("d-none");
+          })
+          .catch((err) => {
+            navBarLi[0].classList.remove("d-none");
+            navBarLi[1].classList.add("d-none");
+            navBarLi[2].classList.add("d-none");
+          });
+      }
+    </script>
+  </body>
 </html>
