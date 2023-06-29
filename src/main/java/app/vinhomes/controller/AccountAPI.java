@@ -12,14 +12,10 @@ import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.customer.PhoneRepository;
 
-import app.vinhomes.security.email.email_service.EmailService;
-
-import app.vinhomes.security.esms.ESMSController;
-import app.vinhomes.security.esms.otp_service.ESMSservice;
 import app.vinhomes.security.esms.otp_service.OTPService;
 import app.vinhomes.service.AccountService;
+import app.vinhomes.service.PhoneService;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Post;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,10 +25,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +35,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/createAccountAPI")
-public class CreateAccountAPI {
+public class AccountAPI {
 
     @Autowired
     private PhoneRepository phoneRepository;
@@ -53,7 +47,8 @@ public class CreateAccountAPI {
     private AccountService accountService;
     @Autowired
     private OTPService otpService;
-
+    @Autowired
+    private PhoneService phoneService;
     @Autowired
     private ApplicationEventPublisher eventPublisher;//CreateErrorCatcher
 
@@ -220,6 +215,20 @@ public class CreateAccountAPI {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR server error try again later");
+        }
+    }
+    @GetMapping(value = "/getAllPhonenumber",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Phone>> getAllPhonenumberByAccount(HttpServletRequest request){
+        try{
+            if(request.getSession(false) == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }else{
+                Account account = (Account) request.getSession().getAttribute("loginedUser");
+                return ResponseEntity.status(HttpStatus.OK).body(phoneService.getAllPhonenumberByAccountId(account.getAccountId()));
+            }
+            }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

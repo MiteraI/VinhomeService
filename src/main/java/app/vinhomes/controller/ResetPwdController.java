@@ -3,7 +3,10 @@ package app.vinhomes.controller;
 
 import app.vinhomes.CustomerSessionListener;
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.customer.PhoneRepository;
+import com.azure.core.annotation.Get;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +29,8 @@ public class ResetPwdController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomerSessionListener customerSessionListener;
+    @Autowired
+    private PhoneRepository phoneRepository;
 
     @RequestMapping(value = "/resetPwd/{uid}", method = RequestMethod.POST)
     public ResponseEntity<String> resetPwd(@PathVariable("uid") Long uid, @RequestBody JsonNode data, HttpServletRequest request){
@@ -56,5 +61,10 @@ public class ResetPwdController {
     @GetMapping(value = "/getallsession",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<HttpSession> test(){
         return customerSessionListener.getActiveSessions();
+    }
+
+    @GetMapping(value = "/testGetPhone",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Phone> test2(){
+        return phoneRepository.findByAccountId(27l);
     }
 }

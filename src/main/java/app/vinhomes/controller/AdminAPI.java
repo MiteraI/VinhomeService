@@ -71,7 +71,7 @@ public class AdminAPI {
         lastname = errorChecker.checkLastname(request.get("txtLastname").asText().trim());
         date = errorChecker.checkDate(request.get("txtDate").asText());
         phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());
-
+        System.out.println("pass get error");
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(password);
@@ -80,7 +80,6 @@ public class AdminAPI {
         errorList.add(lastname);
         errorList.add(date);
         errorList.add(phonenumber);
-
         CreateErrorCatcher error =
                 new CreateErrorCatcher
                         (username, password, email, firstname, lastname, date,phonenumber, "");

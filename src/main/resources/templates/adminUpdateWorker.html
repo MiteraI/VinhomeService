@@ -1,0 +1,339 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+    <!-- update worker form -->
+    <!-- update worker form -->
+    <!-- update worker form -->
+    <div class="container-fluid fixed-top vh-100 mt-5 " style="display: block;" id="w-update-form-container">
+        <div class="container d-flex justify-content-center align-items-center   ">
+            <div class="container w-75 border border-black   bg-white rounded  p-5   " style="z-index: 99;">
+                <form id="w-update-form" class="">
+                    <div class="container p-0 m-0 d-flex justify-content-center mb-3">
+                        <div class="align-items-center">
+                            <label> <!-- ID: -->ID:
+                                <input name="txtID" id="w-update-form-id" type="hidden" value="">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Username</label>
+                            <input type="text" id="w-update-form-username" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> email</label>
+                            <input type="text" id="w-update-form-email" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+                    <div class="container p-0 m-0 d-flex">
+                        
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Firstname</label>
+                            <input type="text" id="w-update-form-firstname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtFirstname" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Lastname</label>
+                            <input type="text" id="w-update-form-lastname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtLastname" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+
+                    <div class="container d-flex p-0 m-0">
+                        
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Dob</label>
+                            <input type="date" id="w-update-form-dob" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtDate" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> PhoneNumber</label>
+                            <div class="input-group">
+                                <input type="text" name="txtPhonenumber" class="form-control"
+                                    aria-label="Text input with dropdown button" id="w-update-form-phonenumber"
+                                    value="">
+                                <input type="hidden" name="txtPhoneID" value="" id="w-update-form-phoneid">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Dropdown</button>
+                                    <div class="dropdown-menu" id="w-dropdown-phone">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
+                            placeholder="" name="txtPhonenumber"> -->
+                            <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+                    </div>
+                    <!-- <div class="container p-0 m-0 d-flex">
+                        
+
+                    </div> -->
+                    <div class="container d-flex p-0 m-0 border-top border-2 ">
+                        <div class="form-group col-6  p-0 mt-3">
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label>days off: &nbsp;&nbsp; <input type="text" name="txtDayoff" id="w-dayoff" value=""
+                                        class="w-25 me-3 float-end " readonly="readonly"></label>
+                                <div class="btn-group w-25" style="margin-right: 25%" role="group"
+                                    aria-label="Basic outlined example">
+                                    <button type="button" id="w-dayoff-plus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-dayoff","+")'>+</button>
+                                    <button type="button" id="w-dayoff-minus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-dayoff","-")'>-</button>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label>work count:&nbsp;&nbsp; <input type="text" name="txtWorkcount" id="w-workcount"
+                                        value="" class="w-25 me-3 float-end" readonly="readonly"></label>
+                                <div class="btn-group w-25" style="margin-right: 25%" role="group"
+                                    aria-label="Basic outlined example">
+                                    <button type="button" id="w-workcount-plus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-workcount","+")'>+</button>
+                                    <button type="button" id="w-workcount-minus" class="btn btn-outline-primary w-50"
+                                        onclick='plusAndMinus("w-workcount","-")'>-</button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label>status: <input type="text" id="w-status-text" value=""
+                                        class="w-25 me-3 float-end" readonly="readonly">
+                                    <input type="hidden" name="txtStatus" id="w-status" value=""
+                                        class="w-25 me-3 float-end">
+                                </label>
+                                <div class="btn-group w-50" style="margin-right: 25%" role="group"
+                                    aria-label="Basic outlined example">
+                                    <button type="button" id="w-status-free" class="btn btn-outline-primary w-50"
+                                        onclick="workerStatus(this.id)">free</button>
+                                    <button type="button" id="w-status-off" class="btn btn-outline-primary w-50"
+                                        onclick="workerStatus(this.id)">Off</button>
+                                    <!-- <input type="radio" class="btn-check w-50" name="w-status-radio" id="w-status-free"
+                                    autocomplete="off" checked='true'>
+                                <label class="btn btn-outline-primary w-50" for="w-status-free">Free</label>
+
+                                <input type="radio" class="btn-check w-50" name="w-status-radio" id="w-status-off"
+                                    autocomplete="off">
+                                <label class="btn btn-outline-primary w-50" for="w-status-off">Off</label> -->
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
+                                <label> Service</label>
+                                <div class="input-group">
+                                    <!-- dont take the below input in server!!!! -->
+                                    <input type="text" name="txtService" class="form-control"
+                                        aria-label="Text input with dropdown button" id="w-service" value=""
+                                        readonly="readonly">
+
+                                    <input type="hidden" name="txtServiceId" id="w-serviceid" value="">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">Dropdown</button>
+                                        <div class="dropdown-menu" id="w-dropdown-service">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+
+                        </div>
+                    </div>
+
+                    <div class=" container-fluid d-flex justify-content-between">
+                        <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
+                        <button type="button" class="btn btn-primary text-white" onclick="getAdminWorkerPage()">close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const getWorkerId = window.location.href.split(/(\\|\/)/g).pop()
+    console.log(getWorkerId)
+    showFullWorkerInfo(getWorkerId)
+
+
+    const w_update_form = document.getElementById("w-update-form");
+    w_update_form.addEventListener('submit', async function (event) {
+        console.log(w_update_form)
+        event.preventDefault();
+        var form_data = new FormData(w_update_form);
+        var data = Object.fromEntries(form_data);
+        console.log(data);
+        var response = await fetch("http://localhost:8080/UserRestController//1",
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+        console.log(response.status)
+    })
+
+
+    function workerStatus(button_id) {
+        console.log(button_id)
+        if (button_id == "w-status-free") {
+            document.getElementById("w-status-free").checked = true;
+            document.getElementById("w-status-off").checked = false;
+            document.getElementById("w-status").value = 1;
+            document.getElementById("w-status-text").value = "free";
+        } else {
+            document.getElementById("w-status-free").checked = false;
+            document.getElementById("w-status-off").checked = true;
+            document.getElementById("w-status").value = 0;
+            document.getElementById("w-status-text").value = "off";
+        }
+    }
+    function plusAndMinus(number_id, caltype) {
+        var num = parseInt(document.getElementById(`${number_id}`).value);
+        parseInt()
+        if (caltype === "+") {
+            num += 1;
+            document.getElementById(`${number_id}`).value = num;
+        } else {
+            if (num <= 0) {
+                return;
+            } else {
+                num -= 1;
+                document.getElementById(`${number_id}`).value = num;
+            }
+
+        }
+    }
+
+    async function showFullWorkerInfo(AccountID) {
+        document.getElementById("w-update-form").reset();
+        //  ///get account info
+        console.log(AccountID)
+        var response1 = await fetch(`http://localhost:8080/UserRestController/getAccountInfo/${getWorkerId}`, {
+            method: "GET"
+        });
+        console.log("yes get all info worker ")
+        var account = await response1.json(); console.log(await account);
+        //get phone of account
+        var response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${getWorkerId}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        console.log("yes get in phone");
+        var phone = await response2.json(); console.log(await phone)
+        /////get worker status
+        var response3 = await fetch(`http://localhost:8080/UserRestController/getWorkerStatus/${getWorkerId}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        var worker_status = await response3.json(); console.log(await worker_status)
+        /////get service category
+        var response4 = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
+            method: "get",
+        });
+        console.log("yest get worker status success");
+
+        ////////////////////////////////////////////////
+        ////dropdown menu set up
+        var drop_down_menu = document.getElementById("w-dropdown-phone"); console.log(drop_down_menu)
+        drop_down_menu.innerHTML = "";
+        var output = "";
+        for (var i in await phone) {
+            output = `
+            <a class="dropdown-item" onclick="phoneInputUpdate(${phone[i].number}, ${phone[i].phoneId})" >
+                ${phone[i].number}
+            </a>`;
+            drop_down_menu.innerHTML += output;
+        }
+        if (phone.length != 0) {
+            document.getElementById("w-update-form-phonenumber").value = phone[0].number;
+            document.getElementById("w-update-form-phoneid").value = phone[0].phoneId;
+        } else {
+            document.getElementById("w-update-form-phonenumber").value = "";
+            document.getElementById("w-update-form-phoneid").value = "";
+        }
+
+        //this is to get 1 phone to the form if there is one
+        ///form info setup
+        document.getElementById("w-update-form-id").value = account.accountId;
+        document.getElementById("w-update-form-username").value = account.accountName;
+        document.getElementById("w-update-form-firstname").value = account.firstName;
+        document.getElementById("w-update-form-lastname").value = account.lastName;
+        document.getElementById("w-update-form-dob").value = account.dob;
+        document.getElementById("w-update-form-email").value = account.email
+        console.log(document.getElementById("w-update-form-id").value)
+        document.getElementById("w-dayoff").value = worker_status.allowedDayOff;
+        document.getElementById("w-workcount").value = worker_status.workCount;
+        console.log(worker_status.status)
+        if (worker_status.status == 0) {
+            workerStatus("w-status-off")
+        } else {
+            workerStatus("w-status-free")
+        }
+        console.log("get service list success")
+        var service_list = await response4.json();
+        var drop_down_service = document.getElementById("w-dropdown-service"); console.log(drop_down_service)
+        drop_down_service.innerHTML = "";
+        var output = "";
+        for (var i in await service_list) {
+            output =
+                `
+            <a class="dropdown-item" onclick="updateAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
+                ${service_list[i].serviceCategoryName}
+            </a>
+        `;
+            drop_down_service.innerHTML += output;
+        }
+        document.getElementById("w-service").value = worker_status.serviceCategory.serviceCategoryName;
+        document.getElementById("w-serviceid").value = worker_status.serviceCategory.serviceCategoryId;
+
+    }
+    function phoneInputUpdate(number, id) {
+        console.log(number)
+        console.log(id)
+        document.getElementById("update-form-phonenumber").value = number;
+        document.getElementById("update-form-phoneid").value = id
+    }
+    // function getAdminWorkerPage() {
+    //     console.log("inside return main page")
+    //     window.location.href = "/";
+    // }
+    function getAdminWorkerPage() {
+    console.log("inside return main page")
+    window.location.href = "/";
+}
+
+</script>
+<script src="../static/js/AdminPublicFunction.js"></script>
+</html>

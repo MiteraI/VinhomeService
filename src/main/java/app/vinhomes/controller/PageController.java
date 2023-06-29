@@ -47,7 +47,7 @@ public class PageController {
         if (acc != null) {
             model.addAttribute("acc", acc);
             if (acc.getRole() == 2) {
-                return "AdminShow";
+                return "adminDisplayWorker";
             }
             else if (acc.getRole() == 1) {
                 return "scheduleTable";
@@ -242,6 +242,25 @@ public class PageController {
         return "forgetAccount";
     }
 
+    @RequestMapping(value = "/adminDisplayWorker_page",method = RequestMethod.GET)
+    public String adminDisplayWorker(){
+        return "adminDisplayWorker";
+    }
+    @RequestMapping(value = "/adminDisplayCustomer_page",method = RequestMethod.GET)
+    public String adminDisplayCustomer(){
+        return "adminDisplayCustomer";
+    }
+
+    @RequestMapping(value = "/admin_UpdateWorker/{workerAccountId}",method = RequestMethod.GET)
+    public String adminUpdateWorker(@PathVariable String workerAccountId){
+       return "adminUpdateWorker";//?accountId="+workerAccountId//redirect:/
+    }
+    @RequestMapping(value = "/admin_UpdateCustomer/{customerId}",method = RequestMethod.GET)
+    public String adminUpdateWorker(){
+        return "adminUpdateCustomer";
+    }
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    publ
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)
     public String TESTBED() {
         return "TESTBED";

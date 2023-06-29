@@ -10,6 +10,7 @@ import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.entity.worker.Leave;
 import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.*;
+import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.*;
 import app.vinhomes.repository.worker.LeaveRepository;
 import app.vinhomes.repository.worker.WorkerStatusRepository;
@@ -54,7 +55,7 @@ public class OrderService {
     @Autowired
     private LeaveRepository leaveRepository;
     @Autowired
-    private PaymentCategoryRepository paymentCategoryRepository;
+    private PhoneRepository phoneRepository;
 
     private Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {//
 
@@ -86,7 +87,8 @@ public class OrderService {
                 .workDay(LocalDate.parse(day))
                 .timeSlot(timeSlot)
                 .build();
-
+        Long phoneId = orderJson.get("phonenumberId").asLong();
+        String phonenumber = phoneRepository.findById(phoneId).get().getNumber();
         //Initialize list of appropriate workers statuses for find worker account
         List<WorkerStatus> workerStatuses = workerStatusRepository.findByServiceCategoryAndStatusOrderByWorkCountAsc(
                 serviceCategoryRepository.findById(service.getServiceCategory().getServiceCategoryId()).get()
@@ -176,6 +178,7 @@ public class OrderService {
                 .payment(payment)
                 .schedule(schedule)
                 .status(OrderStatus.PENDING)
+                .phoneNumber(phonenumber)
                 .build();
         schedule.setOrder(order);
         return orderRepository.save(order);
