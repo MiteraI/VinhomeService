@@ -232,7 +232,6 @@ public class PageController {
     public String verification(@PathVariable String username) {
         return "redirect:/verificationMethod?username=" + username;
     }
-
     @RequestMapping(value = "/verificationMethod",method = RequestMethod.GET)
     public String verificationMethodReturn() {
         return "verificationMethod";
@@ -250,7 +249,6 @@ public class PageController {
     public String adminDisplayCustomer(){
         return "adminDisplayCustomer";
     }
-
     @RequestMapping(value = "/admin_UpdateWorker/{workerAccountId}",method = RequestMethod.GET)
     public String adminUpdateWorker(@PathVariable String workerAccountId){
        return "adminUpdateWorker";//?accountId="+workerAccountId//redirect:/

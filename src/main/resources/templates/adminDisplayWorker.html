@@ -41,11 +41,6 @@
                                     <h4>USER</h4>
                                 </a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
-                                    <h4>Transaction List</h4>
-                                </a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
                                     <h4>See Leave Report</h4>
@@ -155,7 +150,8 @@
                         <label> PhoneNumber</label>
                         <input type="text" class="form-control form-control-sm  w-75" placeholder=""
                             name="txtPhonenumber">
-                        <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;"> asdf
+                        </p>
                     </div>
                     <div class=" col-6  "></div>
                 </div>
@@ -173,7 +169,8 @@
                             <div class="dropdown-menu" id="w-create-form-dropdown-service">
 
                             </div>
-                            <p id="error-service" class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                            <p id="error-service" class="error-message text-danger" style="visibility: hidden;"> asdf
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -191,7 +188,7 @@
 </body>
 <script src="../static/js/AdminPublicFunction.js"></script>
 <script>
-    var error_username,error_password,error_email,error_firstname,error_lastname,error_dob,error_phonenumber,error_service;
+    var error_username, error_password, error_email, error_firstname, error_lastname, error_dob, error_phonenumber, error_service;
     error_username = document.getElementById("error-username")
     error_password = document.getElementById("error-password")
     error_email = document.getElementById("error-email")
@@ -246,21 +243,26 @@
                 <td>
                     <button><a href="/admin_UpdateWorker/${data[i].accountId}">UPDATE</a></button>
                 </td>
-                <td>
-                    <button onclick='deleteByID(${data[i].accountId})'>DELETE</button>
-                </td>
-        `;
-            if (data[i].role == 0) {
-                output += `<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>View order</button></td></tr>`
+                `
+            if (data[i].accountStatus == 1) {
+                output +=
+                `<td>
+                    <button onclick='deleteByID(${data[i].accountId})'>del</button>
+                </td>`
+            } else {
+                output +=
+                ` <td>
+                    <button onclick='deleteByID(${data[i].accountId})'>active</button>
+                </td>`;
             }
-            else {
-                output += `</tr>`
-            }
+            
+
             table_tag.innerHTML += output;
         }
     }
 
     async function openCreateForm() {
+
         // document.querySelectorAll(".overlay")[0].style.display = "block";
         var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
             method: "GET"
@@ -320,7 +322,15 @@
 
     function closeCreateForm() {
         // document.querySelectorAll(".overlay")[0].style.display = "none";
-        document.querySelectorAll(".form")[0].style.display = "none";
+        document.getElementById("create-form").reset()
+        error_username.style.visibility = "hidden";
+        error_password.style.visibility = "hidden";
+        error_email.style.visibility = "hidden";
+        error_firstname.style.visibility = "hidden";
+        error_lastname.style.visibility = "hidden";
+        error_dob.style.visibility = "hidden";
+        error_phonenumber.style.visibility = "hidden";
+        //document.querySelectorAll(".form")[0].style.display = "none";
 
     }
     const form = document.getElementById("create-form");
@@ -341,52 +351,60 @@
         var status = await response.status
         var responseData = await response.json()
         console.log(responseData)
-        if(status < 200 || status > 300 ){
-            error_username.style.visibility = "visible"; error_username.innerHTML = responseData.usernameErr
-            error_password.style.visibility = "visible"; error_password.innerHTML = responseData.passwordErr
-            error_email.style.visibility = "visible"; error_email.innerHTML = responseData.emailErr
-            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = responseData.firstnameErr
-            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = responseData.lastnameErr
-            error_dob.style.visibility = "visible"; error_dob.innerHTML = responseData.dateErr
-            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = responseData.phonenumberErr
-            //error_service.style.visibility = "visible"; error_service.innerHTML = responseData.usernameErr
-        }else{
-            error_username.style.visibility = "hidden";
-            error_password.style.visibility = "hidden"; 
-            error_email.style.visibility = "hidden";
-            error_firstname.style.visibility = "hidden"; 
-            error_lastname.style.visibility = "hidden";
-            error_dob.style.visibility = "hidden";
-            error_phonenumber.style.visibility = "hidden"; 
-            
+        if (status < 200 || status > 300) {
+            error_username.style.visibility = "visible"; error_username.innerHTML = '❌ ' + "." + responseData.usernameErr
+            error_password.style.visibility = "visible"; error_password.innerHTML = '❌ ' + "." + responseData.passwordErr
+            error_email.style.visibility = "visible"; error_email.innerHTML = '❌ ' + "." + responseData.emailErr
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = '❌ ' + "." + responseData.firstnameErr
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = '❌ ' + "." + responseData.lastnameErr
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = '❌ ' + "." + responseData.dateErr
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = '❌ ' + "." + responseData.phonenumberErr
+            if (responseData.usernameErr == "") { error_username.innerHTML = "✔"; }
+            if (responseData.emailErr == "") { error_email.innerHTML = "✔"; }
+            if (responseData.firstnameErr == "") { error_firstname.innerHTML = "✔"; }
+            if (responseData.lastnameErr == "") { error_lastname.innerHTML = "✔"; }
+            if (responseData.dateErr == "") { error_dob.innerHTML = "✔"; }
+            if (responseData.phonenumberErr == "") { error_phonenumber.innerHTML = "✔"; }
+        } else {
+            error_username.style.visibility = "visible"; error_username.innerHTML = "✔";
+            error_password.stylse.visibility = "visible"; error_password.innerHTML = "✔";
+            error_email.style.visibility = "visible"; error_email.innerHTML = "✔";
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "✔";
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "✔";
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = "✔";
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "✔";
+            error_address.style.visibility = "visible"; error_address.innerHTML = "✔";
+            closeCreateForm()
+            getWorkerList()
         }
-    //    if (response.status == 200) {
-    //         error_message = await response.json()
-    //         var list = document.getElementsByClassName("error-message");
-    //         var i = 0;
-    //         for (var key in error_message) {
-    //             if (error_message[key] !== "") {
-    //                 list[i].innerHTML = error_message[key];
-    //                 list[i].style.visibility = "visible";
-    //                 i += 1;
-    //             } else {
-    //                 console.log(list[i].innerHTML)
-    //                 list[i].innerHTML = "appropriate input";
-    //                 list[i].style.visibility = "hidden";
-    //                 i += 1;
-    //             }
-    //         }
-    //         console.log('yes successs')
-    //         alert("successfully added new worker, press ok to refresh list");
-    //         closeCreateForm();
-    //         delay(1000).then(getWorkerList());
-    //         form.reset();
-    //     } 
-        }
+
+    }
     )
     //delay 1 second
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
+    }
+    async function deleteByID(id) {
+        console.log(id)
+        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        );
+        var status = await response.status
+        var bodyJson = await response.json()
+        console.log("yes call api success DELETE")
+        if (status >= 200 && status <= 300) {
+            console.log(bodyJson[0].role)
+            printRow(bodyJson, "worker-list");
+        }
+        else {
+            alert("delete fail, might be server side");
+            return;
+        }
     }
 </script>
 

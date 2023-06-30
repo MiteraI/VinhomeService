@@ -75,13 +75,16 @@ function sortByLastname(htmlstuff) {
         printRow(data, ID)
     }
 }
-
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
 //console.log(document.querySelectorAll('.item-to-search')[0].textContent)
 function logOut() {
     fetch('/api/logout', { method: 'POST' }).then(window.location.replace("/"))
 }
-function getAdminWorkerPage() {
+function getHomePage() {
     console.log("inside return main page")
     window.location.href = "/";
 }
+
 

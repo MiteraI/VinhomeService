@@ -34,40 +34,43 @@
                             <label> Username</label>
                             <input type="text" id="w-update-form-username" class="form-control form-control-sm w-75"
                                 aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
-                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                            <p id="error-username" class="error-message text-danger " style="visibility: hidden;">adsf
+                            </p>
                         </div>
                         <div class="form-group col-6  p-0 m-0">
                             <label> email</label>
                             <input type="text" id="w-update-form-email" class="form-control form-control-sm w-75"
                                 aria-describedby="emailHelp" placeholder="" name="txtEmail">
-                            <p class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                            <p id="error-email" class="error-message text-danger " style="visibility: hidden;">adsf</p>
                         </div>
                     </div>
 
                     <div class="container p-0 m-0 d-flex">
-                        
+
                         <div class="form-group col-6  p-0 m-0">
                             <label> Firstname</label>
                             <input type="text" id="w-update-form-firstname" class="form-control form-control-sm w-75"
                                 placeholder="" name="txtFirstname" value="">
-                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                            <p id="error-firstname" class="error-message text-danger" style="visibility: hidden;">adsf
+                            </p>
                         </div>
                         <div class="form-group col-6  p-0 m-0">
                             <label> Lastname</label>
                             <input type="text" id="w-update-form-lastname" class="form-control form-control-sm w-75"
                                 placeholder="" name="txtLastname" value="">
-                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                            <p id="error-lastname" class="error-message text-danger" style="visibility: hidden;">adsf
+                            </p>
                         </div>
                     </div>
 
 
                     <div class="container d-flex p-0 m-0">
-                        
+
                         <div class="form-group col-6  p-0 m-0">
                             <label> Dob</label>
                             <input type="date" id="w-update-form-dob" class="form-control form-control-sm w-75"
                                 placeholder="" name="txtDate" value="">
-                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                            <p id="error-dob" class="error-message text-danger" style="visibility: hidden;">adsf</p>
                         </div>
                         <div class="form-group col-6  p-0 m-0">
                             <label> PhoneNumber</label>
@@ -87,7 +90,8 @@
                             </div>
                             <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
                             placeholder="" name="txtPhonenumber"> -->
-                            <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                            <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;">
+                                asdf</p>
                         </div>
                     </div>
                     <!-- <div class="container p-0 m-0 d-flex">
@@ -97,7 +101,8 @@
                     <div class="container d-flex p-0 m-0 border-top border-2 ">
                         <div class="form-group col-6  p-0 mt-3">
                             <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
-                                <label>days off: &nbsp;&nbsp; <input type="text" name="txtDayoff" id="w-dayoff" value=""
+                                <label>days off: &nbsp;&nbsp;
+                                    <input type="text" name="txtDayoff" id="w-dayoff" value=""
                                         class="w-25 me-3 float-end " readonly="readonly"></label>
                                 <div class="btn-group w-25" style="margin-right: 25%" role="group"
                                     aria-label="Basic outlined example">
@@ -120,8 +125,9 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end align-items-center mt-1 mb-1">
-                                <label>status: <input type="text" id="w-status-text" value=""
-                                        class="w-25 me-3 float-end" readonly="readonly">
+                                <label>status:
+                                    <input type="text" id="w-status-text" value="" class="w-25 me-3 float-end"
+                                        readonly="readonly">
                                     <input type="hidden" name="txtStatus" id="w-status" value=""
                                         class="w-25 me-3 float-end">
                                 </label>
@@ -167,7 +173,8 @@
 
                     <div class=" container-fluid d-flex justify-content-between">
                         <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
-                        <button type="button" class="btn btn-primary text-white" onclick="getAdminWorkerPage()">close</button>
+                        <button type="button" class="btn btn-primary text-white"
+                            onclick="getAdminWorkerPage()">close</button>
                     </div>
                 </form>
             </div>
@@ -179,7 +186,13 @@
     const getWorkerId = window.location.href.split(/(\\|\/)/g).pop()
     console.log(getWorkerId)
     showFullWorkerInfo(getWorkerId)
-
+    var error_username, error_email, error_firstname, error_lastname, error_phonenumber, error_dob, error_address
+    error_username = document.getElementById("error-username")
+    error_email = document.getElementById("error-email")
+    error_firstname = document.getElementById("error-firstname")
+    error_lastname = document.getElementById("error-lastname")
+    error_phonenumber = document.getElementById("error-phonenumber")
+    error_dob = document.getElementById("error-dob")
 
     const w_update_form = document.getElementById("w-update-form");
     w_update_form.addEventListener('submit', async function (event) {
@@ -188,16 +201,48 @@
         var form_data = new FormData(w_update_form);
         var data = Object.fromEntries(form_data);
         console.log(data);
-        var response = await fetch("http://localhost:8080/UserRestController//1",
+        var response = await fetch("http://localhost:8080/UserRestController/updateAccountWorker/1",
             {
-                method: "POST",
+                method: "put",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
 
+        var status = await response.status
+        var responseData = await response.json()
         console.log(response.status)
+        console.log(responseData)
+        if (status >= 200 && status <= 300) {
+            error_username.style.visibility = "hidden";
+            //error_password.style.visibility = "hidden"; 
+            error_email.style.visibility = "hidden";
+            error_firstname.style.visibility = "hidden";
+            error_lastname.style.visibility = "hidden";
+            error_dob.style.visibility = "hidden";
+            error_phonenumber.style.visibility = "hidden";
+            console.log('yes successs')
+            alert("successfully update");
+            delay(500).then(() => {
+                getAdminWorkerPage()
+            })
+        } else {
+            error_username.style.visibility = "visible"; error_username.innerHTML = "." + responseData.usernameErr
+            //error_password.stylse.visibility = "visible"; error_password.innerHTML = responseData.passwordErr
+            error_email.style.visibility = "visible"; error_email.innerHTML = "." + responseData.emailErr
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "." + responseData.firstnameErr
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "." + responseData.lastnameErr
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = "." + responseData.dateErr
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "." + responseData.phonenumberErr
+            if(responseData.usernameErr == ""){error_username.style.visibility = "hidden";}
+            if(responseData.emailErr == ""){ error_email.style.visibility = "hidden";}
+            if(responseData.firstnameErr == ""){error_firstname.style.visibility = "hidden"; }
+            if(responseData.lastnameErr == ""){error_lastname.style.visibility = "hidden";}
+            if(responseData.dateErr == ""){error_dob.style.visibility = "hidden";}
+            if(responseData.phonenumberErr == ""){ error_phonenumber.style.visibility = "hidden";}
+        }
+
     })
 
 
@@ -206,12 +251,12 @@
         if (button_id == "w-status-free") {
             document.getElementById("w-status-free").checked = true;
             document.getElementById("w-status-off").checked = false;
-            document.getElementById("w-status").value = 1;
+            document.getElementById("w-status").value = 0;
             document.getElementById("w-status-text").value = "free";
         } else {
             document.getElementById("w-status-free").checked = false;
             document.getElementById("w-status-off").checked = true;
-            document.getElementById("w-status").value = 0;
+            document.getElementById("w-status").value = 1;
             document.getElementById("w-status-text").value = "off";
         }
     }
@@ -296,7 +341,7 @@
         document.getElementById("w-dayoff").value = worker_status.allowedDayOff;
         document.getElementById("w-workcount").value = worker_status.workCount;
         console.log(worker_status.status)
-        if (worker_status.status == 0) {
+        if (worker_status.status == 1) {
             workerStatus("w-status-off")
         } else {
             workerStatus("w-status-free")
@@ -325,15 +370,18 @@
         document.getElementById("update-form-phonenumber").value = number;
         document.getElementById("update-form-phoneid").value = id
     }
-    // function getAdminWorkerPage() {
-    //     console.log("inside return main page")
-    //     window.location.href = "/";
-    // }
-    function getAdminWorkerPage() {
-    console.log("inside return main page")
-    window.location.href = "/";
-}
 
+    function getAdminWorkerPage() {
+        console.log("inside return main page")
+        window.location.href = "/";
+    }
+    function updateAccountService(name, id) {
+        console.log(name);
+        console.log(id);
+        document.getElementById("w-service").value = name;
+        document.getElementById("w-serviceid").value = id;
+    }
 </script>
 <script src="../static/js/AdminPublicFunction.js"></script>
+
 </html>

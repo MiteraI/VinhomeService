@@ -111,6 +111,7 @@ public class AccountAPI {
                     .role(rolenumber)
                     .accountStatus(1)
                     .address(addr)
+                    .isBlock(false)
                     .build();
 
             Account response = authenticationService.register(acc);

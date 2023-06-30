@@ -31,11 +31,13 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @org.springframework.stereotype.Service
 public class OrderService {
+    private List<Order> InvalidCancelOrder = new LinkedList<>();
     @Value("${time.hourpolicy}")
     private int HourPolicy;
     @Autowired
@@ -283,6 +285,18 @@ public class OrderService {
             return false;
         }
     }
-
+    public List<Order> getInvalidCancelOrder() {
+        return this.InvalidCancelOrder;
+    }
+    public void addInvalidCancelOrder(Order order){
+        List<Order> getList = getInvalidCancelOrder();
+        for(Order item : getList){
+            if(item.getOrderId().equals(order.getOrderId())){
+                System.out.println("this order is already in the List");
+                return;
+            }
+        }
+        getList.add(order);
+    }
 
 }

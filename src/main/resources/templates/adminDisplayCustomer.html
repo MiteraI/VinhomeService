@@ -160,19 +160,21 @@
                 <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
                 <td>
                     <button><a href="/admin_UpdateCustomer/${data[i].accountId}">UPDATE</a></button>
-                </td>
-                <td>
-                    <button onclick='deleteByID(${data[i].accountId})'>DELETE</button>
-                </td>
-                
-        `;
-            if (data[i].role == 0) {
-                output += `<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>order</button></td>
-                </tr>`
+                </td>`
+            if (data[i].accountStatus == 1) {
+                output +=
+                `<td>
+                    <button onclick='deleteByID(${data[i].accountId})'>del</button>
+                </td>`
+            }else{
+                output+=
+                ` <td>
+                    <button onclick='deleteByID(${data[i].accountId})'>active</button>
+                </td>`;
             }
-            else {
-                output += `</tr>`
-            }
+            output += 
+            `<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>order</button></td>
+            </tr>`
             table_tag.innerHTML += output;
         }
     }
@@ -202,6 +204,28 @@
         //creatAccountService(service_list[0].serviceCategoryName,service_list[0].serviceCategoryId)
     }
 
+    async function deleteByID(id) {
+        console.log(id)
+        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        );
+        var status = await response.status
+        var bodyJson = await response.json()
+        console.log("yes call api success DELETE")
+        if (status >= 200 && status <= 300) {
+            console.log(bodyJson[0].role)
+            printRow(bodyJson, "customer-list");
+        }
+        else {
+            alert("delete fail, might be server side");
+            return;
+        }
+    }
 
 
 </script>
