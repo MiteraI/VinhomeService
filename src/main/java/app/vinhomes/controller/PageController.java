@@ -83,6 +83,7 @@ public class PageController {
     @RequestMapping(value = "/category-services/{id}", method = RequestMethod.GET)
     public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model){
         model.addAttribute("services", serviceCategoryRepository.findById(categoryId).get());
+        model.addAttribute("ratingArr", new int[]{5, 4, 3, 2, 1});
         return "categoryservices";
     }
 
