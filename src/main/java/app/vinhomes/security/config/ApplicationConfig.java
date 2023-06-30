@@ -33,10 +33,17 @@ public class ApplicationConfig  {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 try{
+                    System.out.println(username);
                     Optional<Account> account = accountRepository.findUsername(username);
-                    if(account != null){
+                    if(account.isPresent()){
                         System.out.println("IN USER DETAIL SERVICE,yes found in db");
-                        return new User(account.get().getUsername(),account.get().getPassword(),roleToAuthority(account.get().getRole()));
+                        if(account.get().getIsBlock() == false){
+                            return new User(account.get().getUsername(),account.get().getPassword(),roleToAuthority(account.get().getRole()));
+                        }else{
+                            System.out.println("this account has been blocked");
+                            return null;
+                        }
+
                     }
                     else{
                         System.out.println("not in db");

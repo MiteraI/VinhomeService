@@ -102,58 +102,6 @@
           });
       });
 
-      const loadOrderForm = () => {
-        const paymentDiv = document.getElementById("payment");
-        const timeSlotDiv = document.getElementById("timeSlot");
-        paymentDiv.innerHTML = "";
-        timeSlotDiv.innerHTML = "";
-        fetch("/api/order/timeSlot")
-          .then((response) => response.json())
-          .then((data) => {
-            // Create radio buttons for each time slot
-            data.forEach((timeSlot) => {
-              const radioBtn = document.createElement("input");
-              radioBtn.type = "radio";
-              radioBtn.name = "timeSlot";
-              radioBtn.value = timeSlot.timeSlotId;
-
-              const label = document.createElement("label");
-              label.textContent = `  ${timeSlot.startTime} - ${timeSlot.endTime}`;
-
-              // Append radio button and label to the timeSlotDiv
-              timeSlotDiv.appendChild(radioBtn);
-              timeSlotDiv.appendChild(label);
-              timeSlotDiv.appendChild(document.createElement("br"));
-            });
-          })
-          .catch((error) => {
-            console.log("Error fetching time slots:", error);
-          });
-
-        fetch("/api/order/payment")
-          .then((response) => response.json())
-          .then((data) => {
-            const selectPayment = document.createElement("select");
-            selectPayment.name = "payment";
-            selectPayment.classList.add("border-2");
-
-            // Create option elements for each payment option
-            data.forEach((payment) => {
-              const option = document.createElement("option");
-              option.value = payment.paymentId;
-              option.textContent = payment.paymentName;
-
-              // Append each option to the select element
-              selectPayment.appendChild(option);
-            });
-
-            // Append the select element to the paymentDiv
-            paymentDiv.appendChild(selectPayment);
-          })
-          .catch((error) => {
-            console.log("Error fetching payment options:", error);
-          });
-      };
       const orderBtns = Array.from(document.getElementsByClassName("order-btn"));
       for (var i = 0; i < orderBtns.length; i++) {
         orderBtns[i].addEventListener("click", function () {

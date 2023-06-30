@@ -19,33 +19,42 @@
     <div class="container col-6 p-lg-3 rounded">
       <h1 class="text-center mb-1">Register</h1>
       <form id="create-form" class="">
+        
+          <div class="form-group mt-3">
+            <label> Username</label><span id="error-username" class="error-message text-danger fst-italic ms-2 "
+              style="visibility: hidden;">asdf</span>
+            <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
+              name="txtUsername" id="username">
+          </div>
+          <div class="form-group mt-3">
+            <label> Password</label><span id="error-password" class="error-message text-danger fst-italic ms-2"
+              style="visibility: hidden;">adsf</span>
+            <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword" id="password">
+          </div>
+        
         <div class="form-group mt-3">
-          <label> Username</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
-          <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
-            name="txtUsername" id="username">
-        </div>
-        <div class="form-group mt-3">
-          <label> Password</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
-          <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword" id="password">
-        </div>
-        <div class="form-group mt-3">
-          <label> Email</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
+          <label> Email</label><span id="error-email" class="error-message text-danger fst-italic ms-2 "
+            style="visibility: hidden;">asdf</span>
           <input type="text" class="form-control form-control-sm" placeholder="" name="txtEmail">
         </div>
         <div class="form-group mt-3">
-          <label> Firstname</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
+          <label> Firstname</label><span id="error-firstname" class="error-message text-danger fst-italic ms-2"
+            style="visibility: hidden;">asdf</span>
           <input type="text" class="form-control form-control-sm" placeholder="" name="txtFirstname">
         </div>
         <div class="form-group mt-3">
-          <label> Lastname</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
+          <label> Lastname</label><span id="error-lastname" class="error-message text-danger fst-italic ms-2 "
+            style="visibility: hidden;">asdf</span>
           <input type="text" class="form-control form-control-sm" placeholder="" name="txtLastname">
         </div>
         <div class="form-group mt-3">
-          <label> Dob</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
+          <label> Dob</label><span id="error-dob" class="error-message text-danger fst-italic ms-2"
+            style="visibility: hidden;">adsf</span>
           <input type="date" class="form-control" placeholder="" name="txtDate">
         </div>
         <div class="form-group mt-3">
-          <label> PhoneNumber</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
+          <label> PhoneNumber</label><span id="error-phonenumber" class="error-message text-danger fst-italic ms-2 "
+            style="visibility: hidden;">asdf</span>
           <input type="text" class="form-control form-control-sm" placeholder="" name="txtPhonenumber">
         </div>
         <div class="form-group mt-3">
@@ -55,14 +64,23 @@
           <input type="radio" class="form-check-input ms-4" name="btnRadio" value="C"> Block C
         </div>
         <div class="form-group mt-3">
-          <label> Room</label><span class="error-message text-danger fst-italic ms-2 d-none"></span>
+          <label> Room</label><span id="error-address" class="error-message text-danger fst-italic ms-2 "
+            style="visibility: hidden;">sadf</span>
           <input type="text" class="form-control form-control-sm" placeholder="" name="txtRoomnumber">
         </div>
-        <div>
-          <input class="btn btn-primary button-submit mt-3 w-100" type="submit" value="Submit">
+        <div class="w-100 d-flex justify-content-around">
+          <button class="btn btn-primary mt-3 w-25 " onclick="getHomePage()"> Home</button>
+          <input class="btn btn-primary button-submit mt-3 w-25" type="submit" value="Submit">
         </div>
       </form>
 
+      <form id="loginForm" action="/login" method="post" style="display: none;">
+          <label class="form-label" for=""> Username</label> 
+          <input type="text" id="usernameId" name="username" class="form-control" value="" /> 
+      <!-- Password input -->
+          <label class="form-label" for="">Password</label>
+          <input type="password" id="passwordId" name="password" class="form-control" value="" />
+      </form>
 
 
     </div>
@@ -71,7 +89,100 @@
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="../static/js/createAccount.js"></script>
+  <script>
+    var error_username, error_password, error_email, error_firstname, error_lastname, error_dob, error_phonenumber, error_address;
+    error_username = document.getElementById("error-username")
+    error_password = document.getElementById("error-password")
+    error_email = document.getElementById("error-email")
+    error_firstname = document.getElementById("error-firstname")
+    error_lastname = document.getElementById("error-lastname")
+    error_dob = document.getElementById("error-dob")
+    error_phonenumber = document.getElementById("error-phonenumber")
+    error_address = document.getElementById("error-address")
+    const form_create = document.getElementById("create-form");
+    form_create.addEventListener('submit', async function (event) {
+      console.log(form_create)
+      event.preventDefault();
+      var username = document.getElementById("USERNAME")
+      const form_data = new FormData(form_create);
+      const data = Object.fromEntries(form_data);
+      const submitBtn = document.querySelector('.button-submit');
+      console.log(data);
+      console.log(data["txtUsername"])
+      submitBtn.classList.add('disabled');
+      const response = await fetch("/createAccountAPI/createAccountCustomer/0",
+        {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+
+      var status = await response.status; console.log(status)
+      var responseData = await response.json(); console.log(responseData)
+      console.log(document.getElementById("loginForm"))
+      if (status < 200 || status > 300) {
+        console.log("inside error")
+        error_username.style.visibility = "visible";
+        error_username.innerHTML = '❌ ' + "." + responseData.usernameErr;
+        error_password.style.visibility = "visible"; error_password.innerHTML = '❌ ' + "." + responseData.passwordErr;
+        error_email.style.visibility = "visible"; error_email.innerHTML = '❌ ' + "." + responseData.emailErr;
+        error_firstname.style.visibility = "visible"; error_firstname.innerHTML = '❌ ' + "." + responseData.firstnameErr;
+        error_lastname.style.visibility = "visible"; error_lastname.innerHTML = '❌ ' + "." + responseData.lastnameErr;
+        error_dob.style.visibility = "visible"; error_dob.innerHTML = '❌ ' + "." + responseData.dateErr;
+        error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = '❌ ' + "." + responseData.phonenumberErr;
+        error_address.style.visibility = "visible"; error_address.innerHTML = '❌ ' + "." + responseData.addressErr;
+        if (responseData.usernameErr == "") { error_username.innerHTML = "✔"; }
+        if (responseData.passwordErr == "") { error_password.innerHTML = "✔"; }
+        if (responseData.emailErr == "") { error_email.innerHTML = "✔"; }
+        if (responseData.firstnameErr == "") { error_firstname.innerHTML = "✔"; }
+        if (responseData.lastnameErr == "") { error_lastname.innerHTML = "✔"; }
+        if (responseData.dateErr == "") { error_dob.innerHTML = "✔"; }
+        if (responseData.phonenumberErr == "") { error_phonenumber.innerHTML = "✔"; }
+        if (responseData.addressErr == "") { error_address.innerHTML = "✔"; }
+        console.log("end error")
+        submitBtn.classList.remove('disabled');
+      } else {
+        error_username.style.visibility = "visible";
+        error_password.style.visibility = "visible";
+        error_email.style.visibility = "visible";
+        error_firstname.style.visibility = "visible";
+        error_lastname.style.visibility = "visible";
+        error_dob.style.visibility = "visible";
+        error_phonenumber.style.visibility = "visible";
+        error_address.style.visibility = "visible";
+        error_username.innerHTML = "✔";
+        error_password.innerHTML = "✔";
+        error_email.innerHTML = "✔";
+        error_firstname.innerHTML = "✔";
+        error_lastname.innerHTML = "✔";
+        error_dob.innerHTML = "✔";
+        error_phonenumber.innerHTML = "✔";
+        error_address.innerHTML = "✔";
+        console.log('yes successs')
+        console.log(data["txtUsername"] +"  "+data["txtPassword"])
+        alert("successfully save");
+        submitBtn.classList.remove('disabled');
+        getLogin(data["txtUsername"],data["txtPassword"])
+          //window.location.href = `/verification/${data["txtUsername"]}`
+          
+          //getLogin()
+
+      }
+    }
+    )
+    function getHomePage() {
+      console.log("inside return main page")
+      window.location.href = "/";
+    }
+    function getLogin(username,password) {
+      document.getElementById("usernameId").value = username
+      document.getElementById("passwordId").value = password
+      document.getElementById("loginForm").submit()
+    }
+  </script>
 </body>
 
 </html>

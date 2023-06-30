@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,7 @@ public class AdminAPI {
         lastname = errorChecker.checkLastname(request.get("txtLastname").asText().trim());
         date = errorChecker.checkDate(request.get("txtDate").asText());
         phonenumber = errorChecker.checkPhoneNumber(request.get("txtPhonenumber").asText().trim());
-
+        System.out.println("pass get error");
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(password);
@@ -80,7 +81,6 @@ public class AdminAPI {
         errorList.add(lastname);
         errorList.add(date);
         errorList.add(phonenumber);
-
         CreateErrorCatcher error =
                 new CreateErrorCatcher
                         (username, password, email, firstname, lastname, date,phonenumber, "");
@@ -110,6 +110,7 @@ public class AdminAPI {
                     .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)
+                    .isBlock(false)
                     .build();
             Account response = authenticationService.register(account);
             System.out.println("save account");
@@ -148,15 +149,154 @@ public class AdminAPI {
     @DeleteMapping(value = "/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Account>> deleteByIDAndReturn(@PathVariable long ID) {
         System.out.println("call DELETE success, id is: " + ID);
-        ResponseEntity<List<Account>> response = accountService.deleteByID(ID);
-        return response;
+        Account getAccount = accountRepository.findByAccountId(ID);
+        if (getAccount.getAccountStatus() == 1) {
+            ResponseEntity<List<Account>> response = accountService.deleteByID(ID);
+        }else{
+            getAccount.setAccountStatus(1);
+            accountRepository.save(getAccount);
+        }
+        List<Account> getList = accountRepository.findByRoleEquals(getAccount.getRole());
+        return ResponseEntity.ok().body(getList);
     }
 
-    @PutMapping(value = "/updateWorkerAccount", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Account>> updateByIdAndReturnWorker(@RequestBody JsonNode request) {
-        System.out.println("yes call update");
-        ResponseEntity<List<Account>> response = accountService.updateAccountById(request);
-        return response;
+    @PutMapping(value = "/updateAccountWorker/{accountId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CreateErrorCatcher> updateByIdAndReturnWorker(@RequestBody JsonNode updateInfo) {
+        System.out.println("inside update worker");
+        int workerRole = 1;
+        System.out.println(updateInfo.asText());
+        String  username, password, email, firstname, lastname, phonenumber, date;
+        String daysoff,workcount,status,serviceId;
+        Long phoneID,ID;
+        ID = updateInfo.get("txtID").asLong();
+        Account account_to_update = accountRepository.findById(ID).get();
+        //////////////username
+        if (account_to_update.getAccountName().equals(updateInfo.get("txtUsername").asText().trim())) {
+            username = "";
+        } else {
+            username = errorChecker.checkUsername(updateInfo.get("txtUsername").asText());
+        }
+        //////////////password
+        password = "";
+        try{
+            password = errorChecker.checkPassword(updateInfo.get("txtPassword").asText().trim());
+        }catch (NullPointerException e){
+            System.out.println("error in get password, just normal: "+e.getMessage());
+        }
+        ////////////email
+        if (account_to_update.getEmail().equals(updateInfo.get("txtEmail").asText().trim())) {
+            email = "";
+        } else {
+            email = errorChecker.checkEmail(updateInfo.get("txtEmail").asText());
+        }
+        ///////////first,last name,date,phone
+        firstname = errorChecker.checkFirstname(updateInfo.get("txtFirstname").asText().trim());
+        lastname = errorChecker.checkLastname(updateInfo.get("txtLastname").asText().trim());
+        date = errorChecker.checkDate(updateInfo.get("txtDate").asText());
+        System.out.println(updateInfo.get("txtDate").asText());
+        List<Phone> phoneList = new ArrayList<>();
+        phoneList = phoneRepository.findByAccount(account_to_update);// xem laip
+        //////////
+        System.out.println(updateInfo.get("txtPhonenumber").asText().trim());
+        String tryInsertNewPhonenumber = null;
+        if (updateInfo.get("txtPhoneID").asText().trim().isEmpty() == false) {
+            phoneID = Long.parseLong(updateInfo.get("txtPhoneID").asText().trim());
+            System.out.println(phoneID);
+            phonenumber = phoneRepository.findById(phoneID).get().getNumber();
+            if (updateInfo.get("txtPhonenumber").asText().trim().equals(phonenumber)) {
+                phonenumber = "";
+            } else {
+                phonenumber = errorChecker.checkPhoneNumber(updateInfo.get("txtPhonenumber").asText().trim());
+            }
+        } else {
+            phoneID = null;
+            System.out.println("no phone number found");
+            if(updateInfo.get("txtPhonenumber").asText().trim().isEmpty() == false){
+                System.out.println("try insert phone if id is empty");
+                phonenumber = errorChecker.checkPhoneNumber(updateInfo.get("txtPhonenumber").asText().trim());
+                if(phonenumber.equals("")){
+                    tryInsertNewPhonenumber = updateInfo.get("txtPhonenumber").asText().trim();
+                }
+            }else{
+                phonenumber = "";
+            }
+        }
+        System.out.println("yes check okkk");
+        // role = 1 is worker
+        List<String> errorList = new ArrayList<>();
+        errorList.add(username);
+        errorList.add(password);
+        errorList.add(email);
+        errorList.add(firstname);
+        errorList.add(lastname);
+        errorList.add(date);
+        errorList.add(phonenumber);
+        CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date,
+                phonenumber, "");
+        for (String message : errorList) {
+            if (message.isEmpty()) {
+                continue;
+            } else {
+                System.out.println("bad request");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+        }
+        daysoff = updateInfo.get("txtDayoff").asText().trim();
+        workcount = updateInfo.get("txtWorkcount").asText().trim(); //0 = free, 1 = busy
+        status = updateInfo.get("txtStatus").asText().trim();System.out.println(status);
+        serviceId = updateInfo.get("txtServiceId").asText().trim();
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(updateInfo.get("txtDate").asText().trim(), formatter);
+            Phone phone1 = null;
+            if(phoneID != null){
+                 phone1 = phoneRepository.findById(phoneID).get();
+            }else{
+                if(tryInsertNewPhonenumber != null){
+                    phone1 = Phone.builder()
+                            .number(tryInsertNewPhonenumber)
+                            .account(account_to_update)
+                            .build();
+                }
+            }
+            account_to_update.setAccountName(updateInfo.get("txtUsername").asText().trim());
+            //account_to_update.setPassword(updateInfo.get("txtPassword").asText().trim());
+            account_to_update.setEmail(updateInfo.get("txtEmail").asText().trim());
+            account_to_update.setFirstName(updateInfo.get("txtFirstname").asText().trim());
+            account_to_update.setLastName(updateInfo.get("txtLastname").asText().trim());
+            account_to_update.setDob(localDate);
+            accountRepository.save(account_to_update);
+            System.out.println("save account");
+            if (phone1 != null) {
+                if (tryInsertNewPhonenumber == null) {
+                    phone1.setNumber(updateInfo.get("txtPhonenumber").asText());
+                }
+                phoneRepository.save(phone1);
+                System.out.println("save phone, try and create if possible");
+            }
+            ServiceCategory getServiceCategory = null;
+            if(serviceId != null || serviceId.isEmpty() == false){
+                 getServiceCategory = serviceCategoryRepository.findByServiceCategoryId(Long.parseLong(serviceId));
+            }
+            WorkerStatus getWorkerStatus = workerStatusRepository.findByAccount(account_to_update);
+            getWorkerStatus.setStatus(Integer.parseInt(status));
+            getWorkerStatus.setAllowedDayOff(Integer.parseInt(daysoff));
+            getWorkerStatus.setWorkCount(Integer.parseInt(workcount));
+            if(getServiceCategory != null){
+                getWorkerStatus.setServiceCategory(getServiceCategory);
+            }
+            workerStatusRepository.save(getWorkerStatus);
+            System.out.println("save worker status");
+        } catch (DateTimeException e) {
+            System.out.println("cant parse date");
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (Exception e) {
+            System.out.println("something wrong with saving the account");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+        System.out.println("okk, SAVE SUCCESS");
+        return ResponseEntity.status(HttpStatus.OK).body(error);
     }
 
     @GetMapping(value = "/getAccountInfo/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -188,6 +328,8 @@ public class AdminAPI {
         System.out.println("id of account update: " + updateInfo.get("txtID").asText());
         Account account_to_update = accountRepository.findById(updateInfo.get("txtID").asLong()).get();
         String ID, username, password, email, firstname, lastname, phonenumber, date, address;
+        int isEnabled;
+        Boolean isBlock;
         Long phoneID;
         if (account_to_update.getAccountName().equals(updateInfo.get("txtUsername").asText().trim())) {
             username = "";
@@ -195,7 +337,12 @@ public class AdminAPI {
             username = errorChecker.checkUsername(updateInfo.get("txtUsername").asText());
         }
         //////////////
-        password = errorChecker.checkPassword(updateInfo.get("txtPassword").asText().trim());
+        password = "";
+        try{
+            password = errorChecker.checkPassword(updateInfo.get("txtPassword").asText().trim());
+        }catch (NullPointerException e){
+            System.out.println("error in get password, just normal: "+e.getMessage());
+        }
         ////////////
         if (account_to_update.getEmail().equals(updateInfo.get("txtEmail").asText().trim())) {
             email = "";
@@ -247,18 +394,21 @@ public class AdminAPI {
         errorList.add(address);
         CreateErrorCatcher error = new CreateErrorCatcher(username, password, email, firstname, lastname, date,
                 phonenumber, address);
-        // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         for (String message : errorList) {
             if (message.isEmpty()) {
                 continue;
             } else {
                 System.out.println("bad request");
-                // return error;
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
             }
         }
-        //
-        //
+        isEnabled = updateInfo.get("isEnable").asInt();
+        if(updateInfo.get("isBlock").asInt()==1){
+            isBlock = true;
+        }else{
+            isBlock = false;
+        }
+
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             // convert String to LocalDate
@@ -271,14 +421,16 @@ public class AdminAPI {
             // Address.builder().buildingBlock(updateInfo.get("btnRadio").asText().trim()).buildingRoom(updateInfo.get("txtRoomnumber").asText()).build();
             System.out.println("yes work");
             addressRepository.save(address1);
+
             account_to_update.setAccountName(updateInfo.get("txtUsername").asText().trim());
-            account_to_update.setPassword(updateInfo.get("txtPassword").asText().trim());
+            //account_to_update.setPassword(updateInfo.get("txtPassword").asText().trim());
             account_to_update.setEmail(updateInfo.get("txtEmail").asText().trim());
             account_to_update.setFirstName(updateInfo.get("txtFirstname").asText().trim());
             account_to_update.setLastName(updateInfo.get("txtLastname").asText().trim());
             account_to_update.setDob(localDate);
             account_to_update.setAddress(address1);
-
+            account_to_update.setIsEnable(isEnabled);
+            account_to_update.setIsBlock(isBlock);
             accountRepository.save(account_to_update);
             System.out.println("save account");
             if (phone1 != null) {

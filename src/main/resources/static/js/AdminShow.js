@@ -173,7 +173,6 @@ update_form.addEventListener('submit', async function (event) {
                 },
                 body: JSON.stringify(data)
             });
-
         console.log(await response.status);//console.log(await response.json())
         if (response.status == 400) {
             error_message = await response.json()

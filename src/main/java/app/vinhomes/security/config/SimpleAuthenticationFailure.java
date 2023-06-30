@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Optional;
+
 @Component
 public class SimpleAuthenticationFailure extends SimpleUrlAuthenticationFailureHandler {
     @Autowired
@@ -20,10 +22,14 @@ public class SimpleAuthenticationFailure extends SimpleUrlAuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String username = request.getParameter("username");
-        Account account = accountRepository.findByAccountName(username);
+        Optional<Account> account = accountRepository.findUsername(username);
         StringBuilder message= new StringBuilder();
-        if(account != null){
-            message.append("=Incorrect Username Or Password");
+        if(account.isPresent() ){
+            if(account.get().getIsBlock()){
+                message.append("=this account is blocked, contact manager");
+            }else{
+                message.append("=Incorrect Username Or Password");
+            }
         }
         else{
             message.append("=Not Found Username");
