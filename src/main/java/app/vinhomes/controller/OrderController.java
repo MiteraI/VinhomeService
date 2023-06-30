@@ -4,6 +4,7 @@ import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.order.Payment;
+import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.repository.*;
 import app.vinhomes.repository.order.PaymentRepository;
@@ -21,9 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 //@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("RC_REF_COMPARISON")
 @RestController
@@ -145,6 +144,28 @@ public class OrderController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             }
         }
+    }
+
+    @GetMapping(value = "/get-orders-to-confirm", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Map<String, Object>>> getAllOrdersofOneWorkerToConfirm (HttpServletRequest request) {
+        List<Map<String, Object>> listOrdersDetail = new ArrayList<>();
+        HttpSession session = request.getSession();
+        Account worker = (Account) session.getAttribute("loginedUser");
+        if (worker != null) {
+            List<Order> listOrders = orderService.getOrdersOfOneWorkerForConfirmation(worker);
+            for (Order o : listOrders) {
+                Account account = o.getAccount();
+                Service service = o.getService();
+                Map<String, Object> orderDetail = new HashMap<>();
+                if (account != null) {
+                    orderDetail.put("account", account);
+                    orderDetail.put("order", o);
+                    orderDetail.put("service", service);
+                    listOrdersDetail.add(orderDetail);
+                }
+            }
+        }
+        return ResponseEntity.ok(listOrdersDetail);
     }
 }
 

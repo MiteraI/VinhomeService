@@ -57,6 +57,11 @@ public class OrderService {
     private LeaveRepository leaveRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
+
+    @Autowired
+    private WorkerService workerService;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
     public List<Order> getCustomerOrder(HttpServletRequest request) {
         Account loginedUser = getSessionUser(request);
         return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
@@ -289,6 +294,19 @@ public class OrderService {
             return false;
         }
     }
-
-
+    //Ham nay de lay ra cac order can confirm cua 1 account worker
+    public List<Order> getOrdersOfOneWorkerForConfirmation (Account account) {
+        Account checkAccount = null;
+        List<Order> listOrders = new ArrayList<>();
+        List<Order> listAllOrders = orderRepository.findAll();
+        for (Order o : listAllOrders) {
+            if (o.getStatus().equals(OrderStatus.PENDING)) {
+                checkAccount = workerService.getWorkerOfOneOrderForConfirmation(o.getOrderId());
+                if (checkAccount.getAccountId() == account.getAccountId()) {
+                    listOrders.add(o);
+                }
+            }
+        }
+        return listOrders;
+    }
 }
