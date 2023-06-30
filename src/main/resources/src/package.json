@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"buildWind": "tailwindcss -i ./input.css -o ./dist/index.css",
-		"watchWind": "tailwindcss -i ./input.css -o ../static/tailwind/index.css --watch"
+		"watchWind": "tailwindcss -i ./input.css -o ./dist/index.css --watch",
+		"watchWind-templates": "tailwindcss -i ./input.css -o ../static/tailwind/index.css --watch"
 	},
 	"author": "",
 	"license": "ISC",
