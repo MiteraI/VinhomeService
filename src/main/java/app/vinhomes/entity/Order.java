@@ -90,4 +90,8 @@ public class Order {
             }
     )
     private Account account;
+
+
+    //@Column(nullable = false)
+    private String phoneNumber;
 }

@@ -1,0 +1,411 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div>
+        <div class="position-relative">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- <div class="container-fluid p-0 "> -->
+                    <a class="navbar-brand" href="#">
+                        <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
+                            class="d-inline-block align-top mx-3" alt="">
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="#">
+                                    <h4>WORKER</h4>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
+                                    <!-- href="./adminDisplayCustomer.html" -->
+                                    <h4>USER</h4>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
+                                    <h4>See Leave Report</h4>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <form action="/logout">
+                    <button type="submit">Logout</button>
+                </form>
+
+                <!-- </div> -->
+            </nav>
+        </div>
+    </div>
+    <div class="container-fluid " style="height: 40px;">
+    </div>
+    <div class="container d-flex justify-content-around p-0 mt-3 ">
+        <div class="">
+            <button class="btn btn-primary text-white" onclick="openCreateForm()">
+                create worker
+            </button>
+        </div>
+        <div class="form-group  has-feedback col-md-4 ">
+            <!-- <label class="sr-only" for="search">Search</label> -->
+            <input type="text" class="form-control" name="q" id="search" placeholder="Search">
+
+            <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>
+        </div>
+    </div>
+    <!-- SHOW WORKER TABLE -->
+    <!-- SHOW WORKER TABLE -->
+    <!-- SHOW WORKER TABLE -->
+    <div class="container col-12 mt-3 ">
+        <table class="table-worker table table-striped " style="display:block">
+            <thead>
+                <tr>
+                    <th id="heading-id-w" scope="col" class="asc" onclick='sortById(this)' style="width: 20%;">accountID
+                    </th>
+                    <th id="heading-email-w" scope="col" class="asc" style="width: 20%;">email</th>
+                    <th id="heading-firstname-w" scope="col" class="asc" onclick='sortByFirstname(this)'
+                        style="width: 20%;">Firstname
+                    </th>
+                    <th id="heading-lastname-w" scope="col" class="asc" onclick='sortByLastname(this)'
+                        style="width: 20%;">Lastname</th>
+                    <th id="heading-dob-w" scope="col" class="asc" style="width: 20%;">Dob</th>
+                    <th id="heading-status-w" scope="col" class="asc" style="width: 20%;"> status</th>
+                    <th id="heading-role-w" scope="col" class="asc" style="width: 20%;">Role</th>
+                    <th id="heading-role-w" scope="col" class="asc" style="width: 20%;">Update</th>
+                    <th style="width: 20%;">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="worker-list">
+
+            </tbody>
+        </table>
+    </div>
+    <!--  WORKER FORM -->
+    <!--  WORKER FORM -->
+    <!--  WORKER FORM -->
+    <div class="container col-6  position-fixed fixed-top rounded mt-5  p-5  vh-100 form" style="display: none; ">
+        <div class="visually-hidden mt-5 ">asdf</div>
+        <div class="mt-5 border border-black p-lg-3 bg-white" style="z-index: 99;">
+            <form id="create-form" class=" ">
+                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                    <div class="form-group col-6">
+                        <label> Username</label>
+                        <input type="text" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
+                            placeholder="" name="txtUsername">
+                        <p id="error-username" class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                    </div>
+                    <div class="form-group col-6">
+                        <label> Password</label>
+                        <input type="password" class="form-control form-control-sm w-75" placeholder=""
+                            name="txtPassword">
+                        <p id="error-password" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                    </div>
+                </div>
+                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                    <div class="form-group col-6">
+                        <label> Email</label>
+                        <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtEmail">
+                        <p id="error-email" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                    </div>
+                    <div class="form-group col-6">
+                        <label> Firstname</label>
+                        <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtFirstname">
+                        <p id="error-firstname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                    </div>
+                </div>
+                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                    <div class="form-group col-6">
+                        <label> Lastname</label>
+                        <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtLastname">
+                        <p id="error-lastname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                    </div>
+                    <div class="form-group col-6">
+                        <label> Dob</label>
+                        <input type="date" class="form-control w-75" placeholder="" name="txtDate">
+                        <p id="error-dob" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                    </div>
+                </div>
+
+                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
+                    <div class="form-group col-6">
+                        <label> PhoneNumber</label>
+                        <input type="text" class="form-control form-control-sm  w-75" placeholder=""
+                            name="txtPhonenumber">
+                        <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;"> asdf
+                        </p>
+                    </div>
+                    <div class=" col-6  "></div>
+                </div>
+
+                <div class="form-group">
+                    <label> Service</label>
+                    <div class="input-group">
+                        <input type="text" name="txtService" class="form-control h-50"
+                            aria-label="Text input with dropdown button" id="w-create-form-service" value=""
+                            readonly="readonly">
+                        <input type="hidden" name="txtServiceId" id="w-create-form-serviceid" value="">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+                            <div class="dropdown-menu" id="w-create-form-dropdown-service">
+
+                            </div>
+                            <p id="error-service" class="error-message text-danger" style="visibility: hidden;"> asdf
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                <div class=" container-fluid d-flex justify-content-between">
+                    <!-- <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset"> -->
+                    <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Submit">
+                    <div class=" btn btn-primary form-close d-inline-block align-content-end"
+                        onclick="closeCreateForm()">close</div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+<script src="../static/js/AdminPublicFunction.js"></script>
+<script>
+    var error_username, error_password, error_email, error_firstname, error_lastname, error_dob, error_phonenumber, error_service;
+    error_username = document.getElementById("error-username")
+    error_password = document.getElementById("error-password")
+    error_email = document.getElementById("error-email")
+    error_firstname = document.getElementById("error-firstname")
+    error_lastname = document.getElementById("error-lastname")
+    error_dob = document.getElementById("error-dob")
+    error_phonenumber = document.getElementById("error-phonenumber")
+    //error_service = document.getElementById("error-service")
+    getWorkerList()
+    async function getWorkerList() {
+        console.log("inside get worker")
+        const response = await fetch("http://localhost:8080/UserRestController/getAccountWorker")
+        data = await response.json();
+        printRow(data, "worker-list");
+    }
+
+    function printRow(data, IdOfTableBody) {
+        console.log(IdOfTableBody)
+        var table_tag = document.getElementById(`${IdOfTableBody}`);
+        // console.log(table_tag.innerHTML)
+        table_tag.innerHTML = ""
+        console.log(data)
+        var output = "";
+        for (var i in data) {
+            roleString = (data[i].role == 1) ? "worker" : "user";
+            statusString = (data[i].accountStatus == 1) ? "active" : "off ";
+            var date_new; var date_output;
+            if (data[i].dob == null) {
+                date_output = "not yet imported"
+            } else {
+                date_new = new Date(data[i].dob); console.log(date_new)
+                date_output = new Intl.DateTimeFormat('en-US').format(date_new);
+            }
+            // onclick='showFullCustomerInfo(${data[i].accountId})'
+            output = `
+        <tr id="${data[i].accountId}" scope="row"  class='item-to-search' >
+        `
+            if (data[i].role == 1) {
+                output += `<td onclick="showFullWorkerInfo(${data[i].accountId})"><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+            } else {
+                output += `<td onclick="showFullCustomerInfo(${data[i].accountId})"><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+            }
+            output += `
+                <td style="display: none;" ><input type="hidden" name="txtUsername" value="${data[i].accountName}"></td>
+                <td style="display: none;"><input type="hidden" name="txtPassword" value="${data[i].password}"></td>
+                <td><input type="hidden" name="txtEmail"value="${data[i].email}">${data[i].email}</td>
+                <td><input type="hidden" name="txtFirstname"value="${data[i].firstName}">${data[i].firstName}</td>
+                <td><input type="hidden" name="txtLastname"value="${data[i].lastName}">${data[i].lastName}</td>
+                <td><input type="hidden" name="txtDob"value="${data[i].dob}">${date_output}</td>
+                <td><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
+                <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
+                <td>
+                    <button><a href="/admin_UpdateWorker/${data[i].accountId}">UPDATE</a></button>
+                </td>
+                `
+            if (data[i].accountStatus == 1) {
+                output +=
+                `<td>
+                    <button onclick='deleteByID(${data[i].accountId})'>del</button>
+                </td>`
+            } else {
+                output +=
+                ` <td>
+                    <button onclick='deleteByID(${data[i].accountId})'>active</button>
+                </td>`;
+            }
+            
+
+            table_tag.innerHTML += output;
+        }
+    }
+
+    async function openCreateForm() {
+
+        // document.querySelectorAll(".overlay")[0].style.display = "block";
+        var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
+            method: "GET"
+        });
+        console.log("yes get service");
+        var service_list = await response.json();
+        var drop_down_service = document.getElementById("w-create-form-dropdown-service"); console.log(drop_down_service)
+        drop_down_service.innerHTML = "";
+        var output = "";
+        for (var i in await service_list) {
+            output =
+                `
+            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
+                ${service_list[i].serviceCategoryName}
+            </a>
+        `;
+            drop_down_service.innerHTML += output;
+        }
+        document.querySelectorAll(".form")[0].style.display = "block";
+        document.getElementById("w-create-form-service").value = service_list[0].serviceCategoryName;
+        document.getElementById("w-create-form-serviceid").value = service_list[0].serviceCategoryId;
+        //creatAccountService(service_list[0].serviceCategoryName,service_list[0].serviceCategoryId)
+    }
+
+
+
+</script>
+<script>
+
+    async function deleteByID(id) {
+        console.log(id)
+        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        );
+        console.log("yes call api success DELETE")
+        console.log(response)
+        if (response.status == 500) {
+            alert("delete fail, might be server side");
+            return;
+        } else {
+            data = await response.json();
+            console.log(data[0].role)
+            if (data[0].role == 1) {
+                printRow(data, "worker-list");
+            } else {
+                printRow(data, "customer-list");
+            }
+
+        }
+    }
+
+
+    function closeCreateForm() {
+        // document.querySelectorAll(".overlay")[0].style.display = "none";
+        document.getElementById("create-form").reset()
+        error_username.style.visibility = "hidden";
+        error_password.style.visibility = "hidden";
+        error_email.style.visibility = "hidden";
+        error_firstname.style.visibility = "hidden";
+        error_lastname.style.visibility = "hidden";
+        error_dob.style.visibility = "hidden";
+        error_phonenumber.style.visibility = "hidden";
+        //document.querySelectorAll(".form")[0].style.display = "none";
+
+    }
+    const form = document.getElementById("create-form");
+    form.addEventListener('submit', async function (event) {
+        console.log(form)
+        event.preventDefault();
+        const form_data = new FormData(form);
+        const data = Object.fromEntries(form_data);
+        console.log(data);
+        const response = await fetch("http://localhost:8080/UserRestController/createAccountWorker/1",
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        var status = await response.status
+        var responseData = await response.json()
+        console.log(responseData)
+        if (status < 200 || status > 300) {
+            error_username.style.visibility = "visible"; error_username.innerHTML = '❌ ' + "." + responseData.usernameErr
+            error_password.style.visibility = "visible"; error_password.innerHTML = '❌ ' + "." + responseData.passwordErr
+            error_email.style.visibility = "visible"; error_email.innerHTML = '❌ ' + "." + responseData.emailErr
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = '❌ ' + "." + responseData.firstnameErr
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = '❌ ' + "." + responseData.lastnameErr
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = '❌ ' + "." + responseData.dateErr
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = '❌ ' + "." + responseData.phonenumberErr
+            if (responseData.usernameErr == "") { error_username.innerHTML = "✔"; }
+            if (responseData.emailErr == "") { error_email.innerHTML = "✔"; }
+            if (responseData.firstnameErr == "") { error_firstname.innerHTML = "✔"; }
+            if (responseData.lastnameErr == "") { error_lastname.innerHTML = "✔"; }
+            if (responseData.dateErr == "") { error_dob.innerHTML = "✔"; }
+            if (responseData.phonenumberErr == "") { error_phonenumber.innerHTML = "✔"; }
+        } else {
+            error_username.style.visibility = "visible"; error_username.innerHTML = "✔";
+            error_password.stylse.visibility = "visible"; error_password.innerHTML = "✔";
+            error_email.style.visibility = "visible"; error_email.innerHTML = "✔";
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "✔";
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "✔";
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = "✔";
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "✔";
+            error_address.style.visibility = "visible"; error_address.innerHTML = "✔";
+            closeCreateForm()
+            getWorkerList()
+        }
+
+    }
+    )
+    //delay 1 second
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+    async function deleteByID(id) {
+        console.log(id)
+        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        );
+        var status = await response.status
+        var bodyJson = await response.json()
+        console.log("yes call api success DELETE")
+        if (status >= 200 && status <= 300) {
+            console.log(bodyJson[0].role)
+            printRow(bodyJson, "worker-list");
+        }
+        else {
+            alert("delete fail, might be server side");
+            return;
+        }
+    }
+</script>
+
+</html>

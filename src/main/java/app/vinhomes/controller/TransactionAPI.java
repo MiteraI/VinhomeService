@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/transaction")
 public class TransactionAPI {
-    private List<Order> InvalidCancelOrder = new LinkedList<>();
+
     @Autowired
     private TransactionService transactionService;
     @Autowired
@@ -87,12 +87,10 @@ public class TransactionAPI {
                     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ORDER NOT LEGIT FOR REFUND");
                 }
             } else {
-                //TODO call for admin permission to refund, or just change time
-                this.InvalidCancelOrder.add(orderService.getOrderById(orderId));
+                //TODO call for admin permission to refund, or just change time;
+                Order getOrder = orderService.getOrderById(orderId);
                 if (getOrderId != null) {
-                    // add invalid order cancelation to a list for admin to consider, this is optional, can be changed
-                    Order getOrder = orderService.getOrderById(getOrderId);
-                    this.InvalidCancelOrder.add(getOrder);
+                    orderService.addInvalidCancelOrder(getOrder);
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PASS 2 HOUR POLICY REFUND, YOU CAN ONLY CHANGE TIME OR CANCEL ORDER WITHOUT REFUND");
                 }
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("FAIL TO GET ORDER ID");
@@ -104,6 +102,6 @@ public class TransactionAPI {
     }
     @GetMapping(value = "/cancelOrder/getAllInvalidCancelOrder")
     public List<Order> getInvalidCancelOrder() {
-        return this.InvalidCancelOrder;
+        return orderService.getInvalidCancelOrder();
     }
 }
