@@ -10,6 +10,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: 50%;
+        z-index: 999;
         /* Other desired styles */
       }
     </style>
@@ -19,7 +20,7 @@
       <form
         class="rounded-lg border-2 border-black"
         id="order-form"
-        style="display: none"
+        style="display: none;"
       >
         <div class="flex justify-center rounded-t-lg bg-yellow-info">
           <h1 class="px-8 py-4 font-bold text-xl">Order Service</h1>
@@ -45,7 +46,10 @@
           >
             Submit
           </button>
-          <button class="px-10 py-4 bg-red-cancel text-white rounded-lg my-8">
+          <button
+            class="px-10 py-4 bg-red-cancel text-white rounded-lg my-8"
+            id="cancel-btn"
+          >
             Cancel
           </button>
         </div>
@@ -53,6 +57,15 @@
     </div>
     <script>
       const orderForm = document.getElementById("order-form");
+      const cancelBtn = document.getElementById("cancel-btn");
+
+      const requestBody = {
+          timeId: 0,
+          paymentId: 0,
+          day: 0,
+          serviceId: 0
+        };
+
       orderForm.addEventListener("submit", (e) => {
         // Retrieve the selected radio button value
         e.preventDefault();
@@ -63,12 +76,9 @@
           'select[name="payment"]'
         ).value;
         // Create the request body
-        const requestBody = {
-          timeId: selectedTimeSlot,
-          paymentId: selectedPayment,
-          day: document.getElementById("date").value,
-          serviceId: document.getElementById("serviceId").value,
-        };
+        requestBody.timeId = selectedTimeSlot;
+        requestBody.paymentId = selectedPayment;
+        requestBody.day = document.getElementById("date").value;
         fetch("/vnpay/createPayment", {
           method: "POST",
           headers: {
@@ -144,16 +154,31 @@
             console.log("Error fetching payment options:", error);
           });
       };
-      const orderBtn = document.getElementById("order-btn");
-      orderBtn.addEventListener("click", () => {
+      const orderBtns = Array.from(document.getElementsByClassName("order-btn"));
+      for (var i = 0; i < orderBtns.length; i++) {
+        orderBtns[i].addEventListener("click", function () {
+          displayForm();
+          const inputValue = this.parentNode.querySelector(
+            'input[type="hidden"]'
+          ).value;
+          requestBody.serviceId = inputValue;
+          // You can perform further actions with the input value here
+        });
+      }
+      const displayForm = () => {
+        console.log('display');
         orderForm.style.display =
           orderForm.style.display === "none" ? "block" : "none";
-      });
+      };
       document.addEventListener("click", (event) => {
-        if (!orderForm.contains(event.target) && event.target !== orderBtn) {
+        if (!orderForm.contains(event.target) && !orderBtns.includes(event.target)) {
           // Hide the form if the click is outside the form segment and not on the order button
           orderForm.style.display = "none";
         }
+      });
+      cancelBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        orderForm.style.display = "none";
       });
     </script>
   </body>

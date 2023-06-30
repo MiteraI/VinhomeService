@@ -63,8 +63,7 @@
           <h1
             class="text-2xl font-semibold"
             th:text="${service != null} ? ${service.serviceName} : ''"
-          >
-          </h1>
+          ></h1>
           <p class="text-1xl">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam,
             magnam error! Commodi placeat sunt distinctio, voluptatum odit vero
@@ -77,12 +76,13 @@
           ></div>
           <div class="flex flex-1 items-end justify-end">
             <button
-              class="bg-blue-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-blue-400"
+              class="bg-yellow-info text-lg font-medium py-2 px-4 rounded-lg ml-2"
             >
               <a th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a>
             </button>
+            <input type="hidden" th:value="${service.serviceId}" />
             <button
-              class="bg-yellow-300 text-lg font-medium py-2 px-4 rounded-lg ml-2 hover:bg-yellow-400"
+              class="order-btn bg-blue-bootstrap text-white text-lg font-medium py-2 px-4 rounded-lg ml-2"
             >
               Order
             </button>
@@ -90,9 +90,15 @@
         </div>
       </section>
     </div>
-
+    <section th:replace="~{./fragments/order-form.html}"></section>
     <footer th:replace="~{./fragments/footer.html}"></footer>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../static/js/rating.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Execute the fetchData function after the segment is loaded
+        loadOrderForm();
+      });
+    </script>
   </body>
 </html>
