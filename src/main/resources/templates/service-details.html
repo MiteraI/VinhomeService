@@ -5,6 +5,10 @@
     <title th:text="${service.serviceName}"></title>
     <link rel="stylesheet" href="../static/tailwind/font.css" />
     <link rel="stylesheet" href="../static/tailwind/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
     <header th:replace="~{./fragments/header.html}"></header>
@@ -19,11 +23,6 @@
           alt="service's imgage"
         />
         <div class="space-y-4">
-             <input
-              type="hidden"
-              th:value="${service.serviceId}"
-              id="serviceId"
-            />
           <h2 class="text-xl font-bold" th:text="${service.serviceName}"></h2>
           <p
             th:if="${service.description != null}"
@@ -43,13 +42,19 @@
               th:text="${service.numOfPeople}"
             ></span>
           </p>
-          <p>Category: <span class="text-blue-bootstrap" th:text="${category.serviceCategoryName}"></span></p>
+          <p>
+            Category:
+            <span
+              class="text-blue-bootstrap"
+              th:text="${category.serviceCategoryName}"
+            ></span>
+          </p>
         </div>
       </div>
       <div class="flex justify-end">
+        <input type="hidden" th:value="${service.serviceId}"/>
         <button
-          class="rounded-lg bg-blue-bootstrap px-8 py-2 text-left text-white"
-          id="order-btn"
+          class="order-btn rounded-lg bg-blue-bootstrap px-8 py-2 text-left text-white"
         >
           Order
         </button>
@@ -75,7 +80,13 @@
             ></h2>
             <p th:text="${order.comment}"></p>
             <br />
-            <p th:text="${order.rating}"></p>
+            <div>
+              <i th:each="i: ${#numbers.sequence(1, 5)}">
+                <i
+                  th:class="${i <= order.rating} ? 'fa-solid fa-star text-yellow-info' : 'fa-regular fa-star text-yellow-info'"
+                ></i>
+              </i>
+            </div>
           </div>
           <br />
         </div>
