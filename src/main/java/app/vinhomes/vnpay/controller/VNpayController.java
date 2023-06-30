@@ -111,10 +111,8 @@ public class VNpayController extends HttpServlet {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("bankcode is empty, this will be fixed later");
             //TODO quan li neu chon thanh toan COD thay vi VNPAY
         } else if (bankCode.isEmpty()) {// this mean this is COD, not vnpay, so we dont have to redirect it to vnpay site
-
             vnpayService.saveTransaction_COD(orderID, transactionMethodID);
-
-            return ResponseEntity.ok().body("pay by COD, procede to go back main page");
+            return ResponseEntity.ok().body("COD");
             //TODO neu la COD thi lam gi tiep, ko tiep tuc gui thong tin cho vnpay
         }
         String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);
