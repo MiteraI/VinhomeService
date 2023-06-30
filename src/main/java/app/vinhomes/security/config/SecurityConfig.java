@@ -63,6 +63,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/verification").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/verificationMethod").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/category-services/**").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/service/**").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
                         .logoutUrl("/logout")
