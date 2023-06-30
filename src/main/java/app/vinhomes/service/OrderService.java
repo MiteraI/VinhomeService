@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static app.vinhomes.common.SessionUserCaller.getSessionUser;
+
 @org.springframework.stereotype.Service
 public class OrderService {
     @Value("${time.hourpolicy}")
@@ -55,10 +57,17 @@ public class OrderService {
     private LeaveRepository leaveRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
+    public List<Order> getCustomerOrder(HttpServletRequest request) {
+        Account loginedUser = getSessionUser(request);
+        return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
+    }
 
-    private Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {//
-
-        System.out.println("inside OfficialCreateOrder");
+    public Order getCustomerOrderDetails(HttpServletRequest request, Long orderId) {
+        Account loginedUser = getSessionUser(request);
+        return orderRepository.findByAccount_AccountIdAndOrderId(loginedUser.getAccountId(), orderId);
+    }
+    
+    public Order officialCreateOrder(JsonNode orderJson, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
         if (sessionAccount == null) {
