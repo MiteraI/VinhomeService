@@ -52,23 +52,19 @@ public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authorityName = grantedAuthority.getAuthority();
             if (authorityName.equals("2")) {
-                System.out.println("2");
                 request.getSession().setAttribute("loginedUser",account);
                 //customerSessionListener.
                 this.pageController.onAuthenticationSuccess(request,response,authentication);
                 return;
             } else if (authorityName.equals("1")) {
-                System.out.println("1");
                 request.getSession().setAttribute("loginedUser",account);
                 this.pageController.onAuthenticationSuccess(request,response,authentication);
                 return;
             }
         }
-        System.out.println("0");
         request.getSession().setAttribute("loginedUser",account);
         request.getSession().setAttribute("address", address);
         request.getSession().setAttribute("phone", fone);
-        System.out.println("ssh's fone session: " + request.getSession(false).getAttribute("phone"));
         this.pageController.onAuthenticationSuccess(request,response,authentication);
     }
 }

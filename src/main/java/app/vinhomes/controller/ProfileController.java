@@ -45,28 +45,18 @@ public class ProfileController {
         System.out.println("get in update account customer");
         System.out.println(request.asText());
         Account acc = accountRepository.findById(userId).get();
-        Address addr = addressRepository.findById(acc.getAddress().getAddress_id()).get();
         Phone fone = phoneRepository.findById(Long.parseLong(request.get("txtPhoneId").asText().trim())).get();
-        String username, email, firstname, lastname, phonenumber, date, address, block;
+        String username, email, phonenumber, date;
         List<String> addressArr = new ArrayList<>();
         List<Phone> phoneList = new ArrayList<>();
         username = request.get("txtUsername") == null ? acc.getAccountName() : request.get("txtUsername").asText().trim();
         email = request.get("txtEmail") == null ? acc.getEmail() : request.get("txtEmail").asText().trim();
-        firstname = request.get("txtFirstname") == null ? acc.getFirstName() : request.get("txtFirstname").asText().trim();
-        lastname = request.get("txtLastname") == null ? acc.getLastName() : request.get("txtLastname").asText().trim();
         date = request.get("txtDate") == null ? acc.getDob().toString() : request.get("txtDate").asText().trim();
-        address = request.get("txtRoom") == null ? addr.getBuildingRoom() : request.get("txtRoom").asText().trim();
-        block = request.get("radioBlock") == null ? addr.getBuildingBlock() : request.get("radioBlock").asText();
         phonenumber = request.get("txtPhone") == null ? fone.getNumber() : request.get("txtPhone").asText().trim();
-        System.out.println(block);
 //        Long phoneID;
         username = acc.getAccountName().equals(username) ? "" : errorChecker.checkUsername(username);
         email = acc.getEmail().equals(email) ? "" : errorChecker.checkEmail(email);
-        firstname = errorChecker.checkFirstname(firstname);
-        lastname = errorChecker.checkLastname(lastname);
         date = errorChecker.checkDate(date);
-        System.out.println(address);
-        address = addr.getBuildingRoom().equals(address) ? "" : errorChecker.checkAddress(block, address);
         phonenumber = fone.getNumber().equals(phonenumber) ? "" : errorChecker.checkPhoneNumber(phonenumber);
 
         System.out.println("yes check okkk");
@@ -74,12 +64,9 @@ public class ProfileController {
         List<String> errorList = new ArrayList<>();
         errorList.add(username);
         errorList.add(email);
-        errorList.add(firstname);
-        errorList.add(lastname);
         errorList.add(date);
-        errorList.add(address);
         errorList.add(phonenumber);
-        CreateErrorCatcher error = new CreateErrorCatcher(username, email, firstname, lastname, date, address, phonenumber);
+        CreateErrorCatcher error = new CreateErrorCatcher(username, email, date, phonenumber);
         // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         for (String message : errorList) {
             if (message.isEmpty()) {
@@ -97,31 +84,21 @@ public class ProfileController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             username = request.get("txtUsername") == null ? acc.getAccountName() : request.get("txtUsername").asText().trim();
             email = request.get("txtEmail") == null ? acc.getEmail() : request.get("txtEmail").asText().trim();
-            firstname = request.get("txtFirstname") == null ? acc.getFirstName() : request.get("txtFirstname").asText().trim();
-            lastname = request.get("txtLastname") == null ? acc.getLastName() : request.get("txtLastname").asText().trim();
             date = request.get("txtDate") == null ? acc.getDob().toString() : request.get("txtDate").asText().trim();
             LocalDate localDate = LocalDate.parse(date, formatter);
-            address = request.get("txtRoom") == null ? addr.getBuildingRoom() : request.get("txtRoom").asText().trim();
             phonenumber = request.get("txtPhone") == null ? fone.getNumber() : request.get("txtPhone").asText().trim();
             System.out.println(phonenumber);
 
             System.out.println("yes work");
 
-            addr.setBuildingBlock(block);
-            addr.setBuildingRoom(address);
             acc.setAccountName(username);
             acc.setEmail(email);
-            acc.setFirstName(firstname);
-            acc.setLastName(lastname);
             acc.setDob(localDate);
             fone.setNumber(phonenumber);
 
 
             phoneRepository.save(fone);
-            addressRepository.save(addr);
             accountRepository.save(acc);
-            addressArr.add(address);
-            addressArr.add(block);
             phoneList.add(fone);
             System.out.println("save account");
 
@@ -139,14 +116,11 @@ public class ProfileController {
             if(session.getAttribute("loginedUser") != null){
                 session.setAttribute("loginedUser", acc);
             }
-            if(session.getAttribute("address") != null){
-                session.setAttribute("address", addr);
-            }
             if(session.getAttribute("phone") != null){
                 session.setAttribute("phone", phoneList);
             }
         }
-        error = new CreateErrorCatcher(username, email, firstname, lastname, date, addressArr, phonenumber);
+        error = new CreateErrorCatcher(username, email, date, phonenumber);
         return ResponseEntity.status(HttpStatus.OK).body(error);
     }
 }

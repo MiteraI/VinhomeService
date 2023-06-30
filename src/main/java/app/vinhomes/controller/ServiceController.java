@@ -1,9 +1,12 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.entity.Order;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.ServiceCategory;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
+import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.service.RatingService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +17,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.event.ListDataEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/services")
 public class ServiceController {
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -26,13 +37,16 @@ public class ServiceController {
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
 
+    @Autowired
+    private RatingService ratingService;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Service> getAllServices () {
+    public List<Service> getAllServices() {
         return serviceRepository.findAll();
     }
 
     @GetMapping(value = "/{id}")
-    public Service getServiceById (@PathVariable("id") Long serviceId, Model model) {
+    public Service getServiceById(@PathVariable("id") Long serviceId) {
         return serviceRepository.getServicesByServiceId(serviceId);
     }
 
@@ -103,4 +117,19 @@ public class ServiceController {
         serviceRepository.save(service);
         return ResponseEntity.status(HttpStatus.OK).body("Has updated the service");
     }
+    
+    @GetMapping(value = "/avg-rating/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object[] calculateAvgStarForEachService(@PathVariable("id") Long categoryId) {
+        List<Service> serviceWithSameCategory = new ArrayList<>();
+        List<Integer> serviceId = new ArrayList<>();
+        Object[] avgStartEachService = new Object[2];
+        serviceWithSameCategory = serviceRepository.findByServiceCategory_serviceCategoryId(categoryId);
+        serviceId = serviceWithSameCategory.stream().map(s -> s.getServiceId().intValue()).collect(Collectors.toList());
+        avgStartEachService[0] = ratingService.avgRatingForEachService(serviceId);
+        avgStartEachService[1] = ratingService.avgForEachRating(ratingService.ratingMap(serviceId), serviceId);
+        return ResponseEntity.status(HttpStatus.OK).body(avgStartEachService).getBody();
+    }
+
+
+
 }

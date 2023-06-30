@@ -101,10 +101,9 @@ public class Account implements UserDetails {
     @OneToMany(
             mappedBy = "account",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @ToString.Exclude
-    @JsonIgnore
     @JsonManagedReference
     private List<Phone> phones;
     public void addPhone(Phone phone) {

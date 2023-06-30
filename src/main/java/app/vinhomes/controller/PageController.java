@@ -4,31 +4,43 @@ import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
+import app.vinhomes.entity.order.Service;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.repository.order.ServiceCategoryRepository;
+
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.service.ServiceTypeService;
+import jakarta.persistence.criteria.CriteriaBuilder;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 
 @Controller
 public class PageController {
-
+    @Autowired
+    private ServiceTypeService typeService;
     @Autowired
     private ServiceRepository serviceRepository;
+
+    @Autowired
+    private ServiceCategoryRepository serviceCategoryRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -53,6 +65,8 @@ public class PageController {
                 return "scheduleTable";
             }
         }
+        model.addAttribute("category", serviceCategoryRepository.findAll());
+        System.out.println(serviceCategoryRepository.findAll());
         return "homepage";
     }
 
@@ -66,18 +80,18 @@ public class PageController {
         return "register";
     }
 
-    @RequestMapping(value = "/service/{id}", method = RequestMethod.GET)
-    public String prepareOrder(@PathVariable("id") Long serviceId, Model model, HttpServletRequest request) {
-        if (request.getSession() != null) {
-            HttpSession session = request.getSession(false);
-            Account acc = (Account) session.getAttribute("loginedUser");
-            model.addAttribute("acc", acc);
-        }
-        String cateName = request.getParameter("cname");
-        model.addAttribute("cateName", cateName);
-        model.addAttribute("service", serviceRepository.getServicesByServiceId(serviceId));
+    @RequestMapping(value = "/category-services/{id}", method = RequestMethod.GET)
+    public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model){
+        model.addAttribute("services", serviceCategoryRepository.findById(categoryId).get());
+        return "categoryservices";
+    }
+
+    @RequestMapping(value = "/service/{serviceId}")
+    public String prepareOrder (@PathVariable("serviceId") Long serviceId, Model model, HttpServletRequest request) {
+        model.addAttribute("service", typeService.getServiceType(serviceId));
+        model.addAttribute("category", typeService.getServiceCateByServiceId(serviceId));
         model.addAttribute("ordersByService", orderRepository.findAllByService_ServiceId(serviceId));
-        return "serviceDetail";
+        return "service-details";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
@@ -206,6 +220,45 @@ public class PageController {
                 break;
         }
         return url;
+    }
+
+    public Map<Integer, Map<Integer, Integer>> ratingMap(List<Integer> serviceId) {
+        Map<Integer, Map<Integer, Integer>> serviceRatingMap = new HashMap<Integer, Map<Integer, Integer>>();
+        int maxRating = 5, sameRating = 0;
+        for (int i = 0; i < serviceId.size(); i++) {
+            Map<Integer, Integer> ratingMap = new HashMap<Integer, Integer>();
+            for (int j = 1; j <= maxRating; j++) {
+                sameRating = orderRepository.COUNT_RATING_FOR_SERVICE(serviceId.get(i), j);
+                ratingMap.put(j, sameRating);
+            }
+            serviceRatingMap.put(serviceId.get(i), ratingMap);
+        }
+        for (Map.Entry<Integer, Map<Integer, Integer>> serviceRating : serviceRatingMap.entrySet()) {
+            System.out.println("key: " + serviceRating.getKey() + " value: " + serviceRating.getValue());
+        }
+        return serviceRatingMap;
+    }
+
+    public Map<Integer, Float> avgRatingForEachService(List<Integer> serviceId) {
+        Map<Integer, Float> avgRatingEachService = new HashMap<>();
+        Map<Integer, Map<Integer, Integer>> allRatingForEachService = new HashMap<>();
+        allRatingForEachService = ratingMap(serviceId);
+        int maxRating = 5, totalRating = 0, sumOfAllRating = 0;
+        float avgRatingService = 0;
+        for (Map.Entry<Integer, Map<Integer, Integer>> rating : allRatingForEachService.entrySet()) {
+            totalRating = 0;
+            sumOfAllRating = 0;
+            for (int i = 1; i <= maxRating; i++) {
+                totalRating += rating.getValue().get(i);
+                sumOfAllRating += rating.getValue().get(i) * i;
+            }
+            avgRatingService = (float) sumOfAllRating / totalRating > 0 ? Math.round((float) sumOfAllRating / totalRating) : 0;
+            avgRatingEachService.put(rating.getKey(), avgRatingService);
+        }
+        for (Map.Entry<Integer, Float> avgRating : avgRatingEachService.entrySet()) {
+            System.out.println("key: " + avgRating.getKey() + " values: " + avgRating.getValue());
+        }
+        return avgRatingEachService;
     }
 
     @RequestMapping(value = "/homepage")
