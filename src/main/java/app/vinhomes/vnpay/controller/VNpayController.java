@@ -77,8 +77,15 @@ public class VNpayController extends HttpServlet {
         }
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
-        String transactionMethodID = jsonNode.get("paymentId").asText();//req.getParameter("transactionMethod");//
+        String phonenumber = jsonNode.get("phonenumberId").asText().trim();
+        if(phonenumber.equals("")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR phonenumber is empty, please re-login and try again");
+        }
         String dayfromFormOrderService = jsonNode.get("day").asText();//req.getParameter("day") ;
+        if(dayfromFormOrderService.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR day is empty, please try again");
+        }
+        String transactionMethodID = jsonNode.get("paymentId").asText();//req.getParameter("transactionMethod");//
         if (transactionMethodID != "") {//transactionMethodID != null ||transactionMethodID.equals("")
             ResponseEntity<String> response = orderService.createOrder(jsonNode, req);// this return resp status + ORDER ID!!
             if (response.getStatusCode().is2xxSuccessful()) {
@@ -91,7 +98,6 @@ public class VNpayController extends HttpServlet {
             }
         } else {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("choose your payment method");
-
         }
         ////////////////////////////////////////////////////////////////
         int amount = (int) vnpayService.getServicePriceFromOrder(orderID) * 100;
@@ -101,15 +107,12 @@ public class VNpayController extends HttpServlet {
         }//////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////
         String bankCode = vnpayService.getBankCode_CheckCOD_VNpay(jsonNode, req);        //String bankCode = "VNBANK";
-
         if (bankCode == null) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("bankcode is empty, this will be fixed later");
             //TODO quan li neu chon thanh toan COD thay vi VNPAY
         } else if (bankCode.isEmpty()) {// this mean this is COD, not vnpay, so we dont have to redirect it to vnpay site
-
             vnpayService.saveTransaction_COD(orderID, transactionMethodID);
-
-            return ResponseEntity.ok().body("pay by COD, procede to go back main page");
+            return ResponseEntity.ok().body("COD");
             //TODO neu la COD thi lam gi tiep, ko tiep tuc gui thong tin cho vnpay
         }
         String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);

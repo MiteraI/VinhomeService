@@ -71,12 +71,17 @@ public class Account implements UserDetails {
 
     @Column(
             name = "is_Enabled",
-            nullable = false,
+            nullable = true,
             columnDefinition = "integer default 0"
     )
     private int isEnable;/////0 = inactive, 1 = acttive
 
-
+    @Column(
+            name = "is_Block",
+            nullable = true,
+            columnDefinition = "bit default 0"
+    )
+    private Boolean isBlock;/////0 = inactive, 1 = acttive
 
 
     @Column(nullable = false)
@@ -151,7 +156,11 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        if(isBlock){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override

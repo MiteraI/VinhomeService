@@ -11,7 +11,6 @@
       left: 50%;
       transform: translate(-50%, -50%);
       width: 50%;
-      z-index: 999;
       /* Other desired styles */
     }
   </style>
@@ -19,7 +18,7 @@
 
 <body>
   <div>
-    <form class="rounded-lg border-2 border-black" id="order-form" style="display: none;">
+    <form class="rounded-lg border-2 border-black" id="order-form" style="display: none">
       <div class="flex justify-center rounded-t-lg bg-yellow-info">
         <h1 class="px-8 py-4 font-bold text-xl">Order Service</h1>
       </div>
@@ -30,43 +29,94 @@
         <div id="timeSlot"></div>
         <label for="payment">Payment:</label>
         <div id="payment"></div>
-        <label for="phonenumber">Phone Number: </label>
-        <div id="phonenumber"></div>
       </div>
-
-      
       <div class="px-8 pb-8">
         <label for="date">Date: </label>
         <input class="border-2" type="date" id="date" name="day" />
       </div>
+      <!-- add phone number -->
+      <!-- add phone number -->
+      <!-- add phone number -->
+      <div class="form-group" style="margin-left: 20px; margin-bottom: 15px">
+        <select name="phonenumber" id="phonenumber" size="1">
 
+        </select>
+        <!-- add phone number -->
+        <!-- add phone number -->
+        <!-- add phone number -->
+        <!-- <label for="phonenumber">PhoneNumber</label>
+      <input type="phonenumber" id="phonenumber" name="day"> -->
+      </div>
       <br /><br />
       <div class="flex justify-center space-x-4">
-        <button class="px-10 py-4 bg-blue-bootstrap text-white rounded-lg my-8" type="submit" id="submit-btn">
+        <button class="px-10 py-4 bg-blue-bootstrap text-white rounded-lg my-8" type="submit" id="submit-btn"
+          onclick="">
           Submit
         </button>
-        <button class="px-10 py-4 bg-red-cancel text-white rounded-lg my-8" id="cancel-btn">
+        <button id="btnCancel" class="px-10 py-4 bg-red-cancel text-white rounded-lg my-8" onclick="">
           Cancel
         </button>
       </div>
     </form>
   </div>
   <script>
-    const orderForm = document.getElementById("order-form");
-    const cancelBtn = document.getElementById("cancel-btn");
+     const requestBody = {
+        timeId: "",
+        paymentId: "",
+        day: "",
+        serviceId: "",
+        phonenumberId: ""
+      };
 
-    const requestBody = {
-      timeId: 0,
-      paymentId: 0,
-      day: 0,
-      serviceId: 0,
-      phonenumberId: 0
-    };
+    const orderForm = document.getElementById("order-form");
+    orderForm.addEventListener("submit", (e) => {
+      // Retrieve the selected radio button value
+      e.preventDefault();
+      const selectedTimeSlot = document.querySelector(
+        'input[name="timeSlot"]:checked'
+      ).value;
+      const selectedPayment = document.querySelector(
+        'select[name="payment"]'
+      ).value;
+      // Create the request body
+      // const requestBody = {
+      //   timeId: selectedTimeSlot,
+      //   paymentId: selectedPayment,
+      //   day: document.getElementById("date").value,
+      //   serviceId: document.getElementById("serviceId").value,
+      //   phonenumberId: ""
+      // };
+      requestBody.timeId = selectedTimeSlot
+      requestBody.paymentId = selectedPayment
+      requestBody.day = document.getElementById("date").value
+      requestBody.serviceId = document.getElementById("serviceId").value
+      requestBody.phonenumberId = 
+      fetch("/vnpay/createPayment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            document.getElementById("order-form").style.display = "none";
+            alert("You have ordered successfully");
+          } else {
+            console.log("Fail");
+            alert("Fail in ordering");
+          }
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            console.log("Exception");
+          }
+        });
+    });
 
     const loadOrderForm = () => {
       const paymentDiv = document.getElementById("payment");
       const timeSlotDiv = document.getElementById("timeSlot");
-      const phoneDiv = document.getElementById("phonenumber")
       paymentDiv.innerHTML = "";
       timeSlotDiv.innerHTML = "";
       fetch("/api/order/timeSlot")
@@ -98,11 +148,13 @@
           const selectPayment = document.createElement("select");
           selectPayment.name = "payment";
           selectPayment.classList.add("border-2");
+
           // Create option elements for each payment option
           data.forEach((payment) => {
             const option = document.createElement("option");
             option.value = payment.paymentId;
             option.textContent = payment.paymentName;
+
             // Append each option to the select element
             selectPayment.appendChild(option);
           });
@@ -113,102 +165,55 @@
         .catch((error) => {
           console.log("Error fetching payment options:", error);
         });
-
+      // get all phone number for that particular customer
+      // get all phone number for that particular customer
+      // get all phone number for that particular customer
       fetch(`/createAccountAPI/getAllPhonenumber`, {
         method: "get"
       })
         .then(response => response.json())
         .then(data => {
-          const selectPhone = document.createElement("select");
-          selectPhone.name = "phonenumber";
-          selectPhone.classList.add("border-2");
           console.log(data)
           const phoneListTag = document.getElementById("phonenumber")
+          output = "";
           for (var i in data) {
-            var option = document.createElement("option");
-            option.value = data[i].phoneId
-            option.textContent = data[i].number
-            selectPhone.appendChild(option)
+            var builder = `
+            <option value="${data[i].phoneId}"> ${data[i].number}</option>`
+                    
+            output += builder;
           }
-          phoneDiv.appendChild(selectPhone)
+          phoneListTag.innerHTML = output;
           requestBody.phonenumberId = data[0].phoneId;
+          phoneListTag.addEventListener('click', function (event) {
+            console.log("yes it is clicked")
+            console.log(this.value)
+            requestBody.phonenumberId = this.value;
+          })
         })
 
 
+
     };
-
-
-
-
-
-    orderForm.addEventListener("submit",async (e) => {
-      // Retrieve the selected radio button value
-      e.preventDefault();
-      const selectedTimeSlot = document.querySelector(
-        'input[name="timeSlot"]:checked'
-      ).value;
-      const selectedPayment = document.querySelector(
-        'select[name="payment"]'
-      ).value;
-      const selectedPhone = document.querySelector(
-        'select[name="phonenumber"]'
-      ).value;
-      // Create the request body
-      requestBody.timeId = selectedTimeSlot;
-      requestBody.paymentId = selectedPayment;
-      requestBody.day = document.getElementById("date").value;
-      requestBody.phonenumberId = selectedPhone;
-      let response = await fetch("/vnpay/createPayment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      })
-      let status = await response.status;
-      let toText = await response.text();
-      if(status >= 200 && status <= 300){
-        alert("success")
-        if(toText === "COD"){
-          console.log("COD success")
-        }else{
-          window.location.replace(toText)
-        }
-      }else{
-        console.log("Fail");
-        alert("Fail in ordering");
-      }
-      
-    });
-
-    const orderBtns = Array.from(document.getElementsByClassName("order-btn"));
-    for (var i = 0; i < orderBtns.length; i++) {
-      orderBtns[i].addEventListener("click", function () {
-        displayForm();
-        const inputValue = this.parentNode.querySelector(
-          'input[type="hidden"]'
-        ).value;
-        requestBody.serviceId = inputValue;
-        // You can perform further actions with the input value here
-      });
-    }
-    const displayForm = () => {
-      console.log('display');
+    const orderBtn = document.getElementById("order-btn");
+    orderBtn.addEventListener("click", () => {
       orderForm.style.display =
         orderForm.style.display === "none" ? "block" : "none";
-    };
+    });
     document.addEventListener("click", (event) => {
-      if (!orderForm.contains(event.target) && !orderBtns.includes(event.target)) {
+      if (!orderForm.contains(event.target) && event.target !== orderBtn) {
         // Hide the form if the click is outside the form segment and not on the order button
         orderForm.style.display = "none";
       }
     });
-    cancelBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      orderForm.style.display = "none";
-    });
-  </script>
 
+    const cancelButton = document.getElementById("btnCancel");
+        cancelButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            const divForm = document.getElementById("order-form");
+            divForm.style.display = 'none';
+        })
+
+  </script>
 </body>
 
 </html>

@@ -51,7 +51,6 @@ public class ErrorChecker {
         if (password.isEmpty()) {
             return "please enter password";
         }
-
         Pattern pattern = Pattern.compile("^[\\d\\D]{3,15}$");
         Matcher matcher = pattern.matcher(password.trim());
         if (matcher.matches()) {

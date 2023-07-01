@@ -1,0 +1,365 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container fixed-top  " style="display: block; " id="update-form-container">
+        <div class="visually-hidden mt-5 ">asdf</div>
+        <div class="container d-flex justify-content-center align-items-center   mt-5 ">
+            <div class="container w-75 border border-black   bg-white
+                        mt-5 rounded  p-5   " style="z-index: 99;">
+                <form id="update-form" class="">
+                    <div class="container p-0 m-0 d-flex justify-content-center mb-3">
+                        <div class="align-items-center">
+                            <label> <!-- ID: -->ID:<input name="txtID" id="update-form-id" type="hidden"
+                                    value=""></label>
+                        </div>
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Username</label>
+                            <input type="text" id="update-form-username" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
+                            <p id="error-username" class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+                        <!-- <div class="form-group col-6  p-0 m-0">
+                            <label> password</label>
+                            <input type="text" id="update-form-password" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtPassword" value="">
+                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div> -->
+
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> email</label>
+                            <input type="text" id="update-form-email" class="form-control form-control-sm w-75"
+                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                            <p id="error-email" class="error-message text-danger " style="visibility: hidden;">adsf</p>
+                        </div>
+
+                    </div>
+
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Firstname</label>
+                            <input type="text" id="update-form-firstname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtFirstname" value="">
+                            <p id="error-firstname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Lastname</label>
+                            <input type="text" id="update-form-lastname" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtLastname" value="">
+                            <p id="error-lastname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                    </div>
+
+
+                    <div class="container d-flex p-0 m-0">
+
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Dob</label>
+                            <input type="date" id="update-form-dob" class="form-control form-control-sm w-75"
+                                placeholder="" name="txtDate" value="">
+                            <p id="error-dob" class="error-message text-danger" style="visibility: hidden;">adsf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0 ms-1 d-flex justify-content-end align-items-center">
+                            <label>is Enabled:
+                                <input type="text" id="isEnableText" value="" class="w-25 me-3 float-end"
+                                    readonly="readonly">
+                                    <input type="hidden" name="isEnable" id="isEnableValue" value="" class="w-25 me-3 float-end"
+                                    readonly="readonly">
+                            </label>
+                            <div class="btn-group w-50" style="margin-right: 25%" role="group"
+                                aria-label="Basic outlined example">
+                                <button type="button" id="isEnableYes" class="btn btn-outline-primary w-50"
+                                    onclick="isEnabled(this.id)">yes</button>
+                                <button type="button" id="isEnableNo" class="btn btn-outline-primary w-50"
+                                    onclick="isEnabled(this.id)">No</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="container p-0 m-0 d-flex">
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> PhoneNumber</label>
+                            <div class="input-group">
+                                <input type="text" name="txtPhonenumber" class="form-control"
+                                    aria-label="Text input with dropdown button" id="update-form-phonenumber" value="">
+                                <input type="hidden" name="txtPhoneID" value="" id="update-form-phoneid">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Dropdown</button>
+                                    <div class="dropdown-menu" id="dropdown-phone">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
+                                placeholder="" name="txtPhonenumber"> -->
+                            <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0 ms-1 d-flex justify-content-end align-items-center">
+                            <label>is Block:
+                                <input type="text" id="isBlockText" value="" class="w-25 me-3 float-end"
+                                    readonly="readonly">
+                                    <input type="hidden" name="isBlock" id="isBlockValue" value="" class="w-25 me-3 float-end"
+                                    readonly="readonly">
+                            </label>
+                            <div class="btn-group w-50" style="margin-right: 25%" role="group"
+                                aria-label="Basic outlined example">
+                                <button type="button" id="isBlockYes" class="btn btn-outline-primary w-50"
+                                onclick="isBlocked(this.id)">yes</button>
+                                <button type="button" id="isBlockNo" class="btn btn-outline-primary w-50"
+                                onclick="isBlocked(this.id)">No</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container d-flex p-0 m-0">
+                        <div class="form-group col-6  p-0 m-0">
+                            <input type="radio" class="form-check-input" name="btnRadio" value="A" checked=""> block A
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" class="form-check-input" name="btnRadio" value="B" checked="">block B
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" class="form-check-input" name="btnRadio" value="C" checked=""> block C
+                            </br>
+                        </div>
+                        <div class="form-group col-6  p-0 m-0">
+                            <label> Room</label>
+                            <input type="text" id="update-form-room" class="form-control form-control-sm w-25"
+                                placeholder="" name="txtRoomnumber" value="">
+                            <p id="error-address" class="error-message text-danger" style="visibility: hidden;"> asdf</p>
+                        </div>
+                    </div>
+
+                    <div class=" container-fluid d-flex justify-content-between">
+                        <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
+                        <div class=" btn btn-primary form-close d-inline-block align-content-end"
+                            onclick="getAdminCustomerPage()">
+                            close</div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+<script>
+    const getCustomerId = window.location.href.split(/(\\|\/)/g).pop()
+    console.log(getCustomerId)
+    showFullCustomerInfo(getCustomerId)
+    var error_username,error_email,error_firstname,error_lastname,error_phonenumber,error_dob,error_address
+    error_username = document.getElementById("error-username")
+    error_email = document.getElementById("error-email")
+    error_firstname = document.getElementById("error-firstname")
+    error_lastname = document.getElementById("error-lastname")
+    error_phonenumber = document.getElementById("error-phonenumber")
+    error_dob = document.getElementById("error-dob")
+    error_address = document.getElementById("error-address")
+    
+    
+
+
+
+
+    async function showFullCustomerInfo(AccountID) {
+        document.getElementById("update-form").reset();
+        document.getElementById("update-form-container").style.display = "block"
+        ///get account info
+        console.log(AccountID)
+        const response1 = await fetch(`http://localhost:8080/UserRestController/getAccountInfo/${AccountID}`, {
+            method: "GET"
+        });
+        console.log("yes get all info customer ")
+        var account = await response1.json(); console.log( account);
+        //get phone of account
+        const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${AccountID}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log("yes get in phone");
+        var phone = await response2.json();
+        //get address of account
+        const response3 = await fetch(`http://localhost:8080/UserRestController/getAccountAddress/${AccountID}`, {
+            method: "GET"
+        });
+        console.log("yes get in Address");
+        ////dropdown menu set up
+        var drop_down_menu = document.getElementById("dropdown-phone"); console.log(drop_down_menu)
+        drop_down_menu.innerHTML = "";
+        var output = "";
+        for (var i in await phone) {
+            output =
+                `
+            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" >
+                ${phone[i].number}
+            </a>
+        `;
+            drop_down_menu.innerHTML += output;
+        }
+        document.getElementById("update-form-phonenumber").value = phone[0].number;
+        document.getElementById("update-form-phoneid").value = phone[0].phoneId;
+        //this is to get 1 phone to the form if there is one
+
+        ///form info setup
+        document.getElementById("update-form-id").value = account.accountId;
+        document.getElementById("update-form-username").value = account.accountName;
+        //document.getElementById("update-form-password").value = account.password;
+        document.getElementById("update-form-firstname").value = account.firstName;
+        document.getElementById("update-form-lastname").value = account.lastName;
+        document.getElementById("update-form-dob").value = account.dob;
+        document.getElementById("update-form-email").value = account.email
+
+        var is_block = account.isBlock
+        var is_enabled = account.isEnable
+        console.log(is_block)
+        console.log(is_enabled)
+        if (is_enabled == 1) {
+            isEnabled("isEnableYes")
+        } else {
+            isEnabled("isEnableNo")
+        }if (is_block == 1) {
+            isBlocked("isBlockYes")
+        } else {
+            isBlocked("isBlockNo")
+        }
+        console.log(document.getElementById("update-form-id").value)
+        //address setup
+        var address = await response3.json();
+        // console.log(await address)
+        var btnChecked = document.querySelectorAll('.form-check-input')
+        switch (await address.buildingBlock) {
+            case "A":
+                btnChecked[0].checked = true;
+                break;
+            case "B":
+                btnChecked[1].checked = true;
+                break;
+            case "C":
+                btnChecked[2].checked = true;
+                break;
+            default:
+                console.log("somethingwrong with address"); alert("something wrong with address, or this guy dont have a house yet")
+                break;
+        }
+        document.getElementById("update-form-room").value = address.buildingRoom;
+    }
+    function phoneInputUpdate(number, id) {
+        console.log(number)
+        console.log(id)
+        document.getElementById("update-form-phonenumber").value = number;
+        document.getElementById("update-form-phoneid").value = id
+    }
+    ////////////update customer info
+    ////////////update customer info
+    ////////////update customer info
+    const update_form = document.getElementById("update-form");
+    update_form.addEventListener('submit', async function (event) {
+        console.log(update_form)
+        event.preventDefault();
+        var form_data = new FormData(update_form);
+        let data = Object.fromEntries(form_data);
+        // console.log(data);
+        var response = await fetch(`http://localhost:8080/UserRestController/UpdateAccountCustomer`,
+            {
+                method: "Put",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+        console.log(await response.status);//console.log(await response.json())
+        var status = await response.status;
+        var responseData = await response.json()
+        if (status < 200 || status > 300) {
+            error_username.style.visibility = "visible"; error_username.innerHTML = "."+ responseData.usernameErr
+            //error_password.stylse.visibility = "visible"; error_password.innerHTML = responseData.passwordErr
+            error_email.style.visibility = "visible"; error_email.innerHTML = "."+ responseData.emailErr
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "."+ responseData.firstnameErr
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "."+ responseData.lastnameErr
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = "."+ responseData.dateErr
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "."+ responseData.phonenumberErr
+            error_address.style.visibility = "visible"; error_address.innerHTML = "."+ responseData.addressErr
+            if(responseData.usernameErr == ""){error_username.style.visibility = "hidden";}
+            if(responseData.emailErr == ""){ error_email.style.visibility = "hidden";}
+            if(responseData.firstnameErr == ""){error_firstname.style.visibility = "hidden"; }
+            if(responseData.lastnameErr == ""){error_lastname.style.visibility = "hidden";}
+            if(responseData.dateErr == ""){error_dob.style.visibility = "hidden";}
+            if(responseData.phonenumberErr == ""){ error_phonenumber.style.visibility = "hidden";}
+            if(responseData.addressErr == ""){error_address.style.visibility = "hidden";}
+
+
+        } else {
+            error_username.style.visibility = "hidden";
+            //error_password.style.visibility = "hidden"; 
+            error_email.style.visibility = "hidden";
+            error_firstname.style.visibility = "hidden"; 
+            error_lastname.style.visibility = "hidden";
+            error_dob.style.visibility = "hidden";
+            error_phonenumber.style.visibility = "hidden"; 
+            error_address.style.visibility = "hidden";
+            console.log('yes successs')
+            alert("successfully update");
+            delay(500).then(() => {
+                getAdminCustomerPage()
+                })
+            }
+    
+        }
+    )
+    function getAdminCustomerPage() {
+        console.log("inside return main page")
+        window.location.href = "/adminDisplayCustomer_page";
+    }
+
+
+
+    function isEnabled(button_id) {
+        console.log(button_id)
+        if (button_id == "isEnableYes") {
+            document.getElementById("isEnableYes").checked = true;
+            document.getElementById("isEnableNo").checked = false;
+            document.getElementById("isEnableValue").value = 1;
+            document.getElementById("isEnableText").value = "yes";
+        } else {
+            document.getElementById("isEnableYes").checked = false;
+            document.getElementById("isEnableNo").checked = true;
+            document.getElementById("isEnableValue").value = 0;
+            document.getElementById("isEnableText").value = "No";
+        }
+    }
+    function isBlocked(button_id) {
+        console.log(button_id)
+        if (button_id == "isBlockYes") {
+            document.getElementById("isBlockYes").checked = true;
+            document.getElementById("isBlockNo").checked = false;
+            document.getElementById("isBlockValue").value = 1;
+            document.getElementById("isBlockText").value = "yes";
+        } else {
+            document.getElementById("isBlockYes").checked = false;
+            document.getElementById("isBlockNo").checked = true;
+            document.getElementById("isBlockValue").value = 0;
+            document.getElementById("isBlockText").value = "no";
+        }
+    }
+</script>
+<script src="../static/js/AdminPublicFunction.js"></script>
+
+</html>
