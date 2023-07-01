@@ -61,7 +61,7 @@ public class LeaveController {
     BlobContainerClient blobContainerClient;
     @Autowired
     private LeaveService leaveService;
-    @PostMapping(value = "/leave-report")
+    @PostMapping(value = "/leave-report/create")
     public ResponseEntity<?> LeaveReport (@RequestParam("startDate") String startDateStr,
                                           @RequestParam("endDate") String endDateStr,
                                           @RequestParam("reason") String reason, HttpServletRequest request,
