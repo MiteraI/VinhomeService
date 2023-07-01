@@ -63,7 +63,7 @@ public class WorkerService {
         Order order = orderRepository.findByOrderId(orderId);
         Schedule schedule = scheduleRepository.findByOrder(order);
         LocalDate workDate = schedule.getWorkDay();
-        TimeSlot timeSlot = timeSlotRepository.findByTimeSlotId(schedule.getScheduleId());
+        TimeSlot timeSlot = schedule.getTimeSlot();
         if (workDate.isEqual(LocalDate.now()) && timeSlot.getStartTime().isBefore(LocalTime.now())) {
             order.setStatus(OrderStatus.valueOf("SUCCESS"));
             orderRepository.save(order);

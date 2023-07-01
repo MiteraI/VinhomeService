@@ -4,6 +4,7 @@ import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.order.Payment;
+import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.repository.*;
@@ -156,11 +157,13 @@ public class OrderController {
             for (Order o : listOrders) {
                 Account account = o.getAccount();
                 Service service = o.getService();
+                Schedule schedule = o.getSchedule();
                 Map<String, Object> orderDetail = new HashMap<>();
                 if (account != null) {
                     orderDetail.put("account", account);
                     orderDetail.put("order", o);
                     orderDetail.put("service", service);
+                    orderDetail.put("schedule", schedule);
                     listOrdersDetail.add(orderDetail);
                 }
             }

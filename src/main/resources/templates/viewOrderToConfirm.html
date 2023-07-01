@@ -8,7 +8,14 @@
 <table>
   <thead>
   <tr>
-    <th></th>
+    <th>OrderId</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Service Name</th>
+    <th>Work Day</th>
+    <th>Price</th>
+    <th>Status</th>
+    <th>Action</th>
   </tr>
   </thead>
 
@@ -26,6 +33,8 @@
               const account = item['account'];
               const order = item['order'];
               const service = item['service'];
+              const schedule = item['schedule'];
+              const workDay = schedule['workDay']
               const  serviceName = service['serviceName'];
               const price = order['price'];
               const firstName = account['firstName'];
@@ -38,6 +47,7 @@
                             <td>${firstName}</td>
                             <td>${lastName}</td>
                             <td>${serviceName}</td>
+                            <td>${workDay}</td>
                             <td>${price}</td>
                             <td>${status}</td>
                             <td><button class="btn btn-primary" onclick="confirm(${orderId})">Confirm Order</button></td>
