@@ -1,0 +1,233 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div>
+        <div class="position-relative">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- <div class="container-fluid p-0 "> -->
+                    <a class="navbar-brand" href="#">
+                        <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
+                            class="d-inline-block align-top mx-3" alt="">
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
+                                    <h4>WORKER</h4>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="#">
+                                    <h4>USER</h4>
+                                </a>
+                            </li>
+                            <!-- <li class="nav-item ">
+                                <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
+                                    <h4>Transaction List</h4>
+                                </a>
+                            </li> -->
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
+                                    <h4>See Leave Report</h4>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <form action="/logout">
+                    <button type="submit">Logout</button>
+                </form>
+            </nav>
+        </div>
+    </div>
+    <div class="container-fluid " style="height: 40px;">
+    </div>
+    <div class="container d-flex justify-content-end p-0 mt-3">
+        <div class="form-group  has-feedback col-md-4  ">
+            <!-- <label class="sr-only" for="search">Search</label> -->
+            <input type="text" class="form-control" name="q" id="search" placeholder="Search">
+            <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>
+        </div>
+    </div>
+    <!-- customer table -->
+    <!-- customer table -->
+    <!-- customer table -->
+    <div class="TABLE-FOR-CUSTOMER container col-12 mt-3">
+        <table class="table-customer table table-striped" style="display:block;">
+            <thead>
+                <tr>
+                    <th id="heading-id-c" scope="col" class="asc" onclick='sortById(this)' style="width: 20%;">
+                        accountID</th>
+                    <th id="heading-email-c" scope="col" class="asc" style="width: 20%;">email</th>
+                    <th id="heading-firstname-c" scope="col" class="asc" onclick='sortByFirstname(this)'
+                        style="width: 20%;">Firstname
+                    </th>
+                    <th id="heading-lastname-c" scope="col" class="asc" onclick='sortByLastname(this)'
+                        style="width: 20%;">Lastname</th>
+                    <th id="heading-dob-c" scope="col" class="asc" onclick='sortByDob(this)' style="width: 20%;">Dob
+                    </th>
+                    <th id="heading-status-c" scope="col" class="asc" onclick='sortByStatus(this)' style="width: 20%;">
+                        status</th>
+                    <th id="heading-role-c" scope="col" class="asc" style="width: 20%;">Role</th>
+                    <th scope="col" class="asc" style="width: 20%;">update</th>
+                    <th scope="col" class="asc" style="width: 20%;">Delete</th>
+                    <th scope="col" class="asc" style="width: 20%;">Orders </th>
+                </tr>
+            </thead>
+            <tbody id="customer-list">
+
+            </tbody>
+        </table>
+    </div>
+    <!-- customer table -->
+    <!-- customer table -->
+    <!-- customer table -->
+
+
+</body>
+<script src="../static/js/AdminPublicFunction.js"></script>
+<script>
+    var error_username, error_password, error_email, error_firstname, error_lastname, error_dob, error_phonenumber, error_service;
+    error_username = document.getElementById("error-username")
+    error_password = document.getElementById("error-password")
+    error_email = document.getElementById("error-email")
+    error_firstname = document.getElementById("error-firstname")
+    error_lastname = document.getElementById("error-lastname")
+    error_dob = document.getElementById("error-dob")
+    error_phonenumber = document.getElementById("error-phonenumber")
+    //error_service = document.getElementById("error-service")
+    getCustomerList()
+    async function getCustomerList() {
+        console.log("inside get customer")
+        const response = await fetch("http://localhost:8080/UserRestController/getAccountCustomer")
+        data = await response.json();
+        printRow(data, "customer-list");
+    }
+
+    function printRow(data, IdOfTableBody) {
+        console.log(IdOfTableBody)
+        var table_tag = document.getElementById(`${IdOfTableBody}`);
+        // console.log(table_tag.innerHTML)
+        table_tag.innerHTML = ""
+        console.log(data)
+        var output = "";
+        for (var i in data) {
+            roleString = (data[i].role == 1) ? "worker" : "user";
+            statusString = (data[i].accountStatus == 1) ? "active" : "off ";
+            var date_new; var date_output;
+            if (data[i].dob == null) {
+                date_output = "not yet imported"
+            } else {
+                date_new = new Date(data[i].dob); console.log(date_new)
+                date_output = new Intl.DateTimeFormat('en-US').format(date_new);
+            }
+            // onclick='showFullCustomerInfo(${data[i].accountId})'
+            output = `
+        <tr id="${data[i].accountId}" scope="row"  class='item-to-search' >
+        `
+            if (data[i].role == 1) {
+                output += `<td ><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+            } else {
+                output += `<td ><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+            }
+            output += `
+                <td style="display: none;" ><input type="hidden" name="txtUsername" value="${data[i].accountName}"></td>
+                <td style="display: none;"><input type="hidden" name="txtPassword" value="${data[i].password}"></td>
+                <td><input type="hidden" name="txtEmail"value="${data[i].email}">${data[i].email}</td>
+                <td><input type="hidden" name="txtFirstname"value="${data[i].firstName}">${data[i].firstName}</td>
+                <td><input type="hidden" name="txtLastname"value="${data[i].lastName}">${data[i].lastName}</td>
+                <td><input type="hidden" name="txtDob"value="${data[i].dob}">${date_output}</td>
+                <td><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
+                <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
+                <td>
+                    <button><a href="/admin_UpdateCustomer/${data[i].accountId}">UPDATE</a></button>
+                </td>`
+            if (data[i].accountStatus == 1) {
+                output +=
+                `<td>
+                    <button onclick='deleteByID(${data[i].accountId})'>del</button>
+                </td>`
+            }else{
+                output+=
+                ` <td>
+                    <button onclick='deleteByID(${data[i].accountId})'>active</button>
+                </td>`;
+            }
+            output += 
+            `<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>order</button></td>
+            </tr>`
+            table_tag.innerHTML += output;
+        }
+    }
+
+    async function openCreateForm() {
+        // document.querySelectorAll(".overlay")[0].style.display = "block";
+        var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
+            method: "GET"
+        });
+        console.log("yes get service");
+        var service_list = await response.json();
+        var drop_down_service = document.getElementById("w-create-form-dropdown-service"); console.log(drop_down_service)
+        drop_down_service.innerHTML = "";
+        var output = "";
+        for (var i in await service_list) {
+            output =
+                `
+            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
+                ${service_list[i].serviceCategoryName}
+            </a>
+        `;
+            drop_down_service.innerHTML += output;
+        }
+        document.querySelectorAll(".form")[0].style.display = "block";
+        document.getElementById("w-create-form-service").value = service_list[0].serviceCategoryName;
+        document.getElementById("w-create-form-serviceid").value = service_list[0].serviceCategoryId;
+        //creatAccountService(service_list[0].serviceCategoryName,service_list[0].serviceCategoryId)
+    }
+
+    async function deleteByID(id) {
+        console.log(id)
+        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        );
+        var status = await response.status
+        var bodyJson = await response.json()
+        console.log("yes call api success DELETE")
+        if (status >= 200 && status <= 300) {
+            console.log(bodyJson[0].role)
+            printRow(bodyJson, "customer-list");
+        }
+        else {
+            alert("delete fail, might be server side");
+            return;
+        }
+    }
+
+
+</script>
+
+</html>

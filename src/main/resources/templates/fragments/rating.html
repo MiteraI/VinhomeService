@@ -18,50 +18,50 @@
           <span class="avg-stars"></span>
         </div>
 
-        <div class="flex justify-center items-center">
-          <span class="mr-2 whitespace-nowrap">5 star</span>
-          <div class="w-full flex bg-gray-400 rounded-full h-4">
-            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full" style="width: 45%"></div>
+        <div class="flex justify-center items-center" th:each="rating : ${ratingArr}">
+          <span class="mr-2 whitespace-nowrap min-w-[45px]" th:text="${rating} + ' star'">5 star</span>
+          <div class="w-full flex bg-gray-400 rounded-full h-4 min-w-[282px]">
+            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full"></div>
           </div>
-          <span class="percentage-text ml-2 whitespace-nowrap">40%</span>
+          <span class="percentage-text ml-2 whitespace-nowrap min-w-[32px]"></span>
+
+        </div>
+
+        <!-- <div class="flex justify-center items-center">
+          <span class="mr-2 whitespace-nowrap min-w-[45px]">4 star</span>
+          <div class="w-full flex bg-gray-400 rounded-full h-4">
+            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full"></div>
+          </div>
+          <span class="percentage-text ml-2 whitespace-nowrap"></span>
 
         </div>
 
         <div class="flex justify-center items-center">
-          <span class="mr-2 whitespace-nowrap">4 star</span>
+          <span class="mr-2 whitespace-nowrap min-w-[45px]">3 star</span>
           <div class="w-full flex bg-gray-400 rounded-full h-4">
-            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full" style="width: 45%"></div>
+            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full"></div>
           </div>
-          <span class="percentage-text ml-2 whitespace-nowrap">40%</span>
+          <span class="percentage-text ml-2 whitespace-nowrap"></span>
 
         </div>
 
         <div class="flex justify-center items-center">
-          <span class="mr-2 whitespace-nowrap">3 star</span>
+          <span class="mr-2 whitespace-nowrap min-w-[45px]">2 star</span>
           <div class="w-full flex bg-gray-400 rounded-full h-4">
-            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full" style="width: 45%"></div>
+            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full"></div>
           </div>
-          <span class="percentage-text ml-2 whitespace-nowrap">40%</span>
+          <span class="percentage-text ml-2 whitespace-nowrap"></span>
 
         </div>
 
         <div class="flex justify-center items-center">
-          <span class="mr-2 whitespace-nowrap">2 star</span>
+          <span class="mr-2 whitespace-nowrap min-w-[45px]">1 star</span>
           <div class="w-full flex bg-gray-400 rounded-full h-4">
-            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full" style="width: 45%"></div>
+            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full"></div>
           </div>
-          <span class="percentage-text ml-2 whitespace-nowrap">40%</span>
+          <span class="percentage-text ml-2 whitespace-nowrap"></span>
 
-        </div>
-
-        <div class="flex justify-center items-center">
-          <span class="mr-2 whitespace-nowrap">1 star</span>
-          <div class="w-full flex bg-gray-400 rounded-full h-4">
-            <div class="avg-star-percentage bg-blue-600 h-inherit rounded-full" style="width: 45%"></div>
-          </div>
-          <span class="percentage-text ml-2 whitespace-nowrap">40%</span>
-
-        </div>
+        </div> -->
 
       </div>
     </div>
