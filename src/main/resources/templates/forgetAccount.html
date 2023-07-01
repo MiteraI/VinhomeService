@@ -1,95 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="w-[100%] h-[100%]">
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Forget Password</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/tailwind/font.css" />
+    <link rel="stylesheet" href="../static/tailwind/index.css" />
 </head>
 
-<body>
-    <div class="container-fluid ">
-        <div id="METHOD"
-            class="border border-1 border-dark rounded col-12 vh-100 vw-100 position-absolute bottom-0 start-50 translate-middle  "
-            style="max-width: 50%;max-height: 50%; display: block;">
-            <h2 class="text-center">
-                Forget Account? Choose you validation method
-            </h2>
-            <div id="ERRORMESSAGE" class="container text-center text-danger" style="visibility: hidden;">
-                sdfasdf
-            </div>
-            <div class="container position-absolute top-50 translate-middle-y">
-                <input type="radio" name="btnRadioVerification" value="SMS"> SMS
-                <br>
-                <input type="radio" name="btnRadioVerification" value="EMAIL" checked> EMAIL
-                <br>
-                <input id="VALUE" class="pt-1 " type="text" name="txtInput" value="" required>
-                <br>
+<body class="w-[100%] h-[100%]">
+
+    <div class="w-inherit h-inherit flex justify-center items-center">
+        <div class="w-[45%] h-[25%] bg-blue-200 flex overflow-hidden relative">
+            <div
+                class="-z-10 flex flex-col justify-center items-center w-[0%] h-[100%] transition-all duration-300 ease-linear">
+
+                <div class="flex flex-col justify-center items-center my-2">
+                    <div class="text-center text-xl font-semibold">Please select a verification method</div>
+
+                    <div class="flex flex-col mt-3">
+                        <span><input type="radio" name="btnRadioVerification" value="SMS"><span class="ml-2">Verify via
+                                phone
+                                number
+                                (SMS)</span></span>
+                        <span><input type="radio" name="btnRadioVerification" value="EMAIL" checked><span
+                                class="ml-2">Verify via
+                                email</span></span>
+                    </div>
+                </div>
+                <div class="mt-3 w-[100%] flex justify-end px-5">
+                    <button class="ml-2 border-2 px-3 py-2 rounded-lg hover:bg-blue-300">Back</button>
+                    <button class="ml-2 border-2 px-3 py-2 rounded-lg hover:bg-blue-300">Next</button>
+                </div>
+
             </div>
 
             <div
-                class="container position-absolute bottom-0 start-50 translate-middle d-flex justify-content-around align-items-center">
-                <button class="btn btn-primary text-white " onclick="getHomePage()">
-                    Home
-                </button>
-                <button class="btn btn-primary text-white " onclick="chooseMethod()">
-                    submit
-                </button>
+                class="-z-10 flex flex-col justify-center items-center w-[0%] h-[100%] transition-all duration-300 ease-linear">
+                <div class="flex flex-col justify-center items-center my-2">
+                    <div class="text-center text-xl font-semibold capitalize">Please enter your phone number</div>
+
+                    <div class="flex flex-col mt-3">
+                        <span>
+                            <input type="text" name="txtPhone" value="" class="px-2 py-1 rounded-lg">
+                        </span>
+                    </div>
+                </div>
+                <div class="mt-3 w-[100%] flex justify-end px-5">
+                    <button class="ml-2 border-2 px-3 py-2 rounded-lg hover:bg-blue-300">Back</button>
+                    <button class="ml-2 border-2 px-3 py-2 rounded-lg hover:bg-blue-300">Next</button>
+                </div>
             </div>
+
+            <div
+                class="flex flex-col justify-center items-center w-[100%] h-[100%] transition-all duration-300 ease-linear">
+                <div class="flex flex-col justify-center items-center my-2">
+                    <div class="text-center text-xl font-semibold capitalize">Please enter your email</div>
+
+                    <div class="flex flex-col mt-3">
+                        <span>
+                            <input type="text" name="txtPhone" value="" class="px-2 py-1 rounded-lg">
+                        </span>
+                    </div>
+                </div>
+                <div class="mt-3 w-[100%] flex justify-end px-5">
+                    <button class="ml-2 border-2 px-3 py-2 rounded-lg hover:bg-blue-300">Back</button>
+                    <button class="ml-2 border-2 px-3 py-2 rounded-lg hover:bg-blue-300">Next</button>
+                </div>
+            </div>
+
+            <div class="w-[0%] h-[100%] bg-yellow-500 transition-all duration-300 ease-linear"></div>
         </div>
     </div>
 </body>
 <script>
-    var error_message = document.getElementById('ERRORMESSAGE');
-    var sendBody =
-    {
-        method: "",
-        input: "",
-    }
-    async function chooseMethod() {
-        var getMethodList = document.getElementsByName("btnRadioVerification");
-        var getMethod;
-        for (var i = 0; i < getMethodList.length; i++) {
-            if (getMethodList[i].checked) {
-                // get value, set checked flag or do whatever you need to
-                getMethod = getMethodList[i].value;
-            }
-        }
-        var getValue = document.getElementById("VALUE").value;
-        sendBody.method = getMethod
-        sendBody.input  = getValue
-        var response = await fetch("http://localhost:8080/createAccountAPI/forgetAccountMethod", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(sendBody)
-        })
-        var status = await response.status
-        var toText = await response.text()
-        if (status >= 200 && status <= 300) {
-            error_message.style.visibility = "hidden";
-            alert("success")
-            console.log("yes succeses")
-            getHomePage();
-        } else {
-            error_message.style.visibility = "visible";
-            error_message.innerText = toText;
-            //alert("fail: " + toText )
-            console.log("fail, maybe due to incorrect input")
-        }
-
-
-    }
-    function getHomePage() {
-        window.location.replace(`/`)
-    }
 
 </script>
 

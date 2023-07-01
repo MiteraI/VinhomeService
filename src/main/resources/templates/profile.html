@@ -18,7 +18,8 @@
   <div class="bg-orange-500 mx-20 my-7 py-5 px-4 relative flex items-center">
     <span class="">Please verify this phone number: <span class="ml-1 font-semibold"
         th:text="${phone != null} ? ${phone[0].number} : ''">1234567890</span></span>
-    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black">Verify</button>
+    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black"><a href="/otp-verification"
+        target="" class="">Verify</a></button>
   </div>
 
   <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
@@ -447,8 +448,8 @@
     .then(response => response.json())
     .then(data => {
       console.log(data)
-       isEnabled = data.enabled;console.log(isEnabled)
-       username = data.accountName;console.log(username)
+      isEnabled = data.enabled; console.log(isEnabled)
+      username = data.accountName; console.log(username)
       if (isEnabled == true) {
         document.getElementById("VERIFYBUTTON").style.display = "none";
       } else {

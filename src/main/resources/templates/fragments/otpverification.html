@@ -1,0 +1,44 @@
+<div class="otpForm flex flex-col items-center justify-center">
+
+  <div class="my-5 text-xl font-semibold">OTP Verification</div>
+  <div class="mb-5" th:text="${acc != null} ? 'Hello ' + ${acc} + ','">
+  </div>
+  <div>
+    <form class="otc" name="one-time-code" action="#">
+      <legend class="text-center whitespace-nowrap">Please Enter Validation Code You Recived In Your Phone</legend>
+      <div class="inputfield mt-5 w-full flex justify-around">
+        <input type="number" maxlength="1"
+          class="input h-[3em] w-[3em] border-2 border-[#dad9df] outline-none text-center font-[1.5em] rounded-lg bg-white disabled: text-[#89888b] focus:border-3 focus:border-[#ffb800]">
+        <input type="number" maxlength="1"
+          class="input h-[3em] w-[3em] border-2 border-[#dad9df] outline-none text-center font-[1.5em] rounded-lg bg-white disabled: text-[#89888b] focus:border-3 focus:border-[#ffb800]"
+          disabled />
+        <input type="number" maxlength="1"
+          class="input h-[3em] w-[3em] border-2 border-[#dad9df] outline-none text-center font-[1.5em] rounded-lg bg-white disabled: text-[#89888b] focus:border-3 focus:border-[#ffb800]"
+          disabled />
+        <input type="number" maxlength="1"
+          class="input h-[3em] w-[3em] border-2 border-[#dad9df] outline-none text-center font-[1.5em] rounded-lg bg-white disabled: text-[#89888b] focus:border-3 focus:border-[#ffb800]"
+          disabled />
+        <input type="number" maxlength="1"
+          class="input h-[3em] w-[3em] border-2 border-[#dad9df] outline-none text-center font-[1.5em] rounded-lg bg-white disabled: text-[#89888b] focus:border-3 focus:border-[#ffb800]"
+          disabled />
+        <input type="number" maxlength="1"
+          class="input h-[3em] w-[3em] border-2 border-[#dad9df] outline-none text-center font-[1.5em] rounded-lg bg-white disabled: text-[#89888b] focus:border-3 focus:border-[#ffb800]"
+          disabled />
+      </div>
+
+      <div class="my-5 flex justify-center items-center" id="timer">
+        OTP expired in: <span class="countDown ml-2 font-bold text-red-400"></span>
+      </div>
+      <div class="my-5 flex justify-center items-center">
+        If you didn't receive the code! <span class="ml-1">
+          <a href="" class="resendBtn cursor-default pointer-events-none opacity-25"
+            title="Wait until current otp code expire to resend">Resend</a></span>
+      </div>
+      <div class="flex items-center justify-center">
+        <button class="border-2 border-black bg-blue-300 w-full rounded-lg hover:bg-blue-400 py-1 px-2">Submit</button>
+      </div>
+    </form>
+  </div>
+
+
+</div>
