@@ -268,8 +268,12 @@
             }else{
                 console.log("refund success");
                 alert("refund success: "+toText)
+                reloadPage()
             }
 
+        }
+        function reloadPage(){
+          window.location.href = "/order-history";
         }
     </script>
   </body>
