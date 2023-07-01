@@ -11,4 +11,9 @@ public class WorkerPage {
     public String viewSchedule() {
         return "scheduleTable";
     }
+
+    @GetMapping("/view-order-to-confirm")
+    public String viewOrderToConfirm () {
+        return "viewOrderToConfirm";
+    }
 }

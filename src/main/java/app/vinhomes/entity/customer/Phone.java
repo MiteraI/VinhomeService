@@ -23,7 +23,7 @@ public class Phone {
     @Column(nullable = false)
     private String number;
 
-    @ManyToOne(
+    @OneToOne(
             fetch = FetchType.EAGER
     )
     @JoinColumn(

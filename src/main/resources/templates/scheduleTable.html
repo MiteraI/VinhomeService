@@ -9,6 +9,8 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <body>
+<a href="/worker/view-order-to-confirm">View Orders to confirm</a>
+<a id=""></a>
 <table id="timeTable">
   <thead>
   <tr>
@@ -222,7 +224,7 @@
     console.log(formData)
     async function fetchData() {
       try {
-        const response = await fetch("/api/leave-report", {
+        const response = await fetch("/api/leave-report/create", {
           method: 'POST',
           body: formData
         });
