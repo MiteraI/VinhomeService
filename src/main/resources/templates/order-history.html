@@ -71,7 +71,7 @@
           <div class="w-1/6">
             <img
               class="h-full w-full"
-              src="../assets/images/clean-tv-screen.jpg"
+              src="../static/assets/images/clean-tv-screen.jpg"
               alt="tv-cleaning"
             />
           </div>
@@ -82,7 +82,8 @@
           <div class="flex w-3/6 items-start justify-between">
             <span th:text="${order.price} + ' VND'"></span>
             <div class="space-x-5">
-              <button class="rounded-xl bg-red-cancel px-3 py-1">Cancel</button>
+              <button class="rounded-xl bg-red-cancel px-3 py-1" th:onclick="callCancelService([[${order.orderId}]])">Cancel</button>
+              
               <a
                 th:href="@{/order-history/{orderId}(orderId=${order.orderId})}"
               >
@@ -106,7 +107,7 @@
           <div class="w-1/6">
             <img
               class="h-full w-full"
-              src="../assets/images/clean-tv-screen.jpg"
+              src="../static/assets/images/clean-tv-screen.jpg"
               alt="tv-cleaning"
             />
           </div>
@@ -142,7 +143,7 @@
           <div class="w-1/6">
             <img
               class="h-full w-full"
-              src="../assets/images/clean-tv-screen.jpg"
+              src="../static/assets/images/clean-tv-screen.jpg"
               alt="tv-cleaning"
             />
           </div>
@@ -245,6 +246,35 @@
 				div.style.display = "flex";
 			}
 		}
+
+
+
+
+
+
+
+    async function callCancelService(orderId) {
+      //let id = document.getElementById(id)
+      console.log(orderId)
+            var response = await fetch("http://localhost:8080/transaction/cancelOrder/refundTransaction/" + orderId,
+            {
+                method: "GET"
+            });
+            var status = await response.status;console.log(status)
+            var toText = await response.text();console.log(toText)
+            if(status < 200 || status > 300){
+                console.log("refund fail");
+                alert("refund fail: "+toText)
+            }else{
+                console.log("refund success");
+                alert("refund success: "+toText)
+                reloadPage()
+            }
+
+        }
+        function reloadPage(){
+          window.location.href = "/order-history";
+        }
     </script>
   </body>
 </html>
