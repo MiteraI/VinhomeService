@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<table>
+  <thead>
+  <tr>
+    <th>OrderId</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Service Name</th>
+    <th>Work Day</th>
+    <th>Price</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+
+  <tbody id="view-order-to-confirm">
+
+  </tbody>
+</table>
+
+<script>
+  fetch ('/api/order/get-orders-to-confirm')
+          .then(res => res.json())
+          .then(data => {
+            let output = '';
+            data.forEach(item => {
+              const account = item['account'];
+              const order = item['order'];
+              const service = item['service'];
+              const schedule = item['schedule'];
+              const workDay = schedule['workDay']
+              const  serviceName = service['serviceName'];
+              const price = order['price'];
+              const firstName = account['firstName'];
+              const lastName = account['lastName'];
+              const status = order['status'];
+              const orderId = order['orderId'];
+              output += `
+                        <tr>
+                            <td>${orderId}</td>
+                            <td>${firstName}</td>
+                            <td>${lastName}</td>
+                            <td>${serviceName}</td>
+                            <td>${workDay}</td>
+                            <td>${price}</td>
+                            <td>${status}</td>
+                            <td><button class="btn btn-primary" onclick="confirm(${orderId})">Confirm Order</button></td>
+                          </tr>
+                          `
+              document.getElementById("view-order-to-confirm").innerHTML = output;
+            });
+          })
+  function confirm (orderId) {
+    fetch ('/api/worker/orders/' + orderId + '/confirm-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({status: 'SUCCESS'})
+    })
+            .then(res => {
+              if (res.status === 200) {
+                alert('Successfully Confirming');
+                window.location.reload();
+              }
+              else {
+                alert('Can not confirm');
+              }
+            })
+            .catch(err => {
+              alert(err);
+            })
+  }
+</script>
+</body>
+</html>

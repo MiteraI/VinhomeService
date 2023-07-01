@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="h-[100%] w-[100%]">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css" />
+  <link rel="stylesheet" href="../static/tailwind/index.css" />
+  <title>Phone number verification</title>
+  <style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body class="h-[100%] w-[100%]">
+  <div class="h-inherit w-inherit flex justify-center items-center">
+    <div class="chooseVerificationContainer w-[30%] h-auto relative py-2 px-3 transition-all duration-100 ease-in">
+      <div class="selectVerification flex flex-col">
+
+        <div th:replace="~{./fragments/otpverification.html}"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/js/otpCountDown.js">
+
+  </script>
+</body>
+
+</html>

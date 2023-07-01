@@ -10,6 +10,7 @@ import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.entity.worker.Leave;
 import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.*;
+import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.*;
 import app.vinhomes.repository.worker.LeaveRepository;
 import app.vinhomes.repository.worker.WorkerStatusRepository;
@@ -30,6 +31,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,6 +39,7 @@ import static app.vinhomes.common.SessionUserCaller.getSessionUser;
 
 @org.springframework.stereotype.Service
 public class OrderService {
+    private List<Order> InvalidCancelOrder = new LinkedList<>();
     @Value("${time.hourpolicy}")
     private int HourPolicy;
     @Autowired
@@ -56,11 +59,19 @@ public class OrderService {
     @Autowired
     private LeaveRepository leaveRepository;
     @Autowired
+    private PhoneRepository phoneRepository;
+    @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
+
+    @Autowired
+    private WorkerService workerService;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
     public List<Order> getCustomerOrder(HttpServletRequest request) {
         Account loginedUser = getSessionUser(request);
         return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
     }
+
 
     public Order getCustomerOrderDetails(HttpServletRequest request, Long orderId) {
         Account loginedUser = getSessionUser(request);
@@ -95,7 +106,8 @@ public class OrderService {
                 .workDay(LocalDate.parse(day))
                 .timeSlot(timeSlot)
                 .build();
-
+        Long phoneId = orderJson.get("phonenumberId").asLong();
+        String phonenumber = phoneRepository.findById(phoneId).get().getNumber();
         //Initialize list of appropriate workers statuses for find worker account
         List<WorkerStatus> workerStatuses = workerStatusRepository.findByServiceCategoryAndStatusOrderByWorkCountAsc(
                 serviceCategoryRepository.findById(service.getServiceCategory().getServiceCategoryId()).get()
@@ -185,6 +197,7 @@ public class OrderService {
                 .payment(payment)
                 .schedule(schedule)
                 .status(OrderStatus.PENDING)
+                .phoneNumber(phonenumber)
                 .build();
         schedule.setOrder(order);
         return orderRepository.save(order);
@@ -289,6 +302,32 @@ public class OrderService {
             return false;
         }
     }
-
-
+    //Ham nay de lay ra cac order can confirm cua 1 account worker
+    public List<Order> getOrdersOfOneWorkerForConfirmation (Account account) {
+        Account checkAccount = null;
+        List<Order> listOrders = new ArrayList<>();
+        List<Order> listAllOrders = orderRepository.findAll();
+        for (Order o : listAllOrders) {
+            if (o.getStatus().equals(OrderStatus.PENDING)) {
+                checkAccount = workerService.getWorkerOfOneOrderForConfirmation(o.getOrderId());
+                if (checkAccount.getAccountId() == account.getAccountId()) {
+                    listOrders.add(o);
+                }
+            }
+        }
+        return listOrders;
+    }
+    public List<Order> getInvalidCancelOrder() {
+        return this.InvalidCancelOrder;
+    }
+    public void addInvalidCancelOrder(Order order){
+        List<Order> getList = getInvalidCancelOrder();
+        for(Order item : getList){
+            if(item.getOrderId().equals(order.getOrderId())){
+                System.out.println("this order is already in the List");
+                return;
+            }
+        }
+        getList.add(order);
+    }
 }

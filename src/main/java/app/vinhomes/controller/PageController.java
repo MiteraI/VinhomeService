@@ -59,7 +59,7 @@ public class PageController {
         if (acc != null) {
             model.addAttribute("acc", acc);
             if (acc.getRole() == 2) {
-                return "AdminShow";
+                return "adminDisplayWorker";
             }
             else if (acc.getRole() == 1) {
                 return "scheduleTable";
@@ -83,6 +83,7 @@ public class PageController {
     @RequestMapping(value = "/category-services/{id}", method = RequestMethod.GET)
     public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model){
         model.addAttribute("services", serviceCategoryRepository.findById(categoryId).get());
+        model.addAttribute("ratingArr", new int[]{5, 4, 3, 2, 1});
         return "categoryservices";
     }
 
@@ -285,7 +286,6 @@ public class PageController {
     public String verification(@PathVariable String username) {
         return "redirect:/verificationMethod?username=" + username;
     }
-
     @RequestMapping(value = "/verificationMethod",method = RequestMethod.GET)
     public String verificationMethodReturn() {
         return "verificationMethod";
@@ -295,6 +295,24 @@ public class PageController {
         return "forgetAccount";
     }
 
+    @RequestMapping(value = "/adminDisplayWorker_page",method = RequestMethod.GET)
+    public String adminDisplayWorker(){
+        return "adminDisplayWorker";
+    }
+    @RequestMapping(value = "/adminDisplayCustomer_page",method = RequestMethod.GET)
+    public String adminDisplayCustomer(){
+        return "adminDisplayCustomer";
+    }
+    @RequestMapping(value = "/admin_UpdateWorker/{workerAccountId}",method = RequestMethod.GET)
+    public String adminUpdateWorker(@PathVariable String workerAccountId){
+       return "adminUpdateWorker";//?accountId="+workerAccountId//redirect:/
+    }
+    @RequestMapping(value = "/admin_UpdateCustomer/{customerId}",method = RequestMethod.GET)
+    public String adminUpdateWorker(){
+        return "adminUpdateCustomer";
+    }
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    publ
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)
     public String TESTBED() {
         return "TESTBED";

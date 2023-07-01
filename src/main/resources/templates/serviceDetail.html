@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+
   <head>
     <meta charset="UTF-8" />
     <title>Title</title>
@@ -300,12 +302,14 @@
                   Order Service
                 </button>
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="container" style="margin-top: 10px; background-color: white">
+
       <div class="row">
         <div class="col-sm-12" style="margin-left: 2rem">
           <h3>Some comments</h3>
@@ -338,9 +342,11 @@
           <!--                <div class="rating-container">-->
           <!--                    <label>Rating:</label>-->
           <!--                </div>-->
+
         </div>
       </div>
     </div>
+
     <div id="formContainer" class="hidden" style="display: none">
       <div class="overlay"></div>
       <div class="container">
@@ -409,12 +415,14 @@
                   </div>
                 </form>
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
     <script>
+
       document
         .getElementById("showFormButton")
         .addEventListener("click", function () {
@@ -426,6 +434,7 @@
 
           formContainer.style.opacity = "1";
           formContainer.style.pointerEvents = "auto";
+
         });
     </script>
 
@@ -495,6 +504,7 @@
     <!--    });-->
     <!--</script>-->
     <script>
+
       const service = document.getElementById("serviceName");
       serviceId = service.value;
 
@@ -583,6 +593,7 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify(giveData),
+
         })
           .then((res) => {
             if (res.status === 200) {
@@ -618,6 +629,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -664,3 +676,4 @@
     </script>
   </body>
 </html>
+
