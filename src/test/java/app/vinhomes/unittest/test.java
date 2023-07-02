@@ -9,8 +9,10 @@ import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.event.event_storage.StartOrderCountDown;
 import app.vinhomes.event.listener_storage.OnCreateOrder;
 import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.security.email.email_service.EmailService;
 import app.vinhomes.service.AccountService;
+import app.vinhomes.service.TransactionService;
 import app.vinhomes.vnpay.service.VNPayService;
 import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Disabled;
@@ -73,6 +75,10 @@ public class test {
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private TransactionService transactionService;
 
     private int expired = 120000;
 
@@ -82,12 +88,15 @@ public class test {
         assertThat(expired).isEqualTo(120000);
     }
 
-
+    @Test
+    void getTransactionVnp(){
+        Transaction getTransaction = transactionRepository.findByVnpTxnRef("21307218");
+        System.out.println(getTransaction);
+    }
     @Test
     @Disabled
     void testTransaction() {
         VNPayService.BuildTransactionThroughOrder(
-
                 37,
                 "123123",
                 "8"
@@ -95,34 +104,34 @@ public class test {
     }
 
 
-    @Test
-    @Disabled
-    void testGetParamName() {
-        try {
-            Field[] list = Order.class.getDeclaredFields();
-            Object order = new Order(
-                    1l, 100000, OrderStatus.CANCEL,
-                    null,
-                    null,
-                    null,
-                    null,
-                    5,
-                    ""
-                    , null
-            );
-            List<Field> list2 = Arrays.stream(list).toList();
-            System.out.println(list2.isEmpty());
-            for (Field item : list2) {
-                System.out.print(item.getName());
-                System.out.print("    " + item.getType().getTypeName());
-                System.out.println("    " + item.get(order));
-            }
-            // chi lay dc neu cac tham so la public,
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + "   " + e.getCause());
-        }
-
-    }
+//    @Test
+//    @Disabled
+//    void testGetParamName() {
+//        try {
+//            Field[] list = Order.class.getDeclaredFields();
+//            Object order = new Order(
+//                    1l, 100000, OrderStatus.CANCEL,
+//                    null,
+//                    null,
+//                    null,
+//                    null,
+//                    5,
+//                    ""
+//                    , null
+//            );
+//            List<Field> list2 = Arrays.stream(list).toList();
+//            System.out.println(list2.isEmpty());
+//            for (Field item : list2) {
+//                System.out.print(item.getName());
+//                System.out.print("    " + item.getType().getTypeName());
+//                System.out.println("    " + item.get(order));
+//            }
+//            // chi lay dc neu cac tham so la public,
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage() + "   " + e.getCause());
+//        }
+//
+//    }
 
     @Test
     @Disabled
@@ -170,10 +179,10 @@ public class test {
         System.out.println(OTP_TIMEOUT_SECOND);
     }
     @Test
-    @Disabled
+
     void testSendmailTemplate(){
         Account account =  accountRepository.findById(27l).get();
-        emailService.sendMailWithTemplate(account,FORGETACCOUNT_MAIL);
+        emailService.sendMailWithTemplate(account,VERIFICATION_MAIL);
     }
     @Test
     @Disabled
@@ -222,4 +231,52 @@ public class test {
         emailService.sendMailWithTemplate(account,FORGETACCOUNT_MAIL);
         //InputStreamSource inputStreamSource = getImage.getInputStream();//new ByteArrayResource();
     }
+    @Test
+    void getUsernameThroughTransactoin(){
+        Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(null);
+        Account getAccount = getTransaction.getOrder().getAccount();
+        String getUsername = getAccount.getAccountName();
+        System.out.println(getUsername);
+    }
+
+    @Test
+    void getInformationFromTransactionQuery(){
+        String getUndoneTransaction = "{\"vnp_ResponseId\":\"c57271fd20da4fb587120c43623412fb\",\"vnp_Command\":\"querydr\",\"vnp_ResponseCode\":\"91\",\"vnp_Message\":\"Transaction_not_found\",\"vnp_TmnCode\":\"BIDAHJ80\",\"vnp_TxnRef\":\"92543108\",\"vnp_SecureHash\":\"332d4ead619642e39fcfb57570cd0e1d893201998d678d265e83b10bed165af8172543f3691258cbe9abd0b774a2ee2eeda8225c217dff42943b1dbe8e85198f\"}";
+        String getFailTransaction ="{\"vnp_ResponseId\":\"e15baf36d3c84b498dea171750e2c17b\",\"vnp_Command\":\"querydr\",\"vnp_ResponseCode\":\"00\",\"vnp_Message\":\"QueryDR Success\",\"vnp_TmnCode\":\"BIDAHJ80\",\"vnp_TxnRef\":\"21307218\",\"vnp_Amount\":\"5000000\",\"vnp_OrderInfo\":\"Thanh toan don hang:21307218\",\"vnp_BankCode\":\"VNBANK\",\"vnp_PayDate\":\"20230619165517\",\"vnp_TransactionNo\":\"2275891\",\"vnp_TransactionType\":\"01\",\"vnp_TransactionStatus\":\"01\",\"vnp_Trace\":\"0\",\"vnp_FeeAmount\":\"0\",\"vnp_SecureHash\":\"3aee13cae75d1d69f2605ef0dcf44b3d741b89efd02fae5dc65f85d686a4a85f73fa68120226d37295f47b675cd3e114e0b95909923994c8ee7cc3872003ddb7\"}";
+        String getSuccessTransaction = "{\"vnp_ResponseId\":\"c63baeb800374ba68d0ad6b0cb691b0d\",\"vnp_Command\":\"querydr\",\"vnp_ResponseCode\":\"00\",\"vnp_Message\":\"QueryDR Success\",\"vnp_TmnCode\":\"BIDAHJ80\",\"vnp_TxnRef\":\"91843726\",\"vnp_Amount\":\"10000000\",\"vnp_OrderInfo\":\"Thanh toan don hang:91843726\",\"vnp_BankCode\":\"NCB\",\"vnp_PayDate\":\"20230624143806\",\"vnp_TransactionNo\":\"14048284\",\"vnp_TransactionType\":\"01\",\"vnp_TransactionStatus\":\"00\",\"vnp_CardNumber\":\"970419xxxxxxxxx2198\",\"vnp_Trace\":\"2285990\",\"vnp_CardHolder\":\"NGUYEN VAN A\",\"vnp_Issuer\":\"NCB\",\"vnp_FeeAmount\":\"0\",\"vnp_SecureHash\":\"a5a3e0b4fec6e79348ffb2508e93d856b177e95d2a97597e2001e585694b0572726121f8452278783eb2656084292bb5f44399a9679b55881d59a961953b0abf\"}";
+        String[] splitTransaction = getSuccessTransaction.split(",");
+        for (String item : splitTransaction){
+            //System.out.println(item);
+        }
+        SimpleDateFormat getFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        //System.out.println(splitTransaction[2]);
+        System.out.println(splitTransaction[2].split(":")[1].substring(1,3));
+        //System.out.println(splitTransaction[3]);System.out.println(splitTransaction[3].split(":")[1].substring(1));
+//        System.out.println(splitTransaction[5]);System.out.println(splitTransaction[5].split(":")[1].substring(1));
+        String amount = splitTransaction[6].split(":")[1];
+        System.out.println(amount.substring(1,amount.length()-1));
+//        System.out.println(splitTransaction[7]);System.out.println(splitTransaction[7].split(":")[1].substring(1));
+//        System.out.println(splitTransaction[8]);System.out.println(splitTransaction[8].split(":")[1].substring(1));
+        String paydate = splitTransaction[9].split(":")[1];
+        System.out.println(paydate.substring(1,paydate.length()-1));
+//        System.out.println(splitTransaction[10]);System.out.println(splitTransaction[10].split(":")[1].substring(1));
+
+
+        //System.out.println(splitTransaction[12]);
+        System.out.println(splitTransaction[12].split(":")[1].substring(1,3));
+
+        //        System.out.println(splitTransaction[3]);
+//        System.out.println(splitTransaction[5]);
+//        System.out.println(splitTransaction[6]);
+//        System.out.println(splitTransaction[7]);
+//        System.out.println(splitTransaction[8]);
+//        System.out.println(splitTransaction[9]);
+//        System.out.println(splitTransaction[10]);
+//        System.out.println(splitTransaction[12]);
+//        String getDate = splitTransaction[9].split(":")[1];
+//        String removeBracket=  getDate.substring(1,getDate.length()-1);
+//        System.out.println(getDate);
+//        System.out.println(removeBracket);
+    }
+
 }

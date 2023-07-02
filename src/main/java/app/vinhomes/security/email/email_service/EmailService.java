@@ -69,27 +69,6 @@ public class EmailService   {
             return "ERROR while Sending Mail";
         }
     }
-    public String sendSimpleVerficationEmail(Account account){
-        TokenEntity tokenEntity = tokenService.createTokenEntity(account.getEmail());
-        try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(sender);
-            mailMessage.setTo(account.getEmail());
-            mailMessage.setSubject("verification token:");
-            mailMessage.setText(tokenEntity.getTokenvalue());
-            tokenEntityMap.put(account.getEmail(),tokenEntity);
-            // Sending the mail
-            String urlParam = "emailTo="+account.getEmail().toString().trim()+"&tokenValue="+tokenEntity.getTokenvalue();
-            mailMessage.setText("http://localhost:8080/mail/verification?"+urlParam);
-            javaMailSender.send(mailMessage);
-            return "send success";
-        }
-        // Catch block to handle the exceptions
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            return "Error while Sending Mail";
-        }
-    }
 
     private void verificationMailBuilder(Account account){
         try{

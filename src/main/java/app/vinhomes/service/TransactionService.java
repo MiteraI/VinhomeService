@@ -11,7 +11,6 @@ import app.vinhomes.vnpay.service.VNPayService;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -33,6 +31,8 @@ public class TransactionService {
     private OrderRepository orderRepository;
     @Autowired
     private VNPayService vnPayService;
+    @Autowired
+    private OrderService orderService;
 
     public List<Map<String, String>> getAllTransactionAndFormat() {
         List<Transaction> getAllTransaction = transactionRepository.findAll();
@@ -100,10 +100,12 @@ public class TransactionService {
 
     public ResponseEntity<String> queryVNpayWithVnp_txtRef(String vnp_txnRef, HttpServletRequest request, HttpServletResponse response) {
         try {
+            //TODO: chinh lai findByVnpTxnRef()
+            //Transaction getTransaction = transactionRepository.findByVnpTxnRef(vnp_txnRef);
             Transaction getTransaction = transactionRepository.findByVnpTxnRef(vnp_txnRef);
             String getVnp_txnRef = getTransaction.getVnpTxnRef();
             long transactionDate = getTransaction.getVnpTransactionDate();
-            ResponseEntity callingResult = vnPayService.queryVNPAY(vnp_txnRef, transactionDate, request, response);
+            ResponseEntity callingResult = vnPayService.queryVNPAY(getVnp_txnRef, transactionDate, request, response);
             if (callingResult.getStatusCode().is2xxSuccessful()) {
                 return ResponseEntity.ok().body(callingResult.getBody().toString());
             } else {
@@ -115,7 +117,7 @@ public class TransactionService {
         }
     }
 
-    public ResponseEntity<String> refundVNpayWithOrderID(String orderId, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<String> refundWithOrderID(String orderId, HttpServletRequest request, HttpServletResponse response) {
         try {
             long parsedOrderId = Long.parseLong(orderId);
             Order getOrder = orderRepository.findById(parsedOrderId).get();
@@ -126,22 +128,26 @@ public class TransactionService {
             int amount = (int) getOrder.getPrice();
             if (getTransaction.getPaymentMethod().equals("COD")) {
                 System.out.println("Yes cancel COD order");
-//                getOrder.setStatus(OrderStatus.CANCEL);
-//                getTransaction.setStatus(TransactionStatus.FAIL);
-//                orderRepository.save(getOrder);
-//                transactionRepository.save(getTransaction);
-                setCancelOrder_FailTransaction(getOrder, getTransaction);
+                orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
+                this.setTransactionStatus(getTransaction,TransactionStatus.FAIL);
                 return ResponseEntity.ok().body("YES, COD ORDER CANCELLED");
             } else {
                 Map<Long, String> getMapUrl = vnPayService.getAllOrderUrlMap();
                 String url = getMapUrl.get(getOrder.getOrderId());
                 Long getOrder_Id = getOrder.getOrderId();
                 String getExpiredTransactionDate = vnPayService.getCreateTimeFromUrlMap(getOrder_Id);
-                boolean checkIf_TransactionExpired = vnPayService.checkTransactionExpired(getExpiredTransactionDate);
+                boolean checkIf_TransactionExpired = true;
+                if(getExpiredTransactionDate != null){
+                     checkIf_TransactionExpired = vnPayService.checkTransactionExpired(getExpiredTransactionDate);
+                }else{
+                    checkIf_TransactionExpired= true;
+                }
                 if (checkIf_TransactionExpired == false) {
                     //TODO : tim cach su exception cancel order
                     System.out.println("yes cancel order, when order is not yet timeout");
-                    setCancelOrder_FailTransaction(getOrder,getTransaction);
+                    orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
+                    this.setTransactionStatus(getTransaction,TransactionStatus.FAIL);
+                    vnPayService.deleteOrderUrlMapItem(getOrder_Id);
                     return ResponseEntity.ok().body("YES, CANCEL SUCCESS");
                 } else {
                     ResponseEntity callingResult = vnPayService.refund(vnp_txtRef, transactionDate, amount, getAccountName, request, response);
@@ -152,7 +158,9 @@ public class TransactionService {
                                 = Arrays.stream(getBodyToArray).toList().get(2).split(":")[1];/// lay response code trong doan string
                         if (getResponseCode.equals("\"00\"")) {
                             System.out.println("yes refund sent and success, wait for the bank to response");
-                            setCancelOrder_FailTransaction(getOrder, getTransaction);
+                            orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
+                            this.setTransactionStatus(getTransaction,TransactionStatus.REFUNDED);
+                            vnPayService.deleteOrderUrlMapItem(getOrder_Id);
                             return ResponseEntity.ok().body("YES, REFUND SUCCESS, WAIT FOR THE BANK");
                         } else {
                             System.out.println("fail to refund, try again");
@@ -217,10 +225,17 @@ public class TransactionService {
         }
     }
 
-    private void setCancelOrder_FailTransaction(Order order, Transaction transaction) {
-        order.setStatus(OrderStatus.CANCEL);
-        transaction.setStatus(TransactionStatus.FAIL);
-        orderRepository.save(order);
+    public Transaction getTransactionByVnpTxnRef(String vnpTxnref){
+        try{
+            return transactionRepository.findByVnpTxnRef(vnpTxnref);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void setTransactionStatus(Transaction transaction, TransactionStatus status){
+        transaction.setStatus(status);
         transactionRepository.save(transaction);
     }
 }

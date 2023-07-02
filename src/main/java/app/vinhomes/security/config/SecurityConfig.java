@@ -45,17 +45,9 @@ public class SecurityConfig {
                         .tokenValiditySeconds(60 * 60)
                         .key("anythingyoulike")
                 )
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/UserRestController/**").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/adminDisplayWorker_page").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/adminDisplayCustomer_page").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/admin_UpdateWorker/**").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/admin_UpdateWorker/**").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/admin_UpdateCustomer/**").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/admin/**").hasAuthority("2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/admin").hasAuthority("2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
@@ -65,7 +57,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/category-services/**").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/service/**").hasAuthority("0"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
+                .authorizeHttpRequests(authUser -> {
+                    authUser.requestMatchers("/order-history").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/order-history/**").hasAnyAuthority("0","2");
+                })
+                .authorizeHttpRequests(authAdmin ->{
+                    authAdmin.requestMatchers("/UserRestController/**").hasAuthority("2");
+                    authAdmin.requestMatchers("/api/admin/**").hasAuthority("2");
+                    authAdmin.requestMatchers("/admin").hasAuthority("2");
+                    authAdmin.requestMatchers("/adminDisplayWorker_page").hasAuthority("2");
+                    authAdmin.requestMatchers("/adminDisplayCustomer_page").hasAuthority("2");
+                    authAdmin.requestMatchers("/admin_UpdateWorker/**").hasAuthority("2");
+                    authAdmin.requestMatchers("/admin_UpdateCustomer/**").hasAuthority("2");
+                })
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .logout(out -> out
                         .logoutUrl("/logout")

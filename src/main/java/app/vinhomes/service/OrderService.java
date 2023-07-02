@@ -62,11 +62,8 @@ public class OrderService {
     private PhoneRepository phoneRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-
     @Autowired
     private WorkerService workerService;
-    @Autowired
-    private ScheduleRepository scheduleRepository;
     public List<Order> getCustomerOrder(HttpServletRequest request) {
         Account loginedUser = getSessionUser(request);
         return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
@@ -316,6 +313,10 @@ public class OrderService {
             }
         }
         return listOrders;
+    }
+    public void setOrderStatus (Order order, OrderStatus status){
+        order.setStatus(status);
+        orderRepository.save(order);
     }
     public List<Order> getInvalidCancelOrder() {
         return this.InvalidCancelOrder;

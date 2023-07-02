@@ -10,6 +10,7 @@ import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.OrderService;
 import app.vinhomes.service.PaymentService;
+import app.vinhomes.service.ServiceTypeService;
 import app.vinhomes.service.TransactionService;
 
 import com.azure.core.annotation.Get;
@@ -55,6 +56,8 @@ public class VNpayController extends HttpServlet {
     private PaymentService paymentService;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private ServiceTypeService serviceTypeService;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
@@ -115,6 +118,9 @@ public class VNpayController extends HttpServlet {
             return ResponseEntity.ok().body("COD");
             //TODO neu la COD thi lam gi tiep, ko tiep tuc gui thong tin cho vnpay
         }
+        Long getServiceId = jsonNode.get("serviceId").asLong();
+        String getServiceName = serviceTypeService.getServiceByServiceId(getServiceId).getServiceName();
+
         String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);
         String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
         String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
@@ -129,7 +135,7 @@ public class VNpayController extends HttpServlet {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" +getServiceName );//vnp_TxnRef
         vnp_Params.put("vnp_OrderType", orderType);
         String locate = null;//jsonNode.get("language").asText();
         if (locate != null && !locate.isEmpty()) {
