@@ -10,4 +10,6 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     Transaction findByVnpTxnRef(String vnp_txtRef);
     Transaction findByVnpTxnRefAndTransactionId(String vnp_txtRef,long transactionId);
 
+    Transaction findByTransactionId (Long id);
+
 }

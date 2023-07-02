@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="~{./fragments/adminHeader.html}"></header>
+
+<div class="container d-flex justify-content-end p-0 mt-3">
+<!--  <div class="form-group  has-feedback col-md-4  ">-->
+<!--    &lt;!&ndash; <label class="sr-only" for="search">Search</label> &ndash;&gt;-->
+<!--    <input type="text" class="form-control" name="q" id="search" placeholder="Search">-->
+<!--    <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>-->
+<!--  </div>-->
+</div>
+<div class="container" id="leave-list">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Reason</th>
+        <th>File</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tbody-see-all-leave-report">
+
+    </tbody>
+  </table>
+</div>
+<script>
+    fetch('/api/leave-report')
+            .then(response => response.json())
+            .then(data => {
+              let output = '';
+              data.forEach(item => {
+                const leaveReport = item['leaveReport'];
+                const account = item['account'];
+
+                const firstName = account['firstName'];
+                const lastName = account['lastName'];
+                const startDate = leaveReport['startTime'];
+                const endDate = leaveReport['endTime'];
+                const reason = leaveReport['reason'];
+                const link = leaveReport['fileURL'];
+                // const file = leaveReport['file'];
+
+                output += `
+                        <tr>
+                          <td>${firstName}</td>
+                          <td>${lastName}</td>
+                          <td>${startDate}</td>
+                          <td>${endDate}</td>
+                          <td>${reason}</td>
+
+                            <td th:if="${link != null}"><a href="${link}">Link</a></td>
+                            <td>
+                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
+                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
+                            </td>
+                        </tr>
+                      `;
+              });
+
+              document.getElementById('tbody-see-all-leave-report').innerHTML = output;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+
+</script>
+<script>
+  function approveLeave(leaveReportId) {
+    performAction('api/leave-report/update', leaveReportId, 1); // Assuming 1 represents the 'approve' status
+  }
+
+  function rejectLeave(leaveReportId) {
+    performAction('api/leave-report/update', leaveReportId, 2); // Assuming 0 represents the 'reject' status
+  }
+
+  function performAction(url, leaveReportId, status) {
+    // Perform AJAX request to your controller
+    fetch(url, {
+      method: 'POST', // or 'GET' based on your server-side implementation
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ leaveReportId: leaveReportId, status: status })
+    })
+            .then(data => {
+              if (data.status === 200) {
+                console.log(data.text());
+                window.location.reload();
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
+</script>
+</body>
+</html>
