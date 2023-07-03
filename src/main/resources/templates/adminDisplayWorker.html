@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeLeaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -14,49 +14,56 @@
 </head>
 
 <body>
-    <div>
-        <div class="position-relative">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+<div>
+    <div class="position-relative">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                         aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- <div class="container-fluid p-0 "> -->
-                    <a class="navbar-brand" href="#">
-                        <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
-                            class="d-inline-block align-top mx-3" alt="">
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="#">
-                                    <h4>WORKER</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
-                                    <!-- href="./adminDisplayCustomer.html" -->
-                                    <h4>USER</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
-                                    <h4>See Leave Report</h4>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- <div class="container-fluid p-0 "> -->
+                <a class="navbar-brand" href="#">
+                    <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
+                         class="d-inline-block align-top mx-3" alt="">
+                </a>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item ">
+                            <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
+                                <h4>WORKER</h4>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
+                                <h4>USER</h4>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item ">
+                            <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
+                                <h4>Transaction List</h4>
+                            </a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white  m-0" href="/see-leave-report">
+                                <h4>See Leave Report</h4>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white  m-0" href="/see-all-order-by-admin">
+                                <h4>See All Order</h4>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <form action="/logout">
-                    <button type="submit">Logout</button>
-                </form>
-
-                <!-- </div> -->
-            </nav>
-        </div>
+            </div>
+            <form action="/logout">
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
     </div>
+</div>
     <div class="container-fluid " style="height: 40px;">
     </div>
     <div class="container d-flex justify-content-around p-0 mt-3 ">
@@ -265,6 +272,7 @@
     async function openCreateForm() {
         createForm.style.display = "block"
         // document.querySelectorAll(".overlay")[0].style.display = "block";
+        document.getElementById("form").style.display = "block";
         var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
             method: "GET"
         });
@@ -320,6 +328,7 @@
 
 
     
+
     const form = document.getElementById("create-form");
     form.addEventListener('submit', async function (event) {
         console.log(form)

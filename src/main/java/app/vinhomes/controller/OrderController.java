@@ -2,6 +2,7 @@ package app.vinhomes.controller;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -38,10 +40,28 @@ public class OrderController {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getAllOrder() {
-        return orderRepository.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAllOrders () {
+        List<Order> allOrders =  orderRepository.findAll();
+        List<Map<String, Object>> getAllOrders = new ArrayList<>();
+        for (Order o : allOrders) {
+            Account account = o.getAccount();
+            Service service = o.getService();
+            Payment payment = o.getPayment();
+            Transaction transaction = transactionRepository.findById(o.getOrderId()).get();
+            Map<String, Object> detailOrder = new HashMap<>();
+            detailOrder.put("order", o);
+            detailOrder.put("account", account);
+            detailOrder.put("service", service);
+            detailOrder.put("payment", payment);
+            detailOrder.put("transaction", transaction);
+            getAllOrders.add(detailOrder);
+        }
+        return ResponseEntity.ok(getAllOrders);
     }
 
     @PostMapping(value = "/ratecomment")

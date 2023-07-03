@@ -4,7 +4,6 @@ import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
-import app.vinhomes.entity.order.Service;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
@@ -13,11 +12,9 @@ import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -26,14 +23,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 
 @Controller
 public class PageController {
@@ -339,4 +333,12 @@ public class PageController {
         return "TESTBED";
     }
 
+    @RequestMapping(value = "/see-leave-report", method = RequestMethod.GET)
+    public String seeAllLeaveReport () {
+        return "adminSeeLeaveReport";
+    }
+    @RequestMapping (value = "/see-all-order-by-admin", method = RequestMethod.GET)
+    public String seeAllLeaveOrderByAdmin () {
+        return "adminSeeAllOrder";
+    }
 }
