@@ -60,7 +60,10 @@ public class test {
     private String VERIFICATION_MAIL;
     @Value("${mail.mailType.forgetAccount}")
     private String FORGETACCOUNT_MAIL;
-
+    @Value("${mail.mailType.adminRefundTransaction}")
+    private String ADMIN_REFUNDTRANSACTION_MAIL;
+    @Value("${mail.mailType.orderFinish}")
+    private String ORDERFINISH_MAIL;
     @Value("${time.hourpolicy}")
     private int plusHour;
     @Value("${time.order_timeout}")
@@ -182,7 +185,22 @@ public class test {
 
     void testSendmailTemplate(){
         Account account =  accountRepository.findById(27l).get();
-        emailService.sendMailWithTemplate(account,VERIFICATION_MAIL);
+        //VERIFICATION_MAIL
+        Transaction getTransaction = transactionRepository.findById(60l).get();
+        emailService.sendMailWithTemplate(account,ORDERFINISH_MAIL,getTransaction);
+    }
+    @Test
+    void getWorkerList(){
+        Transaction getTransaction = transactionRepository.findById(60l).get();
+        Order getOrder = getTransaction.getOrder();
+        List<Account> getWorkers = getOrder.getSchedule().getWorkers();
+        getWorkers.forEach(worker -> {
+            if(worker.getPhones()!=null && worker.getPhones().isEmpty() == false){
+                System.out.println(worker.getPhones().get(0));
+            }else{
+                System.out.println("this account does not have phone number");
+            }
+        });
     }
     @Test
     @Disabled
@@ -215,7 +233,7 @@ public class test {
         }
     }
     @Test
-    @Disabled
+    //@Disabled
     void testChangePassword(){
         accountService.changePassword(27l,"123new","123");
     }

@@ -5,6 +5,7 @@ import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.entity.type_enum.TransactionStatus;
+import app.vinhomes.event.event_storage.SendEmailAdminRefund;
 import app.vinhomes.service.OrderService;
 import app.vinhomes.service.TransactionService;
 import app.vinhomes.vnpay.service.VNPayService;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ public class TransactionAPI {
     private OrderService orderService;
     @Autowired
     private VNPayService vnPayService;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @GetMapping(value = "/getTransaction", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Map<String, String>> getAllTransaction() {
@@ -127,6 +131,7 @@ public class TransactionAPI {
                             if(getResponseCodeFromRefund.equals("00")){
                                 orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
                                 transactionService.setTransactionStatus(getTransaction, TransactionStatus.REFUNDED);
+                                eventPublisher.publishEvent(new SendEmailAdminRefund(getAccount,getTransaction));
                                 return ResponseEntity.status(HttpStatus.OK).body("YES successfully refund this transaction of admin");
                             }
                             orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);

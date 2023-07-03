@@ -6,19 +6,21 @@ import app.vinhomes.AsyncConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
-//@SpringBootTest
+@SpringBootTest
 public class asyncTest {
-    //@Autowired
+    @Autowired
     private asyncClass asyncMethod;
-    //@Autowired
+    @Autowired
     private AsyncConfig asyncConfig;
-
+    @Value("${mail.mailType.adminRefundTransaction}")
+    private String ADMIN_REFUNDTRANSACTION_MAIL;
 
     //@Test
     @Disabled
@@ -80,5 +82,11 @@ public class asyncTest {
         System.out.println("main thread finished");
     }
 
-
+    @Test
+    void testAsyncMail() throws ExecutionException, InterruptedException {
+        System.out.println("start the send email in async ");
+        CompletableFuture<String> result = asyncMethod.sendEmail();
+        System.out.println("now wait for the result, this should be paused while result is not there or any exception is throw");
+        System.out.println("yes wait for result success while mail is sent "+ result.get());
+    }
 }

@@ -1,34 +1,39 @@
 package app.vinhomes.security.email.email_service;
 
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.Order;
+import app.vinhomes.entity.Transaction;
+import app.vinhomes.entity.customer.Address;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.security.email.email_dto.TokenEntity;
+import app.vinhomes.entity.order.Service;
 
 import app.vinhomes.service.AccountService;
-import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
+import jakarta.mail.SendFailedException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.*;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Service
+@org.springframework.stereotype.Service
 public class EmailService   {
 
     @Autowired
@@ -39,7 +44,6 @@ public class EmailService   {
     private SpringTemplateEngine templateEngine;
     @Autowired
     private AccountService accountService;
-
     @Value("${spring.mail.username}")
     private String sender;
     @Value("${mail.mailType.verification}")
@@ -48,6 +52,8 @@ public class EmailService   {
     private String FORGETACCOUNT_MAIL;
     @Value("${mail.mailType.orderFinish}")
     private String ORDERFINISH_MAIL;
+    @Value("${mail.mailType.adminRefundTransaction}")
+    private String ADMIN_REFUNDTRANSACTION_MAIL;
     @Autowired
     private TokenService tokenService;
     private final Map<String, TokenEntity> tokenEntityMap = new HashMap<>();
@@ -57,14 +63,28 @@ public class EmailService   {
                 verificationMailBuilder(account);
             }else if(mailType.equals(FORGETACCOUNT_MAIL)){
                 forgetAccountMailBuilder(account);
-            }else if(mailType.equals(ORDERFINISH_MAIL)){
-                System.out.println("orderfinish_mail");
             }else {
                 return "ERROR";
             }
             return "SUCCESS send email";
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "ERROR while Sending Mail";
+        }
+    }
+    public String sendMailWithTemplate(Account account, String mailType, Transaction transaction){
+        try {
+            if(mailType.equals(ADMIN_REFUNDTRANSACTION_MAIL)){
+                System.out.println("admin-refund-transaction-mail TYPE");
+                return this.admin_refundTransactionBuilder(account,transaction);
+            }else if(mailType.equals(ORDERFINISH_MAIL)){
+                System.out.println("orderfinish_mail");
+                return this.onOrderFinish_ConfirmByWorker(account,transaction);
+            }else{
+                return "ERROR";
+            }
+        }catch (Exception e){
             System.out.println(e.getMessage());
             return "ERROR while Sending Mail";
         }
@@ -89,7 +109,10 @@ public class EmailService   {
             helper.setText(html,true);
             tokenEntityMap.put(account.getEmail(),tokenEntity);
             javaMailSender.send(mailMessage);
-        } catch (MessagingException e) {
+        }catch (SendFailedException e){
+            System.out.println("ERROR this mail cannot be sent"+e.getMessage());
+        }
+        catch (MessagingException e) {
             System.out.println("ERROR inside verification mail builder"+e.getMessage());
         }
     }
@@ -109,44 +132,87 @@ public class EmailService   {
             mailMessage.setSubject("forget Account");
             String html = templateEngine.process("MAIL_forgetAccount",context);
             helper.setText(html,true);
-
-
             ClassPathResource getImage = new ClassPathResource("src/assets/images/service-1.jpg");
             Resource resource1 = getImage;
             helper.addInline("image.png",resource1,"image/png");
-
             System.out.println("pass image source, about to send email");
             javaMailSender.send(mailMessage);
-        }catch (MessagingException e){
+        }catch (SendFailedException e){
+            System.out.println("ERROR this mail cannot be sent"+e.getMessage());
+        } catch (MessagingException e){
             System.out.println("ERROR inside verification mail builder"+e.getMessage());
         }
     }
-//    public String sendSimpleVerficationEmail(String emailTo){// for testing, can enter real email to test on postman
-//        TokenEntity tokenEntity = tokenService.createTokenEntity(emailTo);
-//        try {
-//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-//            mailMessage.setFrom(sender);
-//            mailMessage.setTo(emailTo);
-//            mailMessage.setSubject("verification token:");
-//
-//            mailMessage.setText(tokenEntity.getTokenvalue());
-//            tokenEntityMap.put(emailTo,tokenEntity);
-//            // Sending the mail
-//            String urlParam = "emailTo="+emailTo.trim()+"&tokenValue="+tokenEntity.getTokenvalue();
-//            mailMessage.setText("http://localhost:8080/mail/verification?"+urlParam);
-//
-//            javaMailSender.send(mailMessage);
-//            return "send success";
-//        }
-//
-//        // Catch block to handle the exceptions
-//
-//        catch (Exception e){
-//
-//            System.out.println(e.getMessage());
-//            return "Error while Sending Mail";
-//        }
-//    }
+
+    private String admin_refundTransactionBuilder(Account account, Transaction transaction){
+        try{
+            Order getOrder = transaction.getOrder();
+            Service getService = getOrder.getService();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String getDate = format.format(new Date(System.currentTimeMillis()));
+            MimeMessage mailMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("Account",account);
+            context.setVariable("Order",getOrder);
+            context.setVariable("Transaction",transaction);
+            context.setVariable("Service",getService);
+            context.setVariable("RefundTime",getDate);
+            helper.setFrom(sender);
+            helper.setTo(account.getEmail());
+            mailMessage.setSubject("Manager has refunded this Order");
+            String html = templateEngine.process("MAIL_adminCancelOrder",context);
+            helper.setText(html,true);
+            try{
+                javaMailSender.send(mailMessage);
+                return "SUCCESS";
+            }catch (MailException e){
+                return "ERROR: "+e.getMessage();
+            }
+        }catch (SendFailedException e){
+            System.out.println("ERROR this mail cannot be sent: "+e.getMessage());
+            return "ERROR "+ e.getMessage();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return "ERROR "+ e.getMessage();
+        }
+    }
+    private String onOrderFinish_ConfirmByWorker(Account account, Transaction transaction){
+        try{
+            Order getOrder = transaction.getOrder();
+            Service getService = getOrder.getService();
+            List<Account> getWorkerList = getOrder.getSchedule().getWorkers();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String getDate = format.format(new Date(System.currentTimeMillis()));
+            MimeMessage mailMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("Account",account);
+            context.setVariable("Order",getOrder);
+            context.setVariable("Transaction",transaction);
+            context.setVariable("Service",getService);
+            context.setVariable("RefundTime",getDate);
+            context.setVariable("WorkersList",getWorkerList);
+            helper.setFrom(sender);
+            helper.setTo(account.getEmail());
+            mailMessage.setSubject("worker has confirm this order");
+            String html = templateEngine.process("MAIL_onConfirmOrder",context);
+            helper.setText(html,true);
+            try{
+                javaMailSender.send(mailMessage);
+                return "SUCCESS";
+            }catch (MailException e){
+                return "ERROR: "+e.getMessage();
+            }
+        }catch (SendFailedException e){
+            System.out.println("ERROR this mail cannot be sent: "+e.getMessage());
+            return "ERROR "+ e.getMessage();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return "ERROR "+ e.getMessage();
+        }
+    }
+
 
     public String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
