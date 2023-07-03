@@ -171,12 +171,13 @@
         alert("success")
         if(toText === "COD"){
           console.log("COD success")
+          window.location.href = "/"
         }else{
           window.location.replace(toText)
         }
       }else{
         console.log("Fail");
-        alert("Fail in ordering");
+        alert("Fail in ordering "+toText);
       }
       
     });

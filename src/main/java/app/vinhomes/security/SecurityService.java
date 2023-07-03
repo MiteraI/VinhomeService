@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class SecurityService {
@@ -23,5 +24,16 @@ public class SecurityService {
         }
         return false;
 
+    }
+
+    public boolean checkIsBlock(Authentication authentication){
+        Account getAccount = accountService.getCurrentlyLogginAccount(authentication);
+        if(getAccount != null){
+            boolean isBlock = getAccount.getIsBlock();
+            if(isBlock == false){
+                return true;
+            }
+        }
+        return false;
     }
 }

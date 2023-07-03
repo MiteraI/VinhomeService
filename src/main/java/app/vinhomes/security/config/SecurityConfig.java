@@ -12,6 +12,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
@@ -71,6 +72,7 @@ public class SecurityConfig {
                     authAdmin.requestMatchers("/admin_UpdateCustomer/**").hasAuthority("2");
                 })
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
+                .exceptionHandling().accessDeniedHandler(getAccessDeniedHandler()).and()
                 .logout(out -> out
                         .logoutUrl("/logout")
                         .addLogoutHandler(simpleLogoutHandler)
@@ -90,7 +92,10 @@ public class SecurityConfig {
     public SecurityContextLogoutHandler securityContextLogoutHandler(){
         return new SecurityContextLogoutHandler();
     }
-
+    @Bean
+    public AccessDeniedHandler getAccessDeniedHandler(){
+        return new AccessDenied();
+    }
 
 }
 

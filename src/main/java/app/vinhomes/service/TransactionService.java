@@ -211,9 +211,9 @@ public class TransactionService {
         }
     }
 
-    public boolean checkIfTransactionIsPending_IsExist(String orderId) {
+    public boolean checkIfTransactionIsPending_IsExist(Long orderId) {
         try {
-            Order order = orderRepository.findById(Long.parseLong(orderId)).get();
+            Order order = orderRepository.findById(orderId).get();
             Transaction getTransaction = transactionRepository.findById(order.getOrderId()).get();
             if (getTransaction.getStatus().equals(TransactionStatus.PENDING)) {
                 return true;

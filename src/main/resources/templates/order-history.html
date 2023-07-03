@@ -83,7 +83,7 @@
             <span th:text="${order.price} + ' VND'"></span>
             <div class="space-x-5">
               <button class="rounded-xl bg-red-cancel px-3 py-1" th:onclick="callCancelService([[${order.orderId}]])">Cancel</button>
-              
+              <button class="rounded-xl bg-green-success px-3 py-1" th:onclick="payOrder([[${order.orderId}]])">Pay</button>
               <a
                 th:href="@{/order-history/{orderId}(orderId=${order.orderId})}"
               >
@@ -272,6 +272,32 @@
             }
 
         }
+        
+
+        async function payOrder(orderId) {
+            var response = await fetch("http://localhost:8080/vnpay/createPayment/continuePaying/" + orderId,
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+            var status = await response.status
+            var toText = await response.text()
+            console.log(response)
+            console.log(status)
+            console.log(toText)
+            if(status < 200|| status > 300){
+                console.log(" request fail "+toText)
+                alert("request failed: "+ toText)
+            }else{
+                console.log(" request Success")
+                alert("request Success, precceed getting back to vnpay ")
+                window.location.replace(toText)
+            }
+            
+        }
+
         function reloadPage(){
           window.location.href = "/order-history";
         }

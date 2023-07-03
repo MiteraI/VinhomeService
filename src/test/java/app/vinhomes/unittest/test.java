@@ -14,41 +14,31 @@ import app.vinhomes.security.email.email_service.EmailService;
 import app.vinhomes.service.AccountService;
 import app.vinhomes.service.TransactionService;
 import app.vinhomes.vnpay.service.VNPayService;
-import net.bytebuddy.asm.Advice;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamSource;
-import org.springframework.data.util.ParameterTypes;
-
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 @SpringBootTest
 //@DataJpaTest
-//@ExtendWith(MockitoExtension.class)// this is to replace the mock config, not sure
+@ExtendWith(MockitoExtension.class)// this is to replace the mock config, not sure
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class test {
 @Autowired
@@ -107,34 +97,6 @@ public class test {
     }
 
 
-//    @Test
-//    @Disabled
-//    void testGetParamName() {
-//        try {
-//            Field[] list = Order.class.getDeclaredFields();
-//            Object order = new Order(
-//                    1l, 100000, OrderStatus.CANCEL,
-//                    null,
-//                    null,
-//                    null,
-//                    null,
-//                    5,
-//                    ""
-//                    , null
-//            );
-//            List<Field> list2 = Arrays.stream(list).toList();
-//            System.out.println(list2.isEmpty());
-//            for (Field item : list2) {
-//                System.out.print(item.getName());
-//                System.out.print("    " + item.getType().getTypeName());
-//                System.out.println("    " + item.get(order));
-//            }
-//            // chi lay dc neu cac tham so la public,
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage() + "   " + e.getCause());
-//        }
-//
-//    }
 
     @Test
     @Disabled
@@ -184,10 +146,10 @@ public class test {
     @Test
 
     void testSendmailTemplate(){
-        Account account =  accountRepository.findById(27l).get();
+        Account account =  accountRepository.findById(33l).get();
         //VERIFICATION_MAIL
         Transaction getTransaction = transactionRepository.findById(60l).get();
-        emailService.sendMailWithTemplate(account,ORDERFINISH_MAIL,getTransaction);
+        emailService.sendMailWithTemplate(account,ADMIN_REFUNDTRANSACTION_MAIL,getTransaction);
     }
     @Test
     void getWorkerList(){
@@ -255,6 +217,10 @@ public class test {
         Account getAccount = getTransaction.getOrder().getAccount();
         String getUsername = getAccount.getAccountName();
         System.out.println(getUsername);
+    }
+    @Test
+    void testParameterHourPolicy(){
+
     }
 
     @Test

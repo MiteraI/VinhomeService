@@ -11,6 +11,7 @@ import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
@@ -21,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -324,6 +328,10 @@ public class PageController {
     @RequestMapping(value = "/admin_OrderTransaction",method = RequestMethod.GET)
     public String adminOrder(){
         return adminOrderTransaction();
+    }
+    @RequestMapping(value = "/accessDenied",method = RequestMethod.GET)
+    public String accessDenied()    {
+        return "accessDenied";
     }
 
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)

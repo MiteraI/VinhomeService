@@ -5,7 +5,7 @@ import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.entity.type_enum.TransactionStatus;
-import app.vinhomes.event.event_storage.SendEmailAdminRefund;
+import app.vinhomes.event.event_storage.SendEmailOnRefund;
 import app.vinhomes.service.OrderService;
 import app.vinhomes.service.TransactionService;
 import app.vinhomes.vnpay.service.VNPayService;
@@ -19,8 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +63,10 @@ public class TransactionAPI {
                 if(check_if_order_legit_for_refund){
                     ResponseEntity<String> callingResult = transactionService.refundWithOrderID(getOrderId, request, response);
                     if (callingResult.getStatusCode().is2xxSuccessful()) {
+                        Order getOrder = orderService.getOrderById(Long.parseLong(getOrderId));
+                        Transaction getTransaction = transactionService.getTransactionById(getOrder.getOrderId());
+                        System.out.println("now send mail");
+                        eventPublisher.publishEvent(new SendEmailOnRefund(getOrder.getAccount(),getTransaction));
                         return ResponseEntity.ok().body(callingResult.getBody().trim());
                     } else {
                         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
@@ -74,14 +76,18 @@ public class TransactionAPI {
                 }
             } else {
                 //TODO call for admin permission to refund, or just change time;
-                Order getOrder = orderService.getOrderById(orderId);
-                if (getOrderId != null) {
+                Long parsedOrderId = Long.parseLong(orderId);
+                Order getOrder = orderService.getOrderById(parsedOrderId);
+                if (parsedOrderId != null) {
                     orderService.addInvalidCancelOrder(getOrder);
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PASS 2 HOUR POLICY REFUND, YOU CAN ONLY CHANGE TIME OR CANCEL ORDER WITHOUT REFUND");
                 }
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("FAIL TO GET ORDER ID");
             }
         } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot find order_id through form, try fix the form");
+        }catch (NumberFormatException e){
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot find order_id through form, try fix the form");
         }
@@ -131,7 +137,7 @@ public class TransactionAPI {
                             if(getResponseCodeFromRefund.equals("00")){
                                 orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
                                 transactionService.setTransactionStatus(getTransaction, TransactionStatus.REFUNDED);
-                                eventPublisher.publishEvent(new SendEmailAdminRefund(getAccount,getTransaction));
+                                eventPublisher.publishEvent(new SendEmailOnRefund(getAccount,getTransaction));
                                 return ResponseEntity.status(HttpStatus.OK).body("YES successfully refund this transaction of admin");
                             }
                             orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);

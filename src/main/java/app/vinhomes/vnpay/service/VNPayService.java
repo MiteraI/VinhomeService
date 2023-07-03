@@ -470,7 +470,6 @@ public class VNPayService {
         String getResponseCode = splitTransaction[2].split(":")[1].substring(1,3);
         return getResponseCode;
     }
-
     public String extractTransactionAmount(String response){
         String[] splitTransaction = response.split(",");
         String getAmount = splitTransaction[6].split(":")[1];
@@ -488,6 +487,7 @@ public class VNPayService {
         getPaydate = getPaydate.substring(1,getPaydate.length()-1);
         return getPaydate;
     }
+
 }
 
 

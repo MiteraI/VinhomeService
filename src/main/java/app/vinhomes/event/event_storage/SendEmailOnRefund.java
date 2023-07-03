@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SendEmailAdminRefund {
+public class SendEmailOnRefund {
     private Account account;
     private Transaction transaction;
 }
