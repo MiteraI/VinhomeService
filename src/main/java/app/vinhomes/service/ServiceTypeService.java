@@ -18,4 +18,7 @@ public class ServiceTypeService {
     public ServiceCategory getServiceCateByServiceId(Long serviceId) {
         return serviceRepository.findById(serviceId).get().getServiceCategory();
     }
+    public Service getServiceByServiceId(Long serviceId){
+        return serviceRepository.findById(serviceId).get();
+    }
 }

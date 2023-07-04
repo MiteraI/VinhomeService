@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -39,6 +40,7 @@ public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         System.out.println("in on auth");
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
         Object principal = authentication.getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
@@ -62,9 +64,11 @@ public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
                 return;
             }
         }
+//        authentication.setAuthenticated(true);
         request.getSession().setAttribute("loginedUser",account);
         request.getSession().setAttribute("address", address);
         request.getSession().setAttribute("phone", fone);
+
         this.pageController.onAuthenticationSuccess(request,response,authentication);
     }
 }

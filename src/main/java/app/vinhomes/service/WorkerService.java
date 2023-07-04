@@ -23,7 +23,6 @@ import java.util.List;
 public class WorkerService {
     @Autowired
     private ScheduleRepository scheduleRepository;
-
     @Autowired
     private AccountRepository accountRepository;
     @Autowired

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="~{./fragments/adminHeader.html}"></header>
+
+<div class="container d-flex justify-content-end p-0 mt-3">
+<!--    <div class="form-group  has-feedback col-md-4  ">-->
+<!--        &lt;!&ndash; <label class="sr-only" for="search">Search</label> &ndash;&gt;-->
+<!--        <input type="text" class="form-control" name="q" id="search" placeholder="Search">-->
+<!--        <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>-->
+<!--    </div>-->
+</div>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Service Name</th>
+                <th>Price</th>
+                <th>Order Time</th>
+                <th>Payment method</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-orders">
+
+        </tbody>
+    </table>
+</div>
+  <script>
+    fetch('/api/order/all')
+            .then(response => response.json())
+            .then(data => {
+              let output = '';
+              data.forEach(item => {
+                const order = item['order'];
+                const account = item['account'];
+                const service = item['service'];
+                const payment = item['payment'];
+                const transaction = item['transaction'];
+                const txn = transaction['vnpTxnRef']
+                const orderId = order['orderId']
+                const firstName = account['firstName'];
+                const lastName = account['lastName'];
+                const serviceName = service['serviceName'];
+                const price = order['price'];
+                const orderTime = order['createTime'];
+                const paymentName = payment['paymentName'];
+                const status = order['status'];
+                output += `
+                        <tr class='item-to-search'>
+                          <td>${firstName}</td>
+                          <td>${lastName}</td>
+                          <td>${serviceName}</td>
+                          <td>${price}</td>
+                          <td>${orderTime}</td>
+                          <td>${paymentName}</td>
+                          <td>${status}</td>
+                          <td>
+                             `
+                                if (paymentName == "VNPAY") {
+                                    output +=
+                                    `
+                                        <a href="/admin_OrderTransaction/${txn}">View Transaction</a>
+                                    `
+                                }
+                                else {
+                                    output +=
+                                    `
+                                        <a href="#"></a>
+                                    `
+                                }
+                                output +=
+                            `
+                          </td>
+                        </tr>
+                      `;
+              });
+
+              document.getElementById('tbody-orders').innerHTML = output;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  </script>
+<script src="../static/js/AdminPublicFunction.js"></script>
+</body>
+</html>

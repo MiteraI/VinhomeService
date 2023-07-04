@@ -1,6 +1,16 @@
 package app.vinhomes.unittest;
 
+import app.vinhomes.entity.Account;
+import app.vinhomes.entity.Transaction;
+import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.TransactionRepository;
+import app.vinhomes.security.email.email_service.EmailService;
+import jakarta.validation.constraints.Email;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -8,11 +18,18 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Future;
-
+@Service
 public class asyncClass {
     private int time1 = 0;
     public boolean flag = false;
-
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Value("${mail.mailType.adminRefundTransaction}")
+    private String ADMIN_REFUNDTRANSACTION_MAIL;
     @Async("asyncExecutor")
     public CompletableFuture<String> doSomeStuff() {
         LocalDateTime start = LocalDateTime.now();
@@ -76,7 +93,13 @@ public class asyncClass {
             return CompletableFuture.completedFuture("cancled");
         }
     }
-
+    @Async("asyncExecutor")
+    public CompletableFuture<String> sendEmail(){
+        Account account =  accountRepository.findById(1l).get();
+        //VERIFICATION_MAIL
+        Transaction getTransaction = transactionRepository.findById(60l).get();
+        return CompletableFuture.completedFuture( emailService.sendMailWithTemplate(account,ADMIN_REFUNDTRANSACTION_MAIL,getTransaction));
+    }
     public void setFlag(boolean flag){
         this.flag = flag;
     }

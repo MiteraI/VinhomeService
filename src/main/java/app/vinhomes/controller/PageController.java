@@ -4,33 +4,30 @@ import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
-import app.vinhomes.entity.order.Service;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-
 
 @Controller
 public class PageController {
@@ -60,8 +57,7 @@ public class PageController {
             model.addAttribute("acc", acc);
             if (acc.getRole() == 2) {
                 return "adminDisplayWorker";
-            }
-            else if (acc.getRole() == 1) {
+            } else if (acc.getRole() == 1) {
                 return "scheduleTable";
             }
         }
@@ -81,14 +77,14 @@ public class PageController {
     }
 
     @RequestMapping(value = "/category-services/{id}", method = RequestMethod.GET)
-    public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model){
+    public String getAllServiceOfCategory(@PathVariable("id") Long categoryId, Model model) {
         model.addAttribute("services", serviceCategoryRepository.findById(categoryId).get());
         model.addAttribute("ratingArr", new int[]{5, 4, 3, 2, 1});
         return "categoryservices";
     }
 
     @RequestMapping(value = "/service/{serviceId}")
-    public String prepareOrder (@PathVariable("serviceId") Long serviceId, Model model, HttpServletRequest request) {
+    public String prepareOrder(@PathVariable("serviceId") Long serviceId, Model model, HttpServletRequest request) {
         model.addAttribute("service", typeService.getServiceType(serviceId));
         model.addAttribute("category", typeService.getServiceCateByServiceId(serviceId));
         model.addAttribute("ordersByService", orderRepository.findAllByService_ServiceId(serviceId));
@@ -140,7 +136,7 @@ public class PageController {
             if (session.getAttribute("loginedUser") != null) {
                 acc = (Account) session.getAttribute("loginedUser");
                 acc = accountRepository.findById(acc.getAccountId()).get();
-                session.setAttribute("loginedUser",acc);
+                session.setAttribute("loginedUser", acc);
             }
         }
     }
@@ -188,6 +184,7 @@ public class PageController {
     public String yourOrder() {
         return "viewOrder";
     }
+
     @RequestMapping(value = "/detail")
     public String detail(@RequestParam Optional<Long> orderId, @RequestParam Optional<Long> userId, HttpServletRequest request, Model model) {
         Account acc = getSessionAccount(request);
@@ -282,40 +279,66 @@ public class PageController {
         return "transactionReturn";
     }
 
-    @RequestMapping(value = "/verification/{username}", method = RequestMethod.GET)
-    public String verification(@PathVariable String username) {
-        return "redirect:/verificationMethod?username=" + username;
+    @RequestMapping(value = "/verification/{username}/{password}", method = RequestMethod.GET)
+    public String verification(@PathVariable String username, @PathVariable String password) {
+        return "redirect:/verificationMethod?username=" + username+"&password="+password;
     }
-    @RequestMapping(value = "/verificationMethod",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/verificationMethod", method = RequestMethod.GET)
     public String verificationMethodReturn() {
         return "verificationMethod";
     }
-    @RequestMapping(value = "/forget_Account",method = RequestMethod.GET)
-    public String forgetAccount(){
+
+    @RequestMapping(value = "/forget_Account", method = RequestMethod.GET)
+    public String forgetAccount() {
         return "forgetAccount";
     }
 
-    @RequestMapping(value = "/adminDisplayWorker_page",method = RequestMethod.GET)
-    public String adminDisplayWorker(){
+    @RequestMapping(value = "/adminDisplayWorker_page", method = RequestMethod.GET)
+    public String adminDisplayWorker() {
         return "adminDisplayWorker";
     }
-    @RequestMapping(value = "/adminDisplayCustomer_page",method = RequestMethod.GET)
-    public String adminDisplayCustomer(){
+
+    @RequestMapping(value = "/adminDisplayCustomer_page", method = RequestMethod.GET)
+    public String adminDisplayCustomer() {
         return "adminDisplayCustomer";
     }
-    @RequestMapping(value = "/admin_UpdateWorker/{workerAccountId}",method = RequestMethod.GET)
-    public String adminUpdateWorker(@PathVariable String workerAccountId){
-       return "adminUpdateWorker";//?accountId="+workerAccountId//redirect:/
+
+    @RequestMapping(value = "/admin_UpdateWorker/{workerAccountId}", method = RequestMethod.GET)
+    public String adminUpdateWorker(@PathVariable String workerAccountId) {
+        return "adminUpdateWorker";//?accountId="+workerAccountId//redirect:/
     }
-    @RequestMapping(value = "/admin_UpdateCustomer/{customerId}",method = RequestMethod.GET)
-    public String adminUpdateWorker(){
+
+    @RequestMapping(value = "/admin_UpdateCustomer/{customerId}", method = RequestMethod.GET)
+    public String adminUpdateWorker() {
         return "adminUpdateCustomer";
     }
-//    @RequestMapping(value = "", method = RequestMethod.GET)
-//    publ
+
+    @RequestMapping(value = "/admin_OrderTransaction/{vnpTxnRef}", method = RequestMethod.GET)
+    public String adminOrderTransaction() {
+        System.out.println("inside orderTransactionAdmin");
+        return "adminOrderTransaction";
+    }
+    @RequestMapping(value = "/admin_OrderTransaction",method = RequestMethod.GET)
+    public String adminOrder(){
+        return adminOrderTransaction();
+    }
+    @RequestMapping(value = "/accessDenied",method = RequestMethod.GET)
+    public String accessDenied()    {
+        return "accessDenied";
+    }
+
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)
     public String TESTBED() {
         return "TESTBED";
     }
 
+    @RequestMapping(value = "/see-leave-report", method = RequestMethod.GET)
+    public String seeAllLeaveReport () {
+        return "adminSeeLeaveReport";
+    }
+    @RequestMapping (value = "/see-all-order-by-admin", method = RequestMethod.GET)
+    public String seeAllLeaveOrderByAdmin () {
+        return "adminSeeAllOrder";
+    }
 }

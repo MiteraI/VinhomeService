@@ -75,6 +75,7 @@ public class VNpayReturnURL {
                     if ("00".equals(responseCode)) {
                         //Here Code update PaymnentStatus = 1 into your Database
                         VNpayService.updateTransaction_OrderFound(getOrder, responseCode, payDay, bankCode);
+                        VNpayService.deleteOrderUrlMapItem(getOrder.getOrderId());
                         String responseInfo = VNpayService.clientResponseBuilder(getOrder,vnp_txnRef);
                         if(responseInfo != null){
                             return "redirect:/transactionReturn?message=success transaction&"+responseInfo;
@@ -82,6 +83,7 @@ public class VNpayReturnURL {
                         return "redirect:/transactionReturn?message=success transaction&error=cant find order and transaction";
                     } else {
                         VNpayService.updateTransaction_OrderFound(getOrder, responseCode, payDay, bankCode);
+                        VNpayService.deleteOrderUrlMapItem(getOrder.getOrderId());
                         String responseInfo = VNpayService.clientResponseBuilder(getOrder,vnp_txnRef);
                         if(responseInfo != null){
                             return "redirect:/transactionReturn?message=order cancel&"+responseInfo;
@@ -91,6 +93,7 @@ public class VNpayReturnURL {
                     }
                 } else {
                     VNpayService.updateTransaction_OrderFound(getOrder, responseCode, payDay, bankCode);
+                    VNpayService.deleteOrderUrlMapItem(getOrder.getOrderId());
                     String responseInfo = VNpayService.clientResponseBuilder(getOrder,vnp_txnRef);
                     if(responseInfo != null){
                         return "redirect:/transactionReturn?message=order status is not PENDING&"+responseInfo;
@@ -100,6 +103,7 @@ public class VNpayReturnURL {
             } else {
                 out.println("Chu ky khong hop le");
                 VNpayService.updateTransaction_OrderFound(getOrder,responseCode,payDay,bankCode);
+                VNpayService.deleteOrderUrlMapItem(getOrder.getOrderId());
                 String responseInfo = VNpayService.clientResponseBuilder(getOrder,vnp_txnRef);
                 if(responseInfo != null){
                     return "redirect:/transactionReturn?message=transaction key is not match with secret key," +
