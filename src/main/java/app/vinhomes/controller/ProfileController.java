@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,14 +40,21 @@ public class ProfileController {
     @Autowired
     private ErrorChecker errorChecker;
 
+    @Value("${phone.max_phonenumber}")
+    private int maxPhoneNumber;
+
     @PostMapping(value = "/{userId}")
     public ResponseEntity<CreateErrorCatcher> changeProfile(@RequestBody JsonNode request, @PathVariable("userId") Long userId, HttpServletRequest request_) {
         int roleCustomer = 0;
         System.out.println("get in update account customer");
         System.out.println(request.asText());
         Account acc = accountRepository.findById(userId).get();
-        Phone fone = phoneRepository.findById(Long.parseLong(request.get("txtPhoneId").asText().trim())).get();
-        String username, email, phonenumber, date;
+        Phone fone = null;
+        String username, email, phonenumber, date, phoneId;
+        phoneId = request.get("txtPhoneId").asText().equals("-1") ? "-1" : request.get("txtPhoneId").asText();
+        if (!phoneId.equals("-1")) {
+            fone = phoneRepository.findById(Long.parseLong(request.get("txtPhoneId").asText().trim())).get();
+        }
         List<String> addressArr = new ArrayList<>();
         List<Phone> phoneList = new ArrayList<>();
         username = request.get("txtUsername") == null ? acc.getAccountName() : request.get("txtUsername").asText().trim();
@@ -57,7 +65,12 @@ public class ProfileController {
         username = acc.getAccountName().equals(username) ? "" : errorChecker.checkUsername(username);
         email = acc.getEmail().equals(email) ? "" : errorChecker.checkEmail(email);
         date = errorChecker.checkDate(date);
-        phonenumber = fone.getNumber().equals(phonenumber) ? "" : errorChecker.checkPhoneNumber(phonenumber);
+        if (fone != null) {
+            phonenumber = fone.getNumber().equals(phonenumber) ? "" : errorChecker.checkPhoneNumber(phonenumber);
+        }
+        else{
+            phonenumber = errorChecker.checkPhoneNumber(phonenumber);
+        }
 
         System.out.println("yes check okkk");
         // role = 1 is worker
@@ -94,12 +107,18 @@ public class ProfileController {
             acc.setAccountName(username);
             acc.setEmail(email);
             acc.setDob(localDate);
-            fone.setNumber(phonenumber);
+            if(fone != null){
+                fone.setNumber(phonenumber);
+            }
+            else{
+                fone =  Phone.builder().number(phonenumber).account(acc).build();
+            }
 
 
             phoneRepository.save(fone);
             accountRepository.save(acc);
-            phoneList.add(fone);
+            phoneList = phoneRepository.findByAccountId(acc.getAccountId());
+            System.out.println(phoneList);
             System.out.println("save account");
 
         } catch (DateTimeException e) {
@@ -111,12 +130,12 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
         System.out.println("okk, SAVE SUCCESS");
-        if(request_.getSession(false) != null){
+        if (request_.getSession(false) != null) {
             HttpSession session = request_.getSession(false);
-            if(session.getAttribute("loginedUser") != null){
+            if (session.getAttribute("loginedUser") != null) {
                 session.setAttribute("loginedUser", acc);
             }
-            if(session.getAttribute("phone") != null){
+            if (session.getAttribute("phone") != null) {
                 session.setAttribute("phone", phoneList);
             }
         }

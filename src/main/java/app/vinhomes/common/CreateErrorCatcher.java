@@ -21,6 +21,7 @@ public class CreateErrorCatcher {
     private String phonenumberErr;
     private String addressErr;
     private List<String> addressAddr;
+    private List<String> phoneArr;
 
     public CreateErrorCatcher(String usernameErr, String emailErr, String firstnameErr, String lastnameErr, String dateErr, List<String> addressAddr, String phonenumberErr) {
         this.usernameErr = usernameErr;
@@ -30,6 +31,13 @@ public class CreateErrorCatcher {
         this.dateErr = dateErr;
         this.addressAddr = addressAddr;
         this.phonenumberErr = phonenumberErr;
+    }
+
+    public CreateErrorCatcher(String usernameErr, String emailErr, String dateErr, List<String> phoneArr){
+        this.usernameErr = usernameErr;
+        this.emailErr = emailErr;
+        this.dateErr = dateErr;
+        this.phoneArr = phoneArr;
     }
 
     public CreateErrorCatcher(String usernameErr, String emailErr, String dateErr, String phonenumberErr) {

@@ -1,10 +1,11 @@
 <div class="otpForm flex flex-col items-center justify-center">
 
-  <div class="my-5 text-xl font-semibold">OTP Verification</div>
-  <div class="mb-5" th:text="${acc != null} ? 'Hello ' + ${acc} + ','">
+  <div class="text-xl font-semibold">OTP Verification</div>
+  <div class="my-5" th:if="${acc != null}" th:text="${acc != null} ? 'Hello ' + ${acc} + ','">
   </div>
   <div>
     <form class="otc" name="one-time-code" action="#">
+      <div th:if="${acc == null}" class="mt-5"></div>
       <legend class="text-center whitespace-nowrap">Please Enter Validation Code You Recived In Your Phone</legend>
       <div class="inputfield mt-5 w-full flex justify-around">
         <input type="number" maxlength="1"
@@ -31,11 +32,12 @@
       </div>
       <div class="my-5 flex justify-center items-center">
         If you didn't receive the code! <span class="ml-1">
-          <a href="" class="resendBtn cursor-default pointer-events-none opacity-25"
+          <a class="resendBtn cursor-pointer pointer-events-none opacity-25"
             title="Wait until current otp code expire to resend">Resend</a></span>
       </div>
       <div class="flex items-center justify-center">
-        <button class="border-2 border-black bg-blue-300 w-full rounded-lg hover:bg-blue-400 py-1 px-2">Submit</button>
+        <button class="border-2 border-black bg-blue-300 w-full rounded-lg hover:bg-blue-400 py-1 px-2"><a
+            href="">Submit</a></button>
       </div>
     </form>
   </div>
