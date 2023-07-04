@@ -50,17 +50,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").hasAnyAuthority("1","0","2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/verification").hasAuthority("0"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/verificationMethod").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/category-services/**").hasAuthority("0"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/service/**").hasAuthority("0"))
                 .authorizeHttpRequests(authUser -> {
                     authUser.requestMatchers("/order-history").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/order-history/**").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/service/**").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/verification").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/verificationMethod").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/yourOrders").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2");
                 })
                 .authorizeHttpRequests(authAdmin ->{
                     authAdmin.requestMatchers("/UserRestController/**").hasAuthority("2");
@@ -70,6 +71,9 @@ public class SecurityConfig {
                     authAdmin.requestMatchers("/adminDisplayCustomer_page").hasAuthority("2");
                     authAdmin.requestMatchers("/admin_UpdateWorker/**").hasAuthority("2");
                     authAdmin.requestMatchers("/admin_UpdateCustomer/**").hasAuthority("2");
+                    authAdmin.requestMatchers("/see-leave-report").hasAuthority("2");
+                    authAdmin.requestMatchers("/see-all-order-by-admin").hasAuthority("2");
+
                 })
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .exceptionHandling().accessDeniedHandler(getAccessDeniedHandler()).and()
