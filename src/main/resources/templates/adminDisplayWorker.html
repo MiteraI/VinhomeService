@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeLeaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -14,49 +14,56 @@
 </head>
 
 <body>
-    <div>
-        <div class="position-relative">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+<div>
+    <div class="position-relative">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                         aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- <div class="container-fluid p-0 "> -->
-                    <a class="navbar-brand" href="#">
-                        <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
-                            class="d-inline-block align-top mx-3" alt="">
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="#">
-                                    <h4>WORKER</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
-                                    <!-- href="./adminDisplayCustomer.html" -->
-                                    <h4>USER</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
-                                    <h4>See Leave Report</h4>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- <div class="container-fluid p-0 "> -->
+                <a class="navbar-brand" href="#">
+                    <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
+                         class="d-inline-block align-top mx-3" alt="">
+                </a>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item ">
+                            <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
+                                <h4>WORKER</h4>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
+                                <h4>USER</h4>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item ">
+                            <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
+                                <h4>Transaction List</h4>
+                            </a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white  m-0" href="/see-leave-report">
+                                <h4>See Leave Report</h4>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white  m-0" href="/see-all-order-by-admin">
+                                <h4>See All Order</h4>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <form action="/logout">
-                    <button type="submit">Logout</button>
-                </form>
-
-                <!-- </div> -->
-            </nav>
-        </div>
+            </div>
+            <form action="/logout">
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
     </div>
+</div>
     <div class="container-fluid " style="height: 40px;">
     </div>
     <div class="container d-flex justify-content-around p-0 mt-3 ">
@@ -102,7 +109,7 @@
     <!--  WORKER FORM -->
     <!--  WORKER FORM -->
     <!--  WORKER FORM -->
-    <div class="container col-6  position-fixed fixed-top rounded mt-5  p-5  vh-100 form" style="display: none; ">
+    <div id="FORM" class="container col-6  position-fixed fixed-top rounded mt-5  p-5  vh-100 form" style="display: none; ">
         <div class="visually-hidden mt-5 ">asdf</div>
         <div class="mt-5 border border-black p-lg-3 bg-white" style="z-index: 99;">
             <form id="create-form" class=" ">
@@ -196,6 +203,7 @@
     error_lastname = document.getElementById("error-lastname")
     error_dob = document.getElementById("error-dob")
     error_phonenumber = document.getElementById("error-phonenumber")
+    const createForm = document.getElementById("FORM")
     //error_service = document.getElementById("error-service")
     getWorkerList()
     async function getWorkerList() {
@@ -262,8 +270,9 @@
     }
 
     async function openCreateForm() {
-
+        createForm.style.display = "block"
         // document.querySelectorAll(".overlay")[0].style.display = "block";
+        //document.getElementById("form").style.display = "block";
         var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
             method: "GET"
         });
@@ -289,8 +298,6 @@
 
 
 
-</script>
-<script>
 
     async function deleteByID(id) {
         console.log(id)
@@ -320,19 +327,8 @@
     }
 
 
-    function closeCreateForm() {
-        // document.querySelectorAll(".overlay")[0].style.display = "none";
-        document.getElementById("create-form").reset()
-        error_username.style.visibility = "hidden";
-        error_password.style.visibility = "hidden";
-        error_email.style.visibility = "hidden";
-        error_firstname.style.visibility = "hidden";
-        error_lastname.style.visibility = "hidden";
-        error_dob.style.visibility = "hidden";
-        error_phonenumber.style.visibility = "hidden";
-        //document.querySelectorAll(".form")[0].style.display = "none";
+    
 
-    }
     const form = document.getElementById("create-form");
     form.addEventListener('submit', async function (event) {
         console.log(form)
@@ -360,6 +356,7 @@
             error_dob.style.visibility = "visible"; error_dob.innerHTML = '❌ ' + "." + responseData.dateErr
             error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = '❌ ' + "." + responseData.phonenumberErr
             if (responseData.usernameErr == "") { error_username.innerHTML = "✔"; }
+            if (responseData.passwordErr == ""){error_password.innerHTML="✔"; }
             if (responseData.emailErr == "") { error_email.innerHTML = "✔"; }
             if (responseData.firstnameErr == "") { error_firstname.innerHTML = "✔"; }
             if (responseData.lastnameErr == "") { error_lastname.innerHTML = "✔"; }
@@ -367,19 +364,34 @@
             if (responseData.phonenumberErr == "") { error_phonenumber.innerHTML = "✔"; }
         } else {
             error_username.style.visibility = "visible"; error_username.innerHTML = "✔";
-            error_password.stylse.visibility = "visible"; error_password.innerHTML = "✔";
+            error_password.style.visibility = "visible"; error_password.innerHTML = "✔";
             error_email.style.visibility = "visible"; error_email.innerHTML = "✔";
             error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "✔";
             error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "✔";
             error_dob.style.visibility = "visible"; error_dob.innerHTML = "✔";
             error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "✔";
-            error_address.style.visibility = "visible"; error_address.innerHTML = "✔";
+            alert("Create worker success")
             closeCreateForm()
             getWorkerList()
         }
 
     }
     )
+
+    function closeCreateForm() {
+        // document.querySelectorAll(".overlay")[0].style.display = "none";
+        document.getElementById("create-form").reset()
+        error_username.style.visibility = "hidden";
+        error_password.style.visibility = "hidden";
+        error_email.style.visibility = "hidden";
+        error_firstname.style.visibility = "hidden";
+        error_lastname.style.visibility = "hidden";
+        error_dob.style.visibility = "hidden";
+        error_phonenumber.style.visibility = "hidden";
+        createForm.style.display = "none";
+        //document.querySelectorAll(".form")[0].style.display = "none";
+
+    }
     //delay 1 second
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));

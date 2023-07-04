@@ -165,8 +165,8 @@
         console.log(data["txtUsername"] +"  "+data["txtPassword"])
         alert("successfully save");
         submitBtn.classList.remove('disabled');
-        getLogin(data["txtUsername"],data["txtPassword"])
-          //window.location.href = `/verification/${data["txtUsername"]}`
+        //getLogin(data["txtUsername"],data["txtPassword"])
+        window.location.href = `/verification/${data["txtUsername"]}/${data["txtPassword"]}`
           
           //getLogin()
 

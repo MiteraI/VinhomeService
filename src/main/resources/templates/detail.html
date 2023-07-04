@@ -344,6 +344,46 @@
           })
           .catch((err) => console.error(err));
       });
+      async function callCancelService() {
+            var response = await fetch("http://localhost:8080/transaction/cancelOrder/refundTransaction/" + urlParam.get("orderId"),
+            {
+                method: "GET"
+            });
+            var status = await response.status;console.log(status)
+            var toText = await response.text();console.log(toText)
+            if(status < 200 || status > 300){
+                console.log("refund fail");
+                alert("refund fail: "+toText)
+            }else{
+                console.log("refund success");
+                alert("refund success: "+toText)
+            }
+        }
+
+        async function payService() {
+            var response = await fetch("http://localhost:8080/vnpay/createPayment/test",
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(giveData)
+                });
+            var status = await response.status
+            var message = await response.body
+            var toText = await response.text()
+            console.log(response)
+            console.log(status)
+            //console.log(message.text)
+            console.log(toText)
+            if(status < 200|| status > 300){
+                console.log(" request fail "+toText)
+            }else{
+                console.log(" request success ")
+                window.location.replace(toText)
+            }
+            
+        }
     </script>
   </body>
 </html>

@@ -1,32 +1,78 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title th:remove="all">Template for HTML email</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <style>
 
 </style>
-<body style="background-color: antiquewhite;">
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="container">
-        <h3 style="color:blue;">Hello,<span th:text="${firstname}"></span> <span th:text="${lastname}"></span> </h3>
-        <p>
-            This is your username and password, please change it as soon as you enter your account
-        </p>
-        <p>
-            username: <span th:text="${username}"></span><br>
-            password: <span th:text="${password}"></span><br>
-            <img src="cid:image.png"  />
-        </p>
 
-        <br>
-        <p>
-            Regards, also please note your password again <br/>
-            <em>Vinhome Cleaning Service</em>
-        </p>
-        <br>
+<body style="background-color: white;">
+    <div class="container d-flex justify-content-center align-items-center0" style="
+border: 1px solid black;
+border-radius: 20px;
+border-top-left-radius: 20px ; border-top-right-radius: 20px;
+">
+        <div style="background-color:#0d6efd;border-top-left-radius: 20px ; border-top-right-radius: 20px;">
+            <h2 style="
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            
+            ">
+                Hello,<span th:text="${firstname}"></span> <span th:text="${lastname}"></span> </h2>
+        </div>
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td align="center">
+                    <div  style=" margin: 0 auto;
+                    position: relative;
+                    width: 100%;"
+                    >
+                    
+                    
+                        <div style="margin: 0 auto;
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        ">
+                            <p style="font-size: large;">
+                                This is your username and password <br>
+                                
+                            </p>
+                            <p style="font-weight: 800; font-size: large; color: #dc3545;">NOTE: please change it as soon as you enter your account</p>
+                            <p style="text-align: start;">
+                                <span style="font-weight: 800; font-size: large; margin-left: 30%;  ">username:</span><span th:text="${username}"
+                                    style=" font-size: large;"></span><br>
+                                <span style="font-weight: 800; font-size: large; margin-left: 30%; ">password:</span><span th:text="${password}"
+                                    style=" font-size: large;"></span><br>                          
+                            </p>
+                            <div style="text-align: center;">
+                                <img  src="cid:image.png" />
+                            </div>
+                            <br>
+                            <p>
+                                Regards, also please note your password again <br />
+                                <em>Vinhome Cleaning Service</em>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        
+
+
+
     </div>
-</div>
 </body>
+
 </html>

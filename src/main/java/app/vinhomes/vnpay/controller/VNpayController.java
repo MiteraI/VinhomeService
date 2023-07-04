@@ -10,6 +10,7 @@ import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.OrderService;
 import app.vinhomes.service.PaymentService;
+import app.vinhomes.service.ServiceTypeService;
 import app.vinhomes.service.TransactionService;
 
 import com.azure.core.annotation.Get;
@@ -44,7 +45,12 @@ import java.util.*;
 public class VNpayController extends HttpServlet {
     @Value("${time.order_timeout}")
     private int ORDER_TIMEOUT;
-
+    @Value("${order.policy.day_before_service}")
+    private String DAY_POLICY_ORDER;
+    @Value("${order.policy.hour_before_service}")
+    private String HOUR_POLICY_ORDER;
+    @Value("${order.policy.max_day_prior_to_service}")
+    private String DAY_PRIOR_ORDER;
     @Autowired
     private TransactionService transactionService;
     @Autowired
@@ -56,6 +62,8 @@ public class VNpayController extends HttpServlet {
     @Autowired
     private SecurityService securityService;
     @Autowired
+    private ServiceTypeService serviceTypeService;
+    @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @PostMapping//@RequestParam JsonNode jsonNode ,
@@ -63,8 +71,11 @@ public class VNpayController extends HttpServlet {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "billpayment";
-        JsonNode jsonNode1;
         String orderID = null;
+        String getDay = jsonNode.get("day").asText().trim();
+        String getTimeId= jsonNode.get("timeId").asText().trim();
+        String getPaymentId= jsonNode.get("paymentId").asText().trim();
+        String phonenumber = jsonNode.get("phonenumberId").asText().trim();
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
         System.out.println("Inside vnpay " + authentication.getName());
@@ -77,7 +88,15 @@ public class VNpayController extends HttpServlet {
         }
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
-        String phonenumber = jsonNode.get("phonenumberId").asText().trim();
+        if(getDay.equals("0")||getTimeId.equals("0")||getPaymentId.equals("0")||getDay.equals("0")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR please enter all fields");
+        }
+        if(orderService.checkDayValidForOrder(getDay,getTimeId) == false){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR inappropriate timeslot, rules are\n " +
+                    "1. order has to be made atlease "+DAY_POLICY_ORDER+ " before\n" +
+                    "2. If in the same day or tomorrow, then atleast "+HOUR_POLICY_ORDER+ " early\n" +
+                    "3. order must not be placed after "+ DAY_PRIOR_ORDER+" days count from current day");
+        }
         if(phonenumber.equals("")){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR phonenumber is empty, please re-login and try again");
         }
@@ -99,22 +118,21 @@ public class VNpayController extends HttpServlet {
         } else {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("choose your payment method");
         }
-        ////////////////////////////////////////////////////////////////
         int amount = (int) vnpayService.getServicePriceFromOrder(orderID) * 100;
         if (amount <= 0) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("invalid money ");
 
-        }//////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////
+        }
         String bankCode = vnpayService.getBankCode_CheckCOD_VNpay(jsonNode, req);        //String bankCode = "VNBANK";
         if (bankCode == null) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("bankcode is empty, this will be fixed later");
-            //TODO quan li neu chon thanh toan COD thay vi VNPAY
         } else if (bankCode.isEmpty()) {// this mean this is COD, not vnpay, so we dont have to redirect it to vnpay site
             vnpayService.saveTransaction_COD(orderID, transactionMethodID);
             return ResponseEntity.ok().body("COD");
-            //TODO neu la COD thi lam gi tiep, ko tiep tuc gui thong tin cho vnpay
         }
+        Long getServiceId = jsonNode.get("serviceId").asLong();
+        String getServiceName = serviceTypeService.getServiceByServiceId(getServiceId).getServiceName();
+
         String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);
         String vnp_IpAddr = ConfigVNpay.getIpAddress(req);
         String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
@@ -129,7 +147,7 @@ public class VNpayController extends HttpServlet {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" +getServiceName );//vnp_TxnRef
         vnp_Params.put("vnp_OrderType", orderType);
         String locate = null;//jsonNode.get("language").asText();
         if (locate != null && !locate.isEmpty()) {
@@ -196,41 +214,39 @@ public class VNpayController extends HttpServlet {
         //////////////////////////////////////////////////////////////////////////////////////////
         //resp.getWriter().write(gson.toJson(job));
 //        vnpayService.redirectTest(resp,paymentUrl);
-
         return ResponseEntity.ok().body(paymentUrl.toString().trim());
 
     }
 
 
-    @PostMapping(value = "/test",produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<String> repayOrder(@RequestBody JsonNode jsonNode, Authentication authentication){
-        System.out.println("inside repay");
-        System.out.println(authentication.getPrincipal());
-        String paymentId = jsonNode.get("paymentId").asText().trim();
-        String serviceId = jsonNode.get("serviceId").asText().trim();
-        String day = jsonNode.get("day").asText().trim();
-        String timeId = jsonNode.get("timeId").asText().trim();
-        String orderId = jsonNode.get("orderId").asText().trim();
-        System.out.println(orderId);
-        Order getOrder = orderService.getOrderById(orderId);
-        if(getOrder.getPayment().getPaymentName().equals("COD")){
-            System.out.println("this order is of COD type, cannot continue to pay");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your order is off COD type");
+    @PostMapping(value = "/continuePaying/{orderId}",produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> repayOrder(@PathVariable String orderId, Authentication authentication){
+        try{
+            System.out.println("inside repay");
+            System.out.println(authentication.getPrincipal());
+            System.out.println(orderId);
+            Long parsedOrderId = Long.parseLong(orderId);
+            Order getOrder = orderService.getOrderById(parsedOrderId);
+            if(getOrder.getPayment().getPaymentName().equals("COD")){
+                System.out.println("this order is of COD type, cannot continue to pay");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your order is off COD type");
+            }
+            boolean checkIfOrderPending_Exist = orderService.checkIfOrderIsPending_IsExist(parsedOrderId);
+            boolean checkIfTransactionPending_Exist = transactionService.checkIfTransactionIsPending_IsExist(parsedOrderId);
+            System.out.println(checkIfOrderPending_Exist +"   "+ checkIfTransactionPending_Exist);
+            if(checkIfOrderPending_Exist == false || checkIfTransactionPending_Exist == false){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your order is already paid or has another payment method");
+            }
+            Map<Long,String> getMap  = vnpayService.getAllOrderUrlMap();
+            getMap.forEach((Id,url) -> System.out.println(Id+ "  :  "+ url));
+            String getUrl = getMap.get(Long.parseLong(orderId));
+            if(getUrl == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("url not found for this order ");
+            }
+            return ResponseEntity.ok().body(getUrl);
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("order id is not a number ");
         }
-        boolean checkIfOrderPending_Exist = orderService.checkIfOrderIsPending_IsExist(orderId);
-        boolean checkIfTransactionPending_Exist = transactionService.checkIfTransactionIsPending_IsExist(orderId);
-        //System.out.println(checkIfOrderPending_Exist +"   "+ checkIfTransactionPending_Exist);
-        if(checkIfOrderPending_Exist == false || checkIfTransactionPending_Exist == false){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your order is already paid or has another payment method");
-        }
-        Map<Long,String> getMap  = vnpayService.getAllOrderUrlMap();
-        getMap.forEach((Id,url) -> System.out.println(Id+ "  :  "+ url));
-        String getUrl = getMap.get(Long.parseLong(orderId));
-        if(getUrl == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("url not found for this order ");
-        }
-        return ResponseEntity.ok().body(getUrl);
     }
-
-
 }

@@ -9,12 +9,12 @@ import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.repository.order.PaymentRepository;
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.service.TransactionService;
 import app.vinhomes.vnpay.config.ConfigVNpay;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +40,7 @@ public class VNPayService {
     private TransactionRepository transactionRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+
 
     public String getBankCode_CheckCOD_VNpay(JsonNode jsonNode, HttpServletRequest request) {
         try {
@@ -120,6 +121,7 @@ public class VNPayService {
 
     public Order getOrderByVnp_txnRef(String vnp_txnref) {
         try {
+            //long getOrderID = transactionRepository.findByVnpTxnRef(vnp_txnref).getOrder().getOrderId();
             long getOrderID = transactionRepository.findByVnpTxnRef(vnp_txnref).getOrder().getOrderId();
             Order getOrder = orderRepository.findById(getOrderID).get();
             return getOrder;
@@ -371,7 +373,11 @@ public class VNPayService {
         }
         in.close();
         System.out.println(response.toString());
-        return ResponseEntity.ok().body(response);
+        if(responseCode == 200){
+            return ResponseEntity.ok().body(response);
+        }else{
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+        }
     }
 
     public void saveTransaction_COD(String order_id, String Payment_id) {
@@ -404,11 +410,10 @@ public class VNPayService {
         this.orderUrlMap.put(OrderId, url);
     }
 
-    public boolean deleteOrderUrlMapItem(String orderId) {
+    public boolean deleteOrderUrlMapItem(Long orderId) {
         Map<Long, String> getMap = getAllOrderUrlMap();
         try {
-            Long parsedOrderId = Long.parseLong(orderId);
-            getMap.remove(parsedOrderId);
+            getMap.remove(orderId);
             return true;
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -460,6 +465,29 @@ public class VNPayService {
         }
     }
     ////////////////////// get order expried time//////////////////////
+    public String extractResponseCode(String response){
+        String[] splitTransaction = response.split(",");
+        String getResponseCode = splitTransaction[2].split(":")[1].substring(1,3);
+        return getResponseCode;
+    }
+    public String extractTransactionAmount(String response){
+        String[] splitTransaction = response.split(",");
+        String getAmount = splitTransaction[6].split(":")[1];
+        getAmount = getAmount.substring(1,getAmount.length()-1);
+        return getAmount;
+    }
+    public String extractTransactionStatusQuery(String responseQuery){
+        String[] splitTransaction = responseQuery.split(",");
+        String getTransactionStatus = splitTransaction[12].split(":")[1].substring(1,3);
+        return getTransactionStatus;
+    }
+    public String extractTransactionPayDateQuery(String responseQuery){
+        String[] splitTransaction = responseQuery.split(",");
+        String getPaydate = splitTransaction[9].split(":")[1];
+        getPaydate = getPaydate.substring(1,getPaydate.length()-1);
+        return getPaydate;
+    }
+
 }
 
 

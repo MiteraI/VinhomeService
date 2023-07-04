@@ -30,6 +30,7 @@ import java.time.LocalTime;
 
 import java.time.format.DateTimeParseException;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +43,12 @@ public class OrderService {
     private List<Order> InvalidCancelOrder = new LinkedList<>();
     @Value("${time.hourpolicy}")
     private int HourPolicy;
+    @Value("${order.policy.day_before_service}")
+    private String DAY_POLICY_ORDER;
+    @Value("${order.policy.hour_before_service}")
+    private String HOUR_POLICY_ORDER;
+    @Value("${order.policy.max_day_prior_to_service}")
+    private String DAY_PRIOR_ORDER;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -62,11 +69,9 @@ public class OrderService {
     private PhoneRepository phoneRepository;
     @Autowired
     private PaymentCategoryRepository paymentCategoryRepository;
-
     @Autowired
     private WorkerService workerService;
-    @Autowired
-    private ScheduleRepository scheduleRepository;
+
     public List<Order> getCustomerOrder(HttpServletRequest request) {
         Account loginedUser = getSessionUser(request);
         return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
@@ -234,10 +239,9 @@ public class OrderService {
         }
 
     }
-    public Order getOrderById(String order_id){
+    public Order getOrderById(Long order_id){
         try{
-            long parsedOrderId = Long.parseLong(order_id);
-            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            Order getOrder = orderRepository.findById(order_id).get();
             return getOrder;
         }catch (NoSuchElementException e){
             System.out.println("erroer in OrderService: "+ e.getMessage());
@@ -256,10 +260,9 @@ public class OrderService {
             return false;
         }
     }
-    public boolean checkIfOrderIsPending_IsExist(String orderId){
+    public boolean checkIfOrderIsPending_IsExist(Long orderId){
         try{
-            long parsedOrderId = Long.parseLong(orderId);
-            Order getOrder = orderRepository.findById(parsedOrderId).get();
+            Order getOrder = orderRepository.findById(orderId).get();
             if(getOrder.getStatus().equals(OrderStatus.PENDING)){
                 return true;
             }
@@ -316,6 +319,46 @@ public class OrderService {
             }
         }
         return listOrders;
+    }
+
+    public boolean checkDayValidForOrder(String orderDate, LocalTime orderTimeSlot_StartTime){
+        LocalDate parseDate = LocalDate.parse(orderDate);
+        LocalDate dateNow = LocalDate.now();
+        long getDayDiff = ChronoUnit.DAYS.between(dateNow,parseDate);
+        long getHourDiff = ChronoUnit.HOURS.between(LocalTime.now(),orderTimeSlot_StartTime);
+        if(getDayDiff < Integer.parseInt(DAY_POLICY_ORDER.trim())){
+            System.out.println("date is off policy " +getDayDiff);
+            if(getHourDiff <= Integer.parseInt(HOUR_POLICY_ORDER.trim())){
+                System.out.println("hour is also off policy " +getHourDiff);
+                return false;
+            }else{
+                System.out.println("hour is in policy, success "+ getHourDiff);
+                return true;
+            }
+        }else{
+            if(getDayDiff > Integer.parseInt(DAY_PRIOR_ORDER.trim())){
+                System.out.println("date violate max prior day order");
+                return false;
+            }
+            System.out.println("date is in policy, success");
+            return true;
+        }
+    }
+    public boolean checkDayValidForOrder(String orderDay, String timeSlotId){
+        try{
+            Long parsedTimeSlotId = Long.parseLong(timeSlotId);
+            TimeSlot getTimeSlot = timeSlotRepository.findById(parsedTimeSlotId).get();
+            LocalTime getStartTime = getTimeSlot.getStartTime();
+            return this.checkDayValidForOrder(orderDay,getStartTime);
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+        public void setOrderStatus (Order order, OrderStatus status){
+        order.setStatus(status);
+        orderRepository.save(order);
     }
     public List<Order> getInvalidCancelOrder() {
         return this.InvalidCancelOrder;
