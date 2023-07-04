@@ -19,19 +19,19 @@
     <div class="container col-6 p-lg-3 rounded">
       <h1 class="text-center mb-1">Register</h1>
       <form id="create-form" class="">
-        
-          <div class="form-group mt-3">
-            <label> Username</label><span id="error-username" class="error-message text-danger fst-italic ms-2 "
-              style="visibility: hidden;">asdf</span>
-            <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
-              name="txtUsername" id="username">
-          </div>
-          <div class="form-group mt-3">
-            <label> Password</label><span id="error-password" class="error-message text-danger fst-italic ms-2"
-              style="visibility: hidden;">adsf</span>
-            <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword" id="password">
-          </div>
-        
+
+        <div class="form-group mt-3">
+          <label> Username</label><span id="error-username" class="error-message text-danger fst-italic ms-2 "
+            style="visibility: hidden;">asdf</span>
+          <input type="text" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder=""
+            name="txtUsername" id="username">
+        </div>
+        <div class="form-group mt-3">
+          <label> Password</label><span id="error-password" class="error-message text-danger fst-italic ms-2"
+            style="visibility: hidden;">adsf</span>
+          <input type="password" class="form-control form-control-sm" placeholder="" name="txtPassword" id="password">
+        </div>
+
         <div class="form-group mt-3">
           <label> Email</label><span id="error-email" class="error-message text-danger fst-italic ms-2 "
             style="visibility: hidden;">asdf</span>
@@ -75,11 +75,11 @@
       </form>
 
       <form id="loginForm" action="/login" method="post" style="display: none;">
-          <label class="form-label" for=""> Username</label> 
-          <input type="text" id="usernameId" name="username" class="form-control" value="" /> 
-      <!-- Password input -->
-          <label class="form-label" for="">Password</label>
-          <input type="password" id="passwordId" name="password" class="form-control" value="" />
+        <label class="form-label" for=""> Username</label>
+        <input type="text" id="usernameId" name="username" class="form-control" value="" />
+        <!-- Password input -->
+        <label class="form-label" for="">Password</label>
+        <input type="password" id="passwordId" name="password" class="form-control" value="" />
       </form>
 
 
@@ -144,31 +144,9 @@
         if (responseData.addressErr == "") { error_address.innerHTML = "✔"; }
         console.log("end error")
         submitBtn.classList.remove('disabled');
-      } else {
-        error_username.style.visibility = "visible";
-        error_password.style.visibility = "visible";
-        error_email.style.visibility = "visible";
-        error_firstname.style.visibility = "visible";
-        error_lastname.style.visibility = "visible";
-        error_dob.style.visibility = "visible";
-        error_phonenumber.style.visibility = "visible";
-        error_address.style.visibility = "visible";
-        error_username.innerHTML = "✔";
-        error_password.innerHTML = "✔";
-        error_email.innerHTML = "✔";
-        error_firstname.innerHTML = "✔";
-        error_lastname.innerHTML = "✔";
-        error_dob.innerHTML = "✔";
-        error_phonenumber.innerHTML = "✔";
-        error_address.innerHTML = "✔";
-        console.log('yes successs')
-        console.log(data["txtUsername"] +"  "+data["txtPassword"])
-        alert("successfully save");
-        submitBtn.classList.remove('disabled');
-        getLogin(data["txtUsername"],data["txtPassword"])
-          //window.location.href = `/verification/${data["txtUsername"]}`
-          
-          //getLogin()
+      }
+      else {
+        window.location.href = "/verificationMethod"
 
       }
     }
@@ -177,10 +155,7 @@
       console.log("inside return main page")
       window.location.href = "/";
     }
-    function getLogin(username,password) {
-      document.getElementById("usernameId").value = username
-      document.getElementById("passwordId").value = password
-      document.getElementById("loginForm").submit()
+    function getLogin(username, password) {
     }
   </script>
 </body>
