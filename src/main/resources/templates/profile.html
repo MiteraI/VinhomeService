@@ -16,9 +16,9 @@
   <header th:replace="~{./fragments/header.html}"></header>
 
   <div class="bg-orange-500 mx-20 my-7 py-5 px-4 relative flex items-center">
-    <span class="">Please verify this account: <span class="ml-1 font-semibold"
-        th:text="${acc != null} ? ${acc.accountName} : ''"></span></span>
-    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black"><a href="/forget_Account"
+    <span class="">Please verify this phone number: <span class="ml-1 font-semibold"
+        th:text="${phone != null} ? ${phone[0].number} : ''">1234567890</span></span>
+    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black"><a href="/otp-verification"
         target="" class="">Verify</a></button>
   </div>
 
@@ -39,7 +39,7 @@
             class="edit-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Edit
             Profile</button>
           <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium"><a
-              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Change
+              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Reset
               Password</a></button>
           <button
             class="change-pfp-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Change
@@ -110,14 +110,12 @@
 
             <div id="phoneDropdownContainer"
               class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
-              <ul
-                class="phoneSpanContainer absolute w-inherit h-[7.5rem] border-2 border-black bg-slate-200 overflow-y-scroll"
-                aria-labelledby="dropdownDividerButton">
-                <li class="relative" th:each="fone: ${phone}">
+              <ul class="absolute w-inherit h-[7.5rem] border-2 border-black bg-slate-200 overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton" th:each="fone: ${phone}">
+                <li class="relative">
                   <span class="phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer"
-                    th:text="${phone != null} ? ${fone.number} : ''" th:attr="data-id=${fone.phoneId}">1234567890</span>
+                    th:text="${phone != null} ? ${fone.number} : ''">1234567890</span>
                 </li>
-
               </ul>
             </div>
           </div>
@@ -171,8 +169,6 @@
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script>
-    let addPhoneBtn = null
-
     const editFormContainer = document.querySelector('.edit-form-container')
     const editBtn = document.querySelector('.edit-btn')
     const errorMassage = document.querySelectorAll('.error-message')
@@ -185,7 +181,6 @@
     const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
     const phoneSpan = document.querySelectorAll('.phoneSpan')
     const phoneInput = document.querySelector('.phoneInput')
-    const phoneSpanContainer = document.querySelector('.phoneSpanContainer')
     const pfp = document.querySelectorAll('.pfp')
     const placeholderValue = [...profileFormInput].map(input => input.placeholder)
 
@@ -194,7 +189,7 @@
     const cancelPfpBtn = document.querySelector('.cancel-pfp-btn')
 
 
-    const txtPhoneId = document.querySelector('input[name=txtPhoneId]')
+
 
     const uid = document.querySelector('.uid').value;
     const userName = document.querySelector('.username')
@@ -330,31 +325,10 @@
       p.addEventListener('click', (e) => {
         e.preventDefault()
         phoneInput.value = p.innerHTML
-        txtPhoneId.value = p.getAttribute('data-id')
-        console.log(txtPhoneId.value)
         phoneDropdownContainer.classList.toggle('hidden')
 
       })
     })
-    if (phoneSpan.length < 3) {
-      var li = document.createElement('li')
-      var span = document.createElement('span')
-      li.setAttribute('class', 'addPhoneBtn relative')
-      span.setAttribute('class', 'block px-3 py-1 hover:bg-gray-300 cursor-pointer capitalize italic text-slate-400 text-[13px] opacity-35')
-      span.textContent = 'add new phone number...'
-
-      li.appendChild(span)
-      phoneSpanContainer.appendChild(li)
-      addPhoneBtn = document.querySelector('.addPhoneBtn')
-
-      addPhoneBtn.addEventListener('click', () => {
-        phoneInput.value = ""
-        phoneInput.placeholder = "Enter new phone number"
-        txtPhoneId.value = -1
-        phoneDropdownContainer.classList.toggle('hidden')
-
-      })
-    }
 
     console.log(uid)
 
@@ -407,12 +381,6 @@
           placeholderValue[i] = error_message[key]
           i += 1;
         }
-        phoneSpan.forEach(p => {
-          if (p.getAttribute('data-id') == txtPhoneId.value) {
-            p.innerHTML = phoneInput.value
-
-          }
-        })
         i = 0
         userName.innerHTML = placeholderValue[0]
         alert("successfully update profile")

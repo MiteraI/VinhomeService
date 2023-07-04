@@ -8,14 +8,15 @@ const resendBtn = document.querySelector('.resendBtn')
 
 const disableLinkText = "Wait until current otp code expire to resend"
 const disableLinkClass = ["cursor-default", "pointer-events-none", "opacity-25"]
-
 const enableLinkText = "Click to get a new otp code resend"
-const enableLinkClass = ["text-blue-500", "hover:underline", "hover:text-blue-600"]
+const enableLinkClass = ["text-blue-300", "hover:underline", "hover:text-blue-400"]
 
 let inputCount = 0,
   finalInput = "";
-let maxTime = 0
+let maxTime = 5
 
+countDown.innerHTML = `${maxTime}s`
+otpCoundown()
 
 const updateInputConfig = (element, disabledStatus) => {
   element.disabled = disabledStatus;
@@ -58,7 +59,7 @@ input.forEach((element) => {
 
 window.addEventListener("keyup", (e) => {
   if (inputCount > input.length - 1) {
-    if (e.key == "Backspace" && isBlock === false) {
+    if (e.key == "Backspace") {
       finalInput = finalInput.substring(0, finalInput.length - 1);
       updateInputConfig(inputField.lastElementChild, false);
       inputField.lastElementChild.value = "";
@@ -69,8 +70,6 @@ window.addEventListener("keyup", (e) => {
 
 //Start
 const startInput = () => {
-  maxTime = 5
-  countDown.innerHTML = `${maxTime}s`
   inputCount = 0;
   finalInput = "";
   input.forEach((element) => {
@@ -80,35 +79,21 @@ const startInput = () => {
   resendBtn.classList.add(...disableLinkClass)
   resendBtn.classList.remove(...enableLinkClass)
   resendBtn.title = disableLinkText
-  otpCoundown()
 };
 
-function lockInput() {
+window.onload = startInput();
 
+function lockInput() {
   input.forEach(i =>
     i.addEventListener('keydown', (e) => {
-      if (isBlock === true) {
-        i.disabled = true
-        e.preventDefault()
-      }
-      else {
-        i.disabled = false
-        e.returnValue = true
-      }
+      i.disabled = true
+      e.preventDefault()
     })
   )
-
-
   resendBtn.classList.remove(...disableLinkClass)
   resendBtn.classList.add(...enableLinkClass)
   resendBtn.title = enableLinkText
 }
-
-resendBtn.addEventListener('click', (e) => {
-  e.preventDefault()
-  isBlock = false
-  startInput()
-})
 
 function otpCoundown() {
   const interval = setInterval(() => {
@@ -116,13 +101,7 @@ function otpCoundown() {
     maxTime--
     if (maxTime < 0) {
       clearInterval(interval)
-      isBlock = true
       lockInput()
     }
   }, 1000)
 }
-
-startInput()
-
-
-
