@@ -286,24 +286,9 @@ public class PageController {
     public String verification(@PathVariable String username) {
         return "redirect:/verificationMethod?username=" + username;
     }
-
-    @RequestMapping(value = "/verification",method = RequestMethod.GET)
-    public String verification(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session == null){
-            return "login";
-        }
-        return "verification";
-    }
-
-    @RequestMapping(value = "/otp-verification",method = RequestMethod.GET)
-    public String otpVerification(HttpServletRequest request, Model model) {
-        Account acc = getSessionAccount(request);
-        if (acc == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("acc", acc.getAccountName());
-        return "otpverification";
+    @RequestMapping(value = "/verificationMethod",method = RequestMethod.GET)
+    public String verificationMethodReturn() {
+        return "verificationMethod";
     }
     @RequestMapping(value = "/forget_Account",method = RequestMethod.GET)
     public String forgetAccount(){
