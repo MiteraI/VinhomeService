@@ -191,9 +191,18 @@ public class LeaveController {
             return ResponseEntity.status(HttpStatus.OK).body("rejecting the leave report");
         }
     }
+    @GetMapping("/leave-report-by-worker")
+    public List<LeaveReport> seeAllLeaveReports (HttpServletRequest request) {
+        List<LeaveReport> reportList = new ArrayList<>();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("loginedUser");
+        WorkerStatus workerStatus = account.getWorkerStatus();
+        reportList = leaveReportRepository.findByWorkerStatusId(workerStatus.getWorkerStatusId());
+        return reportList;
+    }
 
-    @GetMapping (value = "/leave-report/{id}")
-    public List<LeaveReport> seeAllLeaveReports (@PathVariable("id") Long workerId, HttpServletRequest request, @RequestParam String status ) {
+    @GetMapping (value = "/leave-report-by-worker-status")
+    public List<LeaveReport> seeAllLeaveReportsWithStatus (HttpServletRequest request, @RequestParam String status ) {
         // cai RequestParam nay t dinh de xai combobox thi xem dc cai report process accept hay la reject
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("loginedUser");
@@ -202,10 +211,10 @@ public class LeaveController {
             return leaveReports;
         }
         if (status.equals("Reject")) {
-            return leaveReportRepository.findByWorkerStatusIdAndAndStatus(account.getAccountId(), 2);
+            return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 2);
         }
         if (status.equals("Approve")) {
-            return leaveReportRepository.findByWorkerStatusIdAndAndStatus(account.getAccountId(), 1);
+            return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 1);
         }
         return null;
     }

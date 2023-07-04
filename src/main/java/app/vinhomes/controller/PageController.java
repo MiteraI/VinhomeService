@@ -317,4 +317,9 @@ public class PageController {
     public String seeAllLeaveOrderByAdmin () {
         return "adminSeeAllOrder";
     }
+
+    @RequestMapping (value = "/see-all-services", method = RequestMethod.GET)
+    public String seeAllServices () {
+        return "adminService";
+    }
 }

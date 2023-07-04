@@ -16,4 +16,9 @@ public class WorkerPage {
     public String viewOrderToConfirm () {
         return "viewOrderToConfirm";
     }
+
+    @GetMapping("/view-report-to-confirm")
+    public String viewLeaveReport () {
+        return "workerViewLeaveReport";
+    }
 }

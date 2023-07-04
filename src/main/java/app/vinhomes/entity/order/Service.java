@@ -41,4 +41,10 @@ public class Service {
     @JsonBackReference
     private ServiceCategory serviceCategory;
 
+    @Column(name = "url_image", nullable = true)
+    private String urlImage;
+
+    @Column(name = "status", columnDefinition = "integer default 1")
+    private int status;
+
 }

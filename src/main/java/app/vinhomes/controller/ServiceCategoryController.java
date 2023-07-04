@@ -5,11 +5,16 @@ import app.vinhomes.repository.order.ServiceCategoryRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping (value = "/api")
@@ -17,7 +22,12 @@ public class ServiceCategoryController {
     @Autowired
     private ServiceCategoryRepository serviceCategoryRepository;
 
-    @PostMapping (value = "create-service-category")
+    @GetMapping(value = "/categories")
+    public ResponseEntity<List<ServiceCategory>> getAllCategories () {
+        return ResponseEntity.ok(serviceCategoryRepository.findAll());
+    }
+
+    @PostMapping (value = "/create-service-category")
     public ResponseEntity createServiceCategory (@RequestBody JsonNode data) {
         String newCategory = data.get("serviceCategory").asText();
         if (newCategory.isEmpty() || newCategory == null) {
@@ -33,7 +43,7 @@ public class ServiceCategoryController {
         }
     }
 
-    @PostMapping(value = "update-category")
+    @PostMapping(value = "/update-category")
     public ResponseEntity updateCategory (@RequestBody JsonNode data) {
         String updateCategory = data.get("serviceCategory").asText();
         Long categoryId = Long.parseLong(data.get("serviceCategoryId").asText());
