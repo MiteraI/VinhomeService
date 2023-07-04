@@ -272,7 +272,7 @@
     async function openCreateForm() {
         createForm.style.display = "block"
         // document.querySelectorAll(".overlay")[0].style.display = "block";
-        document.getElementById("form").style.display = "block";
+        //document.getElementById("form").style.display = "block";
         var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
             method: "GET"
         });

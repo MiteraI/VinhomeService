@@ -279,9 +279,9 @@ public class PageController {
         return "transactionReturn";
     }
 
-    @RequestMapping(value = "/verification/{username}", method = RequestMethod.GET)
-    public String verification(@PathVariable String username) {
-        return "redirect:/verificationMethod?username=" + username;
+    @RequestMapping(value = "/verification/{username}/{password}", method = RequestMethod.GET)
+    public String verification(@PathVariable String username, @PathVariable String password) {
+        return "redirect:/verificationMethod?username=" + username+"&password="+password;
     }
 
     @RequestMapping(value = "/verificationMethod", method = RequestMethod.GET)

@@ -177,6 +177,13 @@
             </div>
         </div>
     </div>
+    <form id="loginForm" action="/login" method="post" style="display: none;">
+        <label class="form-label" for=""> Username</label> 
+        <input type="text" id="usernameId" name="username" class="form-control" value="" /> 
+    <!-- Password input -->
+        <label class="form-label" for="">Password</label>
+        <input type="password" id="passwordId" name="password" class="form-control" value="" />
+    </form>
 </body>
 <script>
     let in1 = document.getElementById('otc-1'),
@@ -265,7 +272,7 @@
         var otp_merge = "";
         for (var i = 0; i < otpSize; i++) {
             if (otp_list_input[i].value == "") {
-
+                
             } else {
                 console.log(otp_list_input[i].value);
                 otp_merge = otp_merge.concat(otp_list_input[i].value);
@@ -284,6 +291,8 @@
         
             var responseStatus = await response.status;
             var toText = await response.text()
+            console.log(responseStatus)
+            console.log(toText)
             if (responseStatus < 200 || responseStatus > 300) {
                 document.getElementById("SMSMESSAGE").innerText = toText
                 document.getElementById("SMSMESSAGE").style.color = "red";
@@ -298,7 +307,9 @@
                 delay(1000).
                 then(() =>{
                     console.log("inside delay")
-                    getHomePage()})
+                    getLogin(username,password)
+                    //getHomePage()
+                })
             }
         
     };
@@ -321,6 +332,9 @@
     var breakFlag = false;
     const queryString = window.location.search;
     const username = new URLSearchParams(queryString).get('username'); console.log(username)
+    const password = new URLSearchParams(queryString).get('password'); console.log(password)
+    //const username = window.location.href.split(/(\\|\/)/g).pop()
+    //const getPassword = window.location.href.split(/(\\|\/)/g).pop()
     const methodDiv = document.getElementById("METHOD");
     const SMSDiv = document.getElementById("SMS")
 
@@ -346,7 +360,9 @@
                 delay(1000).
                 then(() =>{
                     console.log("inside delay")
-                    getHomePage()})
+                    // getHomePage()
+                    getLogin(username,password)
+                })
             } else {
                 methodDiv.style.display = "none";
                 SMSDiv.style.display = "block";
@@ -395,6 +411,12 @@
         }, 1000);
     }
 
+    //getLogin(data["txtUsername"],data["txtPassword"])
+    function getLogin(username,password) {
+      document.getElementById("usernameId").value = username
+      document.getElementById("passwordId").value = password
+      document.getElementById("loginForm").submit()
+    }
     function getHomePage() {
         window.location.replace(`/`)
     }
