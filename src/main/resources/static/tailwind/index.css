@@ -43,7 +43,6 @@ html {
   /* 3 */
   -o-tab-size: 4;
      tab-size: 4;
-     tab-size: 4;
   /* 3 */
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
@@ -615,6 +614,10 @@ video {
   top: 0px;
 }
 
+.-z-10 {
+  z-index: -10;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -883,8 +886,16 @@ video {
   height: 200px;
 }
 
+.h-\[25\%\] {
+  height: 25%;
+}
+
 .h-\[2px\] {
   height: 2px;
+}
+
+.h-\[3em\] {
+  height: 3em;
 }
 
 .h-\[45\%\] {
@@ -959,6 +970,10 @@ video {
   width: 2rem;
 }
 
+.w-\[0\%\] {
+  width: 0%;
+}
+
 .w-\[1\.68\] {
   width: 1.68;
 }
@@ -983,12 +998,20 @@ video {
   width: 30%;
 }
 
+.w-\[3em\] {
+  width: 3em;
+}
+
 .w-\[40\%\] {
   width: 40%;
 }
 
 .w-\[400px\] {
   width: 400px;
+}
+
+.w-\[45\%\] {
+  width: 45%;
 }
 
 .w-\[50\%\] {
@@ -1056,6 +1079,10 @@ video {
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.cursor-default {
+  cursor: default;
 }
 
 .cursor-pointer {
@@ -1273,6 +1300,11 @@ video {
   border-style: none;
 }
 
+.border-\[\#dad9df\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(218 217 223 / var(--tw-border-opacity));
+}
+
 .border-black {
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
@@ -1296,6 +1328,11 @@ video {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+
+.bg-blue-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
 }
 
 .bg-blue-300 {
@@ -1508,11 +1545,6 @@ video {
   padding-bottom: 0.5rem;
 }
 
-.py-3 {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -1625,6 +1657,10 @@ video {
   line-height: 1.75rem;
 }
 
+.font-\[1\.5em\] {
+  font-weight: 1.5em;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1647,6 +1683,11 @@ video {
 
 .italic {
   font-style: italic;
+}
+
+.text-\[\#89888b\] {
+  --tw-text-opacity: 1;
+  color: rgb(137 136 139 / var(--tw-text-opacity));
 }
 
 .text-black {
@@ -1699,10 +1740,24 @@ video {
   color: rgb(255 209 47 / var(--tw-text-opacity));
 }
 
+.opacity-25 {
+  opacity: 0.25;
+}
+
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.blur {
+  --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .filter {
@@ -1737,6 +1792,11 @@ video {
 
 .ease-linear {
   transition-timing-function: linear;
+}
+
+.hover\:bg-blue-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-blue-400:hover {
@@ -1796,11 +1856,16 @@ video {
 
 .hover\:text-blue-600:hover {
   --tw-text-opacity: 1;
-  color: rgb(96 165 250 / var(--tw-text-opacity));
+  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {
   text-decoration-line: underline;
+}
+
+.focus\:border-\[\#ffb800\]:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 184 0 / var(--tw-border-opacity));
 }
 
 .focus\:outline-0:focus {
