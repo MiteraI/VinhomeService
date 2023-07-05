@@ -21,11 +21,9 @@ import org.springframework.stereotype.Service;
 public class ESMSservice {
     @Autowired
     private OTPService otpService;
-    //2D5976997012054D9296124677B139
-    //E88E7404087C38E388B3CA8BC71136
-    private final String APIKey="5E9CCA4D659731D7D364BD30C1A27D";
+    private final String APIKey="2D5976997012054D9296124677B139";
     //Dang ky tai khoan tai esms.vn de lay Key
-    private final String SecretKey="2A96AB40A371C61F11C2AF52E743D0";
+    private final String SecretKey="E88E7404087C38E388B3CA8BC71136";
     public String execute() {
         return "SUCCESS";
     }

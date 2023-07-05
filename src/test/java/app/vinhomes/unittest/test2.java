@@ -3,19 +3,13 @@ package app.vinhomes.unittest;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.repository.order.TimeSlotRepository;
 import app.vinhomes.security.esms.otp_service.ESMSservice;
-import app.vinhomes.security.fibo_sms.Message;
-import app.vinhomes.security.fibo_sms.SMS;
-import app.vinhomes.security.speed_sms.SpeedSMSAPI;
-import jakarta.persistence.Temporal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
+
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,9 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
-import java.util.Date;
+
 
 //@SpringBootTest
 //@DataJpaTest
@@ -98,35 +90,11 @@ public class test2 {
             return true;
         }
     }
-    @Test
-    void testSpeedSMS() throws IOException {
-        SpeedSMSAPI api = new SpeedSMSAPI(accessTokenSpeedSMS);
-        String phone = "0847942496";
-        String content = "test sms";
-        String userInfo = api.getUserInfo();
-        System.out.println(userInfo);
-        int type = 2 ;
-        String sender = "0847942496";
-        String response = api.sendSMS(phone, content, type, sender );
-        System.out.println(response);
-    }
+
     @Test
     void testESMS() throws IOException {
         ESMSservice service = new ESMSservice();
         service.sendGetJSON("0847942496","test ting ");
     }
-    @Test
-    void smsFibo(){
-          String clientNo = "YOUR_CLIENT_NO";
-          String clientPass = "YOUR_CLIENT_PASS";
-            SMS client = new SMS(clientNo, clientPass);
-            //Message getMess = new Message();
-            //boolean result = client.sendSMS("FIBO xin chao quy khach, chuc quy khach nam moi an khang thinh vuong.");
-//            if (result) {
-//                System.out.println("Success");
-//            } else {
-//                System.out.println("Failed");
-//            }
 
-    }
 }
