@@ -38,6 +38,10 @@ public class ApplicationConfig  {
                     Optional<Account> account = accountRepository.findUsername(username);
                     if(account.isPresent()){
                         System.out.println("IN USER DETAIL SERVICE,yes found in db");
+                        if(account.get().getAccountStatus() == 0){
+                            System.out.println("this account is set inactive by manager, please contact us to get your account back");
+                            return null;
+                        }
                         if(account.get().getIsBlock() == false){
                             return new User(account.get().getUsername(),account.get().getPassword(),roleToAuthority(account.get().getRole()));
                         }else{

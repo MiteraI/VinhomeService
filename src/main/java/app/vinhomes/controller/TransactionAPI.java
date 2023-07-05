@@ -5,7 +5,7 @@ import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.entity.type_enum.TransactionStatus;
-import app.vinhomes.event.event_storage.SendEmailOnRefund;
+import app.vinhomes.event.event_storage.SendEmailOnRefund_OnFinishOrder;
 import app.vinhomes.service.OrderService;
 import app.vinhomes.service.TransactionService;
 import app.vinhomes.vnpay.service.VNPayService;
@@ -66,7 +66,7 @@ public class TransactionAPI {
                         Order getOrder = orderService.getOrderById(Long.parseLong(getOrderId));
                         Transaction getTransaction = transactionService.getTransactionById(getOrder.getOrderId());
                         System.out.println("now send mail");
-                        eventPublisher.publishEvent(new SendEmailOnRefund(getOrder.getAccount(),getTransaction));
+                        eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getOrder.getAccount(),getTransaction,false));
                         return ResponseEntity.ok().body(callingResult.getBody().trim());
                     } else {
                         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
@@ -137,7 +137,7 @@ public class TransactionAPI {
                             if(getResponseCodeFromRefund.equals("00")){
                                 orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
                                 transactionService.setTransactionStatus(getTransaction, TransactionStatus.REFUNDED);
-                                eventPublisher.publishEvent(new SendEmailOnRefund(getAccount,getTransaction));
+                                eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getAccount,getTransaction,true));
                                 return ResponseEntity.status(HttpStatus.OK).body("YES successfully refund this transaction of admin");
                             }
                             orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
