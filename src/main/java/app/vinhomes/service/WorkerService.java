@@ -90,7 +90,7 @@ public class WorkerService {
             String extension = StringUtils.getFilenameExtension(originalFilename);
             newFilename = orderId + "_confirm." + extension;
 
-            String Url = "https://imagescleaningservice.blob.core.windows.net/images/order/confirm" + newFilename;
+            String Url = "https://imagescleaningservice.blob.core.windows.net/images/order/confirm/" + newFilename;
 
             blobContainerClient = blobServiceClient.getBlobContainerClient("images/order/confirm");
             BlobClient blob = blobContainerClient
