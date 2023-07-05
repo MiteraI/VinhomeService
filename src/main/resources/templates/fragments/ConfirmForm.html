@@ -14,25 +14,24 @@
 <div class="modal-container" id="confirmOrderForm" style="display:none;">
     <form id="createServiceForm">
         <div class="form-group">
-            <label for="customerName">Customer Name:</label>
-            <input type="text" class="form-control" id="customerName" required>
-        </div>
-        <div class="form-group">
-            <label for="serviceName">Service name:</label>
-            <input type="text" class="form-control" id="serviceName" required>
-        </div>
-        <div class="form-group">
-            <label for="address">Address:</label>
-            <input type="text" class="form-control" id="address" required>
-        </div>
-        <div class="form-group">
-            <label for="payment">Payment:</label>
-            <input type="text" class="form-control" id="payment" required>
+            <p>Customer name</p>
         </div>
 <!--        <div class="form-group">-->
-<!--            <label for="phone">Phone:</label>-->
-<!--            <input type="number" min="1" class="form-control" id="phone" required>-->
+<!--            <label for="serviceName">Service name:</label>-->
+<!--            <input type="text" class="form-control" id="serviceName" required>-->
 <!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label for="address">Address:</label>-->
+<!--            <input type="text" class="form-control" id="address" required>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label for="payment">Payment:</label>-->
+<!--            <input type="text" class="form-control" id="payment" required>-->
+<!--        </div>-->
+<!--&lt;!&ndash;        <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;            <label for="phone">Phone:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="number" min="1" class="form-control" id="phone" required>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
         <div class="form-group">
             <label for="imageConfirm">Image:</label>
             <input type="file" class="form-control-file" id="imageConfirm" onchange="previewImage(event)" required>
@@ -61,21 +60,22 @@
 </script>
 <!--GET DATA-->
 <script>
-    function confirm (orderId) {
+    function confirm () {
         document.getElementById("confirmOrderForm").style.display = "fixed";
-        fetch ("/api/order/" + orderId)
-            .then(res => res.json())
-            .then(data => {
-                const account = data['account'];
-                const payment = data['payment'];
-                const service = data['service'];
-                const address = data['address'];
-                document.getElementById("customerName").value = account['firstName'] + " " + account['lastName'];
-                document.getElementById("serviceName").value = service['serviceName'];
-                document.getElementById("payment").value = payment['paymentName'];
-                document.getElementById("address").value = address['buildingBlock'] + ' ' + address['buildingRoom'];
-            })
+        // fetch ("/api/order/" + orderId)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         const account = data['account'];
+        //         const payment = data['payment'];
+        //         const service = data['service'];
+        //         const address = data['address'];
+        //         document.getElementById("customerName").value = account['firstName'] + " " + account['lastName'];
+        //         document.getElementById("serviceName").value = service['serviceName'];
+        //         document.getElementById("payment").value = payment['paymentName'];
+        //         document.getElementById("address").value = address['buildingBlock'] + ' ' + address['buildingRoom'];
+        //     })
         const imageConfirm = document.getElementById("imageConfirm").files[0];
+        const orderId = document.getElementById("input-orderid").value;
         document.getElementById("confirmOrderForm").addEventListener("submit", function (event) {
             event.preventDefault();
             var formData = new formData();
