@@ -47,7 +47,8 @@
             })
                 .then(res => {
                     if (res.status === 200) {
-                        alert("Comfirm succeeded")
+                        alert("Comfirm succeeded");
+                        window.location.reload();
                     }
                     else {
                         alert("Confirm failed")
