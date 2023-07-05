@@ -33,8 +33,6 @@ public class WorkerService {
     public List<Schedule> getSchedulesForSelf(LocalDate startDate, LocalDate endDate, HttpServletRequest request) {
         Account account = SessionUserCaller.getSessionUser(request);
         if (account == null) return new ArrayList<Schedule>();
-        System.out.println(startDate);
-        System.out.println(endDate);
         return scheduleRepository.findAllByWorkDayBetweenAndWorkers_AccountId(
                 startDate
                 , endDate
