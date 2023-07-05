@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
 </head>
 <body>
 <header th:replace="~{./fragments/adminHeader.html}"></header>
@@ -18,14 +24,14 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Service Name</th>
-                <th>Price</th>
-                <th>Order Time</th>
-                <th>Payment method</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th><span class="heading">First Name</span></th>
+                <th><span class="heading">Last Name</span></th>
+                <th><span class="heading">Service Name</span></th>
+                <th><span class="heading">Price</span></th>
+                <th><span class="heading">Order Time</span></th>
+                <th><span class="heading">Payment method</span></th>
+                <th><span class="heading">Status</span></th>
+                <th><span class="heading">Action</span></th>
             </tr>
         </thead>
         <tbody id="tbody-orders">
@@ -33,7 +39,9 @@
         </tbody>
     </table>
 </div>
+<script src="../static/js/AdminPublicFunction.js"></script>
   <script>
+      applyHeaderToSearchCategory()
     fetch('/api/order/all')
             .then(response => response.json())
             .then(data => {
@@ -55,13 +63,13 @@
                 const status = order['status'];
                 output += `
                         <tr class='item-to-search'>
-                          <td>${firstName}</td>
-                          <td>${lastName}</td>
-                          <td>${serviceName}</td>
-                          <td>${price}</td>
-                          <td>${orderTime}</td>
-                          <td>${paymentName}</td>
-                          <td>${status}</td>
+                          <td class="firstname" >${firstName}</td>
+                          <td class="lastname">${lastName}</td>
+                          <td class="servicename">${serviceName}</td>
+                          <td class="price">${price}</td>
+                          <td class="ordertime">${orderTime}</td>
+                          <td class="paymentmethod">${paymentName}</td>
+                          <td class="status">${status}</td>
                           <td>
                              `
                                 if (paymentName == "VNPAY") {
@@ -89,6 +97,6 @@
               console.error('Error:', error);
             });
   </script>
-<script src="../static/js/AdminPublicFunction.js"></script>
+
 </body>
 </html>

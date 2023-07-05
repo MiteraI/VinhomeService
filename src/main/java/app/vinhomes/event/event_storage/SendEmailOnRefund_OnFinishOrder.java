@@ -9,7 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SendEmailOnRefund {
+public class SendEmailOnRefund_OnFinishOrder {
     private Account account;
     private Transaction transaction;
+    private boolean isFinish;
 }
