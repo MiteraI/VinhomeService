@@ -3,6 +3,7 @@ package app.vinhomes.controller;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
+import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
@@ -189,6 +190,22 @@ public class OrderController {
             }
         }
         return ResponseEntity.ok(listOrdersDetail);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Map<String, Object>> getOrderToConfirm (@PathVariable("id") Long orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        Account account = order.getAccount();
+        Payment payment = order.getPayment();
+        Address address = account.getAddress();
+        Service service = order.getService();
+//        Phone phone = (Phone) account.getPhones();
+        Map<String, Object> map = new HashMap<>();
+        map.put("account", account);
+        map.put("payment", payment);
+        map.put("address", address);
+        map.put("service", service);
+        return ResponseEntity.ok(map);
     }
 }
 

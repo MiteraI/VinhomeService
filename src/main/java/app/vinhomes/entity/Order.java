@@ -94,4 +94,7 @@ public class Order {
 
     //@Column(nullable = false)
     private String phoneNumber;
+
+    @Column(name = "url_image_confirm")
+    private String urlImageConfirm;
 }
