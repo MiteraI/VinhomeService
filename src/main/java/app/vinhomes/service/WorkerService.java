@@ -10,10 +10,16 @@ import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.order.ScheduleRepository;
 import app.vinhomes.repository.order.TimeSlotRepository;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,15 +35,31 @@ public class WorkerService {
     private OrderRepository orderRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
-
+    @Autowired
+    private AzureBlobAdapter azureBlobAdapter;
+    @Autowired
+    BlobServiceClient blobServiceClient;
+    @Autowired
+    BlobContainerClient blobContainerClient;
     public List<Schedule> getSchedulesForSelf(LocalDate startDate, LocalDate endDate, HttpServletRequest request) {
         Account account = SessionUserCaller.getSessionUser(request);
         if (account == null) return new ArrayList<Schedule>();
-        return scheduleRepository.findAllByWorkDayBetweenAndWorkers_AccountId(
+        List<Schedule> fullSchedules = scheduleRepository.findAllByWorkDayBetweenAndWorkers_AccountId(startDate
+                , endDate
+                , account.getAccountId());
+        List<Schedule> cancelledSchedules = scheduleRepository.findAllByWorkDayBetweenAndWorkers_AccountIdAndOrder_Status(
                 startDate
                 , endDate
                 , account.getAccountId()
+                , OrderStatus.CANCEL
         );
+        List<Schedule> pendingAndCompletedSchedules = new ArrayList<>();
+        for (Schedule schedule : fullSchedules) {
+            if (!cancelledSchedules.contains(schedule)) {
+                pendingAndCompletedSchedules.add(schedule);
+            }
+        }
+        return pendingAndCompletedSchedules;
     }
 
     //Ham nay de clay worker nao la cho order nao de confirm
@@ -55,7 +77,7 @@ public class WorkerService {
         return null;
     }
 
-    public boolean confirmOrder (Long workerId, Long orderId) {
+    public boolean confirmOrder (Long workerId, Long orderId, MultipartFile image) throws IOException {
         Account worker = accountRepository.findByAccountId(workerId);
         Order order = orderRepository.findByOrderId(orderId);
         Schedule schedule = scheduleRepository.findByOrder(order);
@@ -63,6 +85,21 @@ public class WorkerService {
         TimeSlot timeSlot = schedule.getTimeSlot();
         if (workDate.isEqual(LocalDate.now()) && timeSlot.getStartTime().isBefore(LocalTime.now())) {
             order.setStatus(OrderStatus.valueOf("SUCCESS"));
+            String originalFilename = image.getOriginalFilename();
+            String newFilename = "";  // Specify the new file name here
+            String extension = StringUtils.getFilenameExtension(originalFilename);
+            newFilename = orderId + "_confirm." + extension;
+
+            String Url = "https://imagescleaningservice.blob.core.windows.net/images/order/confirm" + newFilename;
+
+            blobContainerClient = blobServiceClient.getBlobContainerClient("images/order/confirm");
+            BlobClient blob = blobContainerClient
+                    .getBlobClient(newFilename);
+            //get file from images folder then upload to container images//
+            blob.deleteIfExists();
+            blob.upload(image.getInputStream(),
+                    image.getSize());
+            order.setUrlImageConfirm(Url);
             orderRepository.save(order);
             return true;
         }

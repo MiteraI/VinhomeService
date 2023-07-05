@@ -163,10 +163,16 @@
     </table>
   </section>
   <br><br><br><br><br>
+  <div th:replace="~{./fragments/confirm-form.html}"></div>
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
+    let loggedInAccount;
+    (async () => {
+      loggedInAccount = await (await fetch("/api/worker/your-account")).json();
+      console.log(loggedInAccount); // or do something with the account object
+    })();
     // Function to clear table data everytime fetching data
     function clearTableContent() {
       const table = document.getElementById("timeTable");
@@ -207,19 +213,41 @@
           data.forEach((entry) => {
             const { order, workDay, timeSlot, workers } = entry;
             // Extract day and slot from workDay and timeSlot
-            const day = new Date(workDay).getDay(); // 0 (Sunday) to 6 (Saturday)
+            let day = new Date(workDay).getDay(); // 0 (Sunday) to 6 (Saturday)
+            if (day === 0) day = 7;
             const slot = timeSlot.timeSlotId; // Adjust index to match table row index
-
             // Get the table cell for the specific day and slot
-            const cell = table.rows[slot + 1].cells[day];
-       
+            let cell = table.rows[slot + 1].cells[day];
+            console.log(cell);
+            let button = '';
+            if (workers[0].accountId == loggedInAccount.accountId) {
+              button = document.createElement("button");
+              button.classList.add("bg-blue-bootstrap", "rounded-lg")
+              button.textContent = "Confirm Form";
+              button.addEventListener("click", function () {
+                document.getElementById("confirm-form").style.display = "block";
+                document.getElementById("form-customer-name").innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}`
+                document.getElementById("input-orderid").value = order.orderId;
+              })
+            }
             // Set the worker names as the cell content
-            cell.innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}
+            if (order.status == "PENDING") {
+              cell.innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}
             <br> Service: ${order.service.serviceName}
             <br> Payment: ${order.payment.paymentName}
             <br> Address: ${order.account.address.buildingBlock}-${order.account.address.buildingRoom}
             <br> Phone: ${order.phoneNumber}
-            <br> Status: ${order.status}`
+            <br> Status: <span class='text-blue-bootstrap'>${order.status}</span>
+            <br>`
+              cell.appendChild(button);
+            } else {
+              cell.innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}
+            <br> Service: ${order.service.serviceName}
+            <br> Payment: ${order.payment.paymentName}
+            <br> Address: ${order.account.address.buildingBlock}-${order.account.address.buildingRoom}
+            <br> Phone: ${order.phoneNumber}
+            <br> Status: <span class='text-green-success'>${order.status}</span>`
+            }
           });
         })
         .catch((error) => console.log(error));
