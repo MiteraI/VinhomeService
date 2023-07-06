@@ -3,6 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+  <style>
+    #div-dad {
+      position: relative;
+      display: inline-block;
+    }
+
+    #notificationDot {
+      position: absolute;
+      top: 3px;
+      right: -5px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: red;
+      display: none;
+      text-align: center;
+    }
+
+    #notificationCount {
+      display: inline-block;
+      margin-top: 1px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 <header th:replace="~{./fragments/adminHeader.html}"></header>
@@ -101,6 +127,86 @@
               console.error('Error:', error);
             });
   }
+</script>
+<script>
+  const eventSource = new EventSource('/sse');
+
+  eventSource.addEventListener('open', function (event) {
+    console.log(event);
+    console.log('SSE connection established');
+  });
+
+  eventSource.addEventListener('error', function (event) {
+    if (event.readyState === EventSource.CLOSED) {
+      console.log('SSE connection closed');
+    } else {
+      console.error('Error occurred in SSE connection:', event);
+    }
+  });
+
+  eventSource.addEventListener('leaveReport', function (event) {
+    let output = '';
+    // console.log(event.data);
+    const leaveReportDetail = JSON.parse(event.data);
+    // console.log('New leave report:', leaveReportDetail);
+    const leaveReport = leaveReportDetail['leaveReport'];
+    const account = leaveReportDetail['account'];
+    const firstName = account['firstName'];
+    const lastName = account['lastName'];
+    const startDate = leaveReport['startTime'];
+    const endDate = leaveReport['endTime'];
+    const reason = leaveReport['reason'];
+    const link = leaveReport['fileURL'];
+    // const file = leaveReport['file'];
+    const newRow = document.createElement('tr');
+    newRow.innerHTML += `
+                          <td>${firstName}</td>
+                          <td>${lastName}</td>
+                          <td>${startDate}</td>
+                          <td>${endDate}</td>
+                          <td>${reason}</td>
+
+                            <td th:if="${link != null}"><a href="${link}">Link</a></td>
+                            <td>
+                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
+                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
+                            </td>
+                      `;
+    document.getElementById('tbody-see-all-leave-report').appendChild(newRow);
+    window.addEventListener('unload', function() {
+      eventSource.close();
+    });
+  });
+</script>
+<script>
+  eventSource.addEventListener('leaveReportCount', function(event) {
+    const unreadCount = event.data;
+    const notificationCountElement = document.getElementById('notificationCount');
+    const notificationDotElement = document.getElementById('notificationDot');
+    // Update the unread count in the UI
+    notificationCountElement.innerText = unreadCount;
+
+    // Display/hide the red dot based on unread count
+    if (unreadCount > 0) {
+      notificationDotElement.style.display = 'block';
+    } else {
+      notificationDotElement.style.display = 'none';
+    }
+  });
+
+  // Close the SSE connection when leaving the page
+  window.addEventListener('unload', function() {
+    eventSource.close();
+  });
+</script>
+<script>
+  fetch ("/sse", {
+    method: 'POST'
+  })
+    .then(res => {
+      if (res.status === 200) {
+      }
+    })
 </script>
 </body>
 </html>

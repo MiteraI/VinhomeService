@@ -61,6 +61,8 @@ public class LeaveController {
     BlobContainerClient blobContainerClient;
     @Autowired
     private LeaveService leaveService;
+    @Autowired
+    private SseController sseController;
     @PostMapping(value = "/leave-report/create")
     public ResponseEntity<?> LeaveReport (@RequestParam("startDate") String startDateStr,
                                           @RequestParam("endDate") String endDateStr,
@@ -110,6 +112,9 @@ public class LeaveController {
             if (workerStatus != null && days >= 7) {
                 if (leaveDaysLimit > daysOffInt) {
                     LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason, null);
+                    Map<String, Object> leaveReportDetail = leaveService.leaveReportDetail(leaveReport);
+                    sseController.sendSSEEvent("leaveReport", leaveReportDetail);
+                    sseController.sendSSEEvent2("leaveReportCount");
                     return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report ");
                 }
             }
@@ -206,14 +211,14 @@ public class LeaveController {
         // cai RequestParam nay t dinh de xai combobox thi xem dc cai report process accept hay la reject
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("loginedUser");
-        if (status.isEmpty() || status == null || status.equals("ALL")) {
+        if (status.isEmpty() || status == null || status.equals("0")) {
             List<LeaveReport> leaveReports = leaveReportRepository.findByWorkerStatusId(account.getAccountId());
             return leaveReports;
         }
-        if (status.equals("Reject")) {
+        if (status.equals("1")) {
             return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 2);
         }
-        if (status.equals("Approve")) {
+        if (status.equals("2")) {
             return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 1);
         }
         return null;

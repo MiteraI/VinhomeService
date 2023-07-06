@@ -12,9 +12,14 @@
 </head>
 <body>
 <div class="container">
-    <select>
-        <option></option>
-    </select>
+    <form id="search">
+        <select id="status">
+            <option value="0">All</option>
+            <option value="1">Approve</option>
+            <option value="2">Reject</option>
+        </select>
+        <input type="submit">
+    </form>
 
     <table class="table table-striped">
         <thead>
@@ -55,19 +60,50 @@
                                 output +=
                                     ` <td>Approve</td>`
                             }
+                            else if (status === 0) {
+                                output +=
+                                    `<td>Pending</td>`
+                            }
                             else {
                                 output +=
                                     `<td>Reject</td>`
                             }
                             output +=
                         `
-                            <td>${imgURl}</td>
+                            `
+                                if (imgURl != null) {
+                                    output +=
+                                        `<td><a href="${imgURl}" style="text-decoration: none">Link Image</a></td>`
+                                }
+                                output +=
+                            `
                         </tr>
                     `
             })
             document.getElementById("tbody-leave-reports").innerHTML = output;
         })
 </script>
-
+<script>
+    document.getElementById("search").addEventListener("submit", function () {
+        const data = document.getElementById("status").value;
+        var formData = new FormData();
+        formData.append("status", data);
+        fetch("/api/leave-report-by-worker-status", {
+            method: 'POST',
+            body: formData
+        })
+            .then (res => {
+                if (res.status === 200) {
+                    window.location.reload();
+                }
+                else {
+                    alert("Something wrong");
+                }
+            })
+            .catch(err => {
+                alert(err);
+            })
+    })
+</script>
 </body>
 </html>

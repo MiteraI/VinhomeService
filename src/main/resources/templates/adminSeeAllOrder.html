@@ -3,6 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        #div-dad {
+            position: relative;
+            display: inline-block;
+        }
+
+        #notificationDot {
+            position: absolute;
+            top: 3px;
+            right: -5px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: red;
+            display: none;
+            text-align: center;
+        }
+
+        #notificationCount {
+            display: inline-block;
+            margin-top: 1px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <header th:replace="~{./fragments/adminHeader.html}"></header>
@@ -89,6 +115,28 @@
               console.error('Error:', error);
             });
   </script>
+<script>
+    const eventSource = new EventSource('/sse');
+    eventSource.addEventListener('leaveReportCount', function(event) {
+        const unreadCount = event.data;
+        const notificationCountElement = document.getElementById('notificationCount');
+        const notificationDotElement = document.getElementById('notificationDot');
+        // Update the unread count in the UI
+        notificationCountElement.innerText = unreadCount;
+
+        // Display/hide the red dot based on unread count
+        if (unreadCount > 0) {
+            notificationDotElement.style.display = 'block';
+        } else {
+            notificationDotElement.style.display = 'none';
+        }
+    });
+
+    // Close the SSE connection when leaving the page
+    window.addEventListener('unload', function() {
+        eventSource.close();
+    });
+</script>
 <script src="../static/js/AdminPublicFunction.js"></script>
 </body>
 </html>
