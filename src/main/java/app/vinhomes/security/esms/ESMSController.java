@@ -2,6 +2,8 @@ package app.vinhomes.security.esms;
 
 import app.vinhomes.controller.PageController;
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.customer.Address;
+import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.security.esms.otp_dto.EnumOTPStatus;
 import app.vinhomes.security.esms.otp_dto.OTPResponseStatus;
@@ -37,6 +39,8 @@ public class ESMSController {
     @Autowired
     private PhoneRepository phoneRepository;
     @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
     private PageController pageController;
     @PostMapping(value = "/sendnormal")
     public ResponseEntity<?> sendESMS(HttpServletRequest request) throws IOException {
@@ -69,6 +73,16 @@ public class ESMSController {
             }else{
                 accountService.setEnableToAccount(getAccount);
                 pageController.updateSessionAccount(request);
+                if(request.getSession(false) != null){
+                    request.getSession(false).setAttribute("loginedUser", getAccount);
+                    request.getSession(false).setAttribute("phone", phoneRepository.findByAccountId(getAccount.getAccountId()));
+                    request.getSession(false).setAttribute("address", addressRepository.findByCustomerId(getAccount.getAccountId()));
+                }
+                else{
+                    request.getSession().setAttribute("loginedUser", getAccount);
+                    request.getSession().setAttribute("phone", phoneRepository.findByAccountId(getAccount.getAccountId()));
+                    request.getSession().setAttribute("address", addressRepository.findByCustomerId(getAccount.getAccountId()));
+                }
                 return ResponseEntity.status(HttpStatus.OK).body(returnValidation);
             }
         }catch (Exception e){

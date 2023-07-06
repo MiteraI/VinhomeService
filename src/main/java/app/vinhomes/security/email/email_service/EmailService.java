@@ -93,11 +93,13 @@ public class EmailService {
 
     private void verificationMailBuilder(Account account) {
         try {
+            System.out.println("EmailService executing verificationMailBuilder");
             TokenEntity tokenEntity = tokenService.createTokenEntity(account.getEmail());
             MimeMessage mailMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
             String urlParam = "emailTo=" + account.getEmail().toString().trim() + "&tokenValue=" + tokenEntity.getTokenvalue();
             String completedLink = "http://localhost:8080/mail/verification?" + urlParam;
+            System.out.println(completedLink);
             Context context = new Context();
             context.setVariable("username", account.getAccountName());
             context.setVariable("firstname", account.getFirstName());

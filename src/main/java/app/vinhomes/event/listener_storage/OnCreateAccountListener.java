@@ -37,6 +37,7 @@ public class OnCreateAccountListener {
         try{
             System.out.println("inside listener send email async ");
             emailService.sendMailWithTemplate(getAccount,VERIFICATION_MAIL);
+            System.out.println("finish sending fucking mail >:(");
             return true;
         }catch (Exception e){
             System.out.println("error in listener send email: "+ e.getMessage());
