@@ -329,8 +329,13 @@
     function updateForm (serviceId, serviceName, categoryName, price, description, url, numOfPeople, categoryId) {
         document.getElementById("cancelUpdateService").addEventListener("click", function () {
             document.getElementById("UpdateServiceForm").style.display = "none";
-            serviceId = '';
-            urlUpdate = '';
+             serviceId = '';
+             serviceNameUpdate = '';
+             priceUpdate = '';
+             des = '';
+             categoryIdUpdate = '';
+             urlUpdate = '';
+             numOfPeopleUpdate = '';
         })
         document.getElementById("UpdateServiceForm").style.display = "block";
         document.getElementById("serviceNameUpdate").value = serviceName;
