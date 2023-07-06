@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -28,15 +25,14 @@ public class ServiceCategoryController {
     }
 
     @PostMapping (value = "/create-service-category")
-    public ResponseEntity createServiceCategory (@RequestBody JsonNode data) {
-        String newCategory = data.get("serviceCategory").asText();
-        if (newCategory.isEmpty() || newCategory == null) {
+    public ResponseEntity createServiceCategory (@RequestParam("categoryName") String categoryName) {
+        if (categoryName.isEmpty() || categoryName == null) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not create a new category");
         }
 
         else {
             ServiceCategory serviceCategory = ServiceCategory.builder()
-                    .serviceCategoryName(newCategory)
+                    .serviceCategoryName(categoryName)
                     .build();
             serviceCategoryRepository.save(serviceCategory);
             return ResponseEntity.status(HttpStatus.CREATED).body("Has created a new category");

@@ -96,8 +96,7 @@
 <!--FORM UPDATE-->
 <!--FORM UPDATE-->
 <!--FORM UPDATE-->
-<section class="container my-2 w-50 p-2 modal-container2">
-    <form class="row g-3 p-3" style="display: none" id="UpdateServiceForm">
+    <form class="row g-3 p-3 modal-container2" style="display: none" id="UpdateServiceForm">
         <div class="row">
             <div class="col-md-4">
                 <label for="serviceNameUpdate" class="form-label">Service Name</label>
@@ -132,7 +131,6 @@
             <button type="button" class="btn btn-secondary" id="cancelUpdateService">Cancel</button>
         </div>
     </form>
-</section>
 
 
 <!--CANCEL BUTTON-->
@@ -243,7 +241,7 @@
                     output += `
                         <div class="col-sm-6">
                             <div class="card" style="width: 100%;">
-                                <img src="${url}" class="card-img-top">
+                                <img src="${url}" class="card-img-top" style="height: 300px">
                                 <div class="card-body">
                                     <h5 class="card-title">${serviceName}</h5>
                                     <p class="card-text">${description}</p>
@@ -329,6 +327,11 @@
 
     // OPEN UPDATE FORM
     function updateForm (serviceId, serviceName, categoryName, price, description, url, numOfPeople, categoryId) {
+        document.getElementById("cancelUpdateService").addEventListener("click", function () {
+            document.getElementById("UpdateServiceForm").style.display = "none";
+            serviceId = '';
+            urlUpdate = '';
+        })
         document.getElementById("UpdateServiceForm").style.display = "block";
         document.getElementById("serviceNameUpdate").value = serviceName;
         document.getElementById("priceUpdate").value = price;
@@ -370,11 +373,10 @@
             })
                 .then(res => {
                     if (res.status === 200) {
-                        alert("good");
                         window.location.reload();
                     }
                     else {
-                        alert(res.text())
+                        window.location.reload();
                     }
                 })
                 .catch(err => {
@@ -387,7 +389,7 @@
         //
         // }
     }
-    
+
 
     
 
@@ -395,11 +397,8 @@
 
 </script>
 <!--CLOSE UPDATE-->
-    <script>
-        document.getElementById("cancelUpdateService").addEventListener("click", function () {
-            document.getElementById("UpdateServiceForm").style.display = "none";
-        })
-    </script>
+
+
 <!--OPEN FORM CREATE-->
 <script>
     document.getElementById("showCreateService").addEventListener("click", function () {

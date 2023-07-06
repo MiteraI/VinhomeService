@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    .hihi {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      z-index: 1000;
+      display: none;
+      border: black;
+    }
+  </style>
+</head>
+<body>
+<header th:replace="~{./fragments/adminHeader.html}"></header>
+
+
+<div class="container">
+  <button type="button" class="btn btn-primary" id="showCreateCategory">Create Category</button>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Category Name</th>
+    </tr>
+    </thead>
+    <tbody id="tbody-categories">
+
+    </tbody>
+  </table>
+</div>
+<script>
+  fetch("/api/categories")
+  .then(res => res.json())
+  .then(data => {
+    let output = '';
+    data.forEach(item => {
+      const categoryId = item['serviceCategoryId'];
+      const categoryName = item['serviceCategoryName'];
+      output +=
+              `
+                  <tr>
+                    <td>${categoryId}</td>
+                    <td>${categoryName}</td>
+                  </tr>
+               `
+    })
+    document.getElementById("tbody-categories").innerHTML = output;
+  })
+</script>
+
+<!--FORM CREATE CATEGORY-->
+<!--FORM CREATE CATEGORY-->
+<!--FORM CREATE CATEGORY-->
+
+  <div class="hihi" id="createCategoryFormContainer" style="display: none;">
+    <h3>Create Service</h3>
+    <form id="createCategoryForm" style="border-color: black">
+      <div class="form-group">
+        <label for="categoryName">Category Name:</label>
+        <input type="text" class="form-control" id="categoryName" required>
+      </div>
+      <div style="margin-top: 15px">
+        <button type="button" class="btn btn-secondary" id="cancelCreateService">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+    </form>
+  </div>
+
+
+<script>
+  document.getElementById("showCreateCategory").addEventListener("click", function () {
+    document.getElementById("createCategoryFormContainer").style.display = "block";
+  })
+</script>
+<script>
+  document.getElementById("createCategoryForm").addEventListener("submit", function (evt) {
+    evt.preventDefault();
+    const categoryName = document.getElementById('categoryName').value;
+    var formData = new FormData();
+    formData.append("categoryName", categoryName);
+    fetch("api/create-service-category", {
+      method: 'POST',
+      body: formData
+    })
+            .then(res => {
+              if (res.status === 201) {
+                alert("v");
+              }
+              else {
+                alert("Not Successfully");
+              }
+            })
+            .catch(err => {
+              alert(err);
+            })
+  })
+
+  document.getElementById("cancelCreateService").addEventListener("click", function () {
+    document.getElementById("createCategoryFormContainer").style.display = "none";
+  })
+
+</script>
+</body>
+</html>

@@ -322,4 +322,9 @@ public class PageController {
     public String seeAllServices () {
         return "adminService";
     }
+
+    @RequestMapping(value = "/see-all-categories", method = RequestMethod.GET)
+    public String seeAllCategories() {
+        return "adminCategory";
+    }
 }

@@ -138,6 +138,9 @@ public class LeaveController {
                 blob.deleteIfExists();
                 blob.upload(file.getInputStream(),
                         file.getSize());
+                Map<String, Object> leaveReportDetail = leaveService.leaveReportDetail(leaveReport);
+                sseController.sendSSEEvent("leaveReport", leaveReportDetail);
+                sseController.sendSSEEvent2("leaveReportCount");
                 return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report with file");
             }
         }
