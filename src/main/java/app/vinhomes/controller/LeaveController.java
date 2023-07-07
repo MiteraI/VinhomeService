@@ -61,6 +61,8 @@ public class LeaveController {
     BlobContainerClient blobContainerClient;
     @Autowired
     private LeaveService leaveService;
+    @Autowired
+    private SseController sseController;
     @PostMapping(value = "/leave-report/create")
     public ResponseEntity<?> LeaveReport (@RequestParam("startDate") String startDateStr,
                                           @RequestParam("endDate") String endDateStr,
@@ -110,6 +112,9 @@ public class LeaveController {
             if (workerStatus != null && days >= 7) {
                 if (leaveDaysLimit > daysOffInt) {
                     LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason, null);
+                    Map<String, Object> leaveReportDetail = leaveService.leaveReportDetail(leaveReport);
+                    sseController.sendSSEEvent("leaveReport", leaveReportDetail);
+                    sseController.sendSSEEvent2("leaveReportCount");
                     return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report ");
                 }
             }
@@ -133,6 +138,9 @@ public class LeaveController {
                 blob.deleteIfExists();
                 blob.upload(file.getInputStream(),
                         file.getSize());
+                Map<String, Object> leaveReportDetail = leaveService.leaveReportDetail(leaveReport);
+                sseController.sendSSEEvent("leaveReport", leaveReportDetail);
+                sseController.sendSSEEvent2("leaveReportCount");
                 return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report with file");
             }
         }
@@ -145,8 +153,9 @@ public class LeaveController {
         List<Map<String, Object>> listLeave = new ArrayList<>();
         List<LeaveReport> reportList = leaveReportRepository.findByStatus(0);
         for (LeaveReport leaveRe : reportList) {
-            Long workerId = leaveRe.getWorkerStatusId();
-            Account account = accountRepository.findByAccountId(workerId);
+            Long workerStatusId = leaveRe.getWorkerStatusId();
+            WorkerStatus workerStatus = workerStatusRepository.findByWorkerStatusId(workerStatusId);
+            Account account = workerStatus.getAccount();
             Map<String, Object> leaveMap = new HashMap<>();
             leaveMap.put("leaveReport", leaveRe);
             leaveMap.put("account", account);
@@ -191,21 +200,30 @@ public class LeaveController {
             return ResponseEntity.status(HttpStatus.OK).body("rejecting the leave report");
         }
     }
+    @GetMapping("/leave-report-by-worker")
+    public List<LeaveReport> seeAllLeaveReports (HttpServletRequest request) {
+        List<LeaveReport> reportList = new ArrayList<>();
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("loginedUser");
+        WorkerStatus workerStatus = account.getWorkerStatus();
+        reportList = leaveReportRepository.findByWorkerStatusId(workerStatus.getWorkerStatusId());
+        return reportList;
+    }
 
-    @GetMapping (value = "/leave-report/{id}")
-    public List<LeaveReport> seeAllLeaveReports (@PathVariable("id") Long workerId, HttpServletRequest request, @RequestParam String status ) {
+    @GetMapping (value = "/leave-report-by-worker-status")
+    public List<LeaveReport> seeAllLeaveReportsWithStatus (HttpServletRequest request, @RequestParam String status ) {
         // cai RequestParam nay t dinh de xai combobox thi xem dc cai report process accept hay la reject
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("loginedUser");
-        if (status.isEmpty() || status == null || status.equals("ALL")) {
+        if (status.isEmpty() || status == null || status.equals("0")) {
             List<LeaveReport> leaveReports = leaveReportRepository.findByWorkerStatusId(account.getAccountId());
             return leaveReports;
         }
-        if (status.equals("Reject")) {
-            return leaveReportRepository.findByWorkerStatusIdAndAndStatus(account.getAccountId(), 2);
+        if (status.equals("1")) {
+            return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 2);
         }
-        if (status.equals("Approve")) {
-            return leaveReportRepository.findByWorkerStatusIdAndAndStatus(account.getAccountId(), 1);
+        if (status.equals("2")) {
+            return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 1);
         }
         return null;
     }
