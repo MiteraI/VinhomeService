@@ -219,28 +219,34 @@ async function verify() {
   }
   sendBody.OTP = otp_merge
   console.log(sendBody.accountname + "   " + sendBody.OTP)
-  let response = await fetch(`http://localhost:8080/esms/validateOTP`, {
+  let response = fetch(`/esms/validateOTP`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(sendBody)
-  })
+  }).then(res => {
+    let responseStatus = res.status;
+    console.log(responseStatus)
+    let toText = res.text()
+    if (responseStatus < 200 || responseStatus > 300) {
+      otp_merge = ""
+      errTxt.innerText = toText
+      errTxt.classList.remove('hidden')
+    }
+    if (responseStatus === 200) {
+      console.log("status: 200")
+      otp_merge = ""
+      breakFlag = true;
+      errTxt.classList.add('hidden')
+      window.location.href = "/"
+      console.log("pass alert")
 
-  let responseStatus = await response.status;
-  let toText = await response.text()
-  if (responseStatus < 200 || responseStatus > 300) {
-    otp_merge = ""
-    errTxt.innerText = toText
-    errTxt.classList.remove('hidden')
-  } else {
-    otp_merge = ""
-    breakFlag = true;
-    errTxt.classList.add('hidden')
-    window.location.href = "/"
-    console.log("pass alert")
+    }
 
-  }
+  }).catch(err => console.log(err))
+
+
 
 };
 
@@ -254,10 +260,6 @@ async function chooseMethod() {
     if (value == "EMAIL") {
       alert("yes, already send to your mail, check if you see mail, if not, try again later in profile")
       console.log("pass alert")
-      delay(1000).then(() => {
-        console.log("inside delay")
-        getHomePage()
-      })
     } else {
       breakFlag = false; console.log(breakFlag)
       countDown.innerHTML = ""

@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").hasAnyAuthority("1","0","2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/category-services/**").hasAuthority("0"))
                 .authorizeHttpRequests(authUser -> {

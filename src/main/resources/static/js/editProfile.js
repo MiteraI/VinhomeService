@@ -1,11 +1,191 @@
+let addPhoneBtn = null
+
+const editFormContainer = document.querySelector('.edit-form-container')
+const editBtn = document.querySelector('.edit-btn')
+const errorMassage = document.querySelectorAll('.error-message')
+
 const profileForm = document.querySelector('.edit-profile-form');
+const profileFormInput = document.querySelectorAll('.profile-form-input');
+const prohibitInput = document.querySelectorAll('.prohibit-input')
+const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
+const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+let phoneSpan = document.querySelectorAll('.phoneSpan')
+const phoneInput = document.querySelector('.phoneInput')
+const phoneSpanContainer = document.querySelector('.phoneSpanContainer')
+const pfp = document.querySelectorAll('.pfp')
+const placeholderValue = [...profileFormInput].map(input => input.placeholder)
+
+const cancelBtn = document.querySelector('.cancel-btn')
+const changePfpBtn = document.querySelector('.change-pfp-btn')
+const cancelPfpBtn = document.querySelector('.cancel-pfp-btn')
+
+
+const txtPhoneId = document.querySelector('input[name=txtPhoneId]')
+
 const uid = document.querySelector('.uid').value;
 const userName = document.querySelector('.username')
+const uploadFile = document.getElementById('upload-file')
+const uploadPfpBtn = document.querySelector('.upload-pfp-btn')
+const uploadBtnContainer = document.querySelector('.upload-btn-container')
+
+const imgFileName = document.querySelector('.img-file-name')
+
 const submitBtn = document.querySelector('.submit-btn');
+
+var _validFileExtensions = [".jpg", ".jpeg", ".png"];
+
+let canEdit = false
+let i = 0
+
+
+
+cancelBtn.addEventListener('click', (e) => {
+  e.preventDefault()
+
+  errorMassage.forEach(err => {
+    err.classList.add('hidden')
+  })
+
+  profileFormInput.forEach(input => {
+    input.value = ''
+    input.placeholder = placeholderValue[i]
+    i++
+  });
+  i = 0;
+  profileFormInput[2].type = 'text'
+  phoneDropdownContainer.classList.add('hidden')
+  editFormContainer.classList.add('pointer-events-none')
+})
+
+editBtn.addEventListener('click', (e) => {
+  canEdit = true
+  errorMassage.forEach(err => {
+    err.classList.add('hidden')
+  })
+  editFormContainer.classList.remove('pointer-events-none')
+  profileFormInput.forEach(input => {
+    input.value = placeholderValue[i]
+    input.placeholder = ''
+    i++
+  });
+  i = 0
+  profileFormInput[2].type = 'date'
+})
+
+profileFormInput.forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    if (canEdit === false) {
+      e.preventDefault()
+    }
+
+    e.returnValue = true
+    for (let i = 0; i < prohibitInput.length; i++) {
+      prohibitInput[i].value = ''
+    }
+  })
+})
+
+prohibitInput.forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    if (e.keyCode === 9) {
+      e.returnValue = true
+    } else {
+      e.preventDefault()
+    }
+  })
+})
+
+prohibitInputRadio.forEach(radio => {
+  radio.addEventListener('click', (e) => {
+    e.preventDefault()
+  })
+})
+
+phoneDropDownButton.addEventListener('click', (e) => {
+  e.preventDefault()
+  phoneDropdownContainer.classList.toggle('hidden')
+})
+
+
+function hideDropDown() {
+  document.onclick = () => {
+    phoneDropdownContainer.classList.add('hidden')
+    dropDownMenu.classList.add('hidden')
+  }
+}
+
+changePfpBtn.addEventListener('click', () => {
+  uploadBtnContainer.classList.toggle('hidden')
+  changePfpBtn.classList.toggle('hidden')
+})
+
+cancelPfpBtn.addEventListener('click', () => {
+  uploadFile.value = ''
+  uploadFile.files.length = 0
+  imgFileName.innerHTML = ''
+  imgFileName.classList.add('hidden')
+  console.log(uploadFile.files.length)
+  console.log(uploadFile.value)
+  uploadBtnContainer.classList.toggle('hidden')
+  changePfpBtn.classList.toggle('hidden')
+})
+
+uploadPfpBtn.addEventListener('click', (e) => {
+  if (checkFileExist() === false) {
+    imgFileName.innerHTML = 'there is no image to upload'
+    imgFileName.classList.add('italic', 'text-red-500')
+    imgFileName.classList.remove('hidden')
+    e.preventDefault()
+  } else {
+    e.returnValue = true
+    console.log(uploadFile.value)
+    console.log(uploadFile.files.length)
+  }
+
+})
+
+const checkFileExist = () => {
+  return uploadFile.files.length != 0;
+}
+
+console.log(phoneSpan.length)
+
+phoneSpan.forEach(p => {
+  p.addEventListener('click', (e) => {
+    e.preventDefault()
+    phoneInput.value = p.innerHTML
+    txtPhoneId.value = p.getAttribute('data-id')
+    placeholderValue[3] = p.innerHTML
+    console.log(txtPhoneId.value)
+    phoneDropdownContainer.classList.toggle('hidden')
+
+  })
+})
+if (phoneSpan.length < 3) {
+  let li = document.createElement('li')
+  let span = document.createElement('span')
+  li.setAttribute('class', 'addPhoneBtn relative')
+  span.setAttribute('class', 'block px-3 py-1 hover:bg-gray-300 cursor-pointer capitalize italic text-slate-400 text-[13px] opacity-35')
+  span.textContent = 'add new phone number...'
+
+  li.appendChild(span)
+  phoneSpanContainer.appendChild(li)
+  addPhoneBtn = document.querySelector('.addPhoneBtn')
+
+  addPhoneBtn.addEventListener('click', () => {
+    phoneInput.value = ""
+    phoneInput.placeholder = "Enter new phone number"
+    txtPhoneId.value = -1
+    phoneDropdownContainer.classList.toggle('hidden')
+
+  })
+}
 
 console.log(uid)
 
 profileForm.addEventListener('submit', async (e) => {
+  i = 0
   e.preventDefault()
   submitBtn.disabled = true
   const form_data = new FormData(profileForm);
@@ -21,33 +201,27 @@ profileForm.addEventListener('submit', async (e) => {
     });
 
   if (response.status == 400) {
+    i = 0
     error_message = await response.json()
     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
     console.log(error_message);
-    var list = document.getElementsByClassName("error-message");
-    var i = 0;
-    console.log(error_message);
-    for (var key in error_message) {
-      console.log(`${i}: ${error_message[key]}`)
-      i++;
-    }
-    i = 0;
     for (var key in error_message) {
       if (error_message[key]) {
-        list[i].classList.remove('hidden')
-        list[i].innerHTML = '❌ ' + error_message[key];
+        errorMassage[i].classList.remove('hidden')
+        errorMassage[i].innerHTML = '❌ ' + error_message[key];
       }
       else {
-        list[i].classList.remove('hidden')
-        list[i].innerHTML = ''
+        errorMassage[i].innerHTML = ''
       }
       console.log(`${i}: ${error_message[key]}`)
       i++;
 
     }
+    i = 0
     submitBtn.disabled = false
 
   } else if (response.status == 200) {
+    i = 0
     error_message = await response.json()
     error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
     console.log(error_message)
@@ -55,14 +229,28 @@ profileForm.addEventListener('submit', async (e) => {
       err.classList.add('hidden')
     })
     for (var key in error_message) {
-      console.log(placeholderValue[i])
-      placeholderValue[i] = error_message[key]
-      i += 1;
+      if (i <= placeholderValue.length) {
+        console.log(placeholderValue[i])
+        placeholderValue[i] = error_message[key]
+        i += 1;
+
+      }
+    }
+    phoneSpan.forEach(p => {
+      if (p.getAttribute('data-id') == txtPhoneId.value) {
+        p.innerHTML = phoneInput.value
+      }
+    })
+    if (txtPhoneId.value === "-1") {
+      if (error_message["phoneNumberId"] !== null) {
+        console.log(error_message["phoneNumberId"])
+        insertPhoneNumber(error_message["phonenumberErr"], error_message["phoneNumberId"], addPhoneBtn)
+      }
+      console.log("new phone number")
     }
     i = 0
     userName.innerHTML = placeholderValue[0]
-    console.log('yes successs');
-    console.log(error_message);
+    alert("successfully update profile")
     submitBtn.disabled = false
 
   } else if (response.status == 500) {
@@ -73,3 +261,73 @@ profileForm.addEventListener('submit', async (e) => {
     alert("something wrong with server side, please try again later");
   }
 })
+
+uploadFile.onchange = function ValidateSingleInput() {
+  console.log();
+  imgFileName.innerHTML = ''
+  imgFileName.classList.remove('italic', 'text-red-500')
+  var sFileName = uploadFile.value;
+  console.log("sFileName:" + sFileName);
+  if (sFileName.length > 0) {
+    console.log("sFileName.length:" + sFileName.length);
+    var blnValid = false;
+    for (var j = 0; j < _validFileExtensions.length; j++) {
+      var sCurExtension = _validFileExtensions[j];
+      console.log("sCurExtension: " + sCurExtension);
+      if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() === sCurExtension.toLowerCase()) {
+        imgFileName.innerHTML += `Image name: ${sFileName.split(/(\\|\/)/g).pop()}`
+        imgFileName.classList.remove('hidden')
+        blnValid = true;
+        break;
+      }
+    }
+
+    if (!blnValid) {
+      imgFileName.innerHTML = ''
+      imgFileName.classList.add('hidden')
+      alert("Sorry, " + sFileName.split(/(\\|\/)/g).pop() + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+      uploadFile.value = "";
+      return false;
+    }
+  }
+  var tgt = window.event.srcElement
+  var file = tgt.files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.addEventListener("loadend", () => {
+    pfp.forEach(p => {
+      p.src = reader.result;
+    })
+  });
+  return true;
+}
+
+function insertPhoneNumber(phoneNumber, phoneId, addPhoneBtn) {
+  const newLi = document.createElement('li')
+  const newSpan = document.createElement('span')
+
+  newLi.setAttribute('class', 'relative')
+  newSpan.setAttribute('class', 'phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer')
+  newSpan.innerHTML = phoneNumber
+  newSpan.setAttribute('data-id', phoneId)
+  newLi.appendChild(newSpan)
+
+  phoneSpanContainer.insertBefore(newLi, addPhoneBtn)
+
+  phoneSpan = document.querySelectorAll('.phoneSpan')
+
+  phoneSpan.forEach(p => {
+    p.addEventListener('click', (e) => {
+      e.preventDefault()
+      phoneInput.value = p.innerHTML
+      txtPhoneId.value = p.getAttribute('data-id')
+      console.log(txtPhoneId.value)
+      phoneDropdownContainer.classList.toggle('hidden')
+
+    })
+  })
+
+  if (phoneSpan.length >= 3) {
+    addPhoneBtn.remove()
+  }
+}

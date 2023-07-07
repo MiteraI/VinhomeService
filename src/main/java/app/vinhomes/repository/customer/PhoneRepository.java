@@ -15,6 +15,7 @@ public interface PhoneRepository extends JpaRepository<Phone, Long> {
 
     List<Phone> findByNumber(String number);
 
+
     //Phone findByNumber(String number);
     @Query(value = "select * from tbl_phone p where p.account_id = ?1", nativeQuery=true)
     List<Phone> findByAccountId(long account_id);

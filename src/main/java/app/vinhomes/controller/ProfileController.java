@@ -50,7 +50,7 @@ public class ProfileController {
         System.out.println(request.asText());
         Account acc = accountRepository.findById(userId).get();
         Phone fone = null;
-        String username, email, phonenumber, date, phoneId;
+        String username, email, phonenumber, date, phoneId, tmpPhoneId = "0";
         phoneId = request.get("txtPhoneId").asText().equals("-1") ? "-1" : request.get("txtPhoneId").asText();
         if (!phoneId.equals("-1")) {
             fone = phoneRepository.findById(Long.parseLong(request.get("txtPhoneId").asText().trim())).get();
@@ -67,8 +67,7 @@ public class ProfileController {
         date = errorChecker.checkDate(date);
         if (fone != null) {
             phonenumber = fone.getNumber().equals(phonenumber) ? "" : errorChecker.checkPhoneNumber(phonenumber);
-        }
-        else{
+        } else {
             phonenumber = errorChecker.checkPhoneNumber(phonenumber);
         }
 
@@ -107,16 +106,20 @@ public class ProfileController {
             acc.setAccountName(username);
             acc.setEmail(email);
             acc.setDob(localDate);
-            if(fone != null){
+            if (fone != null) {
                 fone.setNumber(phonenumber);
-            }
-            else{
-                fone =  Phone.builder().number(phonenumber).account(acc).build();
+            } else {
+                fone = Phone.builder().number(phonenumber).account(acc).build();
             }
 
 
             phoneRepository.save(fone);
             accountRepository.save(acc);
+            if(phoneId.equals("-1")){
+                tmpPhoneId = phoneId;
+                phoneId = phoneRepository.findByNumber(phonenumber).get(0).getPhoneId().toString();
+                System.out.println(phoneId);
+            }
             phoneList = phoneRepository.findByAccountId(acc.getAccountId());
             System.out.println(phoneList);
             System.out.println("save account");
@@ -139,7 +142,12 @@ public class ProfileController {
                 session.setAttribute("phone", phoneList);
             }
         }
-        error = new CreateErrorCatcher(username, email, date, phonenumber);
+        if (tmpPhoneId.equals("0")) {
+            error = new CreateErrorCatcher(username, email, date, phonenumber);
+        } else {
+            error = new CreateErrorCatcher(username, email, date, phonenumber, phoneId);
+            System.out.println("add new phone number");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(error);
     }
 }
