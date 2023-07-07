@@ -6,6 +6,7 @@ import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
+import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 
@@ -52,6 +53,8 @@ public class PageController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private AddressRepository addressRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request, Model model) {
@@ -313,6 +316,7 @@ public class PageController {
     public String checkEmailVerification(HttpServletRequest request, Model model){
         try{
             //lay tu link bam tu mail
+            Account acc = null;
             System.out.println("inside email Verification");
             String emailTo = request.getParameter("emailTo");
             String tokenValue = request.getParameter("tokenValue");
@@ -326,6 +330,17 @@ public class PageController {
             else{
                 //TODO : do something after check mail succeses
                 System.out.println(message);
+                acc = accountRepository.findByEmailEquals(emailTo);
+                if(request.getSession(false) != null){
+                    request.getSession(false).setAttribute("loginedUser", acc);
+                    request.getSession(false).setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
+                    request.getSession(false).setAttribute("address", addressRepository.findByCustomerId(acc.getAccountId()));
+                }
+                else{
+                    request.getSession().setAttribute("loginedUser", acc);
+                    request.getSession().setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
+                    request.getSession().setAttribute("address", addressRepository.findByCustomerId(acc.getAccountId()));
+                }
                 model.addAttribute("statusMessage", "Verified");
                 model.addAttribute("message", "you have been verified, you can now order some services.");
                 model.addAttribute("status", HttpStatus.OK);
