@@ -12,6 +12,7 @@ import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
+import app.vinhomes.security.email.email_service.EmailService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +48,9 @@ public class PageController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -303,5 +307,36 @@ public class PageController {
     @RequestMapping (value = "/see-all-order-by-admin", method = RequestMethod.GET)
     public String seeAllLeaveOrderByAdmin () {
         return "adminSeeAllOrder";
+    }
+
+    @RequestMapping(value = "/mail/verification")
+    public String checkEmailVerification(HttpServletRequest request, Model model){
+        try{
+            //lay tu link bam tu mail
+            System.out.println("inside email Verification");
+            String emailTo = request.getParameter("emailTo");
+            String tokenValue = request.getParameter("tokenValue");
+            String message = emailService.checkIfTokenValeValid(emailTo,tokenValue   );
+            if(!message.equals("SUCCESS")){
+                System.out.println(message);
+                model.addAttribute("statusMessage", "Invalid");
+                model.addAttribute("message", "this link have expired, please try again.");
+                model.addAttribute("status", HttpStatus.BAD_REQUEST);
+            }
+            else{
+                //TODO : do something after check mail succeses
+                System.out.println(message);
+                model.addAttribute("statusMessage", "Verified");
+                model.addAttribute("message", "you have been verified, you can now order some services.");
+                model.addAttribute("status", HttpStatus.OK);
+            }
+        }catch (Exception e){
+            System.out.println("error inside emailController: "+e.getMessage());
+            model.addAttribute("statusMessage", "Something went wrong");
+            model.addAttribute("message", "our server have encountered some problem :(, please try again later.");
+            model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return "emailVerification";
     }
 }

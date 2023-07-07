@@ -31,29 +31,29 @@ public class EmailController {
         return ResponseEntity.ok().body("yes send success");
     }
 
-    @GetMapping(value = "/verification")
-    public ResponseEntity<String> checkEmailVerification(HttpServletRequest request){
-        try{
-            //lay tu link bam tu mail
-            System.out.println("inside email Verification");
-            String emailTo = request.getParameter("emailTo");
-            String tokenValue = request.getParameter("tokenValue");
-            String message = emailService.checkIfTokenValeValid(emailTo,tokenValue   );
-            if(message.equals("SUCCESS") == false){
-                System.out.println(message);
-                return ResponseEntity.ok().body("invalid validation");
-            }
-            else{
-                //TODO : do something after check mail succeses
-                System.out.println(message);
-
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("yes validated success");
-            }
-        }catch (Exception e){
-            System.out.println("error inside emailController: "+e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR on server");
-        }
-    }
+//    @GetMapping(value = "/verification")
+//    public ResponseEntity<String> checkEmailVerification(HttpServletRequest request){
+//        try{
+//            //lay tu link bam tu mail
+//            System.out.println("inside email Verification");
+//            String emailTo = request.getParameter("emailTo");
+//            String tokenValue = request.getParameter("tokenValue");
+//            String message = emailService.checkIfTokenValeValid(emailTo,tokenValue   );
+//            if(message.equals("SUCCESS") == false){
+//                System.out.println(message);
+//                return ResponseEntity.ok().body("invalid validation");
+//            }
+//            else{
+//                //TODO : do something after check mail succeses
+//                System.out.println(message);
+//
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("yes validated success");
+//            }
+//        }catch (Exception e){
+//            System.out.println("error inside emailController: "+e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR on server");
+//        }
+//    }
 
     @GetMapping
     public ResponseEntity<?> getTokenMap(){
