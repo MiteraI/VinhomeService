@@ -15,11 +15,12 @@
 
   <header th:replace="~{./fragments/header.html}"></header>
 
-  <div class="bg-orange-500 mx-20 my-7 py-5 px-4 relative flex items-center">
-    <span class="">Please verify this phone number: <span class="ml-1 font-semibold"
-        th:text="${phone != null} ? ${phone[0].number} : ''">1234567890</span></span>
-    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black"><a href="/otp-verification"
-        target="" class="">Verify</a></button>
+  <div class="verifyContainer bg-orange-500 mx-20 my-7 py-5 px-4 relative flex items-center"
+    th:if="${acc.isEnable <= 0}">
+    <span class="">Please verify this account: <span class="ml-1 font-semibold"
+        th:text="${acc != null} ? ${acc.accountName} : ''"></span></span>
+    <button class="absolute right-0 mr-4 py-2 px-5 bg-transparent border-2 border-black"><a
+        th:href="@{/verificationMethod(username=${acc.accountName})}" class="verifyBtn">Verify</a></button>
   </div>
 
   <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
@@ -39,7 +40,7 @@
             class="edit-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Edit
             Profile</button>
           <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium"><a
-              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Reset
+              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Change
               Password</a></button>
           <button
             class="change-pfp-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Change
@@ -110,12 +111,14 @@
 
             <div id="phoneDropdownContainer"
               class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
-              <ul class="absolute w-inherit h-[7.5rem] border-2 border-black bg-slate-200 overflow-y-scroll"
-                aria-labelledby="dropdownDividerButton" th:each="fone: ${phone}">
-                <li class="relative">
+              <ul
+                class="phoneSpanContainer absolute w-inherit h-[7.5rem] border-2 border-black bg-slate-200 overflow-y-scroll"
+                aria-labelledby="dropdownDividerButton">
+                <li class="relative" th:each="fone: ${phone}">
                   <span class="phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer"
-                    th:text="${phone != null} ? ${fone.number} : ''">1234567890</span>
+                    th:text="${phone != null} ? ${fone.number} : ''" th:attr="data-id=${fone.phoneId}">1234567890</span>
                 </li>
+
               </ul>
             </div>
           </div>
@@ -168,302 +171,13 @@
   </div>
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
-  <script>
-    const editFormContainer = document.querySelector('.edit-form-container')
-    const editBtn = document.querySelector('.edit-btn')
-    const errorMassage = document.querySelectorAll('.error-message')
-
-    const profileForm = document.querySelector('.edit-profile-form');
-    const profileFormInput = document.querySelectorAll('.profile-form-input');
-    const prohibitInput = document.querySelectorAll('.prohibit-input')
-    const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
-    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
-    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
-    const phoneSpan = document.querySelectorAll('.phoneSpan')
-    const phoneInput = document.querySelector('.phoneInput')
-    const pfp = document.querySelectorAll('.pfp')
-    const placeholderValue = [...profileFormInput].map(input => input.placeholder)
-
-    const cancelBtn = document.querySelector('.cancel-btn')
-    const changePfpBtn = document.querySelector('.change-pfp-btn')
-    const cancelPfpBtn = document.querySelector('.cancel-pfp-btn')
-
-
-
-
-    const uid = document.querySelector('.uid').value;
-    const userName = document.querySelector('.username')
-    const uploadFile = document.getElementById('upload-file')
-    const uploadPfpBtn = document.querySelector('.upload-pfp-btn')
-    const uploadBtnContainer = document.querySelector('.upload-btn-container')
-
-    const imgFileName = document.querySelector('.img-file-name')
-
-    const submitBtn = document.querySelector('.submit-btn');
-
-    var _validFileExtensions = [".jpg", ".jpeg", ".png"];
-
-    let canEdit = false
-    let i = 0
-
-
-
-    cancelBtn.addEventListener('click', (e) => {
-      e.preventDefault()
-
-      errorMassage.forEach(err => {
-        err.classList.add('hidden')
-      })
-
-      profileFormInput.forEach(input => {
-        input.value = ''
-        input.placeholder = placeholderValue[i]
-        i++
-      });
-      i = 0;
-      profileFormInput[2].type = 'text'
-      editFormContainer.classList.add('pointer-events-none')
-    })
-
-    editBtn.addEventListener('click', (e) => {
-      canEdit = true
-      errorMassage.forEach(err => {
-        err.classList.add('hidden')
-      })
-      editFormContainer.classList.remove('pointer-events-none')
-      profileFormInput.forEach(input => {
-        input.value = placeholderValue[i]
-        input.placeholder = ''
-        i++
-      });
-      i = 0
-      profileFormInput[2].type = 'date'
-    })
-
-    profileFormInput.forEach(input => {
-      input.addEventListener('keydown', (e) => {
-        if (canEdit === false) {
-          e.preventDefault()
-        }
-
-        e.returnValue = true
-        for (let i = 0; i < prohibitInput.length; i++) {
-          prohibitInput[i].value = ''
-        }
-      })
-    })
-
-    prohibitInput.forEach(input => {
-      input.addEventListener('keydown', (e) => {
-        if (e.keyCode === 9) {
-          e.returnValue = true
-        } else {
-          e.preventDefault()
-        }
-      })
-    })
-
-    prohibitInputRadio.forEach(radio => {
-      radio.addEventListener('click', (e) => {
-        e.preventDefault()
-      })
-    })
-
-    phoneDropDownButton.addEventListener('click', (e) => {
-      e.preventDefault()
-      phoneDropdownContainer.classList.toggle('hidden')
-    })
-
-
-    function hideDropDown() {
-      document.onclick = () => {
-        phoneDropdownContainer.classList.add('hidden')
-        dropDownMenu.classList.add('hidden')
-      }
-    }
-
-    changePfpBtn.addEventListener('click', () => {
-      uploadBtnContainer.classList.toggle('hidden')
-      changePfpBtn.classList.toggle('hidden')
-    })
-
-    cancelPfpBtn.addEventListener('click', () => {
-      uploadFile.value = ''
-      uploadFile.files.length = 0
-      imgFileName.innerHTML = ''
-      imgFileName.classList.add('hidden')
-      console.log(uploadFile.files.length)
-      console.log(uploadFile.value)
-      uploadBtnContainer.classList.toggle('hidden')
-      changePfpBtn.classList.toggle('hidden')
-    })
-
-    uploadPfpBtn.addEventListener('click', (e) => {
-      if (checkFileExist() === false) {
-        imgFileName.innerHTML = 'there is no image to upload'
-        imgFileName.classList.add('italic', 'text-red-500')
-        imgFileName.classList.remove('hidden')
-        e.preventDefault()
-      } else {
-        e.returnValue = true
-        console.log(uploadFile.value)
-        console.log(uploadFile.files.length)
-      }
-
-    })
-
-    const checkFileExist = () => {
-      if (uploadFile.files.length == 0) {
-        return false
-      }
-      return true
-    }
-
-    console.log(phoneSpan.length)
-
-    phoneSpan.forEach(p => {
-      p.addEventListener('click', (e) => {
-        e.preventDefault()
-        phoneInput.value = p.innerHTML
-        phoneDropdownContainer.classList.toggle('hidden')
-
-      })
-    })
-
-    console.log(uid)
-
-    profileForm.addEventListener('submit', async (e) => {
-      i = 0
-      e.preventDefault()
-      submitBtn.disabled = true
-      const form_data = new FormData(profileForm);
-      const data = Object.fromEntries(form_data);
-
-      const response = await fetch(`/changeProfile/${uid}`,
-        {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-
-      if (response.status == 400) {
-        i = 0
-        error_message = await response.json()
-        error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
-        console.log(error_message);
-        for (var key in error_message) {
-          if (error_message[key]) {
-            errorMassage[i].classList.remove('hidden')
-            errorMassage[i].innerHTML = '❌ ' + error_message[key];
-          }
-          else {
-            errorMassage[i].innerHTML = ''
-          }
-          console.log(`${i}: ${error_message[key]}`)
-          i++;
-
-        }
-        i = 0
-        submitBtn.disabled = false
-
-      } else if (response.status == 200) {
-        i = 0
-        error_message = await response.json()
-        error_message = Object.fromEntries(Object.entries(error_message).filter(([_, v]) => v != null));
-        console.log(error_message)
-        errorMassage.forEach(err => {
-          err.classList.add('hidden')
-        })
-        for (var key in error_message) {
-          console.log(placeholderValue[i])
-          placeholderValue[i] = error_message[key]
-          i += 1;
-        }
-        i = 0
-        userName.innerHTML = placeholderValue[0]
-        alert("successfully update profile")
-        submitBtn.disabled = false
-
-      } else if (response.status == 500) {
-        error_message = await response.json()
-        var list = document.getElementsByClassName("error-message");
-        var i = 0;
-        submitBtn.disabled = false
-        alert("something wrong with server side, please try again later");
-      }
-    })
-
-    uploadFile.onchange = function ValidateSingleInput() {
-      console.log();
-      imgFileName.innerHTML = ''
-      imgFileName.classList.remove('italic', 'text-red-500')
-      var sFileName = uploadFile.value;
-      console.log("sFileName:" + sFileName);
-      if (sFileName.length > 0) {
-        console.log("sFileName.length:" + sFileName.length);
-        var blnValid = false;
-        for (var j = 0; j < _validFileExtensions.length; j++) {
-          var sCurExtension = _validFileExtensions[j];
-          console.log("sCurExtension: " + sCurExtension);
-          if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() === sCurExtension.toLowerCase()) {
-            imgFileName.innerHTML += `Image name: ${sFileName.split(/(\\|\/)/g).pop()}`
-            imgFileName.classList.remove('hidden')
-            blnValid = true;
-            break;
-          }
-        }
-
-        if (!blnValid) {
-          imgFileName.innerHTML = ''
-          imgFileName.classList.add('hidden')
-          alert("Sorry, " + sFileName.split(/(\\|\/)/g).pop() + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
-          uploadFile.value = "";
-          return false;
-        }
-      }
-      var tgt = window.event.srcElement
-      var file = tgt.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.addEventListener("loadend", () => {
-        pfp.forEach(p => {
-          p.src = reader.result;
-        })
-      });
-      return true;
-    }
+  <script src="../static/js/editProfile.js">
 
   </script>
 
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-
-  var isEnabled;
-  var username
-  fetch('/api/order/getSession')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      isEnabled = data.enabled; console.log(isEnabled)
-      username = data.accountName; console.log(username)
-      if (isEnabled == true) {
-        document.getElementById("VERIFYBUTTON").style.display = "none";
-      } else {
-        document.getElementById("VERIFYBUTTON").style.display = "block";
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-
-  function verify() {
-    window.location.replace(`http://localhost:8080/verification/${username}`)
-  }
-</script>
 
 
 

@@ -4,6 +4,7 @@ import app.vinhomes.event.event_storage.SendEmailForgetAccount;
 import app.vinhomes.event.event_storage.SendEmailOnCreateAccount;
 import app.vinhomes.event.event_storage.SendSmsForgetAccount;
 import app.vinhomes.event.event_storage.SendSmsOnCreateAccount;
+import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
@@ -47,6 +48,8 @@ public class AccountAPI {
     private AccountService accountService;
     @Autowired
     private OTPService otpService;
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private PhoneService phoneService;
     @Autowired
@@ -170,7 +173,7 @@ public class AccountAPI {
         try {
             String getMethod = jsonNode.get("method").asText().trim();
             String getInput = jsonNode.get("input").asText().trim();
-            System.out.println("inside forget password api: " + getMethod + getInput);
+            System.out.println("inside forget password api: " + getMethod + " " + getInput);
             if (getMethod.equals("EMAIL")) {
                 String getError = errorChecker.checkForgotPassword_email(getInput);
                 System.out.println(getError);
@@ -186,6 +189,7 @@ public class AccountAPI {
                 if (getError != null && getError.equals("")) {
                     eventPublisher.publishEvent(new SendSmsForgetAccount(getInput));
                     return ResponseEntity.status(HttpStatus.OK).body("YES success, check yo phone");
+
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError);
                 }
@@ -204,10 +208,10 @@ public class AccountAPI {
             String getNewPassword = jsonNode.get("newpassword").asText().trim();
             String getAccountId = jsonNode.get("accountid").asText().trim();
             Long parsedAccountId = Long.parseLong(getAccountId);
-            String getResult = accountService.changePassword(parsedAccountId,getOldPassword,getNewPassword);
-            if(getResult.equals("") == false){
+            String getResult = accountService.changePassword(parsedAccountId, getOldPassword, getNewPassword);
+            if (getResult.equals("") == false) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getResult);
-            }else {
+            } else {
                 return ResponseEntity.status(HttpStatus.OK).body("Yes Success");
             }
         } catch (NumberFormatException e) {
@@ -218,16 +222,17 @@ public class AccountAPI {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR server error try again later");
         }
     }
-    @GetMapping(value = "/getAllPhonenumber",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Phone>> getAllPhonenumberByAccount(HttpServletRequest request){
-        try{
-            if(request.getSession(false) == null){
+
+    @GetMapping(value = "/getAllPhonenumber", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Phone>> getAllPhonenumberByAccount(HttpServletRequest request) {
+        try {
+            if (request.getSession(false) == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }else{
+            } else {
                 Account account = (Account) request.getSession().getAttribute("loginedUser");
                 return ResponseEntity.status(HttpStatus.OK).body(phoneService.getAllPhonenumberByAccountId(account.getAccountId()));
             }
-            }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

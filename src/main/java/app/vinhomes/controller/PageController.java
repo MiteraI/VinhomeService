@@ -12,6 +12,7 @@ import app.vinhomes.repository.order.ServiceCategoryRepository;
 import app.vinhomes.repository.order.ServiceRepository;
 import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
+import app.vinhomes.security.email.email_service.EmailService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +48,9 @@ public class PageController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -220,44 +224,7 @@ public class PageController {
         return url;
     }
 
-    public Map<Integer, Map<Integer, Integer>> ratingMap(List<Integer> serviceId) {
-        Map<Integer, Map<Integer, Integer>> serviceRatingMap = new HashMap<Integer, Map<Integer, Integer>>();
-        int maxRating = 5, sameRating = 0;
-        for (int i = 0; i < serviceId.size(); i++) {
-            Map<Integer, Integer> ratingMap = new HashMap<Integer, Integer>();
-            for (int j = 1; j <= maxRating; j++) {
-                sameRating = orderRepository.COUNT_RATING_FOR_SERVICE(serviceId.get(i), j);
-                ratingMap.put(j, sameRating);
-            }
-            serviceRatingMap.put(serviceId.get(i), ratingMap);
-        }
-        for (Map.Entry<Integer, Map<Integer, Integer>> serviceRating : serviceRatingMap.entrySet()) {
-            System.out.println("key: " + serviceRating.getKey() + " value: " + serviceRating.getValue());
-        }
-        return serviceRatingMap;
-    }
 
-    public Map<Integer, Float> avgRatingForEachService(List<Integer> serviceId) {
-        Map<Integer, Float> avgRatingEachService = new HashMap<>();
-        Map<Integer, Map<Integer, Integer>> allRatingForEachService = new HashMap<>();
-        allRatingForEachService = ratingMap(serviceId);
-        int maxRating = 5, totalRating = 0, sumOfAllRating = 0;
-        float avgRatingService = 0;
-        for (Map.Entry<Integer, Map<Integer, Integer>> rating : allRatingForEachService.entrySet()) {
-            totalRating = 0;
-            sumOfAllRating = 0;
-            for (int i = 1; i <= maxRating; i++) {
-                totalRating += rating.getValue().get(i);
-                sumOfAllRating += rating.getValue().get(i) * i;
-            }
-            avgRatingService = (float) sumOfAllRating / totalRating > 0 ? Math.round((float) sumOfAllRating / totalRating) : 0;
-            avgRatingEachService.put(rating.getKey(), avgRatingService);
-        }
-        for (Map.Entry<Integer, Float> avgRating : avgRatingEachService.entrySet()) {
-            System.out.println("key: " + avgRating.getKey() + " values: " + avgRating.getValue());
-        }
-        return avgRatingEachService;
-    }
 
     @RequestMapping(value = "/homepage")
     public String homepage() {
@@ -279,9 +246,9 @@ public class PageController {
         return "transactionReturn";
     }
 
-    @RequestMapping(value = "/verification/{username}/{password}", method = RequestMethod.GET)
-    public String verification(@PathVariable String username, @PathVariable String password) {
-        return "redirect:/verificationMethod?username=" + username+"&password="+password;
+    @RequestMapping(value = "/verification/{username}", method = RequestMethod.GET)
+    public String verification(@PathVariable String username) {
+        return "redirect:/verificationMethod?username=" + username;
     }
 
     @RequestMapping(value = "/verificationMethod", method = RequestMethod.GET)
@@ -340,5 +307,36 @@ public class PageController {
     @RequestMapping (value = "/see-all-order-by-admin", method = RequestMethod.GET)
     public String seeAllLeaveOrderByAdmin () {
         return "adminSeeAllOrder";
+    }
+
+    @RequestMapping(value = "/mail/verification")
+    public String checkEmailVerification(HttpServletRequest request, Model model){
+        try{
+            //lay tu link bam tu mail
+            System.out.println("inside email Verification");
+            String emailTo = request.getParameter("emailTo");
+            String tokenValue = request.getParameter("tokenValue");
+            String message = emailService.checkIfTokenValeValid(emailTo,tokenValue   );
+            if(!message.equals("SUCCESS")){
+                System.out.println(message);
+                model.addAttribute("statusMessage", "Invalid");
+                model.addAttribute("message", "this link have expired, please try again.");
+                model.addAttribute("status", HttpStatus.BAD_REQUEST);
+            }
+            else{
+                //TODO : do something after check mail succeses
+                System.out.println(message);
+                model.addAttribute("statusMessage", "Verified");
+                model.addAttribute("message", "you have been verified, you can now order some services.");
+                model.addAttribute("status", HttpStatus.OK);
+            }
+        }catch (Exception e){
+            System.out.println("error inside emailController: "+e.getMessage());
+            model.addAttribute("statusMessage", "Something went wrong");
+            model.addAttribute("message", "our server have encountered some problem :(, please try again later.");
+            model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return "emailVerification";
     }
 }
