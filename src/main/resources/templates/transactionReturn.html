@@ -14,38 +14,10 @@
         <div class="border-2 border-black rounded-lg w-[50%] flex flex-col items-center">
 
             <div class="w-[65%] h-[60%]">
-                <p class="font-semibold capitalize text-center my-2 text-[30px]">Transaction Completed</p>
-                <div class="w-[70%] mx-auto">
-                    <div class="flex mb-3">
-                        <span class="w-[30%] text-right">Customer: </span>
-                        <div th:text="${acc != null} ? ${acc.firstName} + ' ' + ${acc.lastName}"
-                            class="ml-[5%] w-[60%] whitespace-nowrap overflow-hidden font-semibold capitalize">some
-                            customer name
-                        </div>
-                    </div>
-
-                    <div class="flex mb-3">
-                        <span class="w-[30%] text-right">Phone: </span>
-                        <div th:text="${acc != null} ? ${acc.firstName} + ' ' + ${acc.lastName}"
-                            class="ml-[5%] w-[60%] whitespace-nowrap overflow-hidden font-semibold capitalize">
-                            19001111115
-                        </div>
-                    </div>
-
-                    <div class="flex mb-3">
-                        <span class="w-[30%] text-right">Service: </span>
-                        <div th:text="${acc != null} ? ${acc.firstName} + ' ' + ${acc.lastName}"
-                            class="ml-[5%] w-[60%] whitespace-nowrap overflow-hidden font-semibold">Clean 40m2
-                        </div>
-                    </div>
-
-                    <div class="flex mb-3">
-                        <span class="w-[30%] text-right">Total Price: </span>
-                        <div th:text="${acc != null} ? ${acc.firstName} + ' ' + ${acc.lastName}"
-                            class="ml-[5%] w-[60%] whitespace-nowrap overflow-hidden font-semibold">₫100.000
-                        </div>
-                    </div>
-
+                <p class="transactionStatus font-semibold capitalize text-center my-2 text-[30px]">Transaction Status
+                </p>
+                <div class="h-[100px] flex flex-col justify-center items-center">
+                    <p id="message" class="text-center text-[25px]"></p>
                 </div>
                 <div class="flex justify-center items-center my-2">
                     <button class="text-center bg-blue-300 rounded-lg w-[80%] py-2 hover:bg-blue-400"><a
@@ -57,6 +29,7 @@
 </body>
 <script>
     const message = document.getElementById("message");
+
     var message_concat = ""
     var queryString = window.location.search;
     var getMessageFromParam = new URLSearchParams(queryString).get('message')
