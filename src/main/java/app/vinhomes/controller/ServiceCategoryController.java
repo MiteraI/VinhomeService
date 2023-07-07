@@ -39,17 +39,17 @@ public class ServiceCategoryController {
         }
     }
 
-    @PostMapping(value = "/update-category")
-    public ResponseEntity updateCategory (@RequestBody JsonNode data) {
-        String updateCategory = data.get("serviceCategory").asText();
-        Long categoryId = Long.parseLong(data.get("serviceCategoryId").asText());
-        if (updateCategory.isEmpty() || updateCategory == null) {
+    @PostMapping(value = "/update-category/{id}")
+    public ResponseEntity updateCategory (@PathVariable("id") Long categoryId, @RequestParam("categoryName") String categoryName) {
+//        String updateCategory = data.get("serviceCategory").asText();
+//        Long categoryId = Long.parseLong(data.get("serviceCategoryId").asText());
+        if (categoryName.isEmpty() || categoryName == null) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not update a new category");
         }
 
         else {
             ServiceCategory updateCate = serviceCategoryRepository.findByServiceCategoryId(categoryId);
-            updateCate.setServiceCategoryName(updateCategory);
+            updateCate.setServiceCategoryName(categoryName);
             serviceCategoryRepository.save(updateCate);
             return ResponseEntity.status(HttpStatus.CREATED).body("Has update a new category");
         }

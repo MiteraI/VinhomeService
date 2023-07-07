@@ -27,7 +27,8 @@
     <thead>
     <tr>
       <th>ID</th>
-      <th>Category Name</th>
+      <th>Category Name
+      <th>Action</th>
     </tr>
     </thead>
     <tbody id="tbody-categories">
@@ -48,6 +49,7 @@
                   <tr>
                     <td>${categoryId}</td>
                     <td>${categoryName}</td>
+                    <td><a class="btn btn-primary" onclick="update('${categoryId}', '${categoryName}')">Update</a></td>
                   </tr>
                `
     })
@@ -72,6 +74,61 @@
       </div>
     </form>
   </div>
+<!--FORM Update CATEGORY-->
+<!--FORM Update CATEGORY-->
+<!--FORM Update CATEGORY-->
+
+<div class="hihi" id="updateCategoryFormContainer" style="display: none;">
+  <h3>Update Service</h3>
+  <form id="updateCategoryForm" style="border-color: black">
+    <div class="form-group">
+      <label for="categoryNameUpdate">Category Name:</label>
+      <input type="text" class="form-control" id="categoryNameUpdate" required>
+    </div>
+    <div style="margin-top: 15px">
+      <button type="button" class="btn btn-secondary" id="cancelUpdateCategory">Cancel</button>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function update(categoryId, categoryName) {
+    document.getElementById("updateCategoryFormContainer").style.display = "block";
+    document.getElementById("categoryNameUpdate"). value = categoryName;
+    var categoryNameUpdate = '';
+    document.getElementById("categoryNameUpdate").addEventListener("input", function () {
+      categoryNameUpdate = this.value;
+    })
+    document.getElementById("updateCategoryFormContainer").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var formData = new FormData();
+      formData.append("categoryName", categoryNameUpdate)
+      fetch("/api/update-category/" + categoryId, {
+        method: 'POST',
+        body: formData
+      })
+              .then (res =>  {
+                if (res.status === 201) {
+                  window.location.reload();
+                }
+                else {
+
+                }
+      })
+              .catch(err => {
+                console.log(err);
+      })
+    })
+    document.getElementById("cancelUpdateCategory").addEventListener("click", function () {
+      document.getElementById("updateCategoryFormContainer").style.display = "none";
+      categoryNameUpdate = '';
+      categoryId = 0;
+    })
+
+  }
+</script>
 
 
 <script>
