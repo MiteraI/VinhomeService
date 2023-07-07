@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../dist/index.css">
+    <style>
+        /* CSS styles to center the form */
+        #form-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            z-index: 999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rounded-lg border-2 border-black" style="display: none;" id="form-display">
+        <h2 class="text-center text-lg bg-yellow-info rounded-t-lg">Leave dates</h2>
+        <form id="submit-leave-form" class="space-y-2 my-6" enctype="multipart/form-data">
+            <p class="px-10">First Name: <span>John</span></p>
+            <p class="px-10">Last Name: <span>Cena</span></p>
+            <div class="px-10">
+                <label for="startDate">Start Date:</label>
+                <input type="date" class="border-2 border-black rounded-lg" id="startDate">
+            </div>
+            <div class="px-10">
+                <label for="endDate">End Date:</label>
+                <input type="date" class="border-2 border-black rounded-lg" id="endDate">
+            </div>
+            <div class="px-10">
+                <p for="content">Reason:</p>
+                <textarea class="w-full border-2 border-black rounded-lg" id="content" rows="4"></textarea>
+            </div>
+            <div class="px-10">
+                <label for="file">Upload Related File:</label>
+                <input type="file" class="form-control-file" id="file" name="file">
+            </div>
+            <div class="flex justify-center space-x-6">
+                <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg"
+                    id="submit-leave">Submit</button>
+                <button id="cancel-btn" class="bg-red-cancel py-2 px-10 rounded-lg">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <button id="display-form" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg">display form</button>
+    <section th:each="leaveReport : ${leaveList}" class="mx-48 my-10">
+        <div th:if="${leaveReport.status == 0}" class="pending border-2 border-black rounded-lg p-4">
+            <!-- Render div for pending orders -->
+            <p>
+                Status: <span class="text-blue-bootstrap">Pending</span>
+            </p>
+            <div class="flex p-4 space-x-6">
+                <div class="w-2/6">
+                    <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
+                            class="text-blue-bootstrap">2023-08-01</span></p>
+                    <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
+                    <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    document.getElementById("display-form").addEventListener("click", function () {
+        document.getElementById("form-display").style.display = "block";
+    })
+    document.getElementById("cancel-btn").addEventListener("click", function () {
+        document.getElementById("form-display").style.display = "none";
+    })
+</script>
+
+</html>

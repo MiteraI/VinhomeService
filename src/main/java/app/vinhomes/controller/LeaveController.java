@@ -1,6 +1,7 @@
 package app.vinhomes.controller;
 
 
+import app.vinhomes.common.SessionUserCaller;
 import app.vinhomes.entity.Account;
 
 import app.vinhomes.entity.worker.Leave;
@@ -66,8 +67,7 @@ public class LeaveController {
                                           @RequestParam("endDate") String endDateStr,
                                           @RequestParam("reason") String reason, HttpServletRequest request,
                                           @RequestParam(name = "file", required = false) MultipartFile file) throws IOException {
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("loginedUser");
+        Account account = SessionUserCaller.getSessionUser(request);
         Long accountId = account.getAccountId();
         WorkerStatus workerStatus = workerStatusRepository.findByAccount(account);
         int leaveDaysLimit = workerStatus.getAllowedDayOff();
@@ -109,7 +109,7 @@ public class LeaveController {
         if (file == null || file.getOriginalFilename().isEmpty()) {
             if (workerStatus != null && days >= 7) {
                 if (leaveDaysLimit > daysOffInt) {
-                    LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason, null);
+                    LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason, null, request);
                     return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report ");
                 }
             }
@@ -124,7 +124,7 @@ public class LeaveController {
                 String extension = StringUtils.getFilenameExtension(originalFilename);
                 newFilename = startDateStr + "_" + workerStatus.getWorkerStatusId() + "." + extension;
                 String Url = "https://imagescleaningservice.blob.core.windows.net/images/leave/" + newFilename;
-                LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason,Url );
+                LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason,Url, request );
 
                 blobContainerClient = blobServiceClient.getBlobContainerClient("images/leave");
                 BlobClient blob = blobContainerClient
@@ -140,75 +140,75 @@ public class LeaveController {
     }
 
     // Lay ra cac leave report chua dc duyet
-    @GetMapping (value = "/leave-report")
-    public ResponseEntity<List<Map<String, Object>>> leaveReportsDidNotRead() {
-        List<Map<String, Object>> listLeave = new ArrayList<>();
-        List<LeaveReport> reportList = leaveReportRepository.findByStatus(0);
-        for (LeaveReport leaveRe : reportList) {
-            Long workerId = leaveRe.getWorkerStatusId();
-            Account account = accountRepository.findByAccountId(workerId);
-            Map<String, Object> leaveMap = new HashMap<>();
-            leaveMap.put("leaveReport", leaveRe);
-            leaveMap.put("account", account);
-            listLeave.add(leaveMap);
-        }
-        return ResponseEntity.ok(listLeave);
-    }
+//    @GetMapping (value = "/leave-report")
+//    public ResponseEntity<List<Map<String, Object>>> leaveReportsDidNotRead() {
+//        List<Map<String, Object>> listLeave = new ArrayList<>();
+//        List<LeaveReport> reportList = leaveReportRepository.findByStatus(0);
+//        for (LeaveReport leaveRe : reportList) {
+//            Long workerId = leaveRe.getWorkerStatusId();
+//            Account account = accountRepository.findByAccountId(workerId);
+//            Map<String, Object> leaveMap = new HashMap<>();
+//            leaveMap.put("leaveReport", leaveRe);
+//            leaveMap.put("account", account);
+//            listLeave.add(leaveMap);
+//        }
+//        return ResponseEntity.ok(listLeave);
+//    }
 
 
-    @PostMapping (value = "/leave-report/update")
-    public ResponseEntity updateLeaveReport (@RequestBody JsonNode data) {
-        Integer status = Integer.parseInt(data.get("status").asText());
-        Long leaveReportId = Long.parseLong(data.get("leaveReportId").asText());
-        LeaveReport leaveReport = leaveReportRepository.findByLeaveReportId(leaveReportId);
-        Long workerId = leaveReport.getWorkerStatusId();
-        Account account = accountRepository.findByAccountId(workerId);
-        if (status == 1) {
-            LocalDate startDate = leaveReport.getStartTime();
-            LocalDate endDate = leaveReport.getEndTime();
-            Long daysLeave = ChronoUnit.DAYS.between(startDate, endDate) + 1L; // cong them ngay cuoi
-            leaveReport.setStatus(1);
-            leaveReportRepository.save(leaveReport);
-            System.out.println(daysLeave);
-            for (int i = 0; i < daysLeave; i++) {
-                LocalDate addDate = startDate.plusDays(i);
-                Leave leave = Leave.builder()
-                        .leaveDay(addDate)
-                        .account(account)
-                        .leaveReport(leaveReport)
-                        .build();
-                leaveRepository.save(leave);
-            }
-            WorkerStatus workerStatus = workerStatusRepository.findWorkerStatusById(workerId);
-            int allowDaysOff = (int) (workerStatus.getAllowedDayOff() - daysLeave);
-            workerStatus.setAllowedDayOff(allowDaysOff);
-            workerStatusRepository.save(workerStatus);
-            return ResponseEntity.status(HttpStatus.OK).body("Approving the leave report");
-        }
-        else {
-            leaveReport.setStatus(2);
-            leaveReportRepository.save(leaveReport);
-            return ResponseEntity.status(HttpStatus.OK).body("rejecting the leave report");
-        }
-    }
+//    @PostMapping (value = "/leave-report/update")
+//    public ResponseEntity updateLeaveReport (@RequestBody JsonNode data) {
+//        Integer status = Integer.parseInt(data.get("status").asText());
+//        Long leaveReportId = Long.parseLong(data.get("leaveReportId").asText());
+//        LeaveReport leaveReport = leaveReportRepository.findByLeaveReportId(leaveReportId);
+//        Long workerId = leaveReport.getWorkerStatusId();
+//        Account account = accountRepository.findByAccountId(workerId);
+//        if (status == 1) {
+//            LocalDate startDate = leaveReport.getStartTime();
+//            LocalDate endDate = leaveReport.getEndTime();
+//            Long daysLeave = ChronoUnit.DAYS.between(startDate, endDate) + 1L; // cong them ngay cuoi
+//            leaveReport.setStatus(1);
+//            leaveReportRepository.save(leaveReport);
+//            System.out.println(daysLeave);
+//            for (int i = 0; i < daysLeave; i++) {
+//                LocalDate addDate = startDate.plusDays(i);
+//                Leave leave = Leave.builder()
+//                        .leaveDay(addDate)
+//                        .account(account)
+//                        .leaveReport(leaveReport)
+//                        .build();
+//                leaveRepository.save(leave);
+//            }
+//            WorkerStatus workerStatus = workerStatusRepository.findWorkerStatusById(workerId);
+//            int allowDaysOff = (int) (workerStatus.getAllowedDayOff() - daysLeave);
+//            workerStatus.setAllowedDayOff(allowDaysOff);
+//            workerStatusRepository.save(workerStatus);
+//            return ResponseEntity.status(HttpStatus.OK).body("Approving the leave report");
+//        }
+//        else {
+//            leaveReport.setStatus(2);
+//            leaveReportRepository.save(leaveReport);
+//            return ResponseEntity.status(HttpStatus.OK).body("rejecting the leave report");
+//        }
+//    }
 
-    @GetMapping (value = "/leave-report/{id}")
-    public List<LeaveReport> seeAllLeaveReports (@PathVariable("id") Long workerId, HttpServletRequest request, @RequestParam String status ) {
-        // cai RequestParam nay t dinh de xai combobox thi xem dc cai report process accept hay la reject
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("loginedUser");
-        if (status.isEmpty() || status == null || status.equals("ALL")) {
-            List<LeaveReport> leaveReports = leaveReportRepository.findByWorkerStatusId(account.getAccountId());
-            return leaveReports;
-        }
-        if (status.equals("Reject")) {
-            return leaveReportRepository.findByWorkerStatusIdAndAndStatus(account.getAccountId(), 2);
-        }
-        if (status.equals("Approve")) {
-            return leaveReportRepository.findByWorkerStatusIdAndAndStatus(account.getAccountId(), 1);
-        }
-        return null;
-    }
+//    @GetMapping (value = "/leave-report/{id}")
+//    public List<LeaveReport> seeAllLeaveReports (@PathVariable("id") Long workerId, HttpServletRequest request, @RequestParam String status ) {
+//        // cai RequestParam nay t dinh de xai combobox thi xem dc cai report process accept hay la reject
+//        HttpSession session = request.getSession();
+//        Account account = (Account) session.getAttribute("loginedUser");
+//        if (status.isEmpty() || status == null || status.equals("ALL")) {
+//            List<LeaveReport> leaveReports = leaveReportRepository.findByWorkerStatusId(account.getAccountId());
+//            return leaveReports;
+//        }
+//        if (status.equals("Reject")) {
+//            return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 2);
+//        }
+//        if (status.equals("Approve")) {
+//            return leaveReportRepository.findByWorkerStatusIdAndStatus(account.getAccountId(), 1);
+//        }
+//        return null;
+//    }
 
 
 }
