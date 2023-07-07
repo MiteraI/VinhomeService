@@ -1487,6 +1487,11 @@ video {
   background-color: rgb(255 209 47 / var(--tw-bg-opacity));
 }
 
+.bg-yellow-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+}
+
 .via-blue-bootstrap {
   --tw-gradient-to: rgb(0 123 255 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #007BFF var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -1659,6 +1664,10 @@ video {
 
 .pt-1 {
   padding-top: 0.25rem;
+}
+
+.pb-5 {
+  padding-bottom: 1.25rem;
 }
 
 .text-left {
