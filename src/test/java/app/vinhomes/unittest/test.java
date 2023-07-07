@@ -127,7 +127,6 @@ public class test {
         LocalDateTime to = LocalDateTime.now().minusDays(2);
         Duration diff = Duration.between(from, to);
         System.out.println(diff.toString());
-
         System.out.println(diff.getSeconds());
     }
     @Test
@@ -146,7 +145,7 @@ public class test {
     @Test
 
     void testSendmailTemplate(){
-        Account account =  accountRepository.findById(33l).get();
+        Account account =  accountRepository.findById(27l).get();
         //VERIFICATION_MAIL
         Transaction getTransaction = transactionRepository.findById(60l).get();
         emailService.sendMailWithTemplate(account,ADMIN_REFUNDTRANSACTION_MAIL,getTransaction);

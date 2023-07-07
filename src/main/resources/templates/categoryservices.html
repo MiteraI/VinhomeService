@@ -56,7 +56,7 @@
           assumenda at.
         </p>
         <div th:replace="~{./fragments/rating.html}"></div>
-        <div class="mt-2 text-2xl" th:text="${service != null} ? '₫' + ${service.price} + '00' : ''"></div>
+        <div class="price mt-2 text-2xl" th:text="${service != null} ? '₫' + ${service.price} : ''"></div>
         <div class="flex flex-1 items-end justify-end">
           <button class="bg-yellow-info text-lg font-medium py-2 px-4 rounded-lg ml-2">
             <a th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a>
@@ -73,6 +73,16 @@
   <footer th:replace="~{./fragments/footer.html}"></footer>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../static/js/rating.js"></script>
+  <script>
+    const price = document.querySelectorAll('.price')
+    price.forEach(p => {
+      let number = parseInt(p.innerHTML.split('₫')[1]);
+      let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+      let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+      p.innerHTML = `₫${formattedNumber}`
+    })
+  </script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Execute the fetchData function after the segment is loaded

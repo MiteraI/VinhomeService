@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="w-[100%] h-[100%]">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css" />
+  <link rel="stylesheet" href="../static/tailwind/index.css" />
+  <title>Account Verification</title>
+</head>
+
+<body class="w-[100%] h-[100%]">
+  <div class="w-[100%] h-[100%] flex justify-center items-center">
+    <div class="w-[40%] flex flex-col justify-center items-center rounded-lg border-2 border-black">
+      <div class="rounded-t-lg px-3 py-2 w-full"
+        th:classappend="${status.value() == 200 ? 'bg-green-400' : status.value() == 403 ? 'bg-orange-400' : 'bg-red-500'}"
+        th:text="${statusMessage != null} ? ${statusMessage}">
+        Verified</div>
+      <div class="my-3 py-3 rounded-b-lg capitalize" th:text="${message != null} ? ${message}">blah blah</div>
+      <div class="w-full">
+        <button class="w-full bg-blue-300 rounded-b-lg hover:bg-blue-400 py-2"><a href="/">Confirm</a></button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

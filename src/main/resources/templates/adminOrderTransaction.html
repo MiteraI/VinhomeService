@@ -67,7 +67,7 @@ transform: translate(-50%, -50%);  -->
     <div class="container container-fluid vh-100 vw-100  position-relative ">
         <div class=" position-absolute border border-1 border-dark rounded col-12 vh-100 vw-100  bottom-0 start-50 translate-middle "
             style="max-width: 80%;max-height: 60%; display: block;">
-            <form id="transaction-form" class="p-2">
+            <form id="transaction-form" class="p-2 pb-5">
                 <h1 id="WARNING_COD" style="color:red; position: fixed;
                 top: 50%;
                 left: 50%;
@@ -171,7 +171,7 @@ transform: translate(-50%, -50%);  -->
                 </div>
 
             </form>
-            <div class="container-fluid position-fixed mb-5 bottom-0  d-flex justify-content-around">
+            <div class="container-fluid position-fixed bottom-0 d-flex justify-content-around">
                 <button id="btnGetAdminPage" class="btn btn-primary " onclick="getAdminCustomerPage()">customer
                     page</button>
                 <button id="btnGetRefundCustomer" class="btn btn-primary " onclick="getRefundTransaction()">refund
@@ -207,10 +207,10 @@ transform: translate(-50%, -50%);  -->
     //const queryString = window.location.search;
     //const getVnpTxnRef = new URLSearchParams(queryString).get('vnpTxnRef'); console.log(getVnpTxnRef)
     getTransactionStatus()
-    .then(() => {
-        getQueryTransaction()
-    })
-    
+        .then(() => {
+            getQueryTransaction()
+        })
+
 
 
 
@@ -289,21 +289,21 @@ transform: translate(-50%, -50%);  -->
             refundButton.disabled = true;
         }
     }
-    async function getTransactionStatus(){
-        var response = await fetch("http://localhost:8080/transaction/getStatus/" + getVnpTxnRef,{
-            method:"GET"
+    async function getTransactionStatus() {
+        var response = await fetch("http://localhost:8080/transaction/getStatus/" + getVnpTxnRef, {
+            method: "GET"
         })
         var status = await response.status
         var toText = await response.text()
         console.log(status)
         console.log(toText)
-        if(status >= 200 & status <= 300){
-            if(toText.startsWith("REFUNDED")){
+        if (status >= 200 & status <= 300) {
+            if (toText.startsWith("REFUNDED")) {
                 refundButton.disabled = true;
-            }else{
+            } else {
                 refundButton.disabled = false;
             }
-        }else{
+        } else {
             transaction_body.style.display = "none";
             warning_COD.style.display = "block";
             refundButton.disabled = true;

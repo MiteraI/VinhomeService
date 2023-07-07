@@ -25,7 +25,10 @@ public class SimpleAuthenticationFailure extends SimpleUrlAuthenticationFailureH
         Optional<Account> account = accountRepository.findUsername(username);
         StringBuilder message= new StringBuilder();
         if(account.isPresent() ){
-            if(account.get().getIsBlock()){
+            if(account.get().getAccountStatus() == 0){
+                message.append("=this account is inactive by admin");
+            }
+            else if(account.get().getIsBlock()){
                 message.append("=this account is blocked, contact manager");
             }else{
                 message.append("=Incorrect Username Or Password");

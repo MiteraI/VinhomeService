@@ -2,31 +2,28 @@ package app.vinhomes.unittest;
 
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.repository.order.TimeSlotRepository;
-import jakarta.persistence.Temporal;
+import app.vinhomes.security.esms.otp_service.ESMSservice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
-import java.util.Date;
+
 
 //@SpringBootTest
-@DataJpaTest
-@ExtendWith(MockitoExtension.class)// this is to replace the mock config, not sure
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@DataJpaTest
+//@ExtendWith(MockitoExtension.class)// this is to replace the mock config, not sure
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class test2 {
     @Value("${order.policy.day_before_service}")
     private String DAY_POLICY_ORDER;
@@ -34,6 +31,7 @@ public class test2 {
     private String HOUR_POLICY_ORDER;
     @Value("${order.policy.max_day_prior_to_service}")
     private String DAY_PRIOR_ORDER;
+    private final String accessTokenSpeedSMS = "ef_4sDm1PIiI6GSAF_Lx3iXbTV593Zts";
     @Autowired
     private TimeSlotRepository timeSlotRepository;
 
@@ -92,4 +90,11 @@ public class test2 {
             return true;
         }
     }
+
+    @Test
+    void testESMS() throws IOException {
+        ESMSservice service = new ESMSservice();
+        service.sendGetJSON("0847942496","test ting ");
+    }
+
 }
