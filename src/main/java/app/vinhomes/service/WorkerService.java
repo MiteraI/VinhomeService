@@ -6,10 +6,14 @@ import app.vinhomes.entity.Order;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.entity.type_enum.OrderStatus;
+import app.vinhomes.entity.worker.LeaveReport;
+import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
 import app.vinhomes.repository.order.ScheduleRepository;
 import app.vinhomes.repository.order.TimeSlotRepository;
+import app.vinhomes.repository.worker.LeaveReportRepository;
+import app.vinhomes.repository.worker.WorkerStatusRepository;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -32,9 +36,13 @@ public class WorkerService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
+    private LeaveReportRepository leaveReportRepository;
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
+    @Autowired
+    private WorkerStatusRepository workerStatusRepository;
     @Autowired
     private AzureBlobAdapter azureBlobAdapter;
     @Autowired
@@ -106,5 +114,9 @@ public class WorkerService {
         else {
             return false;
         }
+    }
+    public List<LeaveReport> getAllLeaveReportForSelf(HttpServletRequest request) {
+        Account account = SessionUserCaller.getSessionUser(request);
+        return leaveReportRepository.findByWorker_AccountId(account.getAccountId());
     }
 }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Your leave registration</title>
+  <link rel="stylesheet" href="../static/tailwind/index.css">
+  <style>
+    /* CSS styles to center the form */
+    #form-display {
+      position: fixed;
+      background-color: white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+  <header th:replace="~{./fragments/worker-header.html}"></header>
+  <div class="flex justify-center my-10 items-center border-2 border-black py-2 mx-48">
+    <span class="mx-10">Create a new leave permit registration:</span>
+    <button id="display-form" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg">Create permit</button>
+  </div>
+  <div class="rounded-lg border-2 border-black" style="display: none;" id="form-display">
+    <h2 class="text-center text-lg bg-yellow-info rounded-t-lg">Leave dates</h2>
+    <form id="submit-leave-form" class="space-y-2 my-6 p-4" enctype="multipart/form-data">
+      <div class="px-10">
+        <label for="startDate">Start Date:</label>
+        <input type="date" class="border-2 border-black rounded-lg" id="startDate" required>
+      </div>
+      <div class="px-10">
+        <label for="endDate">End Date:</label>
+        <input type="date" class="border-2 border-black rounded-lg" id="endDate" required>
+      </div>
+      <div class="px-10">
+        <p for="content">Reason:</p>
+        <textarea class="w-full border-2 border-black rounded-lg p-4" id="content" rows="4" required></textarea>
+      </div>
+      <div class="px-10">
+        <label for="file">Upload Related File:</label>
+        <input type="file" class="form-control-file" id="file" name="file">
+      </div>
+      <div class="flex justify-center space-x-6">
+        <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg"
+          id="submit-leave">Submit</button>
+        <button id="cancel-btn" class="bg-red-cancel py-2 px-10 rounded-lg">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <section th:each="leaveReport : ${leaveList}" class="mx-48 my-10">
+    <div th:if="${leaveReport.status == 0}" class="pending border-2 border-black rounded-lg p-4">
+      <p>
+        Status: <span class="text-blue-bootstrap">Pending</span>
+      </p>
+      <div class="flex p-4 space-x-6">
+        <div class="w-2/6">
+          <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
+              class="text-blue-bootstrap">2023-08-01</span></p>
+          <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+        </div>
+      </div>
+    </div>
+    <div th:if="${leaveReport.status == 2}" class="pending border-2 border-black rounded-lg p-4">
+      <p>
+        Status: <span class="text-red-cancel">Rejected</span>
+      </p>
+      <div class="flex p-4 space-x-6">
+        <div class="w-2/6">
+          <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
+              class="text-blue-bootstrap">2023-08-01</span></p>
+          <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+        </div>
+      </div>
+    </div>
+    <div th:if="${leaveReport.status == 1}" class="pending border-2 border-black rounded-lg p-4">
+      <p>
+        Status: <span class="text-green-success">Accepted</span>
+      </p>
+      <div class="flex p-4 space-x-6">
+        <div class="w-2/6">
+          <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
+              class="text-blue-bootstrap">2023-08-01</span></p>
+          <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    document.getElementById("display-form").addEventListener("click", function () {
+      document.getElementById("form-display").style.display = "block";
+    })
+    document.getElementById("cancel-btn").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("form-display").style.display = "none";
+    })
+    let startDate;
+    let endDate;
+    let reason;
+    document.getElementById("startDate").addEventListener('input', function () {
+      startDate = this.value;
+    });
+
+    document.getElementById("endDate").addEventListener('input', function () {
+      endDate = this.value;
+    });
+
+    document.getElementById("content").addEventListener('input', function () {
+      reason = this.value;
+    });
+
+    const submitLeaveForm = document.getElementById("submit-leave-form");
+    submitLeaveForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("startDate", startDate);
+      formData.append("endDate", endDate);
+      formData.append("reason", reason);
+
+      const fileInput = document.getElementById("file");
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        formData.append('file', file);
+      }
+      console.log(formData)
+      async function fetchData() {
+        try {
+          const response = await fetch("/api/leave-report/create", {
+            method: 'POST',
+            body: formData
+          });
+          const dataNoti = await response.text();
+          if (response.status === 201) {
+            alert(dataNoti);
+            window.location.reload();
+          } else {
+            alert(dataNoti);
+          }
+        } catch (error) {
+          console.log("Error: ", error);
+        }
+      }
+      fetchData();
+    })
+
+  </script>
+</body>
+
+</html>

@@ -22,16 +22,6 @@ public class WorkerApi {
     @Autowired
     WorkerService workerService;
 
-    @GetMapping("/schedules")
-    public ResponseEntity<List<Schedule>> getSchedules(HttpServletRequest request) {
-        return ResponseEntity.ok(workerService.getSchedulesForSelf(
-                        LocalDate.of(1, 1, 1)
-                        , LocalDate.of(1, 1, 1)
-                        , request
-                )
-        );
-    }
-
     @PostMapping("/schedules")
     public ResponseEntity<List<Schedule>> postSchedules(@RequestBody JsonNode jsonNode, HttpServletRequest request) {
         return ResponseEntity.ok(workerService.getSchedulesForSelf(

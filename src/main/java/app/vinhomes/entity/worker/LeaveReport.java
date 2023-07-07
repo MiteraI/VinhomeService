@@ -1,5 +1,6 @@
 package app.vinhomes.entity.worker;
 
+import app.vinhomes.entity.Account;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,17 @@ public class LeaveReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "leave_report_id")
     private Long leaveReportId;
-    private Long workerStatusId;
+
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "worker_id",
+            referencedColumnName = "account_id",
+            nullable = false
+    )
+    private Account worker;
+
     private LocalDate startTime;
     private LocalDate endTime;
     @Lob
