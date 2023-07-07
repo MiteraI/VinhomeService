@@ -76,14 +76,17 @@
 </head>
 
 <body>
+  <div
+    class="position-fixed top-0 start-0 bg-black opacity-50 w-100 h-100 d-flex justify-content-center align-items-center"
+    style="z-index: 99;">
+    <div class="w-70 h-70 bg-success"></div>
+  </div>
   <header th:replace="~{./fragments/adminHeader.html}"></header>
   <!-- CREATE SERVICE FORM-->
   <!-- CREATE SERVICE FORM-->
   <!-- CREATE SERVICE FORM-->
   <!--LOAD CATEGORY -->
-  <div class="position-fixed top-0 start-0 bg-black opacity-50 w-100 h-100" style="z-index: 99;">
-    
-  </div>
+
 
   <div class="container">
     <button type="button" class="btn btn-primary" id="showCreateService">Create Service</button>
