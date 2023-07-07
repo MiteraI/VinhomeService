@@ -3,10 +3,12 @@ package app.vinhomes.controller;
 import app.vinhomes.common.SessionUserCaller;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.order.Schedule;
+import app.vinhomes.event.event_storage.SendEmailOnRefund_OnFinishOrder;
 import app.vinhomes.service.WorkerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import java.util.List;
 public class WorkerApi {
     @Autowired
     WorkerService workerService;
+    @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping("/schedules")
     public ResponseEntity<List<Schedule>> postSchedules(@RequestBody JsonNode jsonNode, HttpServletRequest request) {
@@ -39,6 +43,10 @@ public class WorkerApi {
         Account worker = workerService.getWorkerOfOneOrderForConfirmation(orderId);
         boolean confirm = workerService.confirmOrder(worker.getAccountId(), orderId, image);
         if (confirm) {
+            applicationEventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(
+                    workerService.getCustomerOfOrder(orderId)
+                    ,workerService.getTransactionOfOrder(orderId)
+                    ,true));
             return ResponseEntity.status(HttpStatus.OK).body("Confirm order successfully");
         }
         else {

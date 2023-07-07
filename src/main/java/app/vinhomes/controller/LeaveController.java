@@ -95,9 +95,9 @@ public class LeaveController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not choose the startDate after endDate");
         }
         Integer daysOffInt = daysOff.intValue();
-        // Rule cho viec xin gnhi truoc 1 tuan
-        if (days < 7) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("You have to leave report for days off before a week");
+        // Rule cho viec xin gnhi truoc 10 ngay
+        if (days < 10) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("You have to leave report for days off before 10 days");
         }
 
         //Check con du ngay nghi phep k
@@ -107,7 +107,7 @@ public class LeaveController {
 
         // TH nghi phep khong can nop file lien quan
         if (file == null || file.getOriginalFilename().isEmpty()) {
-            if (workerStatus != null && days >= 7) {
+            if (workerStatus != null && days >= 10) {
                 if (leaveDaysLimit > daysOffInt) {
                     LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason, null, request);
                     return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report ");
@@ -118,7 +118,7 @@ public class LeaveController {
         //Co nop file
         if (file != null || !file.getOriginalFilename().isEmpty()) {
 
-            if (days >= 7 && leaveDaysLimit > daysOffInt) {
+            if (days >= 10 && leaveDaysLimit > daysOffInt) {
                 String originalFilename = file.getOriginalFilename();
                 String newFilename = "";  // Specify the new file name here
                 String extension = StringUtils.getFilenameExtension(originalFilename);

@@ -3,6 +3,7 @@ package app.vinhomes.service;
 import app.vinhomes.common.SessionUserCaller;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.entity.type_enum.OrderStatus;
@@ -10,6 +11,7 @@ import app.vinhomes.entity.worker.LeaveReport;
 import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.OrderRepository;
+import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.repository.order.ScheduleRepository;
 import app.vinhomes.repository.order.TimeSlotRepository;
 import app.vinhomes.repository.worker.LeaveReportRepository;
@@ -43,6 +45,8 @@ public class WorkerService {
     private TimeSlotRepository timeSlotRepository;
     @Autowired
     private WorkerStatusRepository workerStatusRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
     @Autowired
     private AzureBlobAdapter azureBlobAdapter;
     @Autowired
@@ -91,6 +95,7 @@ public class WorkerService {
         Schedule schedule = scheduleRepository.findByOrder(order);
         LocalDate workDate = schedule.getWorkDay();
         TimeSlot timeSlot = schedule.getTimeSlot();
+        List<Account> accounts = schedule.getWorkers();
         if (workDate.isEqual(LocalDate.now()) && timeSlot.getStartTime().isBefore(LocalTime.now())) {
             order.setStatus(OrderStatus.valueOf("SUCCESS"));
             String originalFilename = image.getOriginalFilename();
@@ -108,6 +113,12 @@ public class WorkerService {
             blob.upload(image.getInputStream(),
                     image.getSize());
             order.setUrlImageConfirm(Url);
+            for (Account acc : accounts) {
+                WorkerStatus workerStatus = acc.getWorkerStatus();
+                int workCount = workerStatus.getWorkCount() + 1;
+                workerStatus.setWorkCount(workCount);
+                workerStatusRepository.save(workerStatus);
+            }
             orderRepository.save(order);
             return true;
         }
@@ -118,5 +129,11 @@ public class WorkerService {
     public List<LeaveReport> getAllLeaveReportForSelf(HttpServletRequest request) {
         Account account = SessionUserCaller.getSessionUser(request);
         return leaveReportRepository.findByWorker_AccountId(account.getAccountId());
+    }
+    public Account getCustomerOfOrder(Long orderId) {
+        return orderRepository.findByOrderId(orderId).getAccount();
+    }
+    public Transaction getTransactionOfOrder(Long orderId) {
+        return transactionRepository.findById(orderId).get();
     }
 }

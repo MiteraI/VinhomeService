@@ -70,19 +70,6 @@ public class OrderController {
         return ResponseEntity.ok().body("Reviewed");
     }
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestBody JsonNode loginJson, HttpSession session) {
-        Account account = accountRepository.findByAccountNameAndPassword(
-                loginJson.get("accountname").asText(),
-                loginJson.get("pwd").asText()
-        );
-        if (account != null) {
-            session.setAttribute("loginedUser", account);
-            return ResponseEntity.ok().body("Success");
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No account found");
-        }
-    }
 
     @GetMapping(value = "/yourOrders", produces = MediaType.APPLICATION_JSON_VALUE)
     //get all orders of that logged in account//

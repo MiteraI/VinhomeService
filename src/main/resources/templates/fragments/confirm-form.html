@@ -1,8 +1,22 @@
 <html lang="en">
 
+<head>
+    <style>
+        #confirm-form {
+            position: fixed;
+            background-color: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            z-index: 999;
+        }
+    </style>
+</head>
+
 <body>
-    <div class="flex justify-center" id="confirm-form" style="display: none;">
-        <form class="border-2 border-black">
+    <div class="flex justify-center p-4 border-2 border-black" id="confirm-form" style="display: none;">
+        <form class="my-6">
             <div class="form-group">
                 <p id="form-customer-name"></p>
             </div>
@@ -12,8 +26,8 @@
                 <input type="file" class="form-control-file" id="imageConfirm" onchange="previewImage(event)" required>
                 <img id="preview" src="#" alt="Preview" style="display: none; max-width: 400px; margin-top: 10px;" />
             </div>
-            <button type="button" class="btn btn-secondary" id="cancelConfirmOrder">Cancel</button>
-            <button type="submit" class="btn btn-primary">Confirm</button>
+            <button type="button" class="bg-red-cancel py-2 px-10 rounded-lg" id="cancelConfirmOrder">Cancel</button>
+            <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg">Confirm</button>
         </form>
     </div>
 
@@ -59,7 +73,8 @@
                 })
         })
 
-        document.getElementById("cancelConfirmOrder").addEventListener("click", function () {
+        document.getElementById("cancelConfirmOrder").addEventListener("click", function (e) {
+            e.preventDefault();
             document.getElementById("confirm-form").style.display = "none";
         })
     </script>
