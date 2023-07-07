@@ -62,7 +62,7 @@ public class PageController {
             if (acc.getRole() == 2) {
                 return "adminDisplayWorker";
             } else if (acc.getRole() == 1) {
-                return "scheduleTable";
+                return "worker-homepage";
             }
         }
         model.addAttribute("category", serviceCategoryRepository.findAll());

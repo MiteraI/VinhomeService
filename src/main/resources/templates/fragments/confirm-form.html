@@ -1,0 +1,84 @@
+<html lang="en">
+
+<head>
+    <style>
+        #confirm-form {
+            position: fixed;
+            background-color: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            z-index: 999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex justify-center p-4 border-2 border-black" id="confirm-form" style="display: none;">
+        <form class="my-6">
+            <div class="form-group">
+                <p id="form-customer-name"></p>
+            </div>
+            <input type="hidden" id="input-orderid">
+            <div class="form-group">
+                <label for="imageConfirm">Image:</label>
+                <input type="file" class="form-control-file" id="imageConfirm" onchange="previewImage(event)" required>
+                <img id="preview" src="#" alt="Preview" style="display: none; max-width: 400px; margin-top: 10px;" />
+            </div>
+            <button type="button" class="bg-red-cancel py-2 px-10 rounded-lg" id="cancelConfirmOrder">Cancel</button>
+            <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg">Confirm</button>
+        </form>
+    </div>
+
+
+    <script>
+        function previewImage(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById("confirm-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const imageConfirm = document.getElementById("imageConfirm").files[0];
+            const orderId = document.getElementById("input-orderid").value;
+            console.log(orderId);
+            var formData = new FormData();
+            formData.append("image", imageConfirm);
+            fetch("/api/worker/orders/" + orderId + "/confirm-order", {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        alert("Comfirm succeeded");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Confirm failed")
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        })
+
+        document.getElementById("cancelConfirmOrder").addEventListener("click", function (e) {
+            e.preventDefault();
+            document.getElementById("confirm-form").style.display = "none";
+        })
+    </script>
+
+</body>
+
+</html>

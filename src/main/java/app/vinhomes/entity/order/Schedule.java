@@ -49,8 +49,7 @@ public class Schedule {
     )
     @ToString.Exclude
     @JsonIgnoreProperties({
-            "orderId","schedule","status","service"
-            ,"payment","rating","comment"
+            "schedule","rating","comment"
     })
     @MapsId
     private Order order;

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../dist/index.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="flex justify-center my-10">
+        <table id="timeTable" class=" border-2 border-black rounded-lg mx-30">
+            <thead class="bg-blue-bootstrap text-white">
+                <tr>
+                    <th rowspan="2" class="text-black">
+                        <span class="text-white"><strong>Year</strong></span>
+                        <select>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                        </select>
+                        <br>
+                        <span class="text-white"><strong>Week</strong></span>
+                        <select id="weekSelect">
+                            <option value="1">02/01 To 08/01</option>
+                            <option value="2">09/01 To 15/01</option>
+                            <option value="3">16/01 To 22/01</option>
+                            <option value="4">23/01 To 29/01</option>
+                            <option value="5">30/01 To 05/02</option>
+                            <option value="6">06/02 To 12/02</option>
+                            <option value="7">13/02 To 19/02</option>
+                            <option value="8">20/02 To 26/02</option>
+                            <option value="9">27/02 To 05/03</option>
+                            <option value="10">06/03 To 12/03</option>
+                            <option value="11">13/03 To 19/03</option>
+                            <option value="12">20/03 To 26/03</option>
+                            <option value="13">27/03 To 02/04</option>
+                            <option value="14">03/04 To 09/04</option>
+                            <option value="15">10/04 To 16/04</option>
+                            <option value="16">17/04 To 23/04</option>
+                            <option value="17">24/04 To 30/04</option>
+                            <option value="18">01/05 To 07/05</option>
+                            <option value="19">08/05 To 14/05</option>
+                            <option value="20">15/05 To 21/05</option>
+                            <option value="21">22/05 To 28/05</option>
+                            <option value="22">29/05 To 04/06</option>
+                            <option value="23">05/06 To 11/06</option>
+                            <option value="24">12/06 To 18/06</option>
+                            <option value="25">19/06 To 25/06</option>
+                            <option value="26">26/06 To 02/07</option>
+                            <option value="27">03/07 To 09/07</option>
+                            <option value="28">10/07 To 16/07</option>
+                            <option value="29">17/07 To 23/07</option>
+                            <option value="30">24/07 To 30/07</option>
+                            <option value="31">31/07 To 06/08</option>
+                            <option value="32">07/08 To 13/08</option>
+                            <option value="33">14/08 To 20/08</option>
+                            <option value="34">21/08 To 27/08</option>
+                            <option value="35">28/08 To 03/09</option>
+                            <option value="36">04/09 To 10/09</option>
+                            <option value="37">11/09 To 17/09</option>
+                            <option value="38">18/09 To 24/09</option>
+                            <option value="39">25/09 To 01/10</option>
+                            <option value="40">02/10 To 08/10</option>
+                            <option value="41">09/10 To 15/10</option>
+                            <option value="42">16/10 To 22/10</option>
+                            <option value="43">23/10 To 29/10</option>
+                            <option value="44">30/10 To 05/11</option>
+                            <option value="45">06/11 To 12/11</option>
+                            <option value="46">13/11 To 19/11</option>
+                            <option value="47">20/11 To 26/11</option>
+                            <option value="48">27/11 To 03/12</option>
+                            <option value="49">04/12 To 10/12</option>
+                            <option value="50">11/12 To 17/12</option>
+                            <option value="51">18/12 To 24/12</option>
+                            <option value="52">25/12 To 31/12</option>
+                        </select>
+                    </th>
+                    <th class="px-14">Mon</th>
+                    <th class="px-14">Tue</th>
+                    <th class="px-14">Wed</th>
+                    <th class="px-14">Thu</th>
+                    <th class="px-14">Fri</th>
+                    <th class="px-14">Sat</th>
+                    <th class="px-14">Sun</th>
+                </tr>
+                <tr id="weekdate">
+                    <th id="mondaydate">26/06</th>
+                    <th id="tuesdaydate">27/06</th>
+                    <th id="wednesdaydate">28/06</th>
+                    <th id="thursdaydate">29/06</th>
+                    <th id="fridaydate">30/06</th>
+                    <th id="saturdaydate">01/07</th>
+                    <th id="sundaydate">02/07</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center text-sm">Slot 1 <br>6:00 - 7:30</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2 border-r-black">-</td>
+                </tr>
+                <tr>
+                    <td class="text-center text-sm">Slot 2 <br>8:00 - 9:30</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2 border-r-black">-</td>
+                </tr>
+                <tr>
+                    <td class="text-center text-sm">Slot 3 <br>10:00 - 11:30</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2 border-r-black">-</td>
+                </tr>
+                <tr>
+                    <td class="text-center text-sm">Slot 4 <br>12:30 - 14:00</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2 border-r-black">-</td>
+                </tr>
+                <tr>
+                    <td class="text-center text-sm">Slot 5 <br>14:30 - 16:00</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2">-</td>
+                    <td class="border-2 border-r-black">-</td>
+                </tr>
+                <tr>
+                    <td class="text-center text-sm">Slot 6 <br>16:30 - 18:00</td>
+                    <td class="border-2 border-b-black">-</td>
+                    <td class="border-2 border-b-black">-</td>
+                    <td class="border-2 border-b-black">-</td>
+                    <td class="border-2 border-b-black">-</td>
+                    <td class="border-2 border-b-black">-</td>
+                    <td class="border-2 border-b-black">-</td>
+                    <td class="border-2 border-b-black border-r-black text-green-success">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+
+</html>
