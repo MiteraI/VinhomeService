@@ -16,4 +16,5 @@ public interface WorkerStatusRepository extends JpaRepository<WorkerStatus, Long
     WorkerStatus findByAccount(Account account);
     @Query(value = "select * from tbl_worker_status a where a.worker_id = ?1", nativeQuery = true)
     WorkerStatus findWorkerStatusById(long accountId);
+
 }

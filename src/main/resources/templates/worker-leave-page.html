@@ -61,7 +61,8 @@
           <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
               class="text-blue-bootstrap">2023-08-01</span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
+          </br>
         </div>
       </div>
     </div>
@@ -74,7 +75,7 @@
           <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
               class="text-blue-bootstrap">2023-08-01</span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
         </div>
       </div>
     </div>
@@ -87,7 +88,20 @@
           <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
               class="text-blue-bootstrap">2023-08-01</span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap">File Link</a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
+        </div>
+      </div>
+    </div>
+    <div th:if="${leaveReport.status == 4}" class="pending border-2 border-black rounded-lg p-4">
+      <p>
+        Status: <span class="text-red-cancel">Canceled</span>
+      </p>
+      <div class="flex p-4 space-x-6">
+        <div class="w-2/6">
+          <p>Start from: <span class="text-blue-bootstrap">2023-07-11</span> to <span
+                  class="text-blue-bootstrap">2023-08-01</span></p>
+          <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
         </div>
       </div>
     </div>
