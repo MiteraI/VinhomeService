@@ -52,7 +52,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/yourOrders").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/homepage").hasAuthority("0"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/your-schedule").hasAnyAuthority("1","2"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/leave-register").hasAnyAuthority("1","2"))
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/category-services/**").hasAuthority("0"))
                 .authorizeHttpRequests(authUser -> {
                     authUser.requestMatchers("/order-history").hasAnyAuthority("0","2");
@@ -60,7 +62,6 @@ public class SecurityConfig {
                     authUser.requestMatchers("/service/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/verification").hasAnyAuthority("0","2");
 //                    authUser.requestMatchers("/verificationMethod").hasAnyAuthority("0","2");
-                    authUser.requestMatchers("/yourOrders").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2");
                 })
                 .authorizeHttpRequests(authAdmin ->{
