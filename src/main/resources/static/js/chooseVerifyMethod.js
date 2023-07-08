@@ -23,6 +23,7 @@ let otp_merge = "";
 let otpDuration = 0
 
 const input = document.querySelectorAll(".input");
+const in1 = document.querySelector('#otc-1')
 const inputField = document.querySelector(".inputfield");
 
 const queryString = window.location.search;
@@ -196,6 +197,27 @@ function otpCoundown(duration) {
     }
   }, 1000)
 }
+
+
+function splitNumber(e) {
+  let data = e.data || e.target.value; // Chrome doesn't get the e.data, it's always empty, fallback to value then.
+  if (!data) return; // Shouldn't happen, just in case.
+  if (data.length === 1) return; // Here is a normal behavior, not a paste action.
+  popuNext(e.target, data);
+  inputCount = input.length - 1
+  //for (i = 0; i < data.length; i++ ) { ins[i].value = data[i]; }
+}
+function popuNext(el, data) {
+  el.value = data[0]; // Apply first item to first input
+  data = data.substring(1); // remove the first char.
+  if (el.nextElementSibling && data.length) {
+    // Do the same with the next element and next data
+    popuNext(el.nextElementSibling, data);
+  }
+};
+
+in1.addEventListener('input', splitNumber)
+
 
 verifyBtn.addEventListener('click', (e) => {
   e.preventDefault()
