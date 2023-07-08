@@ -102,17 +102,20 @@
         </div>
         <div class="d-flex justify-content-cente align-items-center" style="margin-top: 15px">
           <button type="button" class="btn btn-danger w-50" id="cancelUpdateCategory">Cancel</button>
-          <button type="submit" class="btn btn-primary ms-2 w-50">Create</button>
+          <button type="submit" class="btn btn-primary ms-2 w-50">Update</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
+    var categoryNameUpdate = '';
+    var categoryID = '';
     function update(categoryId, categoryName) {
+      categoryID = categoryId;
       document.getElementById("updateCategoryFormContainer").classList.toggle('d-none')
       document.getElementById("categoryNameUpdate").value = categoryName;
-      var categoryNameUpdate = '';
+
       document.getElementById("categoryNameUpdate").addEventListener("input", function () {
         categoryNameUpdate = this.value;
       })
@@ -121,7 +124,7 @@
 
         var formData = new FormData();
         formData.append("categoryName", categoryNameUpdate)
-        fetch("/api/update-category/" + categoryId, {
+        fetch("/api/update-category/" + categoryID, {
           method: 'POST',
           body: formData
         })
@@ -138,12 +141,11 @@
           })
       })
 
-
     }
     document.getElementById("cancelUpdateCategory").addEventListener("click", function () {
       document.getElementById("updateCategoryFormContainer").classList.toggle('d-none')
       categoryNameUpdate = '';
-      categoryId = 0;
+      categoryID = '';
     })
   </script>
 
@@ -165,7 +167,7 @@
       })
         .then(res => {
           if (res.status === 201) {
-            alert("v");
+            window.location.reload();
           }
           else {
             alert("Not Successfully");
