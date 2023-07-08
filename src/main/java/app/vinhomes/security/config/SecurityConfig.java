@@ -73,6 +73,8 @@ public class SecurityConfig {
                     authAdmin.requestMatchers("/admin_UpdateCustomer/**").hasAuthority("2");
                     authAdmin.requestMatchers("/see-leave-report").hasAuthority("2");
                     authAdmin.requestMatchers("/see-all-order-by-admin").hasAuthority("2");
+                    authAdmin.requestMatchers("/see-all-services").hasAuthority("2");
+                    authAdmin.requestMatchers("/see-all-categories").hasAuthority("2");
                 })
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .exceptionHandling().accessDeniedHandler(getAccessDeniedHandler()).and()

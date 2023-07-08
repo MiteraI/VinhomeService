@@ -311,7 +311,7 @@ transform: translate(-50%, -50%);  -->
     }
     function getAdminCustomerPage() {
         console.log("inside return main page")
-        window.location.href = "/adminDisplayCustomer_page";
+        window.location.href = "/see-all-order-by-admin";
     }
     async function getRefundTransaction() {
         var response = await fetch("http://localhost:8080/transaction/admin/refundTransaction/" + getVnpTxnRef,
