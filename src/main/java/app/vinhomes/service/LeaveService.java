@@ -1,7 +1,9 @@
 package app.vinhomes.service;
 
 import app.vinhomes.common.SessionUserCaller;
+import app.vinhomes.entity.Account;
 import app.vinhomes.entity.worker.LeaveReport;
+import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.worker.LeaveReportRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class LeaveService {
@@ -25,5 +29,13 @@ public class LeaveService {
                 .fileURL(FileURl)
                 .build();
         return leaveReportRepository.save(leaveReport);
+    }
+
+    public Map<String, Object> leaveReportDetail (LeaveReport leaveReport) {
+        Account account = leaveReport.getWorker();
+        Map<String, Object> leaveMap = new HashMap<>();
+        leaveMap.put("leaveReport", leaveReport);
+        leaveMap.put("account", account);
+        return leaveMap;
     }
 }

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .modal-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        #imagePreview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-bottom: 10px;
+        }
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .modal-container2 {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            z-index: 1000;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{./fragments/adminHeader.html}"></header>
+<!-- CREATE SERVICE FORM-->
+<!-- CREATE SERVICE FORM-->
+<!-- CREATE SERVICE FORM-->
+<!--LOAD CATEGORY -->
+<div class="container">
+    <button type="button" class="btn btn-primary" id="showCreateService">Create Service</button>
+
+    <div class="modal-container" id="createServiceFormContainer" style="display: none;">
+        <h3>Create Service</h3>
+        <form id="createServiceForm">
+            <div class="form-group">
+                <label for="serviceName">Service Name:</label>
+                <input type="text" class="form-control" id="serviceName" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select class="form-control" id="category" required>
+                    <option value="">Select a category</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="des">Description:</label>
+                <input type="text" class="form-control" id="des" required>
+            </div>
+            <div class="form-group">
+                <label for="numOfPeople">Number Of people:</label>
+                <input type="number" min="1" class="form-control" id="numOfPeople" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                <input type="file" class="form-control-file" id="image" required>
+            </div>
+            <button type="button" class="btn btn-secondary" id="cancelCreateService">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+<!--FORM UPDATE-->
+<!--FORM UPDATE-->
+<!--FORM UPDATE-->
+<form class="row g-3 p-3 modal-container2" style="display: none" id="UpdateServiceForm">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="serviceNameUpdate" class="form-label">Service Name</label>
+            <input type="text" class="form-control" id="serviceNameUpdate" required>
+        </div>
+        <div class="col-md-4">
+            <label for="categoryUpdate" class="form-label">Category</label>
+            <select class="form-control" id="categoryUpdate" required>
+                <option value="" id="defaultValueOfService"></option>
+
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="priceUpdate" class="form-label">Price</label>
+            <input type="number" class="form-control" id="priceUpdate">
+        </div>
+    </div>
+    <div class="col-12">
+        <label for="des" class="form-label">Description</label>
+        <textarea class="form-control" id="description" ></textarea>
+    </div>
+    <div class="col-12">
+        <label for="numOfPeopleUpdate" class="form-label">Description</label>
+        <input type="number" class="form-control" id="numOfPeopleUpdate" >
+    </div>
+    <div class="col-12">
+        <label for="imageFile" class="form-label">Image</label>
+        <input type="file" class="form-control" id="imageFile" >
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary" id="updateService">Update</button>
+        <button type="button" class="btn btn-secondary" id="cancelUpdateService">Cancel</button>
+    </div>
+</form>
+
+
+<!--CANCEL BUTTON-->
+<!--CANCEL BUTTON-->
+<!--CANCEL BUTTON-->
+<script>
+    document.getElementById("cancelCreateService").addEventListener("click", function () {
+        document.getElementById("createServiceForm").style.display = "none";
+        document.getElementById("createServiceFormContainer").style.display = "none";
+    })
+</script>
+<script>
+    document.getElementById("showCreateService").addEventListener("click", function () {
+        document.getElementById("createServiceForm").style.display = '';
+        let output = '';
+        fetch("/api/categories")
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                data.forEach(item => {
+                    const categoryName = item['serviceCategoryName'];
+                    const categoryId = item['serviceCategoryId'];
+                    output +=
+                        `
+                    <option value="${categoryId}">${categoryName}</option>
+                `
+                })
+                document.getElementById("category").innerHTML = output;
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    })
+</script>
+<script>
+    document.getElementById('createServiceForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get form values
+        var serviceName = document.getElementById('serviceName').value;
+        var categoryId = document.getElementById('category').value;
+        var price = document.getElementById('price').value;
+        var description = document.getElementById('des').value;
+        var numOfPeople = document.getElementById('numOfPeople').value;
+        var image = document.getElementById('image').files[0];
+
+        // Create form data object
+        var formData = new FormData();
+        formData.append('serviceName', serviceName);
+        formData.append('category', categoryId);
+        formData.append('price', price);
+        formData.append('description', description);
+        formData.append('numOfPeople', numOfPeople);
+        formData.append('image', image);
+
+        // Send POST request using fetch
+        fetch('/api/services/create', {
+            method: 'POST',
+            body: formData
+        })
+            .then(function(response) {
+                if (response.ok) {
+                    // Handle successful response
+                    console.log('Service created successfully!');
+                    // Reset the form
+                    // document.getElementById('createServiceForm').reset();
+                    window.location.reload();
+                } else {
+                    // Handle error response
+
+                    console.log(response.text());
+                }
+            })
+            .catch(function(error) {
+                // Handle network error
+                console.log('Network error:', error);
+            });
+    });
+</script>
+<!--Show Service-->
+<div class="container service mt-4">
+
+</div>
+<script>
+    fetch("/api/services")
+        .then(res => res.json())
+        .then(data => {
+            let output = '';
+            let serviceCount = 0;
+            data.forEach(item => {
+                if (serviceCount % 2 === 0) {
+                    // Start a new row every two services
+                    output += '<div class="row">';
+                }
+
+                const service = item['service'];
+                const serviceId = service['serviceId'];
+                const serviceName = service['serviceName'];
+                const category = item['category'];
+                const categoryName = category['serviceCategoryName'];
+                const categoryId = category['serviceCategoryId'];
+                const price = service['price'];
+                const description = service['description'];
+                const status = service['status'];
+                const url = service['urlImage'];
+                const numOfPeople = service['numOfPeople'];
+                output += `
+                        <div class="col-sm-6">
+                            <div class="card" style="width: 100%;">
+                                <img src="${url}" class="card-img-top" style="height: 300px">
+                                <div class="card-body">
+                                    <h5 class="card-title">${serviceName}</h5>
+                                    <p class="card-text">${description}</p>
+                                    <p>Category: ${categoryName}</p>
+                                    <p>Price: ${price}</p>
+                                    <a href="#" class="btn btn-primary" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
+                                    `
+
+                if (status === 1) {
+                    output +=
+                        `<a href="#" class="btn btn-primary" onclick="setStatus(0, '${serviceId}')">Active</a>`
+                }
+                else {
+                    output +=
+                        `<a href="#" class="btn btn-primary" onclick="setStatus(1, '${serviceId}')">Inactive</a>`
+                }
+                output +=
+                    `
+                                </div>
+                            </div>
+                        </div>`;
+
+                if (serviceCount % 2 !== 0 || serviceCount === Object.keys(data).length - 1) {
+                    // Close the row at the end of each pair or when it's the last service
+                    output += '</div>';
+                }
+
+                serviceCount++;
+
+                document.querySelector(".service").innerHTML = output;
+            });
+        })
+    function setStatus (status, serviceId) {
+        console.log(status)
+        fetch ('api/services/' + serviceId + '/updateStatus', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({status: status})
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    window.location.reload();
+                }
+                else {
+
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
+    // GET DATA FOR POSTING
+    var serviceNameUpdate = '';
+    var priceUpdate = '';
+    var des = '';
+    var categoryIdUpdate = '';
+    var urlUpdate = '';
+    var numOfPeopleUpdate = '';
+    document.getElementById("serviceNameUpdate").addEventListener("input", function () {
+        serviceNameUpdate = this.value;
+    })
+    document.getElementById("priceUpdate").addEventListener("input", function () {
+        priceUpdate = this.value;
+    })
+    document.getElementById("description").addEventListener("input", function () {
+        des = this.value;
+    })
+    document.getElementById("categoryUpdate").addEventListener("change", function () {
+        categoryIdUpdate = this.value;
+    })
+    document.getElementById("imageFile").addEventListener("change", function () {
+        urlUpdate = this.files[0];
+    })
+    document.getElementById("numOfPeopleUpdate").addEventListener("input", function () {
+        numOfPeopleUpdate = this.value;
+
+    })
+
+
+
+    // OPEN UPDATE FORM
+    function updateForm (serviceId, serviceName, categoryName, price, description, url, numOfPeople, categoryId) {
+        document.getElementById("cancelUpdateService").addEventListener("click", function () {
+            document.getElementById("UpdateServiceForm").style.display = "none";
+            serviceId = '';
+            serviceNameUpdate = '';
+            priceUpdate = '';
+            des = '';
+            categoryIdUpdate = '';
+            urlUpdate = '';
+            numOfPeopleUpdate = '';
+        })
+        document.getElementById("UpdateServiceForm").style.display = "block";
+        document.getElementById("serviceNameUpdate").value = serviceName;
+        document.getElementById("priceUpdate").value = price;
+        document.getElementById("description").value = description;
+        document.getElementById("numOfPeopleUpdate").value = numOfPeople;
+        let output = '';
+        fetch("/api/categories")
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                data.forEach(item => {
+                    const categoryNameFromList = item['serviceCategoryName'];
+                    const categoryId = item['serviceCategoryId'];
+                    if (categoryNameFromList === categoryName) {
+                        output += `<option value="${categoryId}" selected>${categoryName}</option>`;
+                    } else {
+                        output += `<option value="${categoryId}">${categoryNameFromList}</option>`;
+                    }
+                })
+                document.getElementById("categoryUpdate").innerHTML = output;
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        var formData = new FormData();
+
+        const form = document.getElementById("UpdateServiceForm");
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            formData.append('description', des);
+            formData.append('serviceName', serviceNameUpdate);
+            formData.append('category', categoryIdUpdate);
+            formData.append('price', priceUpdate);
+            formData.append('numOfPeople', numOfPeopleUpdate);
+            formData.append('image', urlUpdate);
+            fetch("/api/services/" + serviceId + "/update", {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        window.location.reload();
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        })
+        // function update(serviceId) {
+        //     console.log(serviceId);
+        //     console.log(data);
+        //
+        // }
+    }
+
+
+
+
+    // GIVE DATA TO BACKEND
+
+</script>
+<!--CLOSE UPDATE-->
+
+
+<!--OPEN FORM CREATE-->
+<script>
+    document.getElementById("showCreateService").addEventListener("click", function () {
+        document.getElementById("createServiceFormContainer").style.display = "block";
+    })
+</script>
+
+
+<!--UPDATE SERVICE-->
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
