@@ -209,6 +209,7 @@ async function verify() {
     accountname: username,
     OTP: otp_merge
   }
+  let toText = ''
 
   for (let i = 0; i < input.length; i++) {
     if (input[i].value != "") {
@@ -228,21 +229,29 @@ async function verify() {
   }).then(res => {
     let responseStatus = res.status;
     console.log(responseStatus)
-    let toText = res.text()
-    if (responseStatus < 200 || responseStatus > 300) {
-      otp_merge = ""
-      errTxt.innerText = toText
-      errTxt.classList.remove('hidden')
-    }
-    if (responseStatus === 200) {
-      console.log("status: 200")
-      otp_merge = ""
-      breakFlag = true;
-      errTxt.classList.add('hidden')
-      window.location.href = "/"
-      console.log("pass alert")
+    res.text().then(text => {
+      if (responseStatus < 200 || responseStatus > 300) {
+        otp_merge = ""
+        errTxt.innerText = text
+        errTxt.classList.remove('hidden')
+        inputCount = 0;
+        finalInput = "";
+        input.forEach((element) => {
+          element.value = "";
+        });
+        updateInputConfig(inputField.firstElementChild, false);
+      }
+      if (responseStatus === 200) {
+        console.log("status: 200")
+        otp_merge = ""
+        breakFlag = true;
+        errTxt.classList.add('hidden')
+        window.location.href = "/"
+        console.log("pass alert")
 
-    }
+      }
+    })
+
 
   }).catch(err => console.log(err))
 
