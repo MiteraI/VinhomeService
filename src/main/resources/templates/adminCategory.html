@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeLeaf.org">
+
 <head>
   <meta charset="UTF-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -23,6 +24,7 @@
     }
   </style>
 </head>
+
 <body>
 <header th:replace="~{./fragments/adminHeader.html}"></header>
 
@@ -67,42 +69,53 @@
 <!--FORM CREATE CATEGORY-->
 <!--FORM CREATE CATEGORY-->
 
-<div class="hihi" id="createCategoryFormContainer" style="display: none;">
-  <h3>Create Service</h3>
-  <form id="createCategoryForm" style="border-color: black">
-    <div class="form-group">
-      <label for="categoryName">Category Name:</label>
-      <input type="text" class="form-control" id="categoryName" required>
-    </div>
-    <div style="margin-top: 15px">
-      <button type="button" class="btn btn-secondary" id="cancelCreateService">Cancel</button>
-      <button type="submit" class="btn btn-primary">Create</button>
-    </div>
-  </form>
+<div
+        class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center d-none"
+        id="createCategoryFormContainer" style="z-index: 99; background-color: rgba(0, 0, 0, 0.5);">
+  <div class="w-50 border border-black rounded p-2 bg-white">
+    <h3 class="text-center">Create Service</h3>
+    <form id="createCategoryForm" style="border-color: black">
+      <div class="form-group">
+        <label for="categoryName" class="mb-2">Category Name:</label>
+        <input type="text" class="form-control" id="categoryName" required>
+      </div>
+      <div class="d-flex justify-content-cente align-items-center" style="margin-top: 15px">
+        <button type="button" class="btn btn-danger w-50" id="cancelCreateService">Cancel</button>
+        <button type="submit" class="btn btn-primary ms-2 w-50">Create</button>
+      </div>
+    </form>
+  </div>
 </div>
 <!--FORM Update CATEGORY-->
 <!--FORM Update CATEGORY-->
 <!--FORM Update CATEGORY-->
 
-<div class="hihi" id="updateCategoryFormContainer" style="display: none;">
-  <h3>Update Service</h3>
-  <form id="updateCategoryForm" style="border-color: black">
-    <div class="form-group">
-      <label for="categoryNameUpdate">Category Name:</label>
-      <input type="text" class="form-control" id="categoryNameUpdate" required>
-    </div>
-    <div style="margin-top: 15px">
-      <button type="button" class="btn btn-secondary" id="cancelUpdateCategory">Cancel</button>
-      <button type="submit" class="btn btn-primary">Update</button>
-    </div>
-  </form>
+<div
+        class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center d-none"
+        id="updateCategoryFormContainer" style="z-index: 99; background-color: rgba(0, 0, 0, 0.5);">
+  <div class="w-50 border border-black rounded p-2 bg-white">
+    <h3 class="text-center">Update Service</h3>
+    <form id="updateCategoryForm" style="border-color: black">
+      <div class="form-group">
+        <label for="categoryNameUpdate" class="mb-2">Category Name:</label>
+        <input type="text" class="form-control" id="categoryNameUpdate" required>
+      </div>
+      <div class="d-flex justify-content-cente align-items-center" style="margin-top: 15px">
+        <button type="button" class="btn btn-danger w-50" id="cancelUpdateCategory">Cancel</button>
+        <button type="submit" class="btn btn-primary ms-2 w-50">Update</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <script>
+  var categoryNameUpdate = '';
+  var categoryID = '';
   function update(categoryId, categoryName) {
-    document.getElementById("updateCategoryFormContainer").style.display = "block";
-    document.getElementById("categoryNameUpdate"). value = categoryName;
-    var categoryNameUpdate = '';
+    categoryID = categoryId;
+    document.getElementById("updateCategoryFormContainer").classList.toggle('d-none')
+    document.getElementById("categoryNameUpdate").value = categoryName;
+
     document.getElementById("categoryNameUpdate").addEventListener("input", function () {
       categoryNameUpdate = this.value;
     })
@@ -111,11 +124,11 @@
 
       var formData = new FormData();
       formData.append("categoryName", categoryNameUpdate)
-      fetch("/api/update-category/" + categoryId, {
+      fetch("/api/update-category/" + categoryID, {
         method: 'POST',
         body: formData
       })
-              .then (res =>  {
+              .then(res => {
                 if (res.status === 201) {
                   window.location.reload();
                 }
@@ -127,19 +140,19 @@
                 console.log(err);
               })
     })
-    document.getElementById("cancelUpdateCategory").addEventListener("click", function () {
-      document.getElementById("updateCategoryFormContainer").style.display = "none";
-      categoryNameUpdate = '';
-      categoryId = 0;
-    })
 
   }
+  document.getElementById("cancelUpdateCategory").addEventListener("click", function () {
+    document.getElementById("updateCategoryFormContainer").classList.toggle('d-none')
+    categoryNameUpdate = '';
+    categoryID = '';
+  })
 </script>
 
 
 <script>
   document.getElementById("showCreateCategory").addEventListener("click", function () {
-    document.getElementById("createCategoryFormContainer").style.display = "block";
+    document.getElementById("createCategoryFormContainer").classList.toggle('d-none')
   })
 </script>
 <script>
@@ -154,7 +167,7 @@
     })
             .then(res => {
               if (res.status === 201) {
-                alert("v");
+                window.location.reload();
               }
               else {
                 alert("Not Successfully");
@@ -166,9 +179,11 @@
   })
 
   document.getElementById("cancelCreateService").addEventListener("click", function () {
-    document.getElementById("createCategoryFormContainer").style.display = "none";
+    document.getElementById("createCategoryFormContainer").classList.toggle('d-none')
+    document.querySelector('#categoryName').value = ""
   })
 
 </script>
 </body>
+
 </html>
