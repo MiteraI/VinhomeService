@@ -62,12 +62,7 @@
       display: block;
     }
 
-    .img-file-name::after {
-      content: "img.jpg";
-      font-weight: bold;
-    }
-
-    .img-file-name:hover::after {
+    .clickableImgName:hover {
       color: blue;
       text-decoration: underline;
       cursor: pointer;
@@ -77,9 +72,13 @@
 
 <body>
   <div
-    class="position-fixed top-0 start-0 bg-black opacity-50 w-100 h-100 d-flex justify-content-center align-items-center"
-    style="z-index: 99;">
-    <div class="w-70 h-70 bg-success"></div>
+    class="servicePicContainer position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center d-none"
+    style="z-index: 99; background-color: rgba(0, 0, 0, 0.5);">
+    <div class="d-flex justify-content-center align-items-center" style="height: 70%; width: 60%;">
+      <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
+        class="serviceImg w-100 h-100 object-fit-contain">
+    </div>
+    <div class="closeBtn btn btn-danger w-25 py-2 mt-5">Close</div>
   </div>
   <header th:replace="~{./fragments/adminHeader.html}"></header>
   <!-- CREATE SERVICE FORM-->
@@ -91,7 +90,8 @@
   <div class="container">
     <button type="button" class="btn btn-primary" id="showCreateService">Create Service</button>
 
-    <div class="modal-container rounded border border-dark" id="createServiceFormContainer" style="display: none;">
+    <div class="modal-container rounded border border-dark  serviceForm" id="createServiceFormContainer"
+      style="display: none;">
       <h3 class="text-center">Create Service</h3>
       <form id="createServiceForm">
         <div class="form-group mb-3">
@@ -120,11 +120,12 @@
         <div class="form-group mb-3">
           <label class="mb-1 text-capitalize">Image of the service</label>
           <br>
-          <label for="image" class="border bg-secondary rounded py-1 px-2">Browse...</label>
+          <label for="image" class="browseBtn border rounded py-1 px-2" role="button"
+            style="background-color: rgba(192, 192, 192, 0.5);">Browse...</label>
           <span class="img-file-name ms-3">
-            Image name:
+            Image name: <span class="clickableImgName" style="font-weight: bold;"></span>
           </span>
-          <input type="file" class="d-none form-control-file" id="image" required>
+          <input type="file" class="uploadFile d-none form-control-file" id="image" value="" required>
         </div>
         <div class="d-flex justify-content-end align-content-center">
           <button type="button" class="btn btn-danger w-50" id="cancelCreateService">Cancel</button>
@@ -138,7 +139,8 @@
   <!--FORM UPDATE-->
   <!--FORM UPDATE-->
   <!--FORM UPDATE-->
-  <form class="row g-3 p-3 modal-container2 rounded border border-black" style="display: none" id="UpdateServiceForm">
+  <form class="row g-3 p-3 modal-container2 rounded border border-black serviceForm" style="display: none"
+    id="UpdateServiceForm">
     <div class="row">
       <div class="col-md-4">
         <label for="serviceNameUpdate" class="form-label">Service Name</label>
@@ -165,26 +167,44 @@
       <input type="number" class="form-control" id="numOfPeopleUpdate">
     </div>
     <div class="col-12">
-      <label for="imageFile" class="form-label">Image</label>
-      <input type="file" class="form-control" id="imageFile">
+      <label class="mb-1 text-capitalize">Image of the service</label>
+      <br>
+      <label for="imageFile" class="browseBtn border rounded py-1 px-2" role="button"
+        style="background-color: rgba(192, 192, 192, 0.5);">Browse...</label>
+      <span class="img-file-name ms-3">
+        Image name: <span class="clickableImgName" style="font-weight: bold;"></span>
+      </span>
+      <input type="file" class="uploadFile d-none form-control-file" id="imageFile" value="" required>
     </div>
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary" id="updateService">Update</button>
-      <button type="button" class="btn btn-danger" id="cancelUpdateService">Cancel</button>
+    <div class="col-12 d-flex justify-content-end align-content-center">
+      <button type="button" class="btn btn-danger w-50" id="cancelUpdateService">Cancel</button>
+      <button type="submit" class="btn btn-primary ms-2 w-50" id="updateService">Update</button>
     </div>
   </form>
 
+  <div class="container service mt-4">
+
+  </div>
 
   <!--CANCEL BUTTON-->
   <!--CANCEL BUTTON-->
   <!--CANCEL BUTTON-->
   <script>
-    document.getElementById("cancelCreateService").addEventListener("click", function () {
-      document.getElementById("createServiceForm").style.display = "none";
-      document.getElementById("createServiceFormContainer").style.display = "none";
-    })
-  </script>
-  <script>
+    const clickableImgName = document.querySelectorAll('.clickableImgName')
+    const createServiceFormContainer = document.querySelector('#createServiceFormContainer')
+    const closeBtn = document.querySelector('.closeBtn')
+
+    const serviceImg = document.querySelector('.serviceImg')
+    const serviceForm = document.querySelectorAll('.serviceForm')
+    const servicePicContainer = document.querySelector('.servicePicContainer')
+
+    const uploadFile = document.querySelectorAll('.uploadFile')
+    const UpdateServiceForm = document.querySelector('#UpdateServiceForm')
+
+    var _validFileExtensions = [".jpg", ".jpeg", ".png"];
+
+    let serviceFormIndex = 0;
+
     document.getElementById("showCreateService").addEventListener("click", function () {
       document.getElementById("createServiceForm").style.display = '';
       let output = '';
@@ -250,12 +270,18 @@
           console.log('Network error:', error);
         });
     });
-  </script>
-  <!--Show Service-->
-  <div class="container service mt-4">
 
-  </div>
-  <script>
+    document.getElementById("cancelCreateService").addEventListener("click", function () {
+      for (let i = 0; i < uploadFile.length; i++) {
+        uploadFile[i].value = ''
+        clickableImgName[i].innerHTML = ''
+
+      }
+      document.getElementById("createServiceForm").style.display = "none";
+      document.getElementById("createServiceFormContainer").style.display = "none";
+    })
+    //Show Service
+
     fetch("/api/services")
       .then(res => res.json())
       .then(data => {
@@ -379,6 +405,11 @@
         numOfPeopleUpdate = '';
       })
       console.log("show update service form")
+      for (let i = 0; i < uploadFile.length; i++) {
+        uploadFile[i].value = ''
+        clickableImgName[i].innerHTML = ''
+
+      }
       document.getElementById("createServiceForm").style.display = "none";
       document.querySelectorAll('.form-control').forEach(form => form.value = "")
       document.getElementById("createServiceFormContainer").style.display = "none";
@@ -451,11 +482,67 @@
     //OPEN FORM CREATE
     document.getElementById("showCreateService").addEventListener("click", function () {
       console.log("open create service form")
+      for (let i = 0; i < uploadFile.length; i++) {
+        uploadFile[i].value = ''
+        clickableImgName[i].innerHTML = ''
+
+      }
       document.querySelectorAll('.form-control').forEach(form => form.value = "")
       document.getElementById("UpdateServiceForm").style.display = "none";
       document.getElementById("createServiceFormContainer").style.display = "block";
     })
 
+
+    for (let i = 0; i < clickableImgName.length; i++) {
+      clickableImgName[i].addEventListener('click', () => {
+        serviceFormIndex = i
+        servicePicContainer.classList.toggle('d-none')
+        serviceForm[i].classList.toggle('d-none')
+      })
+
+    }
+
+    closeBtn.addEventListener('click', () => {
+      servicePicContainer.classList.toggle('d-none')
+      serviceForm[serviceFormIndex].classList.toggle('d-none')
+    })
+    for (let i = 0; i < uploadFile.length; i++) {
+      uploadFile[i].onchange = function ValidateSingleInput() {
+        var sFileName = uploadFile[i].value;
+        console.log("sFileName:" + sFileName);
+        if (sFileName.length > 0) {
+          console.log("sFileName.length:" + sFileName.length);
+          var blnValid = false;
+          for (var j = 0; j < _validFileExtensions.length; j++) {
+            var sCurExtension = _validFileExtensions[j];
+            console.log("sCurExtension: " + sCurExtension);
+            if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() === sCurExtension.toLowerCase()) {
+              blnValid = true;
+              break;
+            }
+          }
+
+          if (!blnValid) {
+            clickableImgName[i].innerHTML = ''
+            alert("Sorry, " + sFileName.split(/(\\|\/)/g).pop() + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+            uploadFile.value = "";
+            return false;
+          }
+        }
+        var tgt = window.event.srcElement
+        var file = tgt.files[0];
+        if (file) {
+          console.log(file.name)
+          clickableImgName[i].innerHTML = file.name
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.addEventListener("loadend", () => {
+            serviceImg.src = reader.result;
+          });
+        }
+        return true;
+      }
+    }
 
   //Check type of file
 
