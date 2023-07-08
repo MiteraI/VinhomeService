@@ -45,7 +45,7 @@
                     <th id="heading-role-c" scope="col" class="asc" style="width: 20%;">Role</th>
                     <th scope="col" class="asc" style="width: 20%;">update</th>
                     <th scope="col" class="asc" style="width: 20%;">Delete</th>
-                    <th scope="col" class="asc" style="width: 20%;">Orders </th>
+                    <!-- <th scope="col" class="asc" style="width: 20%;">Orders </th> -->
                 </tr>
             </thead>
             <tbody id="customer-list">
@@ -129,9 +129,10 @@
                 </td>`;
             }
             output += 
-            `<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>order</button></td>
+            `
             </tr>`
             table_tag.innerHTML += output;
+            //<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>order</button></td>
         }
     }
 
