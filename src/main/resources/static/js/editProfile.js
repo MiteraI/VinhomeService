@@ -30,10 +30,12 @@ const uploadPfpBtn = document.querySelector('.upload-pfp-btn')
 const uploadBtnContainer = document.querySelector('.upload-btn-container')
 
 const imgFileName = document.querySelector('.img-file-name')
+let imgSrc = pfp[0].src
+let tmpFileName = ''
 
 const submitBtn = document.querySelector('.submit-btn');
 
-var _validFileExtensions = [".jpg", ".jpeg", ".png"];
+let _validFileExtensions = [".jpg", ".jpeg", ".png"];
 
 let canEdit = false
 let i = 0
@@ -129,6 +131,8 @@ cancelPfpBtn.addEventListener('click', () => {
   console.log(uploadFile.value)
   uploadBtnContainer.classList.toggle('hidden')
   changePfpBtn.classList.toggle('hidden')
+  pfp.forEach(pfp => pfp.src = imgSrc)
+
 })
 
 uploadPfpBtn.addEventListener('click', (e) => {
@@ -264,7 +268,6 @@ profileForm.addEventListener('submit', async (e) => {
 
 uploadFile.onchange = function ValidateSingleInput() {
   console.log();
-  imgFileName.innerHTML = ''
   imgFileName.classList.remove('italic', 'text-red-500')
   var sFileName = uploadFile.value;
   console.log("sFileName:" + sFileName);
@@ -290,15 +293,18 @@ uploadFile.onchange = function ValidateSingleInput() {
       return false;
     }
   }
-  var tgt = window.event.srcElement
-  var file = tgt.files[0];
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.addEventListener("loadend", () => {
-    pfp.forEach(p => {
-      p.src = reader.result;
-    })
-  });
+  let tgt = window.event.srcElement
+  let file = tgt.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener("loadend", () => {
+      tmpFileName = reader.result
+      pfp.forEach(p => {
+        p.src = reader.result;
+      })
+    });
+  }
   return true;
 }
 
