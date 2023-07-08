@@ -62,6 +62,8 @@ public class LeaveController {
     BlobContainerClient blobContainerClient;
     @Autowired
     private LeaveService leaveService;
+    @Autowired
+    private SseController sseController;
     @PostMapping(value = "/leave-report/create")
     public ResponseEntity<?> LeaveReport (@RequestParam("startDate") String startDateStr,
                                           @RequestParam("endDate") String endDateStr,
@@ -110,6 +112,9 @@ public class LeaveController {
             if (workerStatus != null && days >= 10) {
                 if (leaveDaysLimit > daysOffInt) {
                     LeaveReport leaveReport = leaveService.createNewLeaveReport(workerStatus.getWorkerStatusId(), startDate, endDate, reason, null, request);
+                    Map<String, Object> leaveReportDetail = leaveService.leaveReportDetail(leaveReport);
+                    sseController.sendSSEEvent("leaveReport", leaveReportDetail);
+                    sseController.sendSSEEvent2("leaveReportCount");
                     return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report ");
                 }
             }
@@ -133,6 +138,9 @@ public class LeaveController {
                 blob.deleteIfExists();
                 blob.upload(file.getInputStream(),
                         file.getSize());
+                Map<String, Object> leaveReportDetail = leaveService.leaveReportDetail(leaveReport);
+                sseController.sendSSEEvent("leaveReport", leaveReportDetail);
+                sseController.sendSSEEvent2("leaveReportCount");
                 return ResponseEntity.status(HttpStatus.CREATED).body("Has created a leave report with file");
             }
         }

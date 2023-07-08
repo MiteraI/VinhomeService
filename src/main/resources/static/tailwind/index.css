@@ -2235,3 +2235,8 @@ video {
     padding: 2rem;
   }
 }
+
+.text-red-cancel {
+  --tw-text-opacity: 1;
+  color: rgb(220 53 69 / var(--tw-text-opacity));
+}

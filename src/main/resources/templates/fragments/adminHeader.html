@@ -38,14 +38,27 @@
                 </a>
             </li> -->
 
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-leave-report">
+              <li class="nav-item" id="div-dad">
+                <a class="nav-link text-white  m-0" href="/see-leave-report" id="see-leave-report">
                   <h4>See Leave Report</h4>
                 </a>
+                <div id="notificationDot">
+                  <span id="notificationCount"></span>
+                </div>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-white  m-0" href="/see-all-order-by-admin">
                   <h4>See All Order</h4>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white  m-0" href="/see-all-services">
+                  <h4>View Services</h4>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white  m-0" href="/see-all-categories">
+                  <h4>View Category</h4>
                 </a>
               </li>
             </ul>
@@ -70,6 +83,68 @@
       <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>
     </div>
   </div>
+  <script>
+    const eventSource = new EventSource('/sse');
+    eventSource.addEventListener('leaveReportCount', function(event) {
+      const unreadCount = event.data;
+      const notificationCountElement = document.getElementById('notificationCount');
+      const notificationDotElement = document.getElementById('notificationDot');
+      // Update the unread count in the UI
+      notificationCountElement.innerText = unreadCount;
+
+      localStorage.setItem('unreadCount', unreadCount);
+
+      // Display/hide the red dot based on unread count
+      if (unreadCount > 0) {
+        notificationDotElement.style.display = 'block';
+      } else {
+        notificationDotElement.style.display = 'none';
+      }
+    });
+
+    // Close the SSE connection when leaving the page
+    window.addEventListener('unload', function() {
+      eventSource.close();
+    });
+  </script>
+  <style>
+    #div-dad {
+      position: relative;
+      display: inline-block;
+    }
+
+    #notificationDot {
+      position: absolute;
+      top: 3px;
+      right: -5px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: red;
+      display: none;
+      text-align: center;
+    }
+
+    #notificationCount {
+      display: inline-block;
+      margin-top: 1px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    document.getElementById("see-leave-report").addEventListener("click", function () {
+      localStorage.removeItem('unreadCount');
+      fetch ("/sse/close", {
+        method: 'POST'
+      })
+              .then(res => {
+                if (res.status === 200) {
+                }
+              })
+    })
+  </script>
 </body>
 
 </html>
