@@ -29,8 +29,9 @@
       <div class="w-[40%] h-[100%]">
         <div class="">
           <div class="bg-blue-400 flex justify-center items-center py-[5%] rounded-lg">
-            <div class=" w-[40%]"><img class="pfp object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
-                src="../static/assets/images/user.png" alt="" srcset="">
+            <div class=" w-[40%]">
+              <img class="pfp object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
+                src="" alt="" loading="lazy" id="avatar">
             </div>
           </div>
         </div>
@@ -53,9 +54,11 @@
                 <span class="flex justify-center items-center"><i class="fa fa-upload mr-[5%]"
                     aria-hidden="true"></i>Browse</span>
               </label>
-              <input type="file" class="hidden" value="" id="upload-file">
+
               <button
-                class="upload-pfp-btn w-[50%] bg-green-300 hover:bg-green-400 py-[1%] px-[2%] rounded-lg text-xl font-medium flex-1 ml-[1%]">Upload</button>
+                class="upload-pfp-btn w-[50%] bg-green-300 hover:bg-green-400 py-[1%] px-[2%] rounded-lg text-xl font-medium flex-1 ml-[1%]"
+                value="upload" id="uploadBtn" type="button">Upload</button>
+                <input type="file" class="hidden input-file" id="upload-file" name="file" accept="image/*">
             </span>
             <button
               class="cancel-pfp-btn mt-7 bg-red-300 hover:bg-red-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Cancel
