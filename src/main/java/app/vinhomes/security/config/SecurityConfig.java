@@ -61,7 +61,7 @@ public class SecurityConfig {
                     authUser.requestMatchers("/order-history/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/service/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/verification").hasAnyAuthority("0","2");
-//                    authUser.requestMatchers("/verificationMethod").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/transaction/cancelOrder/refundTransaction/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2");
                 })
                 .authorizeHttpRequests(authAdmin ->{

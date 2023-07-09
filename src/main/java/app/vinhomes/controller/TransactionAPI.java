@@ -17,6 +17,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -117,16 +121,16 @@ public class TransactionAPI {
         try{
             System.out.println("inside refund transaction from admin page");
             ResponseEntity responseQuery = transactionService.queryVNpayWithVnp_txtRef(vnpTxnRef,request,response);
+            Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
+            Order getOrder = getTransaction.getOrder();
             if(responseQuery.getStatusCode().is2xxSuccessful()){
                 String getQuery = (String) responseQuery.getBody();
                 String getResponseCode = vnPayService.extractResponseCode(getQuery);
-                String getTransactionStatus = vnPayService.extractTransactionStatusQuery(getQuery);
-                String getAmount = vnPayService.extractTransactionAmount(getQuery);
-                String getPaydate = vnPayService.extractTransactionPayDateQuery(getQuery);
                 if(getResponseCode.equals("00")){
+                    String getTransactionStatus = vnPayService.extractTransactionStatusQuery(getQuery);
+                    String getAmount = vnPayService.extractTransactionAmount(getQuery);
+                    String getPaydate = vnPayService.extractTransactionPayDateQuery(getQuery);
                     if(getTransactionStatus.equals("00")){
-                        Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
-                        Order getOrder = getTransaction.getOrder();
                         Account getAccount = getTransaction.getOrder().getAccount();
                         String getUsername = getAccount.getAccountName();
                         int parsedAmount = Integer.parseInt(getAmount);
@@ -148,7 +152,8 @@ public class TransactionAPI {
                     }
                     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction is not valid for refund, this is because this order is cancel by customer");
                 }
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction might not exist on vnpay database");
+                return transactionService.refundWithOrderID(getOrder.getOrderId().toString(),request,response);
+                //return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction might not exist on vnpay database");
             }else{
                 System.out.println("ERROR query: "+ responseQuery.getBody());
                 return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR EXCEPTION IN API");
@@ -172,5 +177,35 @@ public class TransactionAPI {
         }
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("NULL");
 
+    }
+    @GetMapping(value = "/admin/cancelOrder/{orderId}")
+    public ResponseEntity<String> cancelOrderAdmin(@PathVariable String orderId, HttpServletRequest request, HttpServletResponse response){
+        SecurityContext getContext = SecurityContextHolder.getContext();
+        if(getContext == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERROR unauthorized");
+        }
+        System.out.println(getContext);
+        Authentication getCurrentAuth = getContext.getAuthentication();
+        if(getCurrentAuth == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERROR cannot get authentication of this account");
+        }
+        System.out.println(getCurrentAuth);
+        SimpleGrantedAuthority getAuth = (SimpleGrantedAuthority) getCurrentAuth.getAuthorities().toArray()[0];
+        System.out.println(getAuth.toString());
+        if(getAuth.toString().equals("2") == false){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERROR account is not valid to do this");
+        }
+        Order getOrder = orderService.getOrderById(Long.parseLong(orderId));
+        String getPayment = getOrder.getPayment().getPaymentName();
+        Transaction getTransaction = transactionService.getTransactionById(getOrder.getOrderId());
+        System.out.println(getPayment);
+        if(getPayment.equals("COD")){
+            orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
+            transactionService.setTransactionStatus(getTransaction,TransactionStatus.FAIL);
+            return ResponseEntity.status(HttpStatus.OK).body("OK cancel cod");
+
+        }else{
+            return refundVNPAY(getTransaction.getVnpTxnRef(),request,response);
+        }
     }
 }
