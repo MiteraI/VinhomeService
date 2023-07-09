@@ -133,6 +133,9 @@ public class Account implements UserDetails {
     @JsonManagedReference
     private List<Order> orders;
 
+    @Column(name = "img_profile_extenion")
+    private String imgProfileExtension;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

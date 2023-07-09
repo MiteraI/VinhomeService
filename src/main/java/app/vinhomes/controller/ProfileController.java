@@ -172,6 +172,9 @@ public class ProfileController {
         String extension = StringUtils.getFilenameExtension(originalFilename);
         newFilename = accountId + "." + extension;
         String Url = "https://imagescleaningservice.blob.core.windows.net/images/imageProfile/" + newFilename;
+        Account account = accountRepository.findByAccountId(accountId);
+        account.setImgProfileExtension(extension);
+        accountRepository.save(account);
         blobContainerClient = blobServiceClient.getBlobContainerClient("images/imageProfile");
         BlobClient blob = blobContainerClient
                 .getBlobClient(newFilename);
