@@ -132,17 +132,13 @@ public class AzureBlobAdapter {
     public String getAvatar(String filename, HttpSession session) {
         //move container to subfolder images/accountId//
         Account sessionAccount = (Account) session.getAttribute("loginedUser");
-        try {
-            blobContainerClient = blobServiceClient.getBlobContainerClient("images/avatar/" + sessionAccount.getAccountId());
-            BlobClient blob = blobContainerClient.getBlobClient(filename);
-            if (!blob.exists()) {
-                blob = blobContainerClient.getBlobClient("avatar.png");
-            }
-            return blob.getBlobUrl();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        blobContainerClient = blobServiceClient.getBlobContainerClient("images/avatar/" + sessionAccount.getAccountId());
+        BlobClient blob = blobContainerClient.getBlobClient(filename);
+        if (blob.exists()) {
+            return blobContainerClient.getBlobClient(filename).getBlobUrl();
+        } else {
+            return null;
         }
-        return null;
     }
 
 

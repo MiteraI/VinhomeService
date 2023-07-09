@@ -141,6 +141,8 @@ axios.get('http://localhost:8080/images/getAvatar/avatar.png')
         console.log(res)
         if (res.data === '') {
             console.log('no avatar')
+            //GET DEFAULT AVATAR//
+            pfp.forEach(pfp => pfp.src = '../../static/assets/images/user.png')
         } else {
             imgSrc = res.data
             pfp.forEach(pfp => pfp.src = imgSrc)
