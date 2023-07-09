@@ -30,7 +30,17 @@
         <div class="">
           <div class="bg-blue-400 flex justify-center items-center py-[5%] rounded-lg">
             <div class=" w-[40%]"><img class="pfp object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
-                src="../static/assets/images/user.png" alt="" srcset="">
+                src="../static/assets/images/user.png" alt="" srcset="" id="imgFile">
+              <script th:inline="javascript">
+                var accountId = [[${acc.accountId}]];
+                var linkFile = "https://imagescleaningservice.blob.core.windows.net/images/imageProfile/" + accountId + ".png";
+                var image = document.getElementById('imgFile');
+
+                  image.src = linkFile; // Set the dynamic image URL
+
+                  // Perform actions using the accountId variable
+                  console.log('Account ID: ' + accountId);
+              </script>
             </div>
           </div>
         </div>
@@ -55,7 +65,7 @@
               </label>
               <input type="file" class="hidden" value="" id="upload-file">
               <button
-                class="upload-pfp-btn w-[50%] bg-green-300 hover:bg-green-400 py-[1%] px-[2%] rounded-lg text-xl font-medium flex-1 ml-[1%]">Upload</button>
+                class="upload-pfp-btn w-[50%] bg-green-300 hover:bg-green-400 py-[1%] px-[2%] rounded-lg text-xl font-medium flex-1 ml-[1%]"  th:attr="onclick='upload(\'' + ${acc.accountId} + '\')'">Upload</button>
             </span>
             <button
               class="cancel-pfp-btn mt-7 bg-red-300 hover:bg-red-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Cancel
@@ -169,13 +179,33 @@
 
 
   </div>
+  <script>
+    document.getElementById("upload-file").addEventListener("change", function () {
+      file = this.files[0];
+      console.log(file)
+    });
+    function upload(accountId){
+      console.log(accountId)
+      accId = accountId;
+      var formData = new FormData();
+      formData.append("file", file);
+      fetch ("/changeProfile/image/" + accountId, {
+        method: 'POST',
+        body:formData
+      })
+              .then (res => {
+                if (res.status === 200) {
+                  window.location.reload();
+                }
+              })
+    }
+  </script>
+
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script src="../static/js/editProfile.js">
 
   </script>
-
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
