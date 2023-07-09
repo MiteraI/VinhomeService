@@ -31,8 +31,8 @@
                 <th><span class="heading">Order Time</span></th>
                 <th><span class="heading">Payment method</span></th>
                 <th><span class="heading">Status</span></th>
-                <th><span class="heading">Image Confirm</span></th>
                 <th><span class="heading">Action</span></th>
+                <th><span class="">Image Confirm</span></th>
                 <th><span class="">Cancel</span></th>
             </tr>
         </thead>
@@ -84,7 +84,7 @@
                                 else {
                                     output +=
                                     `
-                                        <a href="#"></a>
+                                        <a href="#" "></a>
                                     `
                                 }
                                 output +=
@@ -95,6 +95,9 @@
                                     if (status === 'SUCCESS') {
                                         output+=
                                         `<a href="${imageConfirm}">Image Confirm</a>`
+                                    }else{
+                                      output+= 
+                                      `<a href="#"  ></a>`
                                     }
                                     output+=
                                 `
@@ -106,6 +109,7 @@
                             }else{
                               output += `<a href="#"></a>`
                             }
+                            output+=
                             `
                             </td>
                         </tr>
