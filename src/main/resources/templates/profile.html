@@ -172,13 +172,33 @@
 
 
   </div>
+  <script>
+    document.getElementById("upload-file").addEventListener("change", function () {
+      file = this.files[0];
+      console.log(file)
+    });
+    function upload(accountId){
+      console.log(accountId)
+      accId = accountId;
+      var formData = new FormData();
+      formData.append("file", file);
+      fetch ("/changeProfile/image/" + accountId, {
+        method: 'POST',
+        body:formData
+      })
+              .then (res => {
+                if (res.status === 200) {
+                  window.location.reload();
+                }
+              })
+    }
+  </script>
+
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script src="../static/js/editProfile.js">
 
   </script>
-
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 

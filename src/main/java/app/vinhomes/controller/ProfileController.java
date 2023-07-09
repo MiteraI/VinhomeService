@@ -9,6 +9,10 @@ import app.vinhomes.entity.customer.Phone;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.service.AzureBlobAdapter;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,8 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +46,13 @@ public class ProfileController {
 
     @Autowired
     private ErrorChecker errorChecker;
+    @Autowired
+    private AzureBlobAdapter azureBlobAdapter;
+    @Autowired
+    BlobServiceClient blobServiceClient;
+
+    @Autowired
+    BlobContainerClient blobContainerClient;
 
     @Value("${phone.max_customer_phonenumber}")
     private int maxPhoneNumber;
@@ -149,5 +163,25 @@ public class ProfileController {
             System.out.println("add new phone number");
         }
         return ResponseEntity.status(HttpStatus.OK).body(error);
+    }
+
+    @PostMapping (value = "/image/{id}")
+    public ResponseEntity<String> imageChange (@RequestParam(name = "file", required = false) MultipartFile file, @PathVariable("id") Long accountId) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        String newFilename = "";  // Specify the new file name here
+        String extension = StringUtils.getFilenameExtension(originalFilename);
+        newFilename = accountId + "." + extension;
+        String Url = "https://imagescleaningservice.blob.core.windows.net/images/imageProfile/" + newFilename;
+        Account account = accountRepository.findByAccountId(accountId);
+        account.setImgProfileExtension(extension);
+        accountRepository.save(account);
+        blobContainerClient = blobServiceClient.getBlobContainerClient("images/imageProfile");
+        BlobClient blob = blobContainerClient
+                .getBlobClient(newFilename);
+        //get file from images folder then upload to container images//
+        blob.deleteIfExists();
+        blob.upload(file.getInputStream(),
+                file.getSize());
+        return ResponseEntity.ok("Change image profile");
     }
 }

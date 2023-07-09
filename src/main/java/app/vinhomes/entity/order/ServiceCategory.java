@@ -42,4 +42,6 @@ public class ServiceCategory {
             services.add(service);
         } else services.add(service);
     }
+    @Column(name = "url_image")
+    private String urlImage;
 }

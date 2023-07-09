@@ -31,18 +31,11 @@
 
 <div class="container">
   <button type="button" class="btn btn-primary" id="showCreateCategory">Create Category</button>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Category Name
-      <th>Action</th>
-    </tr>
-    </thead>
-    <tbody id="tbody-categories">
+  <div class="container">
+    <div class="row" id="body">
 
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
 <script>
   fetch("/api/categories")
@@ -52,19 +45,25 @@
             data.forEach(item => {
               const categoryId = item['serviceCategoryId'];
               const categoryName = item['serviceCategoryName'];
+              const url = item['urlImage'];
               output +=
                       `
-                  <tr>
-                    <td>${categoryId}</td>
-                    <td>${categoryName}</td>
-                    <td><a class="btn btn-primary" onclick="update('${categoryId}', '${categoryName}')">Update</a></td>
-                  </tr>
+                <div class="col-sm-6">
+                    <div class="card" style="width: 100%;">
+                         <img src="${url}" class="card-img-top" style="height: 300px">
+                         <div class="card-body">
+                            <tr>
+                               <p>Category Name: ${categoryName}</p>
+                              <a class="btn btn-primary" onclick="update('${categoryId}', '${categoryName}')">Update</a>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
                `
             })
-            document.getElementById("tbody-categories").innerHTML = output;
+            document.getElementById("body").innerHTML = output;
           })
 </script>
-
 <!--FORM CREATE CATEGORY-->
 <!--FORM CREATE CATEGORY-->
 <!--FORM CREATE CATEGORY-->
@@ -78,6 +77,7 @@
       <div class="form-group">
         <label for="categoryName" class="mb-2">Category Name:</label>
         <input type="text" class="form-control" id="categoryName" required>
+        <input type="file" class="form-control" id="imageCategoryCreate" required>
       </div>
       <div class="d-flex justify-content-cente align-items-center" style="margin-top: 15px">
         <button type="button" class="btn btn-danger w-50" id="cancelCreateService">Cancel</button>
@@ -98,7 +98,8 @@
     <form id="updateCategoryForm" style="border-color: black">
       <div class="form-group">
         <label for="categoryNameUpdate" class="mb-2">Category Name:</label>
-        <input type="text" class="form-control" id="categoryNameUpdate" required>
+        <input type="text" class="form-control" id="categoryNameUpdate">
+        <input type="file" class="form-control" id="imageCategoryUpdate">
       </div>
       <div class="d-flex justify-content-cente align-items-center" style="margin-top: 15px">
         <button type="button" class="btn btn-danger w-50" id="cancelUpdateCategory">Cancel</button>
@@ -110,6 +111,7 @@
 
 <script>
   var categoryNameUpdate = '';
+  var file = '';
   var categoryID = '';
   function update(categoryId, categoryName) {
     categoryID = categoryId;
@@ -119,11 +121,15 @@
     document.getElementById("categoryNameUpdate").addEventListener("input", function () {
       categoryNameUpdate = this.value;
     })
+    document.getElementById("imageCategoryUpdate").addEventListener("change", function () {
+      file = this.files[0];
+    })
     document.getElementById("updateCategoryFormContainer").addEventListener("submit", function (e) {
       e.preventDefault();
 
       var formData = new FormData();
-      formData.append("categoryName", categoryNameUpdate)
+      formData.append("categoryName", categoryNameUpdate);
+      formData.append("file", file);
       fetch("/api/update-category/" + categoryID, {
         method: 'POST',
         body: formData
@@ -146,6 +152,7 @@
     document.getElementById("updateCategoryFormContainer").classList.toggle('d-none')
     categoryNameUpdate = '';
     categoryID = '';
+    file = '';
   })
 </script>
 
@@ -156,11 +163,15 @@
   })
 </script>
 <script>
+  var categoryNameStr = '';
+  var fileImage = '';
   document.getElementById("createCategoryForm").addEventListener("submit", function (evt) {
     evt.preventDefault();
-    const categoryName = document.getElementById('categoryName').value;
+    categoryNameStr = document.getElementById('categoryName').value;
+    fileImage = document.getElementById('imageCategoryCreate').files[0];
     var formData = new FormData();
-    formData.append("categoryName", categoryName);
+    formData.append("categoryName", categoryNameStr);
+    formData.append("file", fileImage);
     fetch("api/create-service-category", {
       method: 'POST',
       body: formData
@@ -181,6 +192,8 @@
   document.getElementById("cancelCreateService").addEventListener("click", function () {
     document.getElementById("createCategoryFormContainer").classList.toggle('d-none')
     document.querySelector('#categoryName').value = ""
+    categoryNameStr = '';
+    fileImage = '';
   })
   
   document.getElementById("SORT-SEARCH").style.visibility = "hidden";

@@ -380,5 +380,3 @@ function insertPhoneNumber(phoneNumber, phoneId, addPhoneBtn) {
     addPhoneBtn.remove()
   }
 }
-
-
