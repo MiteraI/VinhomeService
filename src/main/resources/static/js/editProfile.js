@@ -138,19 +138,6 @@ cancelPfpBtn.addEventListener('click', () => {
   pfp.forEach(pfp => pfp.src = imgSrc)
 
 })
-
-axios.get('http://localhost:8080/images/getAvatar/avatar.png')
-    .then((res) => {
-        console.log(res)
-        if (res.data === '') {
-            console.log('no avatar')
-            //GET DEFAULT AVATAR//
-            pfp.forEach(pfp => pfp.src = '../../static/assets/images/user.png')
-        } else {
-            imgSrc = res.data
-            pfp.forEach(pfp => pfp.src = imgSrc)
-        }
-    })
 uploadPfpBtn.addEventListener('click', (e) => {
   if (checkFileExist() === false) {
     imgFileName.innerHTML = 'there is no image to upload'
