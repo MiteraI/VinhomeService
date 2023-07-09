@@ -31,6 +31,7 @@
                 <th><span class="heading">Order Time</span></th>
                 <th><span class="heading">Payment method</span></th>
                 <th><span class="heading">Status</span></th>
+                <th><span class="heading">Image Confirm</span></th>
                 <th><span class="heading">Action</span></th>
             </tr>
         </thead>
@@ -61,6 +62,7 @@
                 const orderTime = order['createTime'];
                 const paymentName = payment['paymentName'];
                 const status = order['status'];
+                const imageConfirm = order['urlImageConfirm'];
                 output += `
                         <tr class='item-to-search'>
                           <td class="firstname" >${firstName}</td>
@@ -87,6 +89,15 @@
                                 output +=
                             `
                           </td>
+                          <td>
+                               `
+                                    if (status === 'SUCCESS') {
+                                        output+=
+                                        `<a href="${imageConfirm}">Image Confirm</a>`
+                                    }
+                                    output+=
+                                `
+                        </td>
                         </tr>
                       `;
               });
