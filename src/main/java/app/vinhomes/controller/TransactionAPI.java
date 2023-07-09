@@ -121,9 +121,9 @@ public class TransactionAPI {
         try{
             System.out.println("inside refund transaction from admin page");
             ResponseEntity responseQuery = transactionService.queryVNpayWithVnp_txtRef(vnpTxnRef,request,response);
-            Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
-            Order getOrder = getTransaction.getOrder();
             if(responseQuery.getStatusCode().is2xxSuccessful()){
+                Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
+                Order getOrder = getTransaction.getOrder();
                 String getQuery = (String) responseQuery.getBody();
                 String getResponseCode = vnPayService.extractResponseCode(getQuery);
                 if(getResponseCode.equals("00")){
