@@ -2,6 +2,7 @@ package app.vinhomes.service;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
+import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
@@ -71,12 +72,18 @@ public class OrderService {
     private PaymentCategoryRepository paymentCategoryRepository;
     @Autowired
     private WorkerService workerService;
-
-    public List<Order> getCustomerOrder(HttpServletRequest request) {
+    @Autowired
+    private TransactionRepository transactionRepository;
+    //Do this because can't access transaction from order
+    public List<Transaction> getCustomerTransactions(HttpServletRequest request) {
         Account loginedUser = getSessionUser(request);
-        return orderRepository.findAllByAccount_AccountId(loginedUser.getAccountId());
+        List<Transaction> transactionList = transactionRepository.findAllByOrder_Account_AccountId(loginedUser.getAccountId());
+        List<Transaction> reversedTransactionList = new ArrayList<Transaction>();
+        for (int i = transactionList.size() - 1; i >= 0; i--) {
+            reversedTransactionList.add(transactionList.get(i));
+        }
+        return reversedTransactionList;
     }
-
 
     public Order getCustomerOrderDetails(HttpServletRequest request, Long orderId) {
         Account loginedUser = getSessionUser(request);
