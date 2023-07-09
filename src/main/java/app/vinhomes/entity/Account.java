@@ -133,7 +133,7 @@ public class Account implements UserDetails {
     @JsonManagedReference
     private List<Order> orders;
 
-    @Column(name = "img_profile_extenion")
+    @Column(name = "img_profile_extenion", columnDefinition = "varchar(255) default ''")
     private String imgProfileExtension;
 
 

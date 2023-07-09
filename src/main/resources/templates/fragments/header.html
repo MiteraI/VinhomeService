@@ -33,6 +33,23 @@
                     <span class="w-[20%] h-[100%]">
                         <img src="../../static/assets/images/user.png" alt="user-pfp"
                             class="pfp h-[100%] w-[100%] border-2 rounded-full border-blue-bootstrap h-[1.68] w-[1.68] object-cover">
+                        <script th:inline="javascript">
+                            var imgUrl = [[${ session.loginedUser.imgProfileExtension }]]
+                            console.log(imgUrl)
+                            var image = document.querySelector('.pfp');
+                            var linkFile = ''
+                            if (imgUrl.length > 0) {
+                                console.log('imgUrl.length > 0')
+                                linkFile = imgUrl;
+                            }
+                            else {
+                                console.log('imgUrl.length < 0')
+                                linkFile = '../static/assets/images/user.png'
+                            }
+
+                            image.src = linkFile; // Set the dynamic image URL
+
+                        </script>
                     </span>
                     <span
                         class="username w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
