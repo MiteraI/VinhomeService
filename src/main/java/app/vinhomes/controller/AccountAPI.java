@@ -130,6 +130,7 @@ public class AccountAPI {
             HttpSession session = request_.getSession();
             session.setAttribute("loginedUser", acc);
             session.setAttribute("address", addr);
+            session.setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
             System.out.println(session.getAttribute("loginedUser"));
 
             return ResponseEntity.status(HttpStatus.OK).body(response.getAccountId().toString());
