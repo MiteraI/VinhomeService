@@ -166,14 +166,14 @@ public class ProfileController {
     }
 
     @PostMapping (value = "/image/{id}")
-    public ResponseEntity<String> imageChange (@RequestParam(name = "file", required = false) MultipartFile file, @PathVariable("id") Long accountId) throws IOException {
+    public ResponseEntity<String> imageChange (@RequestParam(name = "file", required = false) MultipartFile file, @PathVariable("id") Long accountId, HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String newFilename = "";  // Specify the new file name here
         String extension = StringUtils.getFilenameExtension(originalFilename);
         newFilename = accountId + "." + extension;
         String Url = "https://imagescleaningservice.blob.core.windows.net/images/imageProfile/" + newFilename;
         Account account = accountRepository.findByAccountId(accountId);
-        account.setImgProfileExtension(extension);
+        account.setImgProfileExtension(Url);
         accountRepository.save(account);
         blobContainerClient = blobServiceClient.getBlobContainerClient("images/imageProfile");
         BlobClient blob = blobContainerClient
@@ -182,6 +182,7 @@ public class ProfileController {
         blob.deleteIfExists();
         blob.upload(file.getInputStream(),
                 file.getSize());
-        return ResponseEntity.ok("Change image profile");
+        request.getSession(false).setAttribute("loginedUser", account);
+        return ResponseEntity.ok(Url);
     }
 }

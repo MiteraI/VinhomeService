@@ -103,9 +103,6 @@ public class PageController {
         Account acc = getSessionAccount(request);
         Address address = getUserAddress(request);
         List<Phone> phoneNumber = getUserFone(request);
-        if (acc == null) {
-            return "redirect:/login";
-        }
         System.out.println(phoneNumber);
         model.addAttribute("acc", acc);
         model.addAttribute("address", address);
@@ -255,8 +252,22 @@ public class PageController {
     }
 
     @RequestMapping(value = "/verificationMethod", method = RequestMethod.GET)
-    public String verificationMethodReturn() {
-        return "verificationMethod";
+    public String verificationMethodReturn(@RequestParam String username, HttpServletRequest request) {
+        if(request.getSession(false) != null){
+            Account acc = (Account)request.getSession(false).getAttribute("loginedUser");
+            if(acc.getAccountName().equals(username)){
+                if(accountRepository.findById(acc.getAccountId()).get().isEnabled()){
+                    return "redirect:/";
+                }
+                else{
+                    return "verificationMethod";
+                }
+            }
+            else{
+                return "redirect:/login";
+            }
+        }
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/forget_Account", method = RequestMethod.GET)

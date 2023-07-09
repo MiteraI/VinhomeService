@@ -4,6 +4,8 @@ const editFormContainer = document.querySelector('.edit-form-container')
 const editBtn = document.querySelector('.edit-btn')
 const errorMassage = document.querySelectorAll('.error-message')
 
+let file = ''
+
 const profileForm = document.querySelector('.edit-profile-form');
 const profileFormInput = document.querySelectorAll('.profile-form-input');
 const prohibitInput = document.querySelectorAll('.prohibit-input')
@@ -14,6 +16,7 @@ let phoneSpan = document.querySelectorAll('.phoneSpan')
 const phoneInput = document.querySelector('.phoneInput')
 const phoneSpanContainer = document.querySelector('.phoneSpanContainer')
 const pfp = document.querySelectorAll('.pfp')
+const pfpGroup = document.querySelectorAll('.pfp-group')
 const placeholderValue = [...profileFormInput].map(input => input.placeholder)
 
 const cancelBtn = document.querySelector('.cancel-btn')
@@ -135,19 +138,6 @@ cancelPfpBtn.addEventListener('click', () => {
   pfp.forEach(pfp => pfp.src = imgSrc)
 
 })
-
-axios.get('http://localhost:8080/images/getAvatar/avatar.png')
-    .then((res) => {
-        console.log(res)
-        if (res.data === '') {
-            console.log('no avatar')
-            //GET DEFAULT AVATAR//
-            pfp.forEach(pfp => pfp.src = '../../static/assets/images/user.png')
-        } else {
-            imgSrc = res.data
-            pfp.forEach(pfp => pfp.src = imgSrc)
-        }
-    })
 uploadPfpBtn.addEventListener('click', (e) => {
   if (checkFileExist() === false) {
     imgFileName.innerHTML = 'there is no image to upload'
@@ -156,6 +146,7 @@ uploadPfpBtn.addEventListener('click', (e) => {
     e.preventDefault()
   } else {
     e.returnValue = true
+    pfpGroup.forEach(pfp => pfp.disabled = true)
     console.log(uploadFile.value)
     console.log(uploadFile.files.length)
     //AXIOS POST REQUEST//
@@ -321,6 +312,7 @@ uploadFile.onchange = function ValidateSingleInput() {
       var sCurExtension = _validFileExtensions[j];
       console.log("sCurExtension: " + sCurExtension);
       if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() === sCurExtension.toLowerCase()) {
+        imgFileName.innerHTML = ""
         imgFileName.innerHTML += `Image name: ${sFileName.split(/(\\|\/)/g).pop()}`
         imgFileName.classList.remove('hidden')
         blnValid = true;
@@ -337,7 +329,7 @@ uploadFile.onchange = function ValidateSingleInput() {
     }
   }
   let tgt = window.event.srcElement
-  let file = tgt.files[0];
+  file = tgt.files[0];
   if (file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -380,3 +372,28 @@ function insertPhoneNumber(phoneNumber, phoneId, addPhoneBtn) {
     addPhoneBtn.remove()
   }
 }
+
+function upload(accountId) {
+  console.log(accountId)
+  accId = accountId;
+  var formData = new FormData();
+  formData.append("file", file);
+  fetch("/changeProfile/image/" + accountId, {
+    method: 'POST',
+    body: formData
+  })
+    .then(res => {
+      if (res.status === 200) {
+        alert("Successfully update profile picture")
+        pfpGroup.forEach(pfp => pfp.disabled = false);
+        uploadFile.value = ''
+        uploadFile.files.length = 0
+        imgFileName.innerHTML = ''
+        imgFileName.classList.add('hidden')
+        uploadBtnContainer.classList.toggle('hidden')
+        changePfpBtn.classList.toggle('hidden')
+        imgSrc = pfp.src
+      }
+    })
+}
+
