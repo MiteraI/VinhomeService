@@ -103,9 +103,6 @@ public class PageController {
         Account acc = getSessionAccount(request);
         Address address = getUserAddress(request);
         List<Phone> phoneNumber = getUserFone(request);
-        if (acc == null) {
-            return "redirect:/login";
-        }
         System.out.println(phoneNumber);
         model.addAttribute("acc", acc);
         model.addAttribute("address", address);
