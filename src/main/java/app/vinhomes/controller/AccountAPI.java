@@ -115,6 +115,7 @@ public class AccountAPI {
                     .accountStatus(1)
                     .address(addr)
                     .isBlock(false)
+                    .imgProfileExtension("")
                     .build();
 
             Account response = authenticationService.register(acc);
