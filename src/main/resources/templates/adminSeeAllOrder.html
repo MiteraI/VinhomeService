@@ -32,6 +32,7 @@
                 <th><span class="heading">Payment method</span></th>
                 <th><span class="heading">Status</span></th>
                 <th><span class="heading">Action</span></th>
+                <th><span class="">Cancel</span></th>
             </tr>
         </thead>
         <tbody id="tbody-orders">
@@ -87,6 +88,14 @@
                                 output +=
                             `
                           </td>
+                          <td>`
+                            if(status != "CANCEL" && status != "SUCCESS" ){
+                              output += `<button onclick="cancelOrderAdmin(${orderId})" >Cancel</button>`
+                            }else{
+                              output += `<a href="#"></a>`
+                            }
+                            `
+                            </td>
                         </tr>
                       `;
               });
@@ -96,6 +105,19 @@
             .catch(error => {
               console.error('Error:', error);
             });
+
+
+            async function cancelOrderAdmin(orderId){
+              var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
+              var status = await response.status
+              var toText = await response.text()
+              if(status >= 200 && status <= 200){
+                alert("success:" +toText);
+              }else{
+                alert("fail: "+ toText);
+              }
+              window.location.href = "/see-all-order-by-admin"
+            }
   </script>
 
 </body>
