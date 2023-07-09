@@ -28,6 +28,7 @@ const userName = document.querySelector('.username')
 const uploadFile = document.getElementById('upload-file')
 const uploadPfpBtn = document.querySelector('.upload-pfp-btn')
 const uploadBtnContainer = document.querySelector('.upload-btn-container')
+const avatar = document.querySelector('.avatar')
 
 const imgFileName = document.querySelector('.img-file-name')
 let imgSrc = pfp[0].src
@@ -135,6 +136,16 @@ cancelPfpBtn.addEventListener('click', () => {
 
 })
 
+axios.get('http://localhost:8080/images/getAvatar/avatar.png')
+    .then((res) => {
+        console.log(res)
+        if (res.data === '') {
+            console.log('no avatar')
+        } else {
+            imgSrc = res.data
+            pfp.forEach(pfp => pfp.src = imgSrc)
+        }
+    })
 uploadPfpBtn.addEventListener('click', (e) => {
   if (checkFileExist() === false) {
     imgFileName.innerHTML = 'there is no image to upload'
@@ -145,6 +156,36 @@ uploadPfpBtn.addEventListener('click', (e) => {
     e.returnValue = true
     console.log(uploadFile.value)
     console.log(uploadFile.files.length)
+    //AXIOS POST REQUEST//
+    const formData = new FormData();
+    formData.append('file', uploadFile.files[0]);
+    formData.append('uid', uid);
+    formData.append('userName', userName.innerHTML);
+    formData.append('imgSrc', imgSrc);
+    formData.append('tmpFileName', tmpFileName);
+    axios.post('http://localhost:8080/images/avatar', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+    .then((res) => {
+        console.log(res)
+        //CHECK IF STATUS IS 200//
+        if (res.status === 200) {
+            console.log('success')
+            imgFileName.innerHTML = 'upload success'
+            imgFileName.classList.add('italic', 'text-green-500')
+        }
+        else {
+            console.log('fail')
+            imgFileName.innerHTML = 'upload fail'
+            imgFileName.classList.add('italic', 'text-red-500')
+        }
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
   }
 
 })
@@ -337,3 +378,5 @@ function insertPhoneNumber(phoneNumber, phoneId, addPhoneBtn) {
     addPhoneBtn.remove()
   }
 }
+
+
