@@ -31,8 +31,9 @@
                 <th><span class="heading">Order Time</span></th>
                 <th><span class="heading">Payment method</span></th>
                 <th><span class="heading">Status</span></th>
-                <th><span class="heading">Image Confirm</span></th>
                 <th><span class="heading">Action</span></th>
+                <th><span class="">Image Confirm</span></th>
+                <th><span class="">Cancel</span></th>
             </tr>
         </thead>
         <tbody id="tbody-orders">
@@ -83,7 +84,7 @@
                                 else {
                                     output +=
                                     `
-                                        <a href="#"></a>
+                                        <a href="#" ></a>
                                     `
                                 }
                                 output +=
@@ -94,10 +95,23 @@
                                     if (status === 'SUCCESS') {
                                         output+=
                                         `<a href="${imageConfirm}">Image Confirm</a>`
+                                    }else{
+                                      output+= 
+                                      `<a href="#"  ></a>`
                                     }
                                     output+=
                                 `
                         </td>
+                          <td>
+                            `
+                            if(status != "CANCEL" && status != "SUCCESS" ){
+                              output += `<button onclick="cancelOrderAdmin(${orderId})" >Cancel</button>`
+                            }else{
+                              output += `<a href="#"></a>`
+                            }
+                            output+=
+                            `
+                            </td>
                         </tr>
                       `;
               });
@@ -107,6 +121,19 @@
             .catch(error => {
               console.error('Error:', error);
             });
+
+
+            async function cancelOrderAdmin(orderId){
+              var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
+              var status = await response.status
+              var toText = await response.text()
+              if(status >= 200 && status <= 200){
+                alert("success:" +toText);
+              }else{
+                alert("fail: "+ toText);
+              }
+              window.location.href = "/see-all-order-by-admin"
+            }
   </script>
 
 </body>

@@ -1,6 +1,8 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
+import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
@@ -29,13 +31,12 @@ import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.print.attribute.standard.Media;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/UserRestController")
@@ -58,6 +59,8 @@ public class AdminAPI {
     private AuthenticationService authenticationService;
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @PostMapping(value = "/createAccountWorker/{rolenumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateErrorCatcher> createAccountForWorker(@RequestBody JsonNode request,
@@ -464,5 +467,32 @@ public class AdminAPI {
         List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAll();
         return serviceCategoryList;
     }
-
+    @GetMapping(value = "/getTotalCancelOrder",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<Long,Integer>getCustomerWithOrderCancel(){
+        return countOrderByCustomer(OrderStatus.CANCEL);
+    }
+    @GetMapping(value = "/getTotalOrder",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<Long,Integer>getCustomerWithOrderTotal(){
+        return countOrderByCustomer(null);
+    }
+    private Map<Long,Integer> countOrderByCustomer(OrderStatus statusOfOrder){
+        int customerRole = 0;
+        Map<Long,Integer> returnList = new HashMap<>();
+        List<Account> getCustomerList = accountRepository.findByRoleEquals(customerRole);
+        getCustomerList.forEach( customer -> {
+            List<Order> getOrderByEachCustomer = orderRepository.findAllByAccount(customer);
+            int countOrder  = 0;
+            if(statusOfOrder == null){
+                countOrder = getOrderByEachCustomer.size();
+            }else{
+                for(Order order : getOrderByEachCustomer){
+                    if(order.getStatus().equals(statusOfOrder)){
+                        countOrder ++;
+                    }
+                }
+            }
+            returnList.put(customer.getAccountId(),countOrder);
+        });
+        return returnList;
+    }
 }
