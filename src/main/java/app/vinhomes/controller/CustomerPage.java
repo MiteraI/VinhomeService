@@ -1,5 +1,6 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.entity.Transaction;
 import app.vinhomes.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Collections;
+
 @Controller
 public class CustomerPage {
     @Autowired
@@ -15,7 +18,7 @@ public class CustomerPage {
 
     @GetMapping(value = "/order-history")
     public String customerOrder(HttpServletRequest request, Model model) {
-        model.addAttribute("orderList", orderService.getCustomerOrder(request));
+        model.addAttribute("transactionList", orderService.getCustomerTransactions(request));
         return "order-history";
     }
 
