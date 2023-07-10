@@ -157,7 +157,10 @@ public class AdminAPI {
             ResponseEntity<List<Account>> response = accountService.deleteByID(ID);
         }else{
             getAccount.setAccountStatus(1);
+            WorkerStatus getWorkerStatus = getAccount.getWorkerStatus() ;
+            getWorkerStatus.setStatus(0);
             accountRepository.save(getAccount);
+            workerStatusRepository.save(getWorkerStatus);
         }
         List<Account> getList = accountRepository.findByRoleEquals(getAccount.getRole());
         return ResponseEntity.ok().body(getList);

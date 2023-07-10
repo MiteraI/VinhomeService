@@ -191,7 +191,6 @@ public class AccountAPI {
                 if (getError != null && getError.equals("")) {
                     eventPublisher.publishEvent(new SendSmsForgetAccount(getInput));
                     return ResponseEntity.status(HttpStatus.OK).body("YES success, check yo phone");
-
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getError);
                 }

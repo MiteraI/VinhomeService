@@ -63,6 +63,7 @@ public class SecurityConfig {
                     authUser.requestMatchers("/verification").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/transaction/cancelOrder/refundTransaction/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2");
+                    authUser.requestMatchers("/profile").hasAnyAuthority("0","2");
                 })
                 .authorizeHttpRequests(authAdmin ->{
                     authAdmin.requestMatchers("/UserRestController/**").hasAuthority("2");

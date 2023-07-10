@@ -268,7 +268,7 @@ async function verify() {
         otp_merge = ""
         breakFlag = true;
         errTxt.classList.add('hidden')
-        window.location.href = "/"
+        window.location.href = "/login"
         console.log("pass alert")
 
       }
