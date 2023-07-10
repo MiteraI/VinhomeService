@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 public class ServiceCategoryService {
     @Autowired
     ServiceCategoryRepository serviceCategoryRepository;
-    public ServiceCategory createService (String name) {
+    public ServiceCategory createService (String name, String description) {
         ServiceCategory serviceCategory = ServiceCategory.builder()
                 .serviceCategoryName(name)
+                .description(description)
                 .build();
         serviceCategoryRepository.save(serviceCategory);
         return serviceCategory;
