@@ -28,6 +28,9 @@ public class ServiceCategory {
     @Column(name = "servicecate_name", nullable = false)
     private String serviceCategoryName;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(
             mappedBy = "serviceCategory",
             fetch = FetchType.EAGER,

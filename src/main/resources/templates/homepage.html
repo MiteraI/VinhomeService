@@ -43,16 +43,15 @@
             <!-- 2 service category -->
             <div class="flex justify-around">
                 <div class="w-2/6 flex-col space-y-6 text-center" th:each="c : ${category}">
-                    <img class="mx-auto" src="../static/assets/images/service-1.jpg" alt="cleaning house" />
+                    <img class="mx-auto  rounded-lg" th:src="@{${c.urlImage}}" alt="cleaning house"
+                        style="width: 324px; height: 216px; object-fit: cover;" />
 
                     <p class="text-2xl text-blue-bootstrap"
                         th:text="${category != null} ? ${c.serviceCategoryName} : ''"></p>
 
                     <div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iure necessitatibus suscipit
-                            soluta
-                            doloribus ex provident magnam fuga enim maiores!
+                        <p th:text="${category != null} ? ${c.description} : ''">
+
                         </p>
                     </div>
                     <br />

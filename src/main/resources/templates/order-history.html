@@ -32,11 +32,12 @@
     </div>
   </section>
   <section th:each="transaction : ${transactionList}" class="mx-48 my-10">
-    <div th:if="${transaction.order.status == T(app.vinhomes.entity.type_enum.OrderStatus).PENDING}" class="pending my-10 flex-col">
+    <div th:if="${transaction.order.status == T(app.vinhomes.entity.type_enum.OrderStatus).PENDING}"
+      class="pending my-10 flex-col">
       <!-- Render div for pending orders -->
       <div class="flex rounded-lg border-2 p-4 space-x-6">
         <div class="w-1/6">
-          <img class="h-full w-full" src="../static/assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
+          <img class="h-full w-full" th:src="@{${transaction.order.service.urlImage}}" alt="tv-cleaning" />
         </div>
         <div class="w-2/6">
           <p th:text="${transaction.order.service.serviceName}"></p>
@@ -49,7 +50,7 @@
             <button class="rounded-xl bg-red-cancel px-3 py-1"
               th:onclick="callCancelService([[${transaction.order.orderId}]])">Cancel</button>
             <button class="rounded-xl bg-green-success px-3 py-1"
-                    th:if="${transaction.status == T(app.vinhomes.entity.type_enum.TransactionStatus).PENDING && transaction.order.payment.paymentName != 'COD'}"
+              th:if="${transaction.status == T(app.vinhomes.entity.type_enum.TransactionStatus).PENDING && transaction.order.payment.paymentName != 'COD'}"
               th:onclick="payOrder([[${transaction.order.orderId}]])">Pay</button>
             <a th:href="@{/order-history/{orderId}(orderId=${transaction.order.orderId})}">
               <button class="rounded-xl bg-yellow-info px-3 py-1">
@@ -65,7 +66,7 @@
       <!-- Render div for completed orders -->
       <div class="flex rounded-lg border-2 p-4 space-x-6">
         <div class="w-1/6">
-          <img class="h-full w-full" src="../static/assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
+          <img class="h-full w-full" th:src="@{${transaction.order.service.urlImage}}" alt="tv-cleaning" />
         </div>
         <div class="w-2/6">
           <p th:text="${transaction.order.service.serviceName}"></p>
@@ -91,7 +92,7 @@
       class="cancelled my-10 flex-col">
       <div class="flex rounded-lg border-2 p-4 space-x-6">
         <div class="w-1/6">
-          <img class="h-full w-full" src="../static/assets/images/clean-tv-screen.jpg" alt="tv-cleaning" />
+          <img class="h-full w-full" th:src="@{${transaction.order.service.urlImage}}" alt="tv-cleaning" />
         </div>
         <div class="w-2/6">
           <p th:text="${transaction.order.service.serviceName}"></p>

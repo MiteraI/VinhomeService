@@ -42,13 +42,13 @@ public class ServiceCategoryController {
 
 
     @PostMapping (value = "/create-service-category")
-    public ResponseEntity createServiceCategory (@RequestParam("categoryName") String categoryName, @RequestParam(name = "file", required = false)MultipartFile file) throws IOException {
+    public ResponseEntity createServiceCategory (@RequestParam("categoryName") String categoryName, @RequestParam("categoryDescription") String description, @RequestParam(name = "file", required = false)MultipartFile file) throws IOException {
         if (categoryName.isEmpty() || categoryName == null || file.isEmpty() || file == null) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not create a new category");
         }
 
         else {
-            ServiceCategory serviceCategory = serviceCategoryService.createService(categoryName);
+            ServiceCategory serviceCategory = serviceCategoryService.createService(categoryName, description);
             Long categoryId = serviceCategory.getServiceCategoryId();
             String originalFilename = file.getOriginalFilename();
             String newFilename = "";  // Specify the new file name here
@@ -69,10 +69,11 @@ public class ServiceCategoryController {
     }
 
     @PostMapping(value = "/update-category/{id}")
-    public ResponseEntity updateCategory (@PathVariable("id") Long categoryId, @RequestParam("categoryName") String categoryName, @RequestParam(name = "file", required = false) MultipartFile file) throws IOException {
+    public ResponseEntity updateCategory (@PathVariable("id") Long categoryId, @RequestParam("categoryName") String categoryName, @RequestParam("categoryDescription") String description, @RequestParam(name = "file", required = false) MultipartFile file) throws IOException {
 //        String updateCategory = data.get("serviceCategory").asText();
 //        Long categoryId = Long.parseLong(data.get("serviceCategoryId").asText());
         String categoryNameStr = "";
+        String categoryDescriptionStr = description.equals("") ? "" : description;
         if (categoryName.isEmpty()) {
             categoryNameStr = serviceCategoryRepository.findByServiceCategoryId(categoryId).getServiceCategoryName();
         }
@@ -82,6 +83,7 @@ public class ServiceCategoryController {
         if (file == null && !categoryName.isEmpty()) {
             ServiceCategory updateCate = serviceCategoryRepository.findByServiceCategoryId(categoryId);
             updateCate.setServiceCategoryName(categoryName);
+            updateCate.setDescription(categoryDescriptionStr);
             serviceCategoryRepository.save(updateCate);
             return ResponseEntity.status(HttpStatus.CREATED).body("Update a new category");
         }
@@ -107,6 +109,7 @@ public class ServiceCategoryController {
         else {
             ServiceCategory updateCate = serviceCategoryRepository.findByServiceCategoryId(categoryId);
             updateCate.setServiceCategoryName(categoryName);
+            updateCate.setDescription(categoryDescriptionStr);
             String originalFilename = file.getOriginalFilename();
             String newFilename = "";  // Specify the new file name here
             String extension = StringUtils.getFilenameExtension(originalFilename);
