@@ -281,12 +281,12 @@
             if (data[i].accountStatus == 1) {
                 output +=
                     `<td>
-                    <button onclick='deleteByID(${data[i].accountId})'>del</button>
+                    <button onclick='confirmation(${data[i].accountId})'>del</button>
                 </td>`
             } else {
                 output +=
                     ` <td>
-                    <button onclick='deleteByID(${data[i].accountId})'>active</button>
+                    <button onclick='confirmation(${data[i].accountId})'>active</button>
                 </td>`;
             }
 
@@ -321,8 +321,11 @@
         //creatAccountService(service_list[0].serviceCategoryName,service_list[0].serviceCategoryId)
     }
     async function deleteByID(id) {
-        console.log(id)
-        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+        console.log("CONFIRMATION")
+        var getResult = await confirmation();
+        if(getResult){
+            console.log(id)
+            const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
@@ -345,8 +348,21 @@
             }
 
         }
+        }else{
+            return ;
+        }
+        
     }
 
+    async function confirmation(id){
+        console.log("CONFIRMATION")
+        var getResult = confirm(" are you sure want to delete or re-active this account?");
+        if(getResult){
+            deleteByID(id)
+        }else{
+            return;
+        }
+    }
 
 
 

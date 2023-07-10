@@ -4,9 +4,11 @@ import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.customer.Address;
 import app.vinhomes.entity.customer.Phone;
+import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.repository.customer.PhoneRepository;
+import app.vinhomes.repository.worker.WorkerStatusRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class AccountService {
     private PhoneRepository phoneRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private WorkerStatusRepository workerStatusRepository;
 
     public ResponseEntity<List<Account>> updateAccountById(JsonNode request){
         ErrorChecker errorChecker = new ErrorChecker();
@@ -75,7 +79,10 @@ public class AccountService {
         try{
             Account account = accountRepository.findById(id).get();
             account.setAccountStatus(0);
+            WorkerStatus getWorkerStatus = account.getWorkerStatus();
+            getWorkerStatus.setStatus(1);
             accountRepository.save(account);
+            workerStatusRepository.save(getWorkerStatus);
             List<Account> workerList = new ArrayList<>();
             int role = account.getRole();
             workerList =  accountRepository.findByRoleEquals(role);
