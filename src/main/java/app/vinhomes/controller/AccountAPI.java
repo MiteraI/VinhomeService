@@ -128,11 +128,6 @@ public class AccountAPI {
             //emailService.sendSimpleVerficationEmail(response);
             //////////send verification
             System.out.println("okk, SAVE SUCCESS");
-            HttpSession session = request_.getSession();
-            session.setAttribute("loginedUser", acc);
-            session.setAttribute("address", addr);
-            session.setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
-            System.out.println(session.getAttribute("loginedUser"));
 
             return ResponseEntity.status(HttpStatus.OK).body(response.getAccountId().toString());
         } catch (DateTimeException e) {
@@ -228,14 +223,16 @@ public class AccountAPI {
     public ResponseEntity<List<Phone>> getAllPhonenumberByAccount(HttpServletRequest request) {
         try {
             if (request.getSession(false) == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                List<Phone> emptyList = new ArrayList<>();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(emptyList);
             } else {
                 Account account = (Account) request.getSession().getAttribute("loginedUser");
                 return ResponseEntity.status(HttpStatus.OK).body(phoneService.getAllPhonenumberByAccountId(account.getAccountId()));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            List<Phone> emptyList = new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emptyList);
         }
     }
 }
