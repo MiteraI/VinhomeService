@@ -46,11 +46,12 @@ public class SecurityConfig {
                         .tokenValiditySeconds(60 * 60)
                         .key("anythingyoulike")
                 )
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
+                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
-//                .authorizeHttpRequests(auth -> auth.requestMatchers("/esms/**").hasAnyAuthority("1","0","2"))
+                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/homepage").hasAuthority("0"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/your-schedule").hasAnyAuthority("1","2"))
@@ -59,7 +60,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authUser -> {
                     authUser.requestMatchers("/order-history").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/order-history/**").hasAnyAuthority("0","2");
-                    authUser.requestMatchers("/service/**").hasAnyAuthority("0","2");
+                    //authUser.requestMatchers("/service/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/verification").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/transaction/cancelOrder/refundTransaction/**").hasAnyAuthority("0","2");
                     authUser.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2");

@@ -167,12 +167,19 @@
       })
       let status = await response.status;
       let toText = await response.text();
-      if(status >= 200 && status <= 300){
-        alert("success")
+      console.log(status)
+      console.log(toText)
+      if(status == 200){
+
         if(toText === "COD"){
+          alert("success")
           console.log("COD success")
           window.location.href = "/"
-        }else{
+        }else if(toText.includes("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html") == false){
+          window.location.href = "/login"
+        }
+        else{
+          alert("success")
           window.location.replace(toText)
         }
       }else{
