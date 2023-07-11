@@ -13,5 +13,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findAllByWorkDayBetweenAndWorkers_AccountId(LocalDate startDate, LocalDate endDate, Long workerId);
     List<Schedule> findAllByWorkDayBetweenAndWorkers_AccountIdAndOrder_Status(LocalDate startDate, LocalDate endDate, Long workerId, OrderStatus status);
     Schedule findByOrder (Order order);
-
+    List<Schedule> findAllByWorkDayNot(LocalDate workday);
+    List<Schedule> findAllByWorkDay(LocalDate workday);
 }

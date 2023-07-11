@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,5 +39,15 @@ public class LeaveService {
         leaveMap.put("leaveReport", leaveReport);
         leaveMap.put("account", account);
         return leaveMap;
+    }
+    public List<Account> getAccountContainWorkDay(LocalDate workday){
+        List<LeaveReport> getLeaveReport = leaveReportRepository.findAll();
+        List<Account> getAccountContainWorkday = new ArrayList<>();
+        getLeaveReport.forEach(leaveReport -> {
+            if(workday.isAfter(leaveReport.getStartTime()) && workday.isBefore(leaveReport.getEndTime())){
+                getAccountContainWorkday.add(leaveReport.getWorker());
+            }
+        });
+        return getAccountContainWorkday;
     }
 }

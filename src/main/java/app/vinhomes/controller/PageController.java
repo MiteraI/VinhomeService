@@ -15,6 +15,7 @@ import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
 import app.vinhomes.security.email.email_service.EmailService;
 
+import com.azure.core.annotation.Get;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -374,5 +375,9 @@ public class PageController {
     @RequestMapping(value = "/see-all-categories", method = RequestMethod.GET)
     public String seeAllCategories() {
         return "adminCategory";
+    }
+    @RequestMapping(value = "/admin-order-detail/{orderID}",method =RequestMethod.GET)
+    public String seeDetailOrderAdmin(@PathVariable String orderID){
+        return "adminUpdateOrder";
     }
 }
