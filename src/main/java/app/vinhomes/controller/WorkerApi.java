@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("api/worker")
+@RequestMapping("/api/worker")
 public class WorkerApi {
     @Autowired
     WorkerService workerService;
@@ -102,6 +102,7 @@ public class WorkerApi {
                     getAllFreeWorker.remove(worker);
                 }
             });
+            System.out.println(getAllFreeWorker);
             return getAllFreeWorker;
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -112,7 +113,8 @@ public class WorkerApi {
         try{
             ///// sort 1, select worker that is not absent on that workDay
              List<Account> getWorkersThatBusyInThatDayAndSlot = scheduleService.getWorkersAccountMatchWorkday_TimeSlot(workDay,timeSlotId).stream().toList() ;
-            return getWorkersThatBusyInThatDayAndSlot;
+            System.out.println(getWorkersThatBusyInThatDayAndSlot);
+             return getWorkersThatBusyInThatDayAndSlot;
         }catch (Exception e){
             System.out.println(e.getMessage());
             return null;

@@ -44,6 +44,21 @@
 <body>
     
     <div class="container-fluid vh-100 position-relative">
+        <!-- //////////////////////replace woker////////////////////// -->
+        <!-- //////////////////////replace woker////////////////////// -->
+        <div class="container position-absolute col-6 border border-black top-50 start-50 translate-middle bg-white " id="displayReplaceWorker"  style="height: 30%; overflow-y: auto; z-index: 99; display: none;">
+            <div class="mt-5"></div>
+            <div id="replaceWorkerList">
+                        <!-- ///////////////////////////////////// is input in function ///////////////////////////////////// -->
+                        <!-- ///////////////////////////////////// is input in function ///////////////////////////////////// -->
+                        <!-- ///////////////////////////////////// is input in function ///////////////////////////////////// -->
+            </div>
+            
+            <div class=" position-absolute top-0 end-0" >
+                <button class="btn btn-danger " onclick="closeWorkerDiv()">X</button>
+            </div>
+        </div>
+
         <div class="container border border-black position-absolute top-50 start-50 translate-middle  ">
             <div class="text-center">
                 orderID: <p id="orderId"></p>
@@ -109,7 +124,7 @@
 
             </div>
             <div class="row  d-flex justify-content-around">
-                <button class="btn btn-primary" onclick="back()">
+                <button class="btn btn-primary" onclick="back()" >
                     back
                 </button>
             </div>
@@ -146,14 +161,7 @@
             alert("error")
         }
     }
-    function data(jsonData){
-        let Order = jsonData
-        let Schedule = jsonData.schedule
-        let Account = jsonData.account
-        let Workers = jsonData.schedule.workers
-        var rowOutputOrder1 = "";
-        
-    }
+    
     async function orderInfoLayout(jsonData){
         let Order = jsonData
         let Schedule = jsonData.schedule;console.log(Schedule)
@@ -192,9 +200,21 @@
                                 `
                                 <input type="text" class="phoneNumber" value="${element.phones[0].number} "  readonly>`
                             }
+            //                 var OrderDate = new Date(jsonData.schedule.workDay)
+            //                 var today = new Date()
+            //                 if(OrderDate <= today ){
+
+            //                 }else{
+            //                     blockHTML +=
+            //                 `
+            //                 <button class="btn btn-danger" onclick="openWorkerDiv()" disabled >replace</button>
+            //             </div>
+            // ` 
+            //                 }
+             //<button class="btn btn-danger" onclick="openWorkerDiv()">replace</button>
                             blockHTML +=
+                           
                             `
-                            <button class="btn btn-danger">replace</button>
                         </div>
             `
             addingDIV += blockHTML;
@@ -237,6 +257,58 @@
     }
     function back(){
         window.location.href = "/see-all-order-by-admin"
+    }
+    function closeWorkerDiv(){
+        document.getElementById("displayReplaceWorker").style.display = 'none'
+    }
+    function openWorkerDiv(){
+        document.getElementById("displayReplaceWorker").style.display = 'block'
+        openReplaceList()
+    }
+    // <div class="container p-1">
+    //             <p class="">${element.accountId}</p>
+    //             <p class="">${element.firstName}</p>
+    //             <p class="">${element.lastName}</p>
+    //             <input type="text" class="" value="${element.phones[0].number} "  readonly>
+    //             <button class="btn btn-danger">choose</button>
+    //         </div>
+    async function openReplaceList(){
+        var getReplaceWorker = document.getElementById("replaceWorkerList")
+        var output ="";
+        var toJson = await getFreeWorkerForServiceCategory();
+        console.log(toJson)
+        if(toJson == null){
+            alert("error");
+            closeWorkerDiv();
+            return
+            //display error
+        }else{
+            toJson.forEach(element => {
+                output += `
+                 <div class="container p-1">
+                     <p class="" style="width: 5%;">${element.accountId}</p>
+                    <p class="" style="width: 25%;">${element.firstName}</p>
+                    <p class="" style="width: 25%;">${element.lastName}</p>
+                    <input type="text" style="width: 25%;" class="" value="${element.phones[0].number} "  readonly>
+                     <button class="btn btn-danger" onclick=replaceWorker(${element.accountId})>choose</button>
+                </div>
+                `
+            })
+            getReplaceWorker.innerHTML = output
+        }
+    }
+    async function getFreeWorkerForServiceCategory(){
+        var response = await fetch(`http://localhost:8080/api/worker/getFreeWorkerAtTimeSLot/${getOrderId}`)
+        var status = await response.status
+        var toJson = await response.json()
+        if(status >= 200 && status <= 300){
+            return toJson;
+        }else{
+            return null
+        }
+    } 
+    async function replaceWorker(){
+        console.log("inside replace")
     }
 </script>
 </html>
