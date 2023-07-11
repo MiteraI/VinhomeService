@@ -3,17 +3,21 @@ package app.vinhomes.security.esms.otp_service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.Random;
 
 import app.vinhomes.common.ErrorChecker;
 import app.vinhomes.security.esms.otp_dto.OTPAttribute;
 import app.vinhomes.security.esms.otp_service.OTPService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,23 +25,36 @@ import org.springframework.stereotype.Service;
 public class ESMSservice {
     @Autowired
     private OTPService otpService;
-    private final String APIKey="2D5976997012054D9296124677B139";
+    private final String APIKey="9F7FFB88511825A91061978CE826DC";
     //Dang ky tai khoan tai esms.vn de lay Key
-    private final String SecretKey="E88E7404087C38E388B3CA8BC71136";
+    private final String SecretKey="8BA185CC5367278187D45C6D963139";
     public String execute() {
         return "SUCCESS";
     }
     public String sendGetJSON(String phonenumber,String message) throws IOException {
-        String phone = checkIfLegitPhonenumber(phonenumber);
+        String phone = checkIfLegitPhonenumber(phonenumber).trim();
+        System.out.println(phone);
         if(checkIfLegitPhonenumber(phonenumber).startsWith("ERROR")){
             return null;
         }
-
-        String url = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?ApiKey="
-                + URLEncoder.encode(APIKey, "UTF-8")
+        Random random = new Random();
+        int requestId = random.nextInt(6);
+//        String url = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?ApiKey="
+//                + URLEncoder.encode(APIKey, "UTF-8")
+//                + "&SecretKey=" + URLEncoder.encode(SecretKey, "UTF-8")
+//                + "&SmsType=8&Phone=" + URLEncoder.encode(phone, "UTF-8")
+//                + "&Content=" + URLEncoder.encode(message, "UTF-8");
+        String url = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?Phone="
+                + URLEncoder.encode(phone, "UTF-8")
+                + "&Content=" + URLEncoder.encode(message, "UTF-8")
+                + "&Sandbox=1"
+                + "&ApiKey="+URLEncoder.encode(APIKey, "UTF-8")
                 + "&SecretKey=" + URLEncoder.encode(SecretKey, "UTF-8")
-                + "&SmsType=8&Phone=" + URLEncoder.encode(phone, "UTF-8")
-                + "&Content=" + URLEncoder.encode(message, "UTF-8");
+                + "&IsUnicode=0"
+                + "&Brandname=" + URLEncoder.encode("Baotrixemay","UTF-8")
+                + "&SmsType=2"
+                ;
+
         URL obj;
         try {
             obj = new URL(url);
@@ -72,6 +89,7 @@ public class ESMSservice {
         }
         return "SUCCESS";
     }
+
     public Map<String, OTPAttribute> getOTPmap(){
         return otpService.getOTPMap();
     }

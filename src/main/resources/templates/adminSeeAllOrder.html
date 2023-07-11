@@ -14,23 +14,25 @@
 <header th:replace="~{./fragments/adminHeader.html}"></header>
 
 <div class="container d-flex justify-content-end p-0 mt-3">
-<!--    <div class="form-group  has-feedback col-md-4  ">-->
-<!--        &lt;!&ndash; <label class="sr-only" for="search">Search</label> &ndash;&gt;-->
-<!--        <input type="text" class="form-control" name="q" id="search" placeholder="Search">-->
-<!--        <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>-->
-<!--    </div>-->
+  <input type="date" value="" id="selectWorkDay">
+  <div id=""></div>
+    <select id="timeSlotSortSelect" value="" class=""  >
+
+    </select>
+    <div class="btn btn-success "onclick="Sorting()">sort</div>
+  </div>
 </div>
 <div class="container">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th><span class="heading">First Name</span></th>
-                <th><span class="heading">Last Name</span></th>
+                <th><span class="heading">Username</span></th>
                 <th><span class="heading">Service Name</span></th>
-                <th><span class="heading">Price</span></th>
-                <th><span class="heading">Order Time</span></th>
-                <th><span class="heading">Payment method</span></th>
+                <th><span class="heading">payment</span></th>
+                <th><span class="heading">WorkDay</span></th>
+                <th><span class="heading">Start time</span></th>
                 <th><span class="heading">Status</span></th>
+                <th><span class="">view Detail</span></th>
                 <th><span class="heading">Action</span></th>
                 <th><span class="">Image Confirm</span></th>
                 <th><span class="">Cancel</span></th>
@@ -43,36 +45,113 @@
 </div>
 <script src="../static/js/AdminPublicFunction.js"></script>
   <script>
+    const timeSlotSortSelect = document.getElementById("timeSlotSortSelect")
+    let OrderList ;
+
       applyHeaderToSearchCategory()
+      getAllTimeSlot()
     fetch('/api/order/all')
             .then(response => response.json())
             .then(data => {
-              let output = '';
+              OrderList = data
+              printRowOrder(data)
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+
+
+            async function cancelOrderAdmin(orderId){
+              var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
+              var status = await response.status
+              var toText = await response.text()
+              if(status >= 200 && status <= 200){
+                alert("success:" +toText);
+              }else{
+                alert("fail: "+ toText);
+              }
+              window.location.href = "/see-all-order-by-admin"
+            }
+
+            function openDetail(id){
+              window.location.href = `/admin-order-detail/${id}`
+            }
+            
+             
+
+
+            async function getAllTimeSlot(){
+              var response = await fetch('/api/order/timeSlot')
+              var status = await response.status
+              var toJson = await response.json()  
+              const timeSlotSort = document.getElementById("timeSlotSortSelect");    
+              var output = "" 
+                output += `<option  value="none">none</option>`
+                timeSlotSort.value = 'none'
+                // Create option elements for each payment option
+                toJson.forEach((timeslot) => {
+                  output += `
+                  <option  value="${timeslot.timeSlotId}">${timeslot.startTime}</option>
+                  `
+                });
+                timeSlotSort.innerHTML = output
+            
+          }
+          function Sorting(){
+              console.log("called: "+timeSlotSortSelect.value)
+              console.log(OrderList)
+              var getReturnList = sortTimeslot_Workday()
+              console.log(getReturnList)
+              printRowOrder(getReturnList)
+              console.log(getWorkDaySort())
+            }
+          
+
+          function sortTimeslot_Workday() {
+            let returnList = new Array() ;
+            let workday = getWorkDaySort();
+            let timeslotid = timeSlotSortSelect.value.trim()
+            if(timeslotid == 'none'){
+                timeslotid ='';
+            }
+            OrderList.forEach( (item) =>{
+              if(String(item.order.schedule.timeSlot.timeSlotId).includes(timeslotid.trim()) && String(item.order.schedule.workDay).includes(workday)){
+                returnList.push(item)
+              }
+            })
+            return returnList;
+          }
+          function printRowOrder(data){
+            let output = '';
               data.forEach(item => {
                 const order = item['order'];
                 const account = item['account'];
+                console.log(account)
+                const accountName = account.accountName;
+                const schedule = order.schedule
+                //console.log(schedule)
+                const scheduleStartTime = schedule.timeSlot.startTime
+                const scheduleTimeslotId = schedule.timeSlot.timeSlotId
+                const scheduleId = schedule.scheduleId
+                const scheduleWorkDay = schedule.workDay
                 const service = item['service'];
                 const payment = item['payment'];
                 const transaction = item['transaction'];
                 const txn = transaction['vnpTxnRef']
                 const orderId = order['orderId']
-                const firstName = account['firstName'];
-                const lastName = account['lastName'];
                 const serviceName = service['serviceName'];
-                const price = order['price'];
-                const orderTime = order['createTime'];
                 const paymentName = payment['paymentName'];
                 const status = order['status'];
                 const imageConfirm = order['urlImageConfirm'];
                 output += `
                         <tr class='item-to-search'>
-                          <td class="firstname" >${firstName}</td>
-                          <td class="lastname">${lastName}</td>
+                          <td class="username" >${accountName}</td>
                           <td class="servicename">${serviceName}</td>
-                          <td class="price">${price}</td>
-                          <td class="ordertime">${orderTime}</td>
-                          <td class="paymentmethod">${paymentName}</td>
+                          <td class="payment">${paymentName}</td>
+                          <td class="workday">${scheduleWorkDay}</td>
+                          <td class="starttime" value=${scheduleId}>${scheduleStartTime}</td>
                           <td class="status">${status}</td>
+                          <td ><button class="btn btn-primary" onclick="openDetail(${orderId})">Detail</button></td>
                           <td>
                              `
                                 if (paymentName == "VNPAY") {
@@ -105,7 +184,7 @@
                           <td>
                             `
                             if(status != "CANCEL" && status != "SUCCESS" ){
-                              output += `<button onclick="cancelOrderAdmin(${orderId})" >Cancel</button>`
+                              output += `<button onclick="cancelOrderAdmin(${orderId})" class="btn btn-danger" >Cancel</button>`
                             }else{
                               output += `<a href="#"></a>`
                             }
@@ -117,23 +196,13 @@
               });
 
               document.getElementById('tbody-orders').innerHTML = output;
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+          }
 
-
-            async function cancelOrderAdmin(orderId){
-              var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
-              var status = await response.status
-              var toText = await response.text()
-              if(status >= 200 && status <= 200){
-                alert("success:" +toText);
-              }else{
-                alert("fail: "+ toText);
-              }
-              window.location.href = "/see-all-order-by-admin"
-            }
+          function getWorkDaySort(){
+              var date = document.getElementById("selectWorkDay").value
+              return date
+            }  
+            
   </script>
 
 </body>

@@ -105,6 +105,7 @@ public class VNpayController extends HttpServlet {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR day is empty, please try again");
         }
         String transactionMethodID = jsonNode.get("paymentId").asText();//req.getParameter("transactionMethod");//
+
         if (transactionMethodID != "") {//transactionMethodID != null ||transactionMethodID.equals("")
             ResponseEntity<String> response = orderService.createOrder(jsonNode, req);// this return resp status + ORDER ID!!
             if (response.getStatusCode().is2xxSuccessful()) {

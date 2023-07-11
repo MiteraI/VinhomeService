@@ -44,26 +44,29 @@
     </p>
     <br />
 
-    <section class="flex mt-6 rounded-lg border-2 border-blue-300" th:each="service: ${services.services}">
-      <div class="w-1/3 px-2 py-2">
-        <img class="rounded-lg w-full h-full object-cover" th:src="@{${service.urlImage}}"
-          style="width: 262px; height: 204px; object-fit: cover;" alt="working" />
-      </div>
-      <div class="w-full mx-4 space-y-3 py-2 flex flex-col">
-        <h1 class="text-2xl font-semibold" th:text="${service != null} ? ${service.serviceName} : ''"></h1>
-        <p class="text-1xl" th:text="${service.description}">
-        </p>
-        <div th:replace="~{./fragments/rating.html}"></div>
-        <div class="price mt-2 text-2xl" th:text="${service != null} ? '₫' + ${service.price} : ''"></div>
-        <div class="flex flex-1 items-end justify-end">
-          <button class="bg-yellow-info text-lg font-medium py-2 px-4 rounded-lg ml-2">
-            <a th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a>
-          </button>
-          <input type="hidden" th:value="${service.serviceId}" />
-          <button class="order-btn bg-blue-bootstrap text-white text-lg font-medium py-2 px-4 rounded-lg ml-2">
-            Order
-          </button>
+    <section  th:each="service: ${services.services}">
+      <div class="flex mt-6 rounded-lg border-2 border-blue-300" th:if="${service.status == 1}">
+        <div class="w-1/3 px-2 py-2">
+          <img class="rounded-lg w-full h-full object-cover" th:src="@{${service.urlImage}}"
+            style="width: 262px; height: 204px; object-fit: cover;" alt="working" />
         </div>
+        <div class="w-full mx-4 space-y-3 py-2 flex flex-col">
+          <h1 class="text-2xl font-semibold" th:text="${service != null} ? ${service.serviceName} : ''"></h1>
+          <p class="text-1xl" th:text="${service.description}">
+          </p>
+          <div th:replace="~{./fragments/rating.html}"></div>
+          <div class="price mt-2 text-2xl" th:text="${service != null} ? '₫' + ${service.price} : ''"></div>
+          <div class="flex flex-1 items-end justify-end">
+            <button class="bg-yellow-info text-lg font-medium py-2 px-4 rounded-lg ml-2">
+              <a th:href="@{/service/{id}(id=${service.serviceId})}">Detail</a>
+            </button>
+            <input type="hidden" th:value="${service.serviceId}" />
+            <button class="order-btn bg-blue-bootstrap text-white text-lg font-medium py-2 px-4 rounded-lg ml-2">
+              Order
+            </button>
+          </div>
+        </div>
+
       </div>
     </section>
   </div>

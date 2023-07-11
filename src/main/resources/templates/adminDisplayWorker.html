@@ -534,7 +534,12 @@
     //     });
     //     }
     // }
-    
+    function creatAccountService(servicename, serviceid) {
+    console.log(servicename);
+    console.log(serviceid);
+    document.getElementById("w-create-form-service").value = servicename;
+    document.getElementById("w-create-form-serviceid").value = serviceid;
+}
 </script>
 <script>
     const eventSource = new EventSource('/sse');
