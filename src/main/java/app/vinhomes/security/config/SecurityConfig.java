@@ -46,9 +46,9 @@ public class SecurityConfig {
                         .tokenValiditySeconds(60 * 60)
                         .key("anythingyoulike")
                 )
-                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAuthority("1"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
+                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAnyAuthority("1","2"))
                 //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").hasAnyAuthority("0","2"))
@@ -78,6 +78,7 @@ public class SecurityConfig {
                     authAdmin.requestMatchers("/see-all-order-by-admin").hasAuthority("2");
                     authAdmin.requestMatchers("/see-all-services").hasAuthority("2");
                     authAdmin.requestMatchers("/see-all-categories").hasAuthority("2");
+                    authAdmin.requestMatchers("/admin-order-detail/**").hasAuthority("2");
                 })
                 .authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .exceptionHandling().accessDeniedHandler(getAccessDeniedHandler()).and()

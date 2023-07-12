@@ -136,4 +136,7 @@ public class WorkerService {
     public Transaction getTransactionOfOrder(Long orderId) {
         return transactionRepository.findById(orderId).get();
     }
+    public List<Account> getAllWorker(){
+        return accountRepository.findByRole(1);
+    }
 }

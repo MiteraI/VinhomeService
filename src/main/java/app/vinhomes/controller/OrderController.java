@@ -142,6 +142,7 @@ public class OrderController {
     @GetMapping(value = "/yourOrders/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Order> getYourOrder(@PathVariable("orderId") Long orderId, HttpSession session) {
         Account account = (Account) session.getAttribute("loginedUser");
+        System.out.println("getYourOrder: "+ account);
         if (account == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         } else {
@@ -176,6 +177,17 @@ public class OrderController {
             }
         }
         return ResponseEntity.ok(listOrdersDetail);
+    }
+    @GetMapping(value = "/getOrder/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Order> getOrder(@PathVariable("orderId") Long orderId, HttpSession session) {
+        Account account = (Account) session.getAttribute("loginedUser");
+        System.out.println("getYourOrder: "+ account);
+        if (account == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } else {
+            Order getOrder= orderRepository.findById(orderId).get();
+            return ResponseEntity.status(HttpStatus.OK).body(getOrder);
+        }
     }
 }
 
