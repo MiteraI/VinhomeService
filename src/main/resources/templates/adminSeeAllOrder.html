@@ -1,209 +1,275 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeLeaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css">
+  <link rel="stylesheet" href="../static/tailwind/index.css">
 </head>
-<body>
-<header th:replace="~{./fragments/adminHeader.html}"></header>
 
-<div class="container d-flex justify-content-end p-0 mt-3">
-  <input type="date" value="" id="selectWorkDay">
-  <div id=""></div>
-    <select id="timeSlotSortSelect" value="" class=""  >
+<body>
+  <nav class="p-0 stikcy z-0" data-bs-theme="dark">
+    <a class="" href="/">
+      <img src="../static/assets/images/user.png" width="40" height="40" class="d-inline-block align-top mx-3" alt="">
+    </a>
+    <a class="nav-link m-0" href="/adminDisplayWorker_page">
+      <h4>Manage Worker</h4>
+    </a>
+    <a class="nav-link m-0" href="/adminDisplayCustomer_page">
+      <h4>Manage User</h4>
+    </a>
+    <a class="nav-link m-0" href="/see-leave-report" id="see-leave-report">
+      <h4>Manage Leave Report</h4>
+    </a>
+    <div id="notificationDot">
+      <span id="notificationCount"></span>
+    </div>
+    <a class="nav-link m-0" href="/see-all-order-by-admin">
+      <h4>Manage Order</h4>
+    </a>
+    <a class="nav-link m-0" href="/see-all-services">
+      <h4>Manage Services</h4>
+    </a>
+    <a class="nav-link m-0" href="/see-all-categories">
+      <h4>Manage Category</h4>
+    </a>
+    <form action="/logout">
+      <button type="submit">Logout</button>
+    </form>
+  </nav>
+
+  <div class="container d-flex justify-content-around p-0 mt-3 ">
+    <div class="form-group  has-feedback col-md-4 d-flex justify-content-center ">
+      <!-- <label class="sr-only" for="search">Search</label> -->
+      <input type="text" class="form-control" name="q" id="search" placeholder="Search">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary dropdown-toggle capitalize" type="button" data-bs-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" id="dropdown-title">none</button>
+        <div class="dropdown-menu" id="dropdown-category">
+
+        </div>
+      </div>
+      <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback">
+      </span>
+    </div>
+  </div>
+
+  <div class="container d-flex justify-content-end p-0 mt-3">
+    <input type="date" value="" id="selectWorkDay">
+    <div id=""></div>
+    <select id="timeSlotSortSelect" value="" class="">
 
     </select>
-    <div class="btn btn-success "onclick="Sorting()">sort</div>
+    <div class="btn btn-success " onclick="Sorting()">sort</div>
   </div>
-</div>
-<div class="container">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th><span class="heading">Username</span></th>
-                <th><span class="heading">Service Name</span></th>
-                <th><span class="heading">payment</span></th>
-                <th><span class="heading">WorkDay</span></th>
-                <th><span class="heading">Start time</span></th>
-                <th><span class="heading">Status</span></th>
-                <th><span class="">view Detail</span></th>
-                <th><span class="heading">Action</span></th>
-                <th><span class="">Image Confirm</span></th>
-                <th><span class="">Cancel</span></th>
-            </tr>
-        </thead>
-        <tbody id="tbody-orders">
 
-        </tbody>
+  <div class="container px-5 mt-3">
+    <table class="block table-order">
+      <thead>
+        <tr class="bg-black">
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Username</span>
+          </th>
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Service Name</span>
+          </th>
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">payment</span></th>
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">WorkDay</span></th>
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Start time</span>
+          </th>
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Status</span></th>
+          <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">Image Confirm</span></th>
+          <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">view Detail</span></th>
+          <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Action</span></th>
+          <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">Cancel</span></th>
+        </tr>
+      </thead>
+      <tbody id="tbody-orders">
+
+      </tbody>
     </table>
-</div>
-<script src="../static/js/AdminPublicFunction.js"></script>
+  </div>
+  <script src="../static/js/AdminPublicFunction.js"></script>
   <script>
     const timeSlotSortSelect = document.getElementById("timeSlotSortSelect")
-    let OrderList ;
 
-      applyHeaderToSearchCategory()
-      getAllTimeSlot()
+    const tableHeading = document.querySelectorAll('.table-heading')
+    const workerTable = document.querySelector('.table-order')
+    const workerTableLength = workerTable.getBoundingClientRect().width
+    const widthForEachColumn = parseInt(workerTableLength / tableHeading.length + 10)
+
+
+    let OrderList;
+
+    let i = 0
+    tableHeading.forEach(h => {
+      if (i == tableHeading.length - 1) {
+        h.style.width = `${widthForEachColumn}px`
+
+      }
+      else {
+        h.style.width = `${widthForEachColumn}px`
+
+      }
+      i++
+    })
+
+    applyHeaderToSearchCategory()
+    getAllTimeSlot()
     fetch('/api/order/all')
-            .then(response => response.json())
-            .then(data => {
-              OrderList = data
-              printRowOrder(data)
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      .then(response => response.json())
+      .then(data => {
+        OrderList = data
+        printRowOrder(data)
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 
 
-            async function cancelOrderAdmin(orderId){
-              var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
-              var status = await response.status
-              var toText = await response.text()
-              if(status >= 200 && status <= 200){
-                alert("success:" +toText);
-              }else{
-                alert("fail: "+ toText);
-              }
-              window.location.href = "/see-all-order-by-admin"
-            }
+    async function cancelOrderAdmin(orderId) {
+      var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
+      var status = await response.status
+      var toText = await response.text()
+      if (status >= 200 && status <= 200) {
+        alert("success:" + toText);
+      } else {
+        alert("fail: " + toText);
+      }
+      window.location.href = "/see-all-order-by-admin"
+    }
 
-            function openDetail(id){
-              window.location.href = `/admin-order-detail/${id}`
-            }
-            
-             
+    function openDetail(id) {
+      window.location.href = `/admin-order-detail/${id}`
+    }
 
 
-            async function getAllTimeSlot(){
-              var response = await fetch('/api/order/timeSlot')
-              var status = await response.status
-              var toJson = await response.json()  
-              const timeSlotSort = document.getElementById("timeSlotSortSelect");    
-              var output = "" 
-                output += `<option  value="none">none</option>`
-                timeSlotSort.value = 'none'
-                // Create option elements for each payment option
-                toJson.forEach((timeslot) => {
-                  output += `
+
+
+    async function getAllTimeSlot() {
+      var response = await fetch('/api/order/timeSlot')
+      var status = await response.status
+      var toJson = await response.json()
+      const timeSlotSort = document.getElementById("timeSlotSortSelect");
+      var output = ""
+      output += `<option  value="none">none</option>`
+      timeSlotSort.value = 'none'
+      // Create option elements for each payment option
+      toJson.forEach((timeslot) => {
+        output += `
                   <option  value="${timeslot.timeSlotId}">${timeslot.startTime}</option>
                   `
-                });
-                timeSlotSort.innerHTML = output
-            
-          }
-          function Sorting(){
-              console.log("called: "+timeSlotSortSelect.value)
-              console.log(OrderList)
-              var getReturnList = sortTimeslot_Workday()
-              console.log(getReturnList)
-              printRowOrder(getReturnList)
-              console.log(getWorkDaySort())
-            }
-          
+      });
+      timeSlotSort.innerHTML = output
 
-          function sortTimeslot_Workday() {
-            let returnList = new Array() ;
-            let workday = getWorkDaySort();
-            let timeslotid = timeSlotSortSelect.value.trim()
-            if(timeslotid == 'none'){
-                timeslotid ='';
-            }
-            OrderList.forEach( (item) =>{
-              if(String(item.order.schedule.timeSlot.timeSlotId).includes(timeslotid.trim()) && String(item.order.schedule.workDay).includes(workday)){
-                returnList.push(item)
-              }
-            })
-            return returnList;
-          }
-          function printRowOrder(data){
-            let output = '';
-              data.forEach(item => {
-                const order = item['order'];
-                const account = item['account'];
-                console.log(account)
-                const accountName = account.accountName;
-                const schedule = order.schedule
-                //console.log(schedule)
-                const scheduleStartTime = schedule.timeSlot.startTime
-                const scheduleTimeslotId = schedule.timeSlot.timeSlotId
-                const scheduleId = schedule.scheduleId
-                const scheduleWorkDay = schedule.workDay
-                const service = item['service'];
-                const payment = item['payment'];
-                const transaction = item['transaction'];
-                const txn = transaction['vnpTxnRef']
-                const orderId = order['orderId']
-                const serviceName = service['serviceName'];
-                const paymentName = payment['paymentName'];
-                const status = order['status'];
-                const imageConfirm = order['urlImageConfirm'];
-                output += `
-                        <tr class='item-to-search'>
-                          <td class="username" >${accountName}</td>
-                          <td class="servicename">${serviceName}</td>
-                          <td class="payment">${paymentName}</td>
-                          <td class="workday">${scheduleWorkDay}</td>
-                          <td class="starttime" value=${scheduleId}>${scheduleStartTime}</td>
-                          <td class="status">${status}</td>
-                          <td ><button class="btn btn-primary" onclick="openDetail(${orderId})">Detail</button></td>
-                          <td>
+    }
+    function Sorting() {
+      console.log("called: " + timeSlotSortSelect.value)
+      console.log(OrderList)
+      var getReturnList = sortTimeslot_Workday()
+      console.log(getReturnList)
+      printRowOrder(getReturnList)
+      console.log(getWorkDaySort())
+    }
+
+
+    function sortTimeslot_Workday() {
+      let returnList = new Array();
+      let workday = getWorkDaySort();
+      let timeslotid = timeSlotSortSelect.value.trim()
+      if (timeslotid == 'none') {
+        timeslotid = '';
+      }
+      OrderList.forEach((item) => {
+        if (String(item.order.schedule.timeSlot.timeSlotId).includes(timeslotid.trim()) && String(item.order.schedule.workDay).includes(workday)) {
+          returnList.push(item)
+        }
+      })
+      return returnList;
+    }
+    function printRowOrder(data) {
+      let output = '';
+      data.forEach(item => {
+        const order = item['order'];
+        const account = item['account'];
+        console.log(account)
+        const accountName = account.accountName;
+        const schedule = order.schedule
+        //console.log(schedule)
+        const scheduleStartTime = schedule.timeSlot.startTime
+        const scheduleTimeslotId = schedule.timeSlot.timeSlotId
+        const scheduleId = schedule.scheduleId
+        const scheduleWorkDay = schedule.workDay
+        const service = item['service'];
+        const payment = item['payment'];
+        const transaction = item['transaction'];
+        const txn = transaction['vnpTxnRef']
+        const orderId = order['orderId']
+        const serviceName = service['serviceName'];
+        const paymentName = payment['paymentName'];
+        const status = order['status'];
+        const imageConfirm = order['urlImageConfirm'];
+        output += `
+                        <tr class="item-to-search item-to-search even:bg-[#c4c4c4] odd:bg-[#fffff4]">
+                          <td class="username py-3 text-center" >${accountName}</td>
+                          <td class="servicename py-3 text-center">${serviceName}</td>
+                          <td class="payment py-3 text-center">${paymentName}</td>
+                          <td class="workday py-3 text-center">${scheduleWorkDay}</td>
+                          <td class="starttime py-3 text-center" value=${scheduleId}>${scheduleStartTime}</td>
+                          <td class="status py-3 text-center">${status}</td>
+                          <td class="py-3 text-center">
                              `
-                                if (paymentName == "VNPAY") {
-                                    output +=
-                                    `
-                                        <a href="/admin_OrderTransaction/${txn}">View Transaction</a>
-                                    `
-                                }
-                                else {
-                                    output +=
-                                    `
-                                        <a href="#" ></a>
-                                    `
-                                }
-                                output +=
-                            `
-                          </td>
-                          <td>
-                               `
-                                    if (status === 'SUCCESS') {
-                                        output+=
-                                        `<a href="${imageConfirm}">Image Confirm</a>`
-                                    }else{
-                                      output+= 
-                                      `<a href="#"  ></a>`
-                                    }
-                                    output+=
-                                `
-                        </td>
-                          <td>
-                            `
-                            if(status != "CANCEL" && status != "SUCCESS" ){
-                              output += `<button onclick="cancelOrderAdmin(${orderId})" class="btn btn-danger" >Cancel</button>`
-                            }else{
-                              output += `<a href="#"></a>`
-                            }
-                            output+=
-                            `
+        if (status === 'SUCCESS') {
+          output +=
+            `<a href="${imageConfirm}">Image Confirm</a>`
+        } else {
+          output +=
+            `<a href="#">No image available</a>`
+        }
+        output +=
+          `</td>
+          <td class="py-3 text-center"><button class="text-center btn btn-primary" onclick="openDetail(${orderId})">Detail</button></td>
+          <td class="py-3 text-center">`
+        if (paymentName == "VNPAY") {
+          output +=
+            `<a class="py-3 text-center" href="/admin_OrderTransaction/${txn}">Transaction Detail</a>`
+        }
+        else {
+          output +=
+            `<a class="py-3 text-center" href="#" ></a>`
+        }
+        output +=
+          `</td>
+            <td class="py-3 text-center">`
+        if (status != "CANCEL" && status != "SUCCESS") {
+          output += `<button onclick="cancelOrderAdmin(${orderId})" class="btn btn-danger">Cancel</button>`
+        } else {
+          output += `<a href="#">${status}</a>`
+        }
+        output +=
+          `
                             </td>
                         </tr>
                       `;
-              });
+      });
 
-              document.getElementById('tbody-orders').innerHTML = output;
-          }
+      document.getElementById('tbody-orders').innerHTML = output;
+    }
 
-          function getWorkDaySort(){
-              var date = document.getElementById("selectWorkDay").value
-              return date
-            }  
-            
+    function getWorkDaySort() {
+      var date = document.getElementById("selectWorkDay").value
+      return date
+    }
+
   </script>
 
 </body>
+
 </html>

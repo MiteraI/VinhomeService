@@ -1,365 +1,202 @@
-<html lang="en">
+<div class="updateFormContainer hidden container fixed top-0 start-0 w-100 h-100 flex flex-col justify-center items-center form z-99"
+    id="update-form-container" style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="w-[50%] rounded-lg bg-white">
+        <form id="update-form" class="px-4">
+            <div class="font-semibold text-[20px] text-center my-3">Update Customer Information</div>
+            <input name="txtID" class="prohibit-input uId" id="update-form-id" type="hidden" value="">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+            <label class="capitalize">Username</label>
+            <span id="error-username-updateCustomer"
+                class="ml-1 font-semibold text-sm error-message italic text-red-500">
+            </span>
+            <input type="text" id="update-form-username"
+                class="prohibit-input uName updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <div class="container fixed-top  " style="display: block; " id="update-form-container">
-        <div class="visually-hidden mt-5 ">asdf</div>
-        <div class="container d-flex justify-content-center align-items-center   mt-5 ">
-            <div class="container w-75 border border-black   bg-white
-                        mt-5 rounded  p-5   " style="z-index: 99;">
-                <form id="update-form" class="">
-                    <div class="container p-0 m-0 d-flex justify-content-center mb-3">
-                        <div class="align-items-center">
-                            <label> <!-- ID: -->ID:<input name="txtID" id="update-form-id" type="hidden"
-                                    value=""></label>
-                        </div>
-                    </div>
-                    <div class="container p-0 m-0 d-flex">
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> Username</label>
-                            <input type="text" id="update-form-username" class="form-control form-control-sm w-75"
-                                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
-                            <p id="error-username" class="error-message text-danger " style="visibility: hidden;">adsf</p>
-                        </div>
-                        <!-- <div class="form-group col-6  p-0 m-0">
-                            <label> password</label>
-                            <input type="text" id="update-form-password" class="form-control form-control-sm w-75"
-                                placeholder="" name="txtPassword" value="">
-                            <p class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                        </div> -->
-
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> email</label>
-                            <input type="text" id="update-form-email" class="form-control form-control-sm w-75"
-                                aria-describedby="emailHelp" placeholder="" name="txtEmail">
-                            <p id="error-email" class="error-message text-danger " style="visibility: hidden;">adsf</p>
-                        </div>
-
-                    </div>
-
-                    <div class="container p-0 m-0 d-flex">
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> Firstname</label>
-                            <input type="text" id="update-form-firstname" class="form-control form-control-sm w-75"
-                                placeholder="" name="txtFirstname" value="">
-                            <p id="error-firstname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> Lastname</label>
-                            <input type="text" id="update-form-lastname" class="form-control form-control-sm w-75"
-                                placeholder="" name="txtLastname" value="">
-                            <p id="error-lastname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                        </div>
-                    </div>
+            <label class="capitalize">email</label><span id="error-email-updateCustomer"
+                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+            <input type="text" id="update-form-email"
+                class="prohibit-input uEmail updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                aria-describedby="emailHelp" placeholder="" name="txtEmail">
 
 
-                    <div class="container d-flex p-0 m-0">
+            <label class="capitalize">Firstname</label><span id="error-firstname-updateCustomer"
+                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+            <input type="text" id="update-form-firstname"
+                class="prohibit-input uFname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                placeholder="" name="txtFirstname" value="">
 
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> Dob</label>
-                            <input type="date" id="update-form-dob" class="form-control form-control-sm w-75"
-                                placeholder="" name="txtDate" value="">
-                            <p id="error-dob" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 ms-1 d-flex justify-content-end align-items-center">
-                            <label>is Enabled:
-                                <input type="text" id="isEnableText" value="" class="w-25 me-3 float-end"
-                                    readonly="readonly">
-                                    <input type="hidden" name="isEnable" id="isEnableValue" value="" class="w-25 me-3 float-end"
-                                    readonly="readonly">
-                            </label>
-                            <div class="btn-group w-50" style="margin-right: 25%" role="group"
-                                aria-label="Basic outlined example">
-                                <button type="button" id="isEnableYes" class="btn btn-outline-primary w-50"
-                                    onclick="isEnabled(this.id)">yes</button>
-                                <button type="button" id="isEnableNo" class="btn btn-outline-primary w-50"
-                                    onclick="isEnabled(this.id)">No</button>
-                            </div>
-                        </div>
+            <label class="capitalize">Lastname</label><span id="error-lastname-updateCustomer"
+                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+            <input type="text" id="update-form-lastname"
+                class="prohibit-input uLname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                placeholder="" name="txtLastname" value="">
 
-                    </div>
-                    <div class="container p-0 m-0 d-flex">
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> PhoneNumber</label>
-                            <div class="input-group">
-                                <input type="text" name="txtPhonenumber" class="form-control"
-                                    aria-label="Text input with dropdown button" id="update-form-phonenumber" value="">
-                                <input type="hidden" name="txtPhoneID" value="" id="update-form-phoneid">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">Dropdown</button>
-                                    <div class="dropdown-menu" id="dropdown-phone">
 
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <input type="text" id="update-form-email" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
-                                placeholder="" name="txtPhonenumber"> -->
-                            <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;"> asdf</p>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 ms-1 d-flex justify-content-end align-items-center">
-                            <label>is Block:
-                                <input type="text" id="isBlockText" value="" class="w-25 me-3 float-end"
-                                    readonly="readonly">
-                                    <input type="hidden" name="isBlock" id="isBlockValue" value="" class="w-25 me-3 float-end"
-                                    readonly="readonly">
-                            </label>
-                            <div class="btn-group w-50" style="margin-right: 25%" role="group"
-                                aria-label="Basic outlined example">
-                                <button type="button" id="isBlockYes" class="btn btn-outline-primary w-50"
-                                onclick="isBlocked(this.id)">yes</button>
-                                <button type="button" id="isBlockNo" class="btn btn-outline-primary w-50"
-                                onclick="isBlocked(this.id)">No</button>
-                            </div>
-                        </div>
-                    </div>
+            <label class="capitalize">Dob</label><span id="error-dob-updateCustomer"
+                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+            <input type="date" id="update-form-dob"
+                class="prohibit-input uDob updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                placeholder="" name="txtDate" value="">
 
-                    <div class="container d-flex p-0 m-0">
-                        <div class="form-group col-6  p-0 m-0">
-                            <input type="radio" class="form-check-input" name="btnRadio" value="A" checked=""> block A
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" name="btnRadio" value="B" checked="">block B
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" name="btnRadio" value="C" checked=""> block C
-                            </br>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0">
-                            <label> Room</label>
-                            <input type="text" id="update-form-room" class="form-control form-control-sm w-25"
-                                placeholder="" name="txtRoomnumber" value="">
-                            <p id="error-address" class="error-message text-danger" style="visibility: hidden;"> asdf</p>
-                        </div>
-                    </div>
+            <label for="">PhoneNumber<span id="error-phonenumber-updateWorker"
+                    class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+            <div class="mb-2 w-[100%]">
+                <span class="flex">
+                    <input type="text" name="txtPhonenumber" value=""
+                        class="prohibit-input uPhoneNumber phoneInput updateFormInput profile-form-input w-[100%] rounded-l-lg bg-slate-200 px-2 py-1"
+                        id="update-form-phonenumber">
+                    <input type="hidden" name="txtPhoneID" value="" id="update-form-phoneid" class="uPhoneId">
+                    <i
+                        class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 px-2 py-1 cursor-pointer"></i>
+                </span>
 
-                    <div class=" container-fluid d-flex justify-content-between">
-                        <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Update">
-                        <div class=" btn btn-primary form-close d-inline-block align-content-end"
-                            onclick="getAdminCustomerPage()">
-                            close</div>
-                    </div>
+                <div id="phoneDropdownContainer"
+                    class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
+                    <ul class="phoneSpanContainer absolute w-inherit  border-2 border-black bg-slate-200 overflow-y-scroll"
+                        aria-labelledby="dropdownDividerButton">
 
-                </form>
+                    </ul>
+                </div>
             </div>
-        </div>
+
+            <div class="mb-3 w-[100%] flex items-center">
+                <div class="w-[100%]">
+                    <label>Room</label><span id="error-address"
+                        class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                    <input type="text" id="update-form-room"
+                        class="prohibit-input uRoom updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                        aria-describedby="emailHelp" placeholder="" name="txtRoomnumber" value="">
+                </div>
+
+                <div class="ml-[6%] w-inherit flex flex-col justify-center">
+                    <label>Block</label>
+                    <div class="flex mb-2 py-1">
+                        <span class="prohibit-input-radio flex flex-[.5]">
+                            <input class="scale-[1.3] uBlock" type="radio" name="btnRadio" value="A">
+                            <span class="ml-[3%]">
+                                Block A</span>
+                        </span>
+                        <span class="prohibit-input-radio flex flex-[.5]">
+                            <input class="scale-[1.3] uBlock" type="radio" name="btnRadio" value="B">
+                            <span class="ml-[3%]">
+                                Block B</span>
+                        </span>
+                        <span class="prohibit-input-radio flex flex-[.5]">
+                            <input class="scale-[1.3] uBlock" type="radio" name="btnRadio" value="C">
+                            <span class="ml-[3%]">
+                                Block C</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center mb-2">
+                <div class="w-[50%] flex items-center justify-around">
+                    <label class="flex-1 capitalize">Enable user</label>
+                    <label for="toggleEnabled" class="flex cursor-pointer select-none items-center">
+                        <div class="relative">
+                            <input type="hidden" name="isEnable" id="isEnableValue" value="" class=""
+                                readonly="readonly">
+                            <input type="checkbox" id="toggleEnabled" class="toggleSwitch sr-only" />
+                            <div class="block h-8 w-14 rounded-full bg-[#E5E7EB]"></div>
+                            <div
+                                class="dotEnabled enableBtn absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all duration-300">
+                                <span class="active text-body-color hidden">
+                                    <svg width="11" height="8" viewBox="0 0 11 8" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
+                                            fill="white" stroke="white" stroke-width="0.4"></path>
+                                    </svg>
+                                </span>
+                                <span class="inactive text-body-color">
+                                    <svg class="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="w-[50%] flex items-center justify-around ml-2">
+                    <label for="" class="flex-1 capitalize">Block user</label>
+                    <label for="toggleBlock" class="flex cursor-pointer select-none items-center">
+                        <div class="relative">
+                            <input type="hidden" name="isBlock" id="isBlockValue" value="" class="" readonly="readonly">
+                            <input type="checkbox" id="toggleBlock" class="toggleSwitch sr-only" />
+                            <div class="block h-8 w-14 rounded-full bg-[#E5E7EB]"></div>
+                            <div
+                                class="dotEnabled blockBtn absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all duration-300">
+                                <span class="active text-body-color hidden">
+                                    <svg width="11" height="8" viewBox="0 0 11 8" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
+                                            fill="white" stroke="white" stroke-width="0.4"></path>
+                                    </svg>
+                                </span>
+                                <span class="inactive text-body-color">
+                                    <svg class="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+
+
+
+
+            <!-- <div class="form-group col-6  p-0 m-0 ms-1 d-flex justify-content-end align-items-center">
+                <label>is Enabled:
+                    <input type="text" id="isEnableText" value="" class="w-25 me-3 float-end" readonly="readonly">
+                    <input type="hidden" name="isEnable" id="isEnableValue" value="" class="w-25 me-3 float-end"
+                        readonly="readonly">
+                </label>
+                <div class="btn-group w-50" style="margin-right: 25%" role="group" aria-label="Basic outlined example">
+                    <button type="button" id="isEnableYes" class="btn btn-outline-primary w-50"
+                        onclick="isEnabled(this.id)">yes</button>
+                    <button type="button" id="isEnableNo" class="btn btn-outline-primary w-50"
+                        onclick="isEnabled(this.id)">No</button>
+                </div>
+            </div>
+
+            <div class="form-group col-6  p-0 m-0 ms-1 d-flex justify-content-end align-items-center">
+                <label>is Block:
+                    <input type="text" id="isBlockText" value="" class="w-25 me-3 float-end" readonly="readonly">
+                    <input type="hidden" name="isBlock" id="isBlockValue" value="" class="w-25 me-3 float-end"
+                        readonly="readonly">
+                </label>
+                <div class="btn-group w-50" style="margin-right: 25%" role="group" aria-label="Basic outlined example">
+                    <button type="button" id="isBlockYes" class="btn btn-outline-primary w-50"
+                        onclick="isBlocked(this.id)">yes</button>
+                    <button type="button" id="isBlockNo" class="btn btn-outline-primary w-50"
+                        onclick="isBlocked(this.id)">No</button>
+                </div>
+            </div> -->
+
+
+
+            <div class="flex justify-center items-center">
+                <button type="button"
+                    class="w-[50%] py-2 rounded-lg bg-red-300 border-2 border-red-400 capitalize hover:bg-transparent"
+                    onclick="getAdminCustomerPage()">close</button>
+                <input
+                    class="w-[50%] ml-2 py-2 rounded-lg bg-blue-300 border-2 border-blue-400 capitalize hover:bg-transparent"
+                    type="submit" value="Update">
+            </div>
+
+        </form>
     </div>
-
-
-
-</body>
-<script>
-    const getCustomerId = window.location.href.split(/(\\|\/)/g).pop()
-    console.log(getCustomerId)
-    showFullCustomerInfo(getCustomerId)
-    var error_username,error_email,error_firstname,error_lastname,error_phonenumber,error_dob,error_address
-    error_username = document.getElementById("error-username")
-    error_email = document.getElementById("error-email")
-    error_firstname = document.getElementById("error-firstname")
-    error_lastname = document.getElementById("error-lastname")
-    error_phonenumber = document.getElementById("error-phonenumber")
-    error_dob = document.getElementById("error-dob")
-    error_address = document.getElementById("error-address")
-    
-    
-
-
-
-
-    async function showFullCustomerInfo(AccountID) {
-        document.getElementById("update-form").reset();
-        document.getElementById("update-form-container").style.display = "block"
-        ///get account info
-        console.log(AccountID)
-        const response1 = await fetch(`http://localhost:8080/UserRestController/getAccountInfo/${AccountID}`, {
-            method: "GET"
-        });
-        console.log("yes get all info customer ")
-        var account = await response1.json(); console.log( account);
-        //get phone of account
-        const response2 = await fetch(`http://localhost:8080/UserRestController/getAccountPhonenumber/${AccountID}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log("yes get in phone");
-        var phone = await response2.json();
-        //get address of account
-        const response3 = await fetch(`http://localhost:8080/UserRestController/getAccountAddress/${AccountID}`, {
-            method: "GET"
-        });
-        console.log("yes get in Address");
-        ////dropdown menu set up
-        var drop_down_menu = document.getElementById("dropdown-phone"); console.log(drop_down_menu)
-        drop_down_menu.innerHTML = "";
-        var output = "";
-        for (var i in await phone) {
-            output =
-                `
-            <a class="dropdown-item" onclick="phoneInputUpdate('${phone[i].number}', ${phone[i].phoneId})" >
-                ${phone[i].number}
-            </a>
-        `;
-            drop_down_menu.innerHTML += output;
-        }
-        document.getElementById("update-form-phonenumber").value = phone[0].number;
-        document.getElementById("update-form-phoneid").value = phone[0].phoneId;
-        //this is to get 1 phone to the form if there is one
-
-        ///form info setup
-        document.getElementById("update-form-id").value = account.accountId;
-        document.getElementById("update-form-username").value = account.accountName;
-        //document.getElementById("update-form-password").value = account.password;
-        document.getElementById("update-form-firstname").value = account.firstName;
-        document.getElementById("update-form-lastname").value = account.lastName;
-        document.getElementById("update-form-dob").value = account.dob;
-        document.getElementById("update-form-email").value = account.email
-
-        var is_block = account.isBlock
-        var is_enabled = account.isEnable
-        console.log(is_block)
-        console.log(is_enabled)
-        if (is_enabled == 1) {
-            isEnabled("isEnableYes")
-        } else {
-            isEnabled("isEnableNo")
-        }if (is_block == 1) {
-            isBlocked("isBlockYes")
-        } else {
-            isBlocked("isBlockNo")
-        }
-        console.log(document.getElementById("update-form-id").value)
-        //address setup
-        var address = await response3.json();
-        // console.log(await address)
-        var btnChecked = document.querySelectorAll('.form-check-input')
-        switch (await address.buildingBlock) {
-            case "A":
-                btnChecked[0].checked = true;
-                break;
-            case "B":
-                btnChecked[1].checked = true;
-                break;
-            case "C":
-                btnChecked[2].checked = true;
-                break;
-            default:
-                console.log("somethingwrong with address"); alert("something wrong with address, or this guy dont have a house yet")
-                break;
-        }
-        document.getElementById("update-form-room").value = address.buildingRoom;
-    }
-    function phoneInputUpdate(number, id) {
-        console.log(number)
-        console.log(id)
-        document.getElementById("update-form-phonenumber").value = number;
-        document.getElementById("update-form-phoneid").value = id
-    }
-    ////////////update customer info
-    ////////////update customer info
-    ////////////update customer info
-    const update_form = document.getElementById("update-form");
-    update_form.addEventListener('submit', async function (event) {
-        console.log(update_form)
-        event.preventDefault();
-        var form_data = new FormData(update_form);
-        let data = Object.fromEntries(form_data);
-        // console.log(data);
-        var response = await fetch(`http://localhost:8080/UserRestController/UpdateAccountCustomer`,
-            {
-                method: "Put",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-        console.log(await response.status);//console.log(await response.json())
-        var status = await response.status;
-        var responseData = await response.json()
-        if (status < 200 || status > 300) {
-            error_username.style.visibility = "visible"; error_username.innerHTML = "."+ responseData.usernameErr
-            //error_password.stylse.visibility = "visible"; error_password.innerHTML = responseData.passwordErr
-            error_email.style.visibility = "visible"; error_email.innerHTML = "."+ responseData.emailErr
-            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "."+ responseData.firstnameErr
-            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "."+ responseData.lastnameErr
-            error_dob.style.visibility = "visible"; error_dob.innerHTML = "."+ responseData.dateErr
-            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "."+ responseData.phonenumberErr
-            error_address.style.visibility = "visible"; error_address.innerHTML = "."+ responseData.addressErr
-            if(responseData.usernameErr == ""){error_username.style.visibility = "hidden";}
-            if(responseData.emailErr == ""){ error_email.style.visibility = "hidden";}
-            if(responseData.firstnameErr == ""){error_firstname.style.visibility = "hidden"; }
-            if(responseData.lastnameErr == ""){error_lastname.style.visibility = "hidden";}
-            if(responseData.dateErr == ""){error_dob.style.visibility = "hidden";}
-            if(responseData.phonenumberErr == ""){ error_phonenumber.style.visibility = "hidden";}
-            if(responseData.addressErr == ""){error_address.style.visibility = "hidden";}
-
-
-        } else {
-            error_username.style.visibility = "hidden";
-            //error_password.style.visibility = "hidden"; 
-            error_email.style.visibility = "hidden";
-            error_firstname.style.visibility = "hidden"; 
-            error_lastname.style.visibility = "hidden";
-            error_dob.style.visibility = "hidden";
-            error_phonenumber.style.visibility = "hidden"; 
-            error_address.style.visibility = "hidden";
-            console.log('yes successs')
-            alert("successfully update");
-            delay(500).then(() => {
-                getAdminCustomerPage()
-                })
-            }
-    
-        }
-    )
-    function getAdminCustomerPage() {
-        console.log("inside return main page")
-        window.location.href = "/adminDisplayCustomer_page";
-    }
-
-
-
-    function isEnabled(button_id) {
-        console.log(button_id)
-        if (button_id == "isEnableYes") {
-            document.getElementById("isEnableYes").checked = true;
-            document.getElementById("isEnableNo").checked = false;
-            document.getElementById("isEnableValue").value = 1;
-            document.getElementById("isEnableText").value = "yes";
-        } else {
-            document.getElementById("isEnableYes").checked = false;
-            document.getElementById("isEnableNo").checked = true;
-            document.getElementById("isEnableValue").value = 0;
-            document.getElementById("isEnableText").value = "No";
-        }
-    }
-    function isBlocked(button_id) {
-        console.log(button_id)
-        if (button_id == "isBlockYes") {
-            document.getElementById("isBlockYes").checked = true;
-            document.getElementById("isBlockNo").checked = false;
-            document.getElementById("isBlockValue").value = 1;
-            document.getElementById("isBlockText").value = "yes";
-        } else {
-            document.getElementById("isBlockYes").checked = false;
-            document.getElementById("isBlockNo").checked = true;
-            document.getElementById("isBlockValue").value = 0;
-            document.getElementById("isBlockText").value = "no";
-        }
-    }
-</script>
-<script src="../static/js/AdminPublicFunction.js"></script>
-
-</html>
+</div>

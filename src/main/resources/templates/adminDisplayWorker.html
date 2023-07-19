@@ -1,84 +1,84 @@
-<html lang="en" xmlns:th="http://thymeLeaf.org">
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="w-[100%] h-">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/tailwind/font.css">
+    <link rel="stylesheet" href="../static/tailwind/index.css">
     <!-- <script src="../static/js/AdminPublicFunction.js"></script> -->
 </head>
 
 <body>
-    <div>
-        <div class="position-relative">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- <div class="container-fluid p-0 "> -->
-                    <a class="navbar-brand" href="/">
-                        <img src="../static/assets/images/user.png" width="40" height="40"
-                            class="d-inline-block align-top mx-3" alt="">
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
-                                    <h4>Manage Worker</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
-                                    <h4>Manage User</h4>
-                                </a>
-                            </li>
-                            <!-- <li class="nav-item ">
-                            <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
-                                <h4>Transaction List</h4>
-                            </a>
-                        </li> -->
-                            <li class="nav-item" id="div-dad">
-                                <a class="nav-link text-white  m-0" href="/see-leave-report" id="see-leave-report">
-                                    <h4>Manage Leave Report</h4>
-                                </a>
-                                <div id="notificationDot">
-                                    <span id="notificationCount"></span>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  m-0" href="/see-all-order-by-admin">
-                                    <h4>Manage Order</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  m-0" href="/see-all-services">
-                                    <h4>Manage Services</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  m-0" href="/see-all-categories">
-                                    <h4>Manage Category</h4>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <form action="/logout">
-                    <button type="submit">Logout</button>
-                </form>
-            </nav>
+    <nav class="p-0 stikcy z-0" data-bs-theme="dark">
+        <a class="" href="/">
+            <img src="../static/assets/images/user.png" width="40" height="40" class="d-inline-block align-top mx-3"
+                alt="">
+        </a>
+        <a class="nav-link m-0" href="/adminDisplayWorker_page">
+            <h4>Manage Worker</h4>
+        </a>
+        <a class="nav-link m-0" href="/adminDisplayCustomer_page">
+            <h4>Manage User</h4>
+        </a>
+        <a class="nav-link m-0" href="/see-leave-report" id="see-leave-report">
+            <h4>Manage Leave Report</h4>
+        </a>
+        <div id="notificationDot">
+            <span id="notificationCount"></span>
         </div>
-    </div>
-    <div class="container-fluid " style="height: 40px;">
-    </div>
+        <a class="nav-link m-0" href="/see-all-order-by-admin">
+            <h4>Manage Order</h4>
+        </a>
+        <a class="nav-link m-0" href="/see-all-services">
+            <h4>Manage Services</h4>
+        </a>
+        <a class="nav-link m-0" href="/see-all-categories">
+            <h4>Manage Category</h4>
+        </a>
+        <form action="/logout">
+            <button type="submit">Logout</button>
+        </form>
+    </nav>
+    <!-- <div class="bg-blue-300">
+        <div class="">
+            <div class="bg-white flex justify-center flex-col rounded-lg w-44">
+                <span class="py-2 px-3 text-[20px] font-semibold">Manage <i
+                        class="fas fa-sort-down float-right "></i></span>
+
+                <div id="dropdownDivider" class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44">
+                    <ul class="absolute w-inherit rounded-lg border-2 border-blue-700 bg-white"
+                        aria-labelledby="dropdownDividerButton">
+                        <li class="relative">
+                            <a href="/profile"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-t-lg"><i
+                                    class="fa fa-user mr-2"></i>Profile</a>
+                        </li>
+                        <li class="relative">
+                            <a href="/order-history"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300"><i
+                                    class="fa fa-history mr-2"></i>Order History</a>
+                        </li>
+                        <li class="relative">
+
+                            <a href="/logout"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-b-lg "><i
+                                    class="fa fa-sign-out mr-2"></i>Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> -->
     <div class="container d-flex justify-content-around p-0 mt-3 ">
         <div class="">
             <button class="btn btn-primary text-white" onclick="openCreateForm()">
@@ -89,16 +89,11 @@
             <!-- <label class="sr-only" for="search">Search</label> -->
             <input type="text" class="form-control" name="q" id="search" placeholder="Search">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" id="dropdown-title">none</button>
+                <button class="btn btn-outline-secondary dropdown-toggle capitalize" type="button"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    id="dropdown-title">none</button>
                 <div class="dropdown-menu" id="dropdown-category">
-                    <!-- <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">none</a>
-                    <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">accountID</a>
-                    <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">email</a>
-                    <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">Firstname</a>
-                    <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">Lastname</a>
-                    <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">Dob</a>
-                    <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">status</a> -->
+
                 </div>
             </div>
             <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback">
@@ -108,21 +103,40 @@
     <!-- SHOW WORKER TABLE -->
     <!-- SHOW WORKER TABLE -->
     <!-- SHOW WORKER TABLE -->
-    <div class="container col-12 mt-3 ">
-        <table class="table-worker table table-striped " style="display:block">
+    <div class="container px-5 mt-3">
+        <table class="table-worker table-auto worker-table block" data-sort-order="desc">
             <thead>
-                <tr>
-                    <th id="heading-id-w" scope="col" class="asc" onclick='sortById(this)' style="width: 20%;"><span class="heading">accountID</span></th>
-                    <th id="heading-email-w" scope="col" class="asc" style="width: 20%;"><span class="heading">email</span></th> 
-                    <th id="heading-firstname-w" scope="col" class="asc" onclick='sortByFirstname(this)'
-                        style="width: 20%;"><span class="heading">Firstname</span></th>
-                    <th id="heading-lastname-w" scope="col" class="asc" onclick='sortByLastname(this)'
-                        style="width: 20%;"><span class="heading">Lastname</span></th>
-                    <th id="heading-dob-w" scope="col" class="asc" style="width: 20%;"><span class="heading">Dob</span></th>
-                    <th id="heading-status-w" scope="col" class="asc" style="width: 20%;"><span class="heading">status</span></th>
-                    <th id="heading-role-w" scope="col" class="asc" style="width: 20%;"><span class="">Role</span></th>
-                    <th id="heading-update-w" scope="col" class="asc" style="width: 20%;"><span class="">Update</span></th>
-                    <th style="width: 20%;"><span class="">Delete</span></th>
+                <tr class="bg-black">
+                    <th id="heading-id-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                        onclick="sortById(0)">
+                        <span class="heading capitalize text-white">accountID</span>
+                    </th>
+
+                    <th id="heading-email-w" class="table-heading py-3 asc text-center">
+                        <span class="heading capitalize text-white">email</span>
+                    </th>
+
+                    <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                        onclick="sortByFirstname(2)">
+                        <span class="heading capitalize text-white">Full name</span>
+                    </th>
+
+                    <!-- <th id="heading-lastname-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                        onclick='sortByLastname(3)'>
+                        <span class="heading capitalize text-white">lastname</span>
+                    </th> -->
+
+                    <th id="heading-dob-w" class="table-heading py-3 asc text-center">
+                        <span class="heading capitalize text-white">dob</span>
+                    </th>
+
+                    <th id="heading-status-w" class="table-heading py-3 asc text-center">
+                        <span class="heading capitalize text-white">status</span>
+                    </th>
+
+                    <th class="table-heading py-3 text-center">
+                        <span class="capitalize text-white">action</span>
+                    </th>
                 </tr>
             </thead>
             <tbody id="worker-list">
@@ -133,110 +147,147 @@
     <!--  WORKER FORM -->
     <!--  WORKER FORM -->
     <!--  WORKER FORM -->
-    <div id="FORM" class="container col-6  position-fixed fixed-top rounded mt-5  p-5  vh-100 form"
-        style="display: none; ">
-        <div class="visually-hidden mt-5 ">asdf</div>
-        <div class="mt-5 border border-black p-lg-3 bg-white" style="z-index: 99;">
-            <form id="create-form" class=" ">
-                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
-                    <div class="form-group col-6">
-                        <label> Username</label>
-                        <input type="text" class="form-control form-control-sm w-75" aria-describedby="emailHelp"
-                            placeholder="" name="txtUsername">
-                        <p id="error-username" class="error-message text-danger " style="visibility: hidden;">adsf</p>
-                    </div>
-                    <div class="form-group col-6">
-                        <label> Password</label>
-                        <input type="password" class="form-control form-control-sm w-75" placeholder=""
-                            name="txtPassword">
-                        <p id="error-password" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                    </div>
-                </div>
-                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
-                    <div class="form-group col-6">
-                        <label> Email</label>
-                        <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtEmail">
-                        <p id="error-email" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                    </div>
-                    <div class="form-group col-6">
-                        <label> Firstname</label>
-                        <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtFirstname">
-                        <p id="error-firstname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                    </div>
-                </div>
-                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
-                    <div class="form-group col-6">
-                        <label> Lastname</label>
-                        <input type="text" class="form-control form-control-sm w-75" placeholder="" name="txtLastname">
-                        <p id="error-lastname" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                    </div>
-                    <div class="form-group col-6">
-                        <label> Dob</label>
-                        <input type="date" class="form-control w-75" placeholder="" name="txtDate">
-                        <p id="error-dob" class="error-message text-danger" style="visibility: hidden;">adsf</p>
-                    </div>
-                </div>
+    <div id="FORM"
+        class="container fixed top-0 start-0 w-100 h-100 flex flex-col justify-center hidden items-center form z-99"
+        style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="w-[50%] rounded-lg bg-white">
+            <form id="create-form" class="px-5 py-3">
+                <div class="text-center font-semibold text-xl">Add new worker</div>
 
-                <div class="container  m-0 p-0 d-flex justify-content-center align-items-center">
-                    <div class="form-group col-6">
-                        <label> PhoneNumber</label>
-                        <input type="text" class="form-control form-control-sm  w-75" placeholder=""
-                            name="txtPhonenumber">
-                        <p id="error-phonenumber" class="error-message text-danger" style="visibility: hidden;"> asdf
-                        </p>
-                    </div>
-                    <div class=" col-6  "></div>
-                </div>
+                <label>Username</label><span id="error-username"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="text" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" aria-describedby="emailHelp"
+                    placeholder="" name="txtUsername">
 
-                <div class="form-group">
-                    <label> Service</label>
-                    <div class="input-group">
-                        <input type="text" name="txtService" class="form-control h-50"
-                            aria-label="Text input with dropdown button" id="w-create-form-service" value=""
-                            readonly="readonly">
-                        <input type="hidden" name="txtServiceId" id="w-create-form-serviceid" value="">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
-                            <div class="dropdown-menu" id="w-create-form-dropdown-service">
+                <label>Password</label><span id="error-password"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="password" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtPassword">
 
-                            </div>
-                            <p id="error-service" class="error-message text-danger" style="visibility: hidden;"> asdf
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <p class="error-message text-danger" style="visibility: hidden;"> asdf</p>
-                <div class=" container-fluid d-flex justify-content-between">
-                    <!-- <input class="btn btn-primary button-submit d-inline-block" type="reset" value="Reset"> -->
-                    <input class="btn btn-primary button-submit d-inline-block" type="submit" value="Submit">
-                    <div class=" btn btn-primary form-close d-inline-block align-content-end"
-                        onclick="closeCreateForm()">close</div>
+                <label>Email</label><span id="error-email"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="text" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" aria-describedby="emailHelp"
+                    placeholder="" name="txtEmail">
+
+                <label>Firstname</label><span id="error-firstname"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="text" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtFirstname">
+
+                <label>Lastname</label><span id="error-lastname"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="text" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtLastname">
+
+                <label>Dob</label><span id="error-dob"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="date" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtDate">
+
+                <label>PhoneNumber</label><span id="error-phonenumber"
+                    class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                <input type="text" class="bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtPhonenumber">
+
+                <label>Service</label><br>
+                <input type="hidden" name="txtServiceId" id="w-create-form-serviceid" value="">
+                <select onchange="creatAccountService(this.value)"
+                    class="bg-slate-200 rounded-lg w-full px-2 py-1 mb-3">
+                    <option th:each="c : ${category}" th:value="${category != null} ? ${c.serviceCategoryId}"
+                        th:text="${category != null} ? ${c.serviceCategoryName}">
+                    </option>
+                </select>
+                <div class="flex justify-center items-center">
+                    <input class="rounded-lg bg-red-300 px-3 py-2 w-full hover:bg-red-400" type="button" value="Close"
+                        onclick="closeCreateForm()">
+                    <input class="ml-2 rounded-lg bg-blue-300 px-3 py-2 w-full hover:bg-blue-400" type="submit"
+                        value="Submit">
                 </div>
             </form>
         </div>
     </div>
 
+    <div th:replace="~{./adminUpdateWorker.html}"></div>
+
 </body>
 <script src="../static/js/AdminPublicFunction.js"></script>
-<script >
+<script src="../static/js/updateWorker.js"></script>
+<script>
     var error_username, error_password, error_email, error_firstname, error_lastname, error_dob, error_phonenumber, error_service;
-    error_username = document.getElementById("error-username")
-    error_password = document.getElementById("error-password")
-    error_email = document.getElementById("error-email")
-    error_firstname = document.getElementById("error-firstname")
-    error_lastname = document.getElementById("error-lastname")
-    error_dob = document.getElementById("error-dob")
-    error_phonenumber = document.getElementById("error-phonenumber")
+
+    const errorMessage = document.querySelectorAll('.error-message')
+    const tableHeading = document.querySelectorAll('.table-heading')
+
+    const w_update_form = document.getElementById("w-update-form");
+    const workerTable = document.querySelector('.worker-table')
+    const workerTableLength = workerTable.getBoundingClientRect().width
+    const widthForEachColumn = parseInt(workerTableLength / tableHeading.length + 10)
+    let workerStatusDict = null
+    // const getAllWorkerSatus = fetch('/UserRestController/getWorkerStatus', {
+    //     method: "GET",
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // }).then(res => res.json()).then(data => {
+    //     workerStatusDict = data
+    // })
+
+
+    let updateBtn = ""
+    const updateFormContainer = document.querySelector('.updateFormContainer')
+
+    console.log(workerTableLength)
     const createForm = document.getElementById("FORM")
+
+
     //error_service = document.getElementById("error-service")
+    let i = 0
+    tableHeading.forEach(h => {
+        if (i == tableHeading.length - 1) {
+            h.style.width = `${widthForEachColumn + 100}px`
+
+        }
+        else {
+            h.style.width = `${widthForEachColumn}px`
+
+        }
+        i++
+    })
     getWorkerList()
     applyHeaderToSearchCategory()
     async function getWorkerList() {
         console.log("inside get worker")
-        const response = await fetch("http://localhost:8080/UserRestController/getAccountWorker")
+        const response = await fetch("/UserRestController/getWorkerStatus")
+
         data = await response.json();
+
         printRow(data, "worker-list");
+        console.log(data)
+        workerStatusDict = data.reduce((acc, cur) => {
+            acc[cur.account.accountId] = cur;
+            return acc;
+        }, {});
+        console.log("workerStatusDict: ")
+        console.log(workerStatusDict)
+        const accountKeyFilter = ["accountId", "accountName", "accountStatus", "dob", "email", "firstName", "lastName", "phones", "username"]
+        const serviceKeyFilter = ["serviceCategoryId", "serviceCategoryName"]
+        for (let key in workerStatusDict) {
+            const account = workerStatusDict[key].account
+            const service = workerStatusDict[key].serviceCategory
+            const filteredAccount = Object.keys(account).filter(key => accountKeyFilter.includes(key)).reduce((obj, key) => {
+                obj[key] = account[key];
+                return obj;
+            }, {});
+            const filteredService = Object.keys(service).filter(key => serviceKeyFilter.includes(key)).reduce((obj, key) => {
+                obj[key] = service[key]
+                return obj
+            }, {})
+            workerStatusDict[key] = { ...workerStatusDict[key], ...filteredAccount }
+            workerStatusDict[key] = { ...workerStatusDict[key], ...filteredService }
+            delete workerStatusDict[key].account
+            delete workerStatusDict[key].serviceCategory
+        }
+        console.log(workerStatusDict)
     }
 
     function printRow(data, IdOfTableBody) {
@@ -247,119 +298,130 @@
         console.log(data)
         var output = "";
         for (var i in data) {
-            roleString = (data[i].role == 1) ? "worker" : "user";
-            statusString = (data[i].accountStatus == 1) ? "active" : "off ";
+            roleString = (data[i].account.role == 1) ? "worker" : "user";
+            statusString = (data[i].account.accountStatus == 1) ? "active" : "off ";
             var date_new; var date_output;
-            if (data[i].dob == null) {
+            if (data[i].account.dob == null) {
                 date_output = "not yet imported"
             } else {
-                date_new = new Date(data[i].dob); console.log(date_new)
+                date_new = new Date(data[i].account.dob); console.log(date_new)
                 date_output = new Intl.DateTimeFormat('en-US').format(date_new);
             }
             // onclick='showFullCustomerInfo(${data[i].accountId})'
             output = `
-        <tr id="${data[i].accountId}" scope="row"  class='item-to-search' >
+        <tr id="${data[i].account.accountId}" class="item-to-search even:bg-[#c4c4c4] odd:bg-[#fffff4]">
         `
-            if (data[i].role == 1) {
-                output += `<td class="accountid" onclick="showFullWorkerInfo(${data[i].accountId})"><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+            if (data[i].account.role == 1) {
+                output += `<td class="accountid text-center" onclick="showFullWorkerInfo(${data[i].account.accountId})"><input type="hidden" name="txtID" value="${data[i].account.accountId}">${data[i].account.accountId}</td>`;
             } else {
-                output += `<td class="accountid" onclick="showFullCustomerInfo(${data[i].accountId})"><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+                output += `<td class="accountid text-center" onclick="showFullCustomerInfo(${data[i].account.accountId})"><input type="hidden" name="txtID" value="${data[i].account.accountId}">${data[i].account.accountId}</td>`;
             }
             output += `
-                <td style="display: none;" ><input type="hidden" name="txtUsername" value="${data[i].accountName}"></td>
-                <td style="display: none;"><input type="hidden" name="txtPassword" value="${data[i].password}"></td>
-                <td class="email"><input type="hidden" name="txtEmail"value="${data[i].email}">${data[i].email}</td>
-                <td class="firstname"><input type="hidden" name="txtFirstname"value="${data[i].firstName}">${data[i].firstName}</td>
-                <td class="lastname"><input type="hidden" name="txtLastname"value="${data[i].lastName}">${data[i].lastName}</td>
-                <td class="dob"><input type="hidden" name="txtDob"value="${data[i].dob}">${date_output}</td>
-                <td class="status"><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
-                <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
-                <td>
-                    <button><a href="/admin_UpdateWorker/${data[i].accountId}">UPDATE</a></button>
-                </td>
+            <td class="email py-3 text-center"><input type="hidden" name="txtEmail"value="${data[i].account.email}">${data[i].account.email}</td>
+            <td class="fullname py-3 text-center"><input type="hidden" name="txtFirstname"value="${data[i].account.firstName}">${data[i].account.firstName} ${data[i].account.lastName}</td>
+            <td class="lastname hidden py-3 text-center"><input type="hidden" name="txtLastname"value="${data[i].account.lastName}">${data[i].account.lastName}</td>
+            <td class="dob py-3 text-center"><input type="hidden" name="txtDob"value="${data[i].account.dob}">${date_output}</td>
+            <td class="status py-3 text-center"><input type="hidden" name="txtStatus"value="${data[i].account.accountStatus}">${statusString}</td>
+            <td class="accountName hidden py-3 text-center"><input type="hidden" name="txtUsername" value="${data[i].account.accountName}"></td>
+            <td class="password hidden py-3 text-center"><input type="hidden" name="txtPassword" value="${data[i].account.password}"></td>
+                <td class="py-3 text-center">
+                    <button class="updateBtn text-center bg-green-400 py-2 px-3 rounded-lg w-[45%] capitalize" onclick="openUpdateForm(${data[i].account.accountId})">update</button>
+                
                 `
-            if (data[i].accountStatus == 1) {
+            if (data[i].account.accountStatus == 1) {
                 output +=
-                    `<td>
-                    <button onclick='confirmation(${data[i].accountId})'>del</button>
+                    `
+                    <button class="text-center bg-slate-400 py-2 px-3 rounded-lg w-[45%] capitalize" onclick='confirmation(${data[i].account.accountId})'>deactivate</button>
                 </td>`
             } else {
                 output +=
-                    ` <td>
-                    <button onclick='confirmation(${data[i].accountId})'>active</button>
+                    ` 
+                    <button class="text-center bg-yellow-400 px-3 py-2 rounded-lg w-[45%] capitalize" onclick='confirmation(${data[i].account.accountId})'>activate</button>
                 </td>`;
             }
-
+            output +=
+                `
+            </tr>`
 
             table_tag.innerHTML += output;
+
+            sorttableCategory()
         }
+
     }
+
+
     async function openCreateForm() {
-        createForm.style.display = "block"
+        error_username = document.getElementById("error-username")
+        error_password = document.getElementById("error-password")
+        error_email = document.getElementById("error-email")
+        error_firstname = document.getElementById("error-firstname")
+        error_lastname = document.getElementById("error-lastname")
+        error_dob = document.getElementById("error-dob")
+        error_phonenumber = document.getElementById("error-phonenumber")
+        createForm.classList.toggle('hidden')
         // document.querySelectorAll(".overlay")[0].style.display = "block";
         //document.getElementById("form").style.display = "block";
-        var response = await fetch(`http://localhost:8080/UserRestController/getServiceCategory`, {
+        var response = await fetch(`/UserRestController/getServiceCategory`, {
             method: "GET"
         });
         console.log("yes get service");
         var service_list = await response.json();
-        var drop_down_service = document.getElementById("w-create-form-dropdown-service"); console.log(drop_down_service)
-        drop_down_service.innerHTML = "";
-        var output = "";
-        for (var i in await service_list) {
-            output =
-                `
-            <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryName}', ${service_list[i].serviceCategoryId})" >
-                ${service_list[i].serviceCategoryName}
-            </a>
-        `;
-            drop_down_service.innerHTML += output;
-        }
-        document.querySelectorAll(".form")[0].style.display = "block";
-        document.getElementById("w-create-form-service").value = service_list[0].serviceCategoryName;
+        // var drop_down_service = document.getElementById("w-create-form-dropdown-service"); console.log(drop_down_service)
+        // drop_down_service.innerHTML = "";
+        // var output = "";
+        // for (var i in await service_list) {
+        //     output =
+        //         `
+        //     <a class="dropdown-item" onclick="creatAccountService('${service_list[i].serviceCategoryId})" >
+        //         ${service_list[i].serviceCategoryName}
+        //     </a>
+        // `;
+        //     drop_down_service.innerHTML += output;
+        // }
         document.getElementById("w-create-form-serviceid").value = service_list[0].serviceCategoryId;
         //creatAccountService(service_list[0].serviceCategoryName,service_list[0].serviceCategoryId)
     }
     async function deleteByID(id) {
         console.log("CONFIRMATION")
         var getResult = await confirmation();
-        if(getResult){
+        if (getResult) {
             console.log(id)
-            const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }
-        );
-        console.log("yes call api success DELETE")
-        console.log(response)
-        if (response.status == 500) {
-            alert("delete fail, might be server side");
-            return;
-        } else {
-            data = await response.json();
-            console.log(data[0].role)
-            if (data[0].role == 1) {
-                printRow(data, "worker-list");
-            } else {
-                printRow(data, "customer-list");
+            const response = await fetch(`/UserRestController/deleteWorker/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             }
+            );
+            console.log("yes call api success DELETE")
+            console.log(response)
+            if (response.status == 500) {
+                alert("delete fail, might be server side");
+                return;
+            } else {
+                data = await response.json();
+                console.log("role: " + data[0].role)
+                if (data[0].role == 1) {
+                    printRow(data, "worker-list");
+                } else {
+                    printRow(data, "customer-list");
+                }
 
+            }
+        } else {
+            return;
         }
-        }else{
-            return ;
-        }
-        
+
     }
 
-    async function confirmation(id){
+    async function confirmation(id) {
         console.log("CONFIRMATION")
         var getResult = confirm(" are you sure want to delete or re-active this account?");
-        if(getResult){
+        if (getResult) {
             deleteByID(id)
-        }else{
+        } else {
             return;
         }
     }
@@ -373,7 +435,7 @@
         const form_data = new FormData(form);
         const data = Object.fromEntries(form_data);
         console.log(data);
-        const response = await fetch("http://localhost:8080/UserRestController/createAccountWorker/1",
+        const response = await fetch("/UserRestController/createAccountWorker/1",
             {
                 method: "POST",
                 headers: {
@@ -385,13 +447,13 @@
         var responseData = await response.json()
         console.log(responseData)
         if (status < 200 || status > 300) {
-            error_username.style.visibility = "visible"; error_username.innerHTML = '❌ ' + "." + responseData.usernameErr
-            error_password.style.visibility = "visible"; error_password.innerHTML = '❌ ' + "." + responseData.passwordErr
-            error_email.style.visibility = "visible"; error_email.innerHTML = '❌ ' + "." + responseData.emailErr
-            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = '❌ ' + "." + responseData.firstnameErr
-            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = '❌ ' + "." + responseData.lastnameErr
-            error_dob.style.visibility = "visible"; error_dob.innerHTML = '❌ ' + "." + responseData.dateErr
-            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = '❌ ' + "." + responseData.phonenumberErr
+            error_username.style.visibility = "visible"; error_username.innerHTML = '❌' + responseData.usernameErr.charAt(0).toUpperCase() + responseData.usernameErr.slice(1)
+            error_password.style.visibility = "visible"; error_password.innerHTML = '❌' + responseData.passwordErr.charAt(0).toUpperCase() + responseData.passwordErr.slice(1)
+            error_email.style.visibility = "visible"; error_email.innerHTML = '❌' + responseData.emailErr.charAt(0).toUpperCase() + responseData.emailErr.slice(1)
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = '❌' + responseData.firstnameErr.charAt(0).toUpperCase() + responseData.firstnameErr.slice(1)
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = '❌' + responseData.lastnameErr.charAt(0).toUpperCase() + responseData.lastnameErr.slice(1)
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = '❌' + responseData.dateErr.charAt(0).toUpperCase() + responseData.dateErr.slice(1)
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = '❌' + responseData.phonenumberErr.charAt(0).toUpperCase() + responseData.phonenumberErr.slice(1)
             if (responseData.usernameErr == "") { error_username.innerHTML = "✔"; }
             if (responseData.passwordErr == "") { error_password.innerHTML = "✔"; }
             if (responseData.emailErr == "") { error_email.innerHTML = "✔"; }
@@ -412,8 +474,55 @@
             getWorkerList()
         }
 
-    }
-    )
+    })
+
+    w_update_form.addEventListener('submit', async function (event) {
+        console.log(w_update_form)
+        event.preventDefault();
+        var form_data = new FormData(w_update_form);
+        var data = Object.fromEntries(form_data);
+        console.log(data);
+        var response = await fetch("/UserRestController/updateAccountWorker/1",
+            {
+                method: "put",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+        var status = await response.status
+        var responseData = await response.json()
+        console.log(response.status)
+        console.log(responseData)
+        if (status >= 200 && status <= 300) {
+            error_username.style.visibility = "hidden";
+            //error_password.style.visibility = "hidden"; 
+            error_email.style.visibility = "hidden";
+            error_firstname.style.visibility = "hidden";
+            error_lastname.style.visibility = "hidden";
+            error_dob.style.visibility = "hidden";
+            error_phonenumber.style.visibility = "hidden";
+            console.log('yes successs')
+            alert("successfully update");
+            getWorkerList()
+        } else {
+            console.log(error_username)
+            error_username.innerHTML = "❌" + responseData.usernameErr
+            error_email.style.visibility = "visible"; error_email.innerHTML = "❌" + responseData.emailErr
+            error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "❌" + responseData.firstnameErr
+            error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "❌" + responseData.lastnameErr
+            error_dob.style.visibility = "visible"; error_dob.innerHTML = "❌" + responseData.dateErr
+            error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "❌" + responseData.phonenumberErr
+            if (responseData.usernameErr == "") { error_username.style.visibility = "hidden"; }
+            if (responseData.emailErr == "") { error_email.style.visibility = "hidden"; }
+            if (responseData.firstnameErr == "") { error_firstname.style.visibility = "hidden"; }
+            if (responseData.lastnameErr == "") { error_lastname.style.visibility = "hidden"; }
+            if (responseData.dateErr == "") { error_dob.style.visibility = "hidden"; }
+            if (responseData.phonenumberErr == "") { error_phonenumber.style.visibility = "hidden"; }
+        }
+
+    })
 
     function closeCreateForm() {
         // document.querySelectorAll(".overlay")[0].style.display = "none";
@@ -425,7 +534,7 @@
         error_lastname.style.visibility = "hidden";
         error_dob.style.visibility = "hidden";
         error_phonenumber.style.visibility = "hidden";
-        createForm.style.display = "none";
+        createForm.classList.toggle('hidden')
         //document.querySelectorAll(".form")[0].style.display = "none";
 
     }
@@ -435,7 +544,7 @@
     }
     async function deleteByID(id) {
         console.log(id)
-        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
+        const response = await fetch(`/UserRestController/deleteWorker/${id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
@@ -446,6 +555,7 @@
         var status = await response.status
         var bodyJson = await response.json()
         console.log("yes call api success DELETE")
+        console.log(bodyJson)
         if (status >= 200 && status <= 300) {
             console.log(bodyJson[0].role)
             printRow(bodyJson, "worker-list");
@@ -456,94 +566,77 @@
         }
     }
     //////////////////Test sort by category
-    //////////////////Test sort by category
-    //////////////////Test sort by category
 
-    // function applyHeaderToSearchCategory(){
-    //     let title = document.getElementById("dropdown-category");
-    //     let listHeading = document.querySelectorAll('.heading');
-    //     var output = "";
-    //     output += `<a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">none</a>`
-    //     listHeading.forEach( (item) => {
-    //         output += 
-    //         `
-    //         <a class="dropdown-item" onclick="updateServiceCategory(this.textContent)">${item.textContent.trim()}</a>
-    //         `
-    //         }    
-    //     )
-    //     title.innerHTML = output;
-    // }
+    function creatAccountService(serviceid) {
+        console.log(serviceid);
+        document.getElementById("w-create-form-serviceid").value = serviceid;
+    }
 
-    // function updateServiceCategory(name) {
-    //     console.log(name);
-    //     document.getElementById("dropdown-title").textContent = name.trim();
-    //     const listHeading = document.querySelectorAll('.heading');
-    //     if(name.toLowerCase() === "none"){
-    //         listHeading.forEach( (item) =>{
-    //         item.style.color = "black";
-    //     })
-    //     }else{
-    //         listHeading.forEach( (item) =>{
-    //             console.log(listHeading.textContent)
-    //         if(item.textContent.trim().toLowerCase().includes(name.trim().toLowerCase()) ){
-    //             item.style.color = "green";
-    //         }else{
-    //             item.style.color = "black";
-    //         }
-    //     })
-    //     }
-    // }
+    function openUpdateForm(id) {
+        error_username = document.getElementById("error-username-updateWorker")
+        error_email = document.getElementById("error-email-updateWorker")
+        error_firstname = document.getElementById("error-firstname-updateWorker")
+        error_lastname = document.getElementById("error-lastname-updateWorker")
+        error_phonenumber = document.getElementById("error-phonenumber-updateWorker")
+        error_dob = document.getElementById("error-dob-updateWorker")
+        let uid = updateFormContainer.querySelector('.uId')
+        let username = updateFormContainer.querySelector('.uName')
 
+        let email = updateFormContainer.querySelector('.uEmail')
+        let firstName = updateFormContainer.querySelector('.uFname')
+        let lastName = updateFormContainer.querySelector('.uLname')
 
-    // document.querySelector("#search").addEventListener('input', sorttableCategory)
-    // function sorttableCategory() {
-    //     var getCategoryTitle = document.getElementById("dropdown-title").textContent.trim();
-    //     var search_input = document.querySelector("#search").value.toLowerCase();;
-    //     const list = document.querySelectorAll('.item-to-search')
-    //     const listCategory = document.getElementsByClassName(getCategoryTitle)
-    //     console.log(listCategory)
-    //     console.log(getCategoryTitle)
-    //     if(getCategoryTitle == "none"){
-    //         console.log("inside none search")
-    //         list.forEach((element) => {
-    //         text_element = element.textContent.trim();
-    //         if (text_element.toLowerCase().includes(search_input.trim().toLowerCase())) {
-    //             element.style.display = '';
-    //         } else {
-    //             element.style.display = 'none';
-    //         }
-    //     });
-    //     }else{
-    //         console.log("inside class search")
-    //         list.forEach((element) => {
-    //         var getChild = element.getElementsByTagName("td")
-    //         console.log(getChild)
-    //         for(var i in getChild){
-    //             if(getChild[i].className == getCategoryTitle){
-    //             text_element = getChild[i].textContent.trim();
-    //             console.log(text_element)
-    //             if (text_element.toLowerCase().includes(search_input.trim().toLowerCase())) {
-    //                 element.style.display = '';
-    //             } else {
-    //                 element.style.display = 'none';
-    //             } 
-    //             console.log(getChild[i].className)
-    //         } 
-    //         }
-            
-    //     });
-    //     }
-    // }
-    function creatAccountService(servicename, serviceid) {
-    console.log(servicename);
-    console.log(serviceid);
-    document.getElementById("w-create-form-service").value = servicename;
-    document.getElementById("w-create-form-serviceid").value = serviceid;
-}
+        let phone = updateFormContainer.querySelector('.uPhoneNumber')
+        let phoneId = updateFormContainer.querySelector('.uPhoneId')
+
+        let serviceSelection = updateFormContainer.querySelector('.updateFormSelection')
+        let serviceSelected = document.querySelector(`.updateFormSelection option[value="${workerStatusDict[id].serviceCategoryId}"]`);
+        let serviceId = updateFormContainer.querySelector('.uServiceId')
+
+        let dayOff = updateFormContainer.querySelector('.uDaysOff')
+        let dob = updateFormContainer.querySelector('.uDob')
+
+        let workCount = updateFormContainer.querySelector('.uWorkCount')
+        let workerStatusTxt = updateFormContainer.querySelector('.uWorkerStatusTxt')
+
+        let workerStatus = document.querySelector('#w-status')
+
+        uid.value = workerStatusDict[id].accountId
+        username.value = workerStatusDict[id].accountName
+        email.value = workerStatusDict[id].email
+        firstName.value = workerStatusDict[id].firstName
+        lastName.value = workerStatusDict[id].lastName
+        dob.value = workerStatusDict[id].dob
+        phone.value = workerStatusDict[id].phones.length > 0 ? workerStatusDict[id].phones[0].number : ''
+        phoneId.value = workerStatusDict[id].phones.length > 0 ? workerStatusDict[id].phones[0].phoneId : ''
+        phone.placeholder = workerStatusDict[id].phones.length > 0 ? '' : 'No phone number available'
+        if (serviceSelected !== null) {
+            serviceSelected.selected = true;
+        }
+        serviceId.value = workerStatusDict[id].serviceCategoryId
+        serviceSelection.onchange = () => {
+            serviceId.value = serviceSelection.value
+        }
+        dayOff.value = workerStatusDict[id].allowedDayOff
+        workCount.value = workerStatusDict[id].workCount
+        workerStatusTxt.value = workerStatusDict[id].status > 0 ? 'off' : 'free'
+        workerStatus.value = workerStatusDict[id].status
+
+        console.log(workerStatusDict[id].status)
+        console.log(workerStatus.value)
+
+        updateFormContainer.classList.toggle('hidden')
+    }
+
+    function getAdminWorkerPage() {
+        updateFormInput.forEach(input => input.value = '')
+        errorMessage.forEach(msg => msg.innerHTML = '')
+        updateFormContainer.classList.toggle('hidden')
+    }
 </script>
 <script>
     const eventSource = new EventSource('/sse');
-    eventSource.addEventListener('leaveReportCount', function(event) {
+    eventSource.addEventListener('leaveReportCount', function (event) {
         const unreadCount = event.data;
         const notificationCountElement = document.getElementById('notificationCount');
         const notificationDotElement = document.getElementById('notificationDot');
@@ -562,7 +655,7 @@
     });
 
     // Close the SSE connection when leaving the page
-    window.addEventListener('unload', function() {
+    window.addEventListener('unload', function () {
         eventSource.close();
     });
 </script>
@@ -593,16 +686,18 @@
     }
 </style>
 <script>
-    document.getElementById("see-leave-report").addEventListener("click", function () {
-        localStorage.removeItem('unreadCount');
-        fetch ("/sse/close", {
-            method: 'POST'
-        })
-            .then(res => {
-                if (res.status === 200) {
-                }
-            })
-    })
+    // document.getElementById("see-leave-report").addEventListener("click", function () {
+    //     localStorage.removeItem('unreadCount');
+    //     fetch("/sse/close", {
+    //         method: 'POST'
+    //     })
+    //         .then(res => {
+    //             if (res.status === 200) {
+    //             }
+    //         })
+    // })
 </script>
+
 <!-- <script defer src="../static/js/AdminPublicFunction.js"></script> -->
+
 </html>
