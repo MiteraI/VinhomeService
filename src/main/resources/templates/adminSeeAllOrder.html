@@ -14,9 +14,43 @@
   <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../static/tailwind/font.css">
   <link rel="stylesheet" href="../static/tailwind/index.css">
+  <style>
+    .orderDetail::before {
+      content: "Order Information";
+      position: absolute;
+      top: -13px;
+      left: 3%;
+      background-color: white;
+    }
+
+    .orderDetail::before {
+      font-weight: bold;
+    }
+
+    .box::before {
+      content: "Worker Involved";
+      position: absolute;
+      top: -13px;
+      left: 3%;
+      background-color: white;
+    }
+
+    .box::before {
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
+  <div
+    class="confirmPicContainer fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center z-100 hidden"
+    style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="flex justify-center items-center" style="height: 90%; width: 60%;">
+      <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
+        class="confirmImg w-100 h-100 object-fit-contain">
+    </div>
+    <div role="button" class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2">Close</div>
+  </div>
   <nav class="p-0 stikcy z-0" data-bs-theme="dark">
     <a class="" href="/">
       <img src="../static/assets/images/user.png" width="40" height="40" class="d-inline-block align-top mx-3" alt="">
@@ -96,14 +130,40 @@
       </tbody>
     </table>
   </div>
+
+  <div th:replace="~{./adminUpdateOrder.html}"></div>
   <script src="../static/js/AdminPublicFunction.js"></script>
   <script>
     const timeSlotSortSelect = document.getElementById("timeSlotSortSelect")
+
+    const updateOrderContainer = document.querySelector('.updateOrderContainer')
+    const orderid = updateOrderContainer.querySelector('.orderId')
+    const username = updateOrderContainer.querySelector('.uName')
+    const fullname = updateOrderContainer.querySelector('.uFname')
+    const email = updateOrderContainer.querySelector('.uEmail')
+    const phone = updateOrderContainer.querySelector('.uPhoneNumber')
+    const createtime = updateOrderContainer.querySelector('.uOrderCreateTime')
+    const servicename = updateOrderContainer.querySelector('.uServiceName')
+    const serviceprice = updateOrderContainer.querySelector('.uServicePrice')
+    const workday = updateOrderContainer.querySelector('.uWorkDay')
+    const starttime = updateOrderContainer.querySelector('.uStartTime')
+    const endtime = updateOrderContainer.querySelector('.uEndTime')
+
+    const clickableImageName = updateOrderContainer.querySelector('.clickAbleImageName')
+    const confirmPicContainer = document.querySelector('.confirmPicContainer')
+    const confirmImg = document.querySelector('.confirmImg')
+    const closeBtn = document.querySelector('.closeBtn')
 
     const tableHeading = document.querySelectorAll('.table-heading')
     const workerTable = document.querySelector('.table-order')
     const workerTableLength = workerTable.getBoundingClientRect().width
     const widthForEachColumn = parseInt(workerTableLength / tableHeading.length + 10)
+
+    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+    const phoneSpanContainer = document.querySelector('.phoneSpanContainer')
+
+    let orderDict = {}
 
 
     let OrderList;
@@ -121,13 +181,95 @@
       i++
     })
 
+    phoneDropDownButton.addEventListener('click', (e) => {
+      e.preventDefault()
+      phoneDropdownContainer.classList.toggle('hidden')
+    })
+
+    function openUpdateOrder(id) {
+      phoneDropdownContainer.classList.add('hidden')
+      orderid.innerHTML = orderDict[id].orderId
+      username.value = orderDict[id].accountName
+      fullname.value = orderDict[id].firstName + " " + orderDict[id].lastName
+      email.value = orderDict[id].email
+      phone.value = orderDict[id].phones.length > 0 ? orderDict[id].phones[0].number : "No phone number available"
+      createtime.value = orderDict[id].createTime.split("T")[0] + "  " + orderDict[id].createTime.split("T")[1]
+      servicename.value = orderDict[id].serviceName
+      serviceprice.value = orderDict[id].price
+      workday.value = orderDict[id].workDay
+      starttime.value = orderDict[id].timeSlot.startTime
+      endtime.value = orderDict[id].timeSlot.endTime
+      if (orderDict[id].urlImageConfirm != null) {
+        clickableImageName.innerHTML = orderDict[id].urlImageConfirm
+        clickableImageName.addEventListener('click', () => {
+          confirmPicContainer.classList.remove('hidden')
+          updateOrderContainer.classList.add('hidden')
+        })
+      }
+      else {
+        clickableImageName.innerHTML = "No image available"
+        clickableImageName.addEventListener('click', () => {
+          confirmPicContainer.classList.remove('hidden')
+          updateOrderContainer.classList.add('hidden')
+
+        })
+      }
+
+      if (orderDict[id].phones.length > 0) {
+        for (let i = 0; i < orderDict[id].phones.length; i++) {
+          let newPhoneSpan = addNewPhoneSpan(orderDict[id].phones[i].number, orderDict[id].phones[i].phoneId)
+          phoneSpanContainer.appendChild(newPhoneSpan)
+          newPhoneSpan.addEventListener('click', () => {
+            phone.value = newPhoneSpan.querySelector('.phoneSpan').innerHTML
+            phoneDropdownContainer.classList.toggle('hidden')
+          })
+        }
+        console.log(phoneSpanContainer)
+      }
+
+      updateOrderContainer.classList.toggle('hidden')
+    }
+
+    function addNewPhoneSpan(phoneNumber, phoneNumberId) {
+      const li = document.createElement('li')
+      const span = document.createElement('span')
+
+
+      li.setAttribute('class', 'relative')
+      span.setAttribute('class', 'phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer')
+      span.setAttribute('data-id', phoneNumberId)
+      span.innerHTML = phoneNumber
+      li.appendChild(span)
+
+      return li
+    }
+
+    function closeUpdateOrder() {
+      while (phoneSpanContainer.firstChild) {
+        phoneSpanContainer.removeChild(phoneSpanContainer.firstChild)
+      }
+      phoneDropdownContainer.classList.toggle('hidden')
+      updateOrderContainer.classList.toggle('hidden')
+    }
+
+    confirmPicContainer.addEventListener('click', () => {
+      confirmPicContainer.classList.remove('hidden')
+    })
+
+    closeBtn.addEventListener('click', () => {
+      confirmPicContainer.classList.add('hidden')
+      updateOrderContainer.classList.remove('hidden')
+    })
+
     applyHeaderToSearchCategory()
     getAllTimeSlot()
     fetch('/api/order/all')
       .then(response => response.json())
       .then(data => {
         OrderList = data
-        printRowOrder(data)
+        console.log(data)
+        convertToOrderDictionary(data)
+        printRowOrder(OrderList)
       })
       .catch(error => {
         console.error('Error:', error);
@@ -171,12 +313,12 @@
 
     }
     function Sorting() {
-      console.log("called: " + timeSlotSortSelect.value)
-      console.log(OrderList)
+      // console.log("called: " + timeSlotSortSelect.value)
+      // console.log(OrderList)
       var getReturnList = sortTimeslot_Workday()
-      console.log(getReturnList)
+      // console.log(getReturnList)
       printRowOrder(getReturnList)
-      console.log(getWorkDaySort())
+      // console.log(getWorkDaySort())
     }
 
 
@@ -199,7 +341,6 @@
       data.forEach(item => {
         const order = item['order'];
         const account = item['account'];
-        console.log(account)
         const accountName = account.accountName;
         const schedule = order.schedule
         //console.log(schedule)
@@ -235,7 +376,7 @@
         }
         output +=
           `</td>
-          <td class="py-3 text-center"><button class="text-center btn btn-primary" onclick="openDetail(${orderId})">Detail</button></td>
+          <td class="py-3 text-center"><button class="text-center btn btn-primary" onclick="openUpdateOrder(${orderId})">Detail</button></td>
           <td class="py-3 text-center">`
         if (paymentName == "VNPAY") {
           output +=
@@ -266,6 +407,61 @@
     function getWorkDaySort() {
       var date = document.getElementById("selectWorkDay").value
       return date
+    }
+
+    function convertToOrderDictionary(data) {
+      orderDict = data.reduce((order, cur) => {
+        order[cur.order.orderId] = cur
+        return order
+      }, {})
+      console.log(orderDict)
+      const accountKeyFilter = ["accountId", "accountName", "email", "firstName", "lastName", "phones"]
+      const orderKeyFilter = ["orderId", "createTime", "schedule", "urlImageConfirm"]
+      const serviceKeyFilter = ["serviceName", "price"]
+      const scheduleKeyFilter = ["timeSlot", "workDay", "workers"]
+      for (let key in orderDict) {
+        const account = orderDict[key].account
+        const order = orderDict[key].order
+        const service = orderDict[key].service
+
+        const filteredAccount = Object.keys(account).filter(key => accountKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = account[key]
+          return obj
+        }, {})
+
+        const filteredOrder = Object.keys(order).filter(key => orderKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = order[key]
+          return obj
+        }, {})
+
+        const filteredService = Object.keys(service).filter(key => serviceKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = service[key]
+          return obj
+        }, {})
+
+        orderDict[key] = { ...orderDict[key], ...filteredAccount }
+        orderDict[key] = { ...orderDict[key], ...filteredOrder }
+        orderDict[key] = { ...orderDict[key], ...filteredService }
+
+        delete orderDict[key].account
+        delete orderDict[key].order
+        delete orderDict[key].service
+        delete orderDict[key].transaction
+        delete orderDict[key].payment
+      }
+      for (let key in orderDict) {
+        const schedule = orderDict[key].schedule
+
+        const filteredSchedule = Object.keys(schedule).filter(key => scheduleKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = schedule[key]
+          return obj
+        }, {})
+
+        orderDict[key] = { ...orderDict[key], ...filteredSchedule }
+
+        delete orderDict[key].schedule
+      }
+
     }
 
   </script>

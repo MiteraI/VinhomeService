@@ -3,88 +3,287 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://kit.fontawesome.com/31149d48b0.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-item li {
+      padding-right: -32px;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      width: 0;
+      height: 2px;
+      background-color: white;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .nav-link:hover::after {
+      left: 0;
+      width: 100%;
+    }
+
+    .nav-link:hover {
+      transform: scale(1.1);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .nav-link:active {
+      background-color: #ffffff50;
+    }
+
+    .logo {
+      font-family: 'Lobster', cursive;
+      font-size: 2rem;
+      text-decoration: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      height: 100%;
+      width: 340px;
+      background-color: #0b5ed7;
+      transition: all 0.5s ease;
+    }
+
+    .sidebar.active {
+      width: 60px;
+    }
+
+    .sidebar .logo-details {
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar .logo-details i {
+      font-size: 28px;
+      font-weight: 500;
+      color: #fff;
+      min-width: 60px;
+      text-align: center
+    }
+
+    .sidebar .logo-details .logo_name {
+      color: #999999;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-links {
+      list-style-type: none;
+      margin-top: 10px;
+    }
+
+    .sidebar .nav-links li {
+      list-style-type: none;
+      position: relative;
+      margin-left: -30px;
+      height: 50px;
+    }
+
+    .sidebar .nav-links ul {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      opacity: 0;
+      transition: all 0.5s;
+      z-index: 999;
+    }
+
+    .sidebar .nav-links li a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.4s ease;
+    }
+
+    .sidebar .nav-links li i {
+      min-width: 60px;
+      text-align: center;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .sidebar .nav-links li a .links_name {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 400;
+      white-space: nowrap;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .sidebar .nav-links .log_out {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    nav .sidebar-button i {
+      font-size: 35px;
+      margin-right: 10px;
+    }
+
+    .sidebar-button {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .sidebar-button i {
+      font-size: 35px;
+      margin-right: 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <div>
-    <div class="position-relative">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <!-- <div class="container-fluid p-0 "> -->
-          <a class="navbar-brand" href="#">
-            <img src="../../static/assets/images/user.png" width="40" height="40"
-              class="d-inline-block align-top mx-3" alt="">
-          </a>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item ">
-                <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
-                  <h4>Manage Worker</h4>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
-                  <h4>Manage User</h4>
-                </a>
-              </li>
-              <!-- <li class="nav-item ">
-                <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
-                    <h4>Transaction List</h4>
-                </a>
-            </li> -->
+  <!--  <div>-->
+  <!--    <div class="position-relative">-->
+  <!--      <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">-->
+  <!--        <div class="container-fluid">-->
+  <!--          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"-->
+  <!--                  aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">-->
+  <!--            <span class="navbar-toggler-icon"></span>-->
+  <!--          </button>-->
+  <!--          &lt;!&ndash; <div class="container-fluid p-0 "> &ndash;&gt;-->
+  <!--          <a class="navbar-brand" href="#">-->
+  <!--            <a class="logo text-5xl font-extrabold text-white" href="/">SuperClean</a>-->
+  <!--          </a>-->
+  <!--          <div class="collapse navbar-collapse" id="navbarNavDropdown">-->
+  <!--            <ul class="navbar-nav">-->
+  <!--              <li class="nav-item ">-->
+  <!--                <a class="nav-link text-white m-0" href="/adminDisplayWorker_page">-->
+  <!--                  <h4>Manage Worker</h4>-->
+  <!--                </a>-->
+  <!--              </li>-->
+  <!--              <li class="nav-item ">-->
+  <!--                <a class="nav-link text-white m-0" href="/adminDisplayCustomer_page">-->
+  <!--                  <h4>Manage User</h4>-->
+  <!--                </a>-->
+  <!--              </li>-->
+  <!--              &lt;!&ndash; <li class="nav-item ">-->
+  <!--                <a class="nav-link text-white m-0" href="./adminVnpay.html" onclick="">-->
+  <!--                    <h4>Transaction List</h4>-->
+  <!--                </a>-->
+  <!--            </li> &ndash;&gt;-->
 
-              <li class="nav-item" id="div-dad">
-                <a class="nav-link text-white  m-0" href="/see-leave-report" id="see-leave-report">
-                  <h4>Manage Leave Report</h4>
-                </a>
-                <div id="notificationDot">
-                  <span id="notificationCount"></span>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-all-order-by-admin">
-                  <h4>Manage Order</h4>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-all-services">
-                  <h4>Manage Services</h4>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-all-categories">
-                  <h4>Manage Category</h4>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <form action="/logout">
-          <button type="submit">Logout</button>
-        </form>
-      </nav>
+  <!--              <li class="nav-item" id="div-dad">-->
+  <!--                <a class="nav-link text-white m-0" href="/see-leave-report" id="see-leave-report">-->
+  <!--                  <h4>Manage Leave Report</h4>-->
+  <!--                </a>-->
+  <!--                <div id="notificationDot">-->
+  <!--                  <span id="notificationCount"></span>-->
+  <!--                </div>-->
+  <!--              </li>-->
+  <!--              <li class="nav-item">-->
+  <!--                <a class="nav-link text-white m-0" href="/see-all-order-by-admin">-->
+  <!--                  <h4>Manage Order</h4>-->
+  <!--                </a>-->
+  <!--              </li>-->
+  <!--              <li class="nav-item">-->
+  <!--                <a class="nav-link text-white m-0" href="/see-all-services">-->
+  <!--                  <h4>Manage Services</h4>-->
+  <!--                </a>-->
+  <!--              </li>-->
+  <!--              <li class="nav-item">-->
+  <!--                <a class="nav-link text-white m-0" href="/see-all-categories">-->
+  <!--                  <h4>Manage Category</h4>-->
+  <!--                </a>-->
+  <!--              </li>-->
+  <!--              &lt;!&ndash;admin and avatar at the end of the navbar and next to each other&ndash;&gt;-->
+  <!--              <li class="nav-item">-->
+  <!--                <img src="../../static/assets/images/user.png" width="40" height="40"-->
+  <!--                     class="d-inline-block align-top mx-3" alt="">-->
+  <!--              </li>-->
+  <!--            </ul>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      </nav>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <div class="sidebar" style="display:block;" id="mySidebar">
+    <!--    <button class="w3-bar-item w3-button w3-large"-->
+    <!--            onclick="w3_close()">Close &times;</button>-->
+    <div class="logo-details">
+      <img src="../../static/assets/images/user.png" alt="logo" width="40" height="40">
+      <a class="logo text-5xl font-extrabold text-white" href="/">SuperClean</a>
     </div>
+    <ul class="nav-links">
+      <li class="nav-item">
+        <a class="nav-link" href="/adminDisplayWorker_page">
+          <i class='bx bx-hard-hat'></i>
+          <span class="links_name">Manage Worker</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/adminDisplayCustomer_page">
+          <i class='bx bx-user'></i>
+          <span class="links_name">Manage Customer</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white m-0" href="/see-leave-report">
+          <i class='bx bx-calendar-event'></i>
+          <span class="links_name">Manage Leave Report</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/see-all-order-by-admin">
+          <i class='bx bx-cart'></i>
+          <span class="links_name">Manage Order</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/see-all-services">
+          <i class='bx bx-book-content'></i>
+          <span class="links_name">Manage Services</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white m-0" href="/see-all-categories">
+          <i class='bx bx-category-alt'></i>
+          <span class="links_name">Manage Category</span>
+        </a>
+      </li>
+      <li class="nav-item log_out">
+        <a class="nav-link text-white m-0" href="/logout">
+          <i class='bx bx-log-out'></i>
+          <button class="links_name">Log out</button>
+        </a>
+      </li>
+    </ul>
   </div>
 
-  <div class="container d-flex justify-content-end p-0" style="margin-top: 3%;">
-    <div class="form-group  has-feedback col-md-4  d-flex justify-content-center  " id = "SORT-SEARCH">
-      <input type="text" class="form-control" name="q" id="search" placeholder="Search">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" id="dropdown-title">none</button>
-        <div class="dropdown-menu" id="dropdown-category">
-        </div>
-      </div>
-      <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>
-    </div>
-  </div>
+  <!--<div class="container d-flex justify-content-end p-0" style="position: relative; top: 50px;">-->
+  <!--    <div class="form-group  has-feedback col-md-4  d-flex justify-content-center  " id="SORT-SEARCH">-->
+  <!--        <input class="form-control" id="search" name="q" placeholder="Search" type="text">-->
+  <!--        <div class="input-group-append">-->
+  <!--            <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"-->
+  <!--                    data-bs-toggle="dropdown" id="dropdown-title" type="button">none-->
+  <!--            </button>-->
+  <!--            <div class="dropdown-menu" id="dropdown-category">-->
+  <!--            </div>-->
+  <!--        </div>-->
+  <!--        <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>-->
+  <!--    </div>-->
+  <!--</div>-->
   <script>
     const eventSource = new EventSource('/sse');
-    eventSource.addEventListener('leaveReportCount', function(event) {
+    eventSource.addEventListener('leaveReportCount', function (event) {
       const unreadCount = event.data;
       const notificationCountElement = document.getElementById('notificationCount');
       const notificationDotElement = document.getElementById('notificationDot');
@@ -102,9 +301,11 @@
     });
 
     // Close the SSE connection when leaving the page
-    window.addEventListener('unload', function() {
+    window.addEventListener('unload', function () {
       eventSource.close();
     });
+
+
   </script>
   <style>
     #div-dad {
@@ -135,14 +336,16 @@
   <script>
     document.getElementById("see-leave-report").addEventListener("click", function () {
       localStorage.removeItem('unreadCount');
-      fetch ("/sse/close", {
+      fetch("/sse/close", {
         method: 'POST'
       })
-              .then(res => {
-                if (res.status === 200) {
-                }
-              })
+        .then(res => {
+          if (res.status === 200) {
+          }
+        })
     })
+
+
   </script>
 </body>
 

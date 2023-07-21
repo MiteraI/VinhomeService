@@ -602,8 +602,8 @@ video {
   bottom: 0px;
 }
 
-.end-0 {
-  inset-inline-end: 0px;
+.left-0 {
+  left: 0px;
 }
 
 .left-1 {
@@ -656,6 +656,11 @@ video {
 
 .m-auto {
   margin: auto;
+}
+
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }
 
 .mx-10 {
@@ -1965,6 +1970,10 @@ video {
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.outline {
+  outline-style: solid;
 }
 
 .blur {
