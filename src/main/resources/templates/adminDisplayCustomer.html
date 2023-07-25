@@ -16,36 +16,7 @@
 </head>
 
 <body>
-    <nav class="p-0 stikcy z-0" data-bs-theme="dark">
-        <a class="" href="/">
-            <img src="../static/assets/images/user.png" width="40" height="40" class="d-inline-block align-top mx-3"
-                alt="">
-        </a>
-        <a class="nav-link m-0" href="/adminDisplayWorker_page">
-            <h4>Manage Worker</h4>
-        </a>
-        <a class="nav-link m-0" href="/adminDisplayCustomer_page">
-            <h4>Manage User</h4>
-        </a>
-        <a class="nav-link m-0" href="/see-leave-report" id="see-leave-report">
-            <h4>Manage Leave Report</h4>
-        </a>
-        <div id="notificationDot">
-            <span id="notificationCount"></span>
-        </div>
-        <a class="nav-link m-0" href="/see-all-order-by-admin">
-            <h4>Manage Order</h4>
-        </a>
-        <a class="nav-link m-0" href="/see-all-services">
-            <h4>Manage Services</h4>
-        </a>
-        <a class="nav-link m-0" href="/see-all-categories">
-            <h4>Manage Category</h4>
-        </a>
-        <form action="/logout">
-            <button type="submit">Logout</button>
-        </form>
-    </nav>
+    <header th:replace="~{./fragments/adminHeader.html}"></header>
 
     <div class="container d-flex justify-content-around p-0 mt-3 ">
         <div class="form-group  has-feedback col-md-4 d-flex justify-content-center ">

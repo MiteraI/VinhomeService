@@ -88,38 +88,29 @@
                 </div>
             </div>
 
-            <div class="box relative border-2 border-blue-300 rounded-lg py-3 mb-2 px-3" id="WorkerLayout">
-                <table class="py-3 w-full">
-                    <thead>
-                        <tr class="bg-black">
-                            <th class="text-center text-white">Worker ID</th>
-                            <th class="text-center text-white">Worker Name</th>
-                            <th class="text-center text-white">Contact</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="even:bg-[#c4c4c4] odd:bg-[#fffff4]">
-                            <td class="text-center">1</td>
-                            <td class="text-center">worker</td>
-                            <td class="text-center">1234567890</td>
-                        </tr>
-                        <tr class="even:bg-[#c4c4c4] odd:bg-[#fffff4]">
-                            <td class="text-center">1</td>
-                            <td class="text-center">worker</td>
-                            <td class="text-center">1234567890</td>
-                        </tr>
-                        <tr class="even:bg-[#c4c4c4] odd:bg-[#fffff4]">
-                            <td class="text-center">1</td>
-                            <td class="text-center">worker</td>
-                            <td class="text-center">1234567890</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="box relative border-2 border-blue-300 rounded-lg py-3 mb-2 px-3 flex flex-col justify-center items-center"
+                id="WorkerLayout">
+                <div class="flex items-center justify-between bg-black w-full">
+                    <div class="flex-1 text-center font-semibold text-white">Worker Id</div>
+                    <div class="flex-1 text-center font-semibold text-white">Worker Name</div>
+                    <div class="flex-1 text-center font-semibold text-white contactHeading">Contact</div>
+                </div>
+                <div class="w-full workerInvoledTable">
+
+                </div>
             </div>
 
-            <div class="mb-2">
-                Image Confirm: <span class="clickAbleImageName font-semibold hover:text-blue-600 hover:underline cursor-pointer">image
-                    name</span>
+            <div class="mb-2 overflow-hidden flex justify-between">
+                <div>Image Confirm: </div>
+                <div
+                    class="clickAbleImageName w-[81%] font-semibold hover:text-blue-600 hover:underline cursor-pointer">
+                    image
+                    name
+                </div>
+            </div>
+
+            <div class="hidden mb-2 viewTransactionDetail font-semibold hover:text-blue-600 hover:underline cursor-pointer">
+                view transaction detail
             </div>
 
             <button class="w-full py-2 border-2 border-red-400 bg-red-400 rounded-lg hover:bg-transparent mb-3"

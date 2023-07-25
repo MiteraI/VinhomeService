@@ -26,6 +26,9 @@ module.exports = {
       },
       height: {
         'inherit': 'inherit'
+      },
+      fontSize: {
+        'inherit': 'inherit'
       }
     },
   },

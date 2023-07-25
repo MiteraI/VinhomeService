@@ -19,91 +19,34 @@
 </head>
 
 <body>
-    <nav class="p-0 stikcy z-0" data-bs-theme="dark">
-        <a class="" href="/">
-            <img src="../static/assets/images/user.png" width="40" height="40" class="d-inline-block align-top mx-3"
-                alt="">
-        </a>
-        <a class="nav-link m-0" href="/adminDisplayWorker_page">
-            <h4>Manage Worker</h4>
-        </a>
-        <a class="nav-link m-0" href="/adminDisplayCustomer_page">
-            <h4>Manage User</h4>
-        </a>
-        <a class="nav-link m-0" href="/see-leave-report" id="see-leave-report">
-            <h4>Manage Leave Report</h4>
-        </a>
-        <div id="notificationDot">
-            <span id="notificationCount"></span>
-        </div>
-        <a class="nav-link m-0" href="/see-all-order-by-admin">
-            <h4>Manage Order</h4>
-        </a>
-        <a class="nav-link m-0" href="/see-all-services">
-            <h4>Manage Services</h4>
-        </a>
-        <a class="nav-link m-0" href="/see-all-categories">
-            <h4>Manage Category</h4>
-        </a>
-        <form action="/logout">
-            <button type="submit">Logout</button>
-        </form>
-    </nav>
-    <!-- <div class="bg-blue-300">
-        <div class="">
-            <div class="bg-white flex justify-center flex-col rounded-lg w-44">
-                <span class="py-2 px-3 text-[20px] font-semibold">Manage <i
-                        class="fas fa-sort-down float-right "></i></span>
+    <header th:replace="~{./fragments/adminHeader.html}"></header>
 
-                <div id="dropdownDivider" class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44">
-                    <ul class="absolute w-inherit rounded-lg border-2 border-blue-700 bg-white"
-                        aria-labelledby="dropdownDividerButton">
-                        <li class="relative">
-                            <a href="/profile"
-                                class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-t-lg"><i
-                                    class="fa fa-user mr-2"></i>Profile</a>
-                        </li>
-                        <li class="relative">
-                            <a href="/order-history"
-                                class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300"><i
-                                    class="fa fa-history mr-2"></i>Order History</a>
-                        </li>
-                        <li class="relative">
+    <!-- SHOW WORKER TABLE -->
+    <!-- SHOW WORKER TABLE -->
+    <!-- SHOW WORKER TABLE -->
+    <div id="main" class="container px-3 mt-3">
+        <div class="container flex justify-between p-0 my-3 ">
+            <div class="">
+                <button class="btn btn-primary text-white" onclick="openCreateForm()">
+                    create worker
+                </button>
+            </div>
+            <div class="flex justify-center w-[30%]">
+                <!-- <label class="sr-only" for="search">Search</label> -->
+                <input type="text" class="flex-1 bg-slate-300 rounded-lg px-2" name="q" id="search"
+                    placeholder="Search">
+                <div class="">
+                    <button class="py-2 px-3 bg-green-300 rounded-lg dropdown-toggle capitalize" type="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        id="dropdown-title">none</button>
+                    <div class="dropdown-menu" id="dropdown-category">
 
-                            <a href="/logout"
-                                class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-b-lg "><i
-                                    class="fa fa-sign-out mr-2"></i>Log Out</a>
-                        </li>
-                    </ul>
+                    </div>
                 </div>
+                <span class="glyphicons glyphicons-xl glyphicons-group">
+                </span>
             </div>
         </div>
-    </div> -->
-    <div class="container d-flex justify-content-around p-0 mt-3 ">
-        <div class="">
-            <button class="btn btn-primary text-white" onclick="openCreateForm()">
-                create worker
-            </button>
-        </div>
-        <div class="form-group  has-feedback col-md-4 d-flex justify-content-center ">
-            <!-- <label class="sr-only" for="search">Search</label> -->
-            <input type="text" class="form-control" name="q" id="search" placeholder="Search">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary dropdown-toggle capitalize" type="button"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    id="dropdown-title">none</button>
-                <div class="dropdown-menu" id="dropdown-category">
-
-                </div>
-            </div>
-            <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback">
-            </span>
-        </div>
-    </div>
-    <!-- SHOW WORKER TABLE -->
-    <!-- SHOW WORKER TABLE -->
-    <!-- SHOW WORKER TABLE -->
-    <div class="container px-5 mt-3">
         <table class="table-worker table-auto worker-table block" data-sort-order="desc">
             <thead>
                 <tr class="bg-black">
@@ -220,19 +163,10 @@
 
     const w_update_form = document.getElementById("w-update-form");
     const workerTable = document.querySelector('.worker-table')
+
     const workerTableLength = workerTable.getBoundingClientRect().width
     const widthForEachColumn = parseInt(workerTableLength / tableHeading.length + 10)
     let workerStatusDict = null
-    // const getAllWorkerSatus = fetch('/UserRestController/getWorkerStatus', {
-    //     method: "GET",
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // }).then(res => res.json()).then(data => {
-    //     workerStatusDict = data
-    // })
-
-
     let updateBtn = ""
     const updateFormContainer = document.querySelector('.updateFormContainer')
 
@@ -242,6 +176,7 @@
 
     //error_service = document.getElementById("error-service")
     let i = 0
+
     tableHeading.forEach(h => {
         if (i == tableHeading.length - 1) {
             h.style.width = `${widthForEachColumn + 100}px`
@@ -634,57 +569,7 @@
         updateFormContainer.classList.toggle('hidden')
     }
 </script>
-<script>
-    const eventSource = new EventSource('/sse');
-    eventSource.addEventListener('leaveReportCount', function (event) {
-        const unreadCount = event.data;
-        const notificationCountElement = document.getElementById('notificationCount');
-        const notificationDotElement = document.getElementById('notificationDot');
-        // Update the unread count in the UI
-        notificationCountElement.innerText = unreadCount;
 
-        localStorage.setItem('unreadCount', unreadCount);
-
-
-        // Display/hide the red dot based on unread count
-        if (unreadCount > 0) {
-            notificationDotElement.style.display = 'block';
-        } else {
-            notificationDotElement.style.display = 'none';
-        }
-    });
-
-    // Close the SSE connection when leaving the page
-    window.addEventListener('unload', function () {
-        eventSource.close();
-    });
-</script>
-<style>
-    #div-dad {
-        position: relative;
-        display: inline-block;
-    }
-
-    #notificationDot {
-        position: absolute;
-        top: 3px;
-        right: -5px;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        background-color: red;
-        display: none;
-        text-align: center;
-    }
-
-    #notificationCount {
-        display: inline-block;
-        margin-top: 1px;
-        color: white;
-        font-size: 12px;
-        font-weight: bold;
-    }
-</style>
 <script>
     // document.getElementById("see-leave-report").addEventListener("click", function () {
     //     localStorage.removeItem('unreadCount');
