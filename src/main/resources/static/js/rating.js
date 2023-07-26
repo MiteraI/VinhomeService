@@ -13,17 +13,17 @@ const starTotal = 5;
 
 let reverseArr = []
 
-console.log(allStar.length)
-
 const getAllAvgRating = async () => {
   let rating = await axios.get(`/api/services/avg-rating/${queryString}`)
+
+  console.log(rating.data)
+  console.log(rating.data.length)
 
   for (let i = 0; i < rating.data.length; i++) {
     if (i % 2 == 0) {
       for (let j = 0; j < rating.data[i].length; j++) {
-        for (let k = 0; k < rating.data[j].length; k++) {
-          avgRatingForEachService.push(rating.data[j][k])
-        }
+        console.log(rating.data[i][j])
+        avgRatingForEachService.push(rating.data[i][j])
       }
     }
     else {

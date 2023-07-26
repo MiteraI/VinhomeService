@@ -152,7 +152,6 @@
             }
             if (enabledOrblock === 'toggleBlock') {
                 toggle.previousElementSibling.value = e.target.checked ? 1 : 0
-                alert('isBlock: ' + toggle.previousElementSibling.value)
             }
             dotEnabled.classList.toggle('left-1')
             dotEnabled.classList.toggle('bg-white')
@@ -188,7 +187,6 @@
             toggle.checked = false
             toggle.previousElementSibling.value = 0
         })
-        alert(document.querySelector('#isBlockValue').value)
         while (phoneSpanContainer.firstChild) {
             phoneSpanContainer.removeChild(phoneSpanContainer.firstChild)
 
@@ -276,7 +274,6 @@
         }
         blockValue.value = customerDict[id].isBlock === false ? 0 : 1
         blockValue.nextElementSibling.checked = blockValue.value > 0 ? 1 : 0
-        alert(blockValue.value)
 
         if (customerDict[id].phones.length > 0) {
             for (let i = 0; i < customerDict[id].phones.length; i++) {
@@ -446,7 +443,7 @@
             console.log("yes call api success DELETE")
             console.log(response)
             if (response.status == 500) {
-                alert("delete fail, might be server side");
+                // alert("delete fail, might be server side");
                 return;
             } else {
                 data = await response.json();
@@ -548,7 +545,6 @@
             getCustomerList()
             phoneDropdownContainer.classList.add('hidden')
             console.log('yes successs')
-            alert("successfully update");
             // delay(500).then(() => {
             //     getAdminCustomerPage()
             // })
