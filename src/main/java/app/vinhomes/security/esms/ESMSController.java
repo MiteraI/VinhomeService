@@ -73,16 +73,6 @@ public class ESMSController {
             }else{
                 accountService.setEnableToAccount(getAccount);
                 pageController.updateSessionAccount(request);
-                if(request.getSession(false) != null){
-                    request.getSession(false).setAttribute("loginedUser", getAccount);
-                    request.getSession(false).setAttribute("phone", phoneRepository.findByAccountId(getAccount.getAccountId()));
-                    request.getSession(false).setAttribute("address", addressRepository.findByCustomerId(getAccount.getAccountId()));
-                }
-                else{
-                    request.getSession().setAttribute("loginedUser", getAccount);
-                    request.getSession().setAttribute("phone", phoneRepository.findByAccountId(getAccount.getAccountId()));
-                    request.getSession().setAttribute("address", addressRepository.findByCustomerId(getAccount.getAccountId()));
-                }
                 return ResponseEntity.status(HttpStatus.OK).body(returnValidation);
             }
         }catch (Exception e){

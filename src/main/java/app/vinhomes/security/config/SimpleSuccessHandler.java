@@ -60,6 +60,7 @@ public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
                 return;
             } else if (authorityName.equals("1")) {
                 request.getSession().setAttribute("loginedUser",account);
+                request.getSession().setAttribute("phone", fone);
                 this.pageController.onAuthenticationSuccess(request,response,authentication);
                 return;
             }

@@ -119,6 +119,16 @@ public class PageController {
         return "profile";
     }
 
+    @RequestMapping(value = "/worker-Profile", method = RequestMethod.GET)
+    public String getWorkerProfile(HttpServletRequest request, Model model) {
+        Account acc = getSessionAccount(request);
+        List<Phone> phoneNumber = getUserFone(request);
+        System.out.println(phoneNumber);
+        model.addAttribute("acc", acc);
+        model.addAttribute("phone", phoneNumber);
+        return "workerProfile";
+    }
+
     @RequestMapping(value = "/resetpwd", method = RequestMethod.GET)
     public String resetPassword(HttpServletRequest request, Model model) {
         Account acc = getSessionAccount(request);
