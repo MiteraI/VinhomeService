@@ -11,6 +11,7 @@ import app.vinhomes.repository.customer.PhoneRepository;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
 
 import app.vinhomes.repository.order.ServiceRepository;
+import app.vinhomes.repository.worker.WorkerStatusRepository;
 import app.vinhomes.security.SecurityService;
 import app.vinhomes.service.ServiceTypeService;
 import app.vinhomes.security.email.email_service.EmailService;
@@ -57,6 +58,9 @@ public class PageController {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private WorkerStatusRepository workerStatusRepository;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request, Model model) {
         //System.out.println("1");
@@ -64,6 +68,10 @@ public class PageController {
         if (acc != null) {
             model.addAttribute("acc", acc);
             if (acc.getRole() == 2) {
+                model.addAttribute("category", serviceCategoryRepository.findAll());
+                model.addAttribute("worker", workerStatusRepository.findAll());
+                System.out.println(serviceCategoryRepository.findAll());
+                System.out.println(workerStatusRepository.findAll());
                 return "adminDisplayWorker";
             } else if (acc.getRole() == 1) {
                 return "worker-homepage";
@@ -226,7 +234,6 @@ public class PageController {
     }
 
 
-
     @RequestMapping(value = "/homepage")
     public String homepage() {
         return "homepage";
@@ -254,17 +261,15 @@ public class PageController {
 
     @RequestMapping(value = "/verificationMethod", method = RequestMethod.GET)
     public String verificationMethodReturn(@RequestParam String username, HttpServletRequest request) {
-        if(request.getSession(false) != null){
-            Account acc = (Account)request.getSession(false).getAttribute("loginedUser");
-            if(acc.getAccountName().equals(username)){
-                if(accountRepository.findById(acc.getAccountId()).get().isEnabled()){
+        if (request.getSession(false) != null) {
+            Account acc = (Account) request.getSession(false).getAttribute("loginedUser");
+            if (acc.getAccountName().equals(username)) {
+                if (accountRepository.findById(acc.getAccountId()).get().isEnabled()) {
                     return "redirect:/";
-                }
-                else{
+                } else {
                     return "verificationMethod";
                 }
-            }
-            else{
+            } else {
                 return "redirect:/login";
             }
         }
@@ -277,7 +282,8 @@ public class PageController {
     }
 
     @RequestMapping(value = "/adminDisplayWorker_page", method = RequestMethod.GET)
-    public String adminDisplayWorker() {
+    public String adminDisplayWorker(Model model) {
+        model.addAttribute("category", serviceCategoryRepository.findAll());
         return "adminDisplayWorker";
     }
 
@@ -301,12 +307,14 @@ public class PageController {
         System.out.println("inside orderTransactionAdmin");
         return "adminOrderTransaction";
     }
-    @RequestMapping(value = "/admin_OrderTransaction",method = RequestMethod.GET)
-    public String adminOrder(){
+
+    @RequestMapping(value = "/admin_OrderTransaction", method = RequestMethod.GET)
+    public String adminOrder() {
         return adminOrderTransaction();
     }
-    @RequestMapping(value = "/accessDenied",method = RequestMethod.GET)
-    public String accessDenied()    {
+
+    @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
+    public String accessDenied() {
         return "accessDenied";
     }
 
@@ -316,39 +324,38 @@ public class PageController {
     }
 
     @RequestMapping(value = "/see-leave-report", method = RequestMethod.GET)
-    public String seeAllLeaveReport () {
+    public String seeAllLeaveReport() {
         return "adminSeeLeaveReport";
     }
-    @RequestMapping (value = "/see-all-order-by-admin", method = RequestMethod.GET)
-    public String seeAllLeaveOrderByAdmin () {
+
+    @RequestMapping(value = "/see-all-order-by-admin", method = RequestMethod.GET)
+    public String seeAllLeaveOrderByAdmin() {
         return "adminSeeAllOrder";
     }
 
     @RequestMapping(value = "/mail/verification")
-    public String checkEmailVerification(HttpServletRequest request, Model model){
-        try{
+    public String checkEmailVerification(HttpServletRequest request, Model model) {
+        try {
             //lay tu link bam tu mail
             Account acc = null;
             System.out.println("inside email Verification");
             String emailTo = request.getParameter("emailTo");
             String tokenValue = request.getParameter("tokenValue");
-            String message = emailService.checkIfTokenValeValid(emailTo,tokenValue   );
-            if(!message.equals("SUCCESS")){
+            String message = emailService.checkIfTokenValeValid(emailTo, tokenValue);
+            if (!message.equals("SUCCESS")) {
                 System.out.println(message);
                 model.addAttribute("statusMessage", "Invalid");
                 model.addAttribute("message", "this link have expired, please try again.");
                 model.addAttribute("status", HttpStatus.BAD_REQUEST);
-            }
-            else{
+            } else {
                 //TODO : do something after check mail succeses
                 System.out.println(message);
                 acc = accountRepository.findByEmailEquals(emailTo);
-                if(request.getSession(false) != null){
+                if (request.getSession(false) != null) {
                     request.getSession(false).setAttribute("loginedUser", acc);
                     request.getSession(false).setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
                     request.getSession(false).setAttribute("address", addressRepository.findByCustomerId(acc.getAccountId()));
-                }
-                else{
+                } else {
                     request.getSession().setAttribute("loginedUser", acc);
                     request.getSession().setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
                     request.getSession().setAttribute("address", addressRepository.findByCustomerId(acc.getAccountId()));
@@ -357,8 +364,8 @@ public class PageController {
                 model.addAttribute("message", "you have been verified, you can now order some services.");
                 model.addAttribute("status", HttpStatus.OK);
             }
-        }catch (Exception e){
-            System.out.println("error inside emailController: "+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("error inside emailController: " + e.getMessage());
             model.addAttribute("statusMessage", "Something went wrong");
             model.addAttribute("message", "our server have encountered some problem :(, please try again later.");
             model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -367,8 +374,8 @@ public class PageController {
         return "emailVerification";
     }
 
-    @RequestMapping (value = "/see-all-services", method = RequestMethod.GET)
-    public String seeAllServices () {
+    @RequestMapping(value = "/see-all-services", method = RequestMethod.GET)
+    public String seeAllServices() {
         return "adminService";
     }
 
@@ -376,8 +383,9 @@ public class PageController {
     public String seeAllCategories() {
         return "adminCategory";
     }
-    @RequestMapping(value = "/admin-order-detail/{orderID}",method =RequestMethod.GET)
-    public String seeDetailOrderAdmin(@PathVariable String orderID){
+
+    @RequestMapping(value = "/admin-order-detail/{orderID}", method = RequestMethod.GET)
+    public String seeDetailOrderAdmin(@PathVariable String orderID) {
         return "adminUpdateOrder";
     }
 }

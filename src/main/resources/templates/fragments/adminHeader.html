@@ -1,149 +1,122 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeLeaf.org">
 
 <head>
-  <meta charset="UTF-8">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
-<body>
-  <div>
-    <div class="position-relative">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <!-- <div class="container-fluid p-0 "> -->
-          <a class="navbar-brand" href="#">
-            <img src="../../static/assets/images/user.png" width="40" height="40"
-              class="d-inline-block align-top mx-3" alt="">
-          </a>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item ">
-                <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
-                  <h4>Manage Worker</h4>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
-                  <h4>Manage User</h4>
-                </a>
-              </li>
-              <!-- <li class="nav-item ">
-                <a class="nav-link text-white  m-0" href="./adminVnpay.html" onclick="">
-                    <h4>Transaction List</h4>
-                </a>
-            </li> -->
+<header class="bg-blue-bootstrap sticky" id="Home">
+  <nav class="navBar mx-3 flex justify-between">
 
-              <li class="nav-item" id="div-dad">
-                <a class="nav-link text-white  m-0" href="/see-leave-report" id="see-leave-report">
-                  <h4>Manage Leave Report</h4>
-                </a>
-                <div id="notificationDot">
-                  <span id="notificationCount"></span>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-all-order-by-admin">
-                  <h4>Manage Order</h4>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-all-services">
-                  <h4>Manage Services</h4>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white  m-0" href="/see-all-categories">
-                  <h4>Manage Category</h4>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <form action="/logout">
-          <button type="submit">Logout</button>
-        </form>
-      </nav>
-    </div>
-  </div>
+    <div class="profile-btn flex items-center justify-center flex-col">
+      <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
+        class="h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 rounded-lg px-2 py-2 text-center inline-flex items-center justify-between w-[200px] font-semibold text-lg dropdown-toggle"
+        type="button">
+        Manage
+        <!-- <svg class="w-[10%] h-4" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                              </path>
+                          </svg> -->
+      </button>
 
-  <div class="container d-flex justify-content-end p-0" style="margin-top: 3%;">
-    <div class="form-group  has-feedback col-md-4  d-flex justify-content-center  " id = "SORT-SEARCH">
-      <input type="text" class="form-control" name="q" id="search" placeholder="Search">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" id="dropdown-title">none</button>
-        <div class="dropdown-menu" id="dropdown-category">
-        </div>
+      <div id="dropdownDivider" class="z-10 hidden rounded-lg w-[200px]">
+        <ul class="absolute w-inherit rounded-lg border-2 border-blue-700 bg-white"
+          aria-labelledby="dropdownDividerButton">
+          <li class="relative">
+            <a href="/adminDisplayWorker_page"
+              class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300 rounded-t-lg"><i
+                class="bx bx-hard-hat mr-2"></i>Worker</a>
+          </li>
+          <li class="relative">
+            <a href="/adminDisplayCustomer_page"
+              class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300"><i
+                class="bx bx-user mr-2"></i>Customer</a>
+          </li>
+          <li class="relative flex hover:bg-gray-300 cursor-pointer">
+
+            <a href=" /see-leave-report" class="block font-bold text-[16px] text-blue-bootstrap pl-2 py-2"><i
+                class="bx bx-calendar-event mr-2" id="see-leave-report"></i>Leave Report</a>
+            <div id="notificationDot" class="bg-red-500 rounded-full w-[20px] h-[20px] text-center mr-2 hidden">
+              <span id="notificationCount"
+                class="text-white font-bold font-inherit flex justify-center items-center h-inherit"></span>
+            </div>
+          </li>
+          <li class="relative">
+
+            <a href="/see-all-order-by-admin"
+              class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300"><i
+                class="bx bx-cart mr-2"></i>Order</a>
+          </li>
+          <li class="relative">
+
+            <a href="/see-all-services"
+              class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300"><i
+                class="bx bx-book-content mr-2"></i>Services</a>
+          </li>
+          <li class="relative">
+
+            <a href="/see-all-categories"
+              class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300 rounded-b-lg"><i
+                class="bx bx-category-alt mr-2"></i>Category</a>
+          </li>
+        </ul>
       </div>
-      <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback"></span>
     </div>
-  </div>
-  <script>
-    const eventSource = new EventSource('/sse');
-    eventSource.addEventListener('leaveReportCount', function(event) {
-      const unreadCount = event.data;
-      const notificationCountElement = document.getElementById('notificationCount');
-      const notificationDotElement = document.getElementById('notificationDot');
-      // Update the unread count in the UI
-      notificationCountElement.innerText = unreadCount;
+    <div>
+      <form action="/logout" class="m-0">
+        <button type="submit" class="py-2 px-3 bg-red-400 rounded-lg">Logout</button>
+      </form>
+    </div>
+  </nav>
+</header>
 
-      localStorage.setItem('unreadCount', unreadCount);
+<script>
+  const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
+  const dropDownMenu = document.querySelector('#dropdownDivider')
+  const eventSource = new EventSource('/sse');
 
-      // Display/hide the red dot based on unread count
-      if (unreadCount > 0) {
-        notificationDotElement.style.display = 'block';
-      } else {
-        notificationDotElement.style.display = 'none';
-      }
-    });
+  dropDownMenuBtn.addEventListener('click', () => {
+    console.log("clicked")
+    dropDownMenu.classList.toggle("hidden")
+  })
 
-    // Close the SSE connection when leaving the page
-    window.addEventListener('unload', function() {
-      eventSource.close();
-    });
-  </script>
-  <style>
-    #div-dad {
-      position: relative;
-      display: inline-block;
+  eventSource.addEventListener('leaveReportCount', function (event) {
+    const unreadCount = event.data;
+    const notificationCountElement = document.getElementById('notificationCount');
+    const notificationDotElement = document.getElementById('notificationDot');
+    // Update the unread count in the UI
+    notificationCountElement.innerText = unreadCount;
+
+    localStorage.setItem('unreadCount', unreadCount);
+
+    // Display/hide the red dot based on unread count
+    if (unreadCount > 0) {
+      notificationDotElement.classList.remove('hidden')
+    } else {
+      notificationDotElement.classList.add('hidden')
     }
+  });
 
-    #notificationDot {
-      position: absolute;
-      top: 3px;
-      right: -5px;
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background-color: red;
-      display: none;
-      text-align: center;
-    }
+  // Close the SSE connection when leaving the page
+  window.addEventListener('unload', function () {
+    eventSource.close();
+  });
 
-    #notificationCount {
-      display: inline-block;
-      margin-top: 1px;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-    }
-  </style>
-  <script>
-    document.getElementById("see-leave-report").addEventListener("click", function () {
-      localStorage.removeItem('unreadCount');
-      fetch ("/sse/close", {
-        method: 'POST'
-      })
-              .then(res => {
-                if (res.status === 200) {
-                }
-              })
+
+</script>
+<script>
+  document.getElementById("see-leave-report").addEventListener("click", function () {
+    localStorage.removeItem('unreadCount');
+    fetch("/sse/close", {
+      method: 'POST'
     })
-  </script>
-</body>
+      .then(res => {
+        if (res.status === 200) {
+        }
+      })
+  })
+
+
+</script>
 
 </html>

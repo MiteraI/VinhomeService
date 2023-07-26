@@ -8,6 +8,10 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <meta charset="UTF-8">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/tailwind/font.css">
+
     <title>Title</title>
     <style>
         input[type="number"]::-webkit-outer-spin-button,
@@ -67,6 +71,85 @@
             text-decoration: underline;
             cursor: pointer;
         }
+
+        .home-section {
+            position: relative;
+            background: #f5f5f5;
+            min-height: 100vh;
+            < !-- width: calc(100% - 340px);
+            -->left: 340px;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.active~.home-section {
+            width: calc(100% - 60px);
+            left: 60px;
+        }
+
+        .home-section nav {
+            display: flex;
+            justify-content: space-between;
+            height: 80px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            width: calc(100% - 340px);
+            left: 340px;
+            z-index: 100;
+            padding: 0 20px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .home-section h1 {
+            position: absolute;
+            margin-top: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .service-card {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            width: 45%;
+            display: inline-block;
+        }
+
+        #openNav {
+            display: inline-block;
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            color: rgba(255, 255, 255);
+            transition: all 0.5s ease;
+            text-align: center;
+        }
+
+        .openNav-outline {
+            border: none;
+            outline: none;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            top: 20px;
+            left: 10px;
+        }
+
+        .openNav-outline:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 
@@ -78,109 +161,183 @@
         </div>
         <div class="closeBtn btn btn-danger w-25 py-2 mt-5">Close</div>
     </div>
-    <header th:replace="~{./fragments/adminHeader.html}"></header>
+    <header class="bg-primary" id="Home">
+        <nav class="navbar mx-3 justify-content-between">
+
+            <div class="profile-btn d-flex flex-column justify-content-center align-items-center">
+                <button id="dropdownDividerButton" data-toggle="dropdownDivider"
+                    class="h-inherit bg-white border-2 border-primary hover:bg-gray-300 focus:outline-0 focus:ring-0 rounded px-2 py-2 text-center d-inline-flex align-items-center justify-content-between font-weight-bold text-lg dropdown-toggle"
+                    type="button" style="width: 200px; font-size: 18px; font-weight: 600;">
+                    Manage
+                </button>
+
+                <div id="dropdownDivider" class="z-10 d-none rounded-lg" style="width: 200px; z-index: 10;">
+                    <ul class="position-absolute rounded border-primary bg-white list-unstyled"
+                        style="width: inherit; border: 2px solid blue" aria-labelledby="dropdownDividerButton">
+                        <li class="position-relative">
+                            <a href="/adminDisplayWorker_page"
+                                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300 rounded-top-lg"
+                                style="font-size: 16px; font-weight: 700;"><i class="bx bx-hard-hat me-2"></i>Worker</a>
+                        </li>
+                        <li class="position-relative">
+                            <a href="/adminDisplayCustomer_page"
+                                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300"
+                                style="font-size: 16px; font-weight: 700;"><i class="bx bx-user me-2"></i>Customer</a>
+                        </li>
+                        <li class="position-relative d-flex hover:bg-gray-300 cursor-pointer">
+
+                            <a href=" /see-leave-report"
+                                class="d-block font-weight-bold text-decoration-none text-16 text-primary ps-2 py-2"
+                                style="font-size: 16px; font-weight: 700;"><i class="bx bx-calendar-event me-2"
+                                    id="see-leave-report"></i>Leave Report</a>
+                            <div id="notificationDot" class="bg-danger rounded-full w-20 h-20 text-center me-2 d-none">
+                                <span id="notificationCount"
+                                    class="text-white font-weight-bold d-flex justify-content-center align-items-center h-inherit"></span>
+                            </div>
+                        </li>
+                        <li class="position-relative">
+
+                            <a href="/see-all-order-by-admin"
+                                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300"
+                                style="font-size: 16px; font-weight: 700;"><i class="bx bx-cart me-2"></i>Order</a>
+                        </li>
+                        <li class="position-relative">
+
+                            <a href="/see-all-services"
+                                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300"
+                                style="font-size: 16px; font-weight: 700;"><i
+                                    class="bx bx-book-content me-2"></i>Services</a>
+                        </li>
+                        <li class="position-relative">
+
+                            <a href="/see-all-categories"
+                                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300 rounded-bottom-lg"
+                                style="font-size: 16px; font-weight: 700;"><i
+                                    class="bx bx-category-alt me-2"></i>Category</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <form action="/logout" class="m-0">
+                    <button type="submit" class="py-2 px-3 rounded" style="background-color: #F87171;">Logout</button>
+                </form>
+            </div>
+        </nav>
+    </header>
     <!-- CREATE SERVICE FORM-->
     <!-- CREATE SERVICE FORM-->
     <!-- CREATE SERVICE FORM-->
     <!--LOAD CATEGORY -->
 
+    <div class="container mt-3">
+        <div class="d-none d-flex justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100"
+            style="
+            z-index: 1;
+            background-color: rgb(0 0 0 / 50%);
+        " id="createServiceFormContainer">
+            <div class="modal-container rounded border border-dark serviceForm" style="display: block;">
+                <h3 class="text-center">Create Service</h3>
+                <form id="createServiceForm">
+                    <div class="form-group mb-3">
+                        <label for="serviceName" class="mb-1">Service Name</label>
+                        <input type="text" class="form-control" id="serviceName" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="category" class="mb-1">Category</label>
+                        <select class="form-control" id="category" required>
+                            <option value="something">Select a category</option>
 
-    <div class="container">
-        <button type="button" class="btn btn-primary" id="showCreateService">Create Service</button>
-
-        <div class="modal-container rounded border border-dark  serviceForm" id="createServiceFormContainer"
-            style="display: none;">
-            <h3 class="text-center">Create Service</h3>
-            <form id="createServiceForm">
-                <div class="form-group mb-3">
-                    <label for="serviceName" class="mb-1">Service Name</label>
-                    <input type="text" class="form-control" id="serviceName" required>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="category" class="mb-1">Category</label>
-                    <select class="form-control" id="category" required>
-                        <option value="something">Select a category</option>
-
-                    </select>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="price" class="mb-1">Price</label>
-                    <input type="number" class="form-control" id="price" required>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="des" class="mb-1">Description</label>
-                    <textarea type="text" class="form-control" id="des" required></textarea>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="numOfPeople" class="mb-1">Number Of people</label>
-                    <input type="number" min="1" class="form-control" id="numOfPeople" required>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="mb-1 text-capitalize">Image of the service</label>
-                    <br>
-                    <label for="image" class="browseBtn border rounded py-1 px-2" role="button"
-                        style="background-color: rgba(192, 192, 192, 0.5);">Browse...</label>
-                    <span class="img-file-name ms-3">
-                        Image name: <span class="clickableImgName" style="font-weight: bold;"></span>
-                    </span>
-                    <input type="file" class="uploadFile d-none form-control-file" id="image" value="" required>
-                </div>
-                <div class="d-flex justify-content-end align-content-center">
-                    <button type="button" class="btn btn-danger w-50" id="cancelCreateService">Cancel</button>
-                    <button type="submit" class="btn btn-primary ms-2 w-50">Create</button>
-                </div>
-            </form>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="price" class="mb-1">Price</label>
+                        <input type="number" class="form-control" id="price" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="des" class="mb-1">Description</label>
+                        <textarea type="text" class="form-control" id="des" required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="numOfPeople" class="mb-1">Number Of people</label>
+                        <input type="number" min="1" class="form-control" id="numOfPeople" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="mb-1 text-capitalize">Image of the service</label>
+                        <br>
+                        <label for="image" class="browseBtn border rounded py-1 px-2" role="button"
+                            style="background-color: rgba(192, 192, 192, 0.5);">Browse...</label>
+                        <span class="img-file-name ms-3">
+                            Image name: <span class="clickableImgName" style="font-weight: bold;"></span>
+                        </span>
+                        <input type="file" class="uploadFile d-none form-control-file" id="image" value="" required>
+                    </div>
+                    <div class="d-flex justify-content-end align-content-center">
+                        <button type="button" class="btn btn-danger w-50" id="cancelCreateService">Cancel</button>
+                        <button type="submit" class="btn btn-primary ms-2 w-50">Create</button>
+                    </div>
+                </form>
+            </div>
         </div>
+        <div class="d-flex p0 justify-content-start create-service-btn" style="padding: 0 3.5%;">
+            <button type="button" class="btn btn-primary " id="showCreateService">Create Service</button>
+        </div>
+
     </div>
 
 
     <!--FORM UPDATE-->
     <!--FORM UPDATE-->
     <!--FORM UPDATE-->
-    <form class="row g-3 p-3 modal-container2 rounded border border-black serviceForm" style="display: none"
-        id="UpdateServiceForm">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="serviceNameUpdate" class="form-label">Service Name</label>
-                <input type="text" class="form-control" id="serviceNameUpdate" required>
-            </div>
-            <div class="col-md-4">
-                <label for="categoryUpdate" class="form-label">Category</label>
-                <select class="form-control" id="categoryUpdate" required>
-                    <option value="" id="defaultValueOfService"></option>
+    <div class="d-none d-flex justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100" style="
+                        z-index: 1;
+                        background-color: rgb(0 0 0 / 50%);
+                    " id="UpdateServiceForm">
+        <form class="row g-3 p-3 modal-container2 rounded border border-black serviceForm" id=""
+            style="display: block;">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="serviceNameUpdate" class="form-label">Service Name</label>
+                    <input type="text" class="form-control" id="serviceNameUpdate" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="categoryUpdate" class="form-label">Category</label>
+                    <select class="form-control" id="categoryUpdate" required>
+                        <option value="" id="defaultValueOfService"></option>
 
-                </select>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="priceUpdate" class="form-label">Price</label>
+                    <input type="number" class="form-control" id="priceUpdate">
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="priceUpdate" class="form-label">Price</label>
-                <input type="number" class="form-control" id="priceUpdate">
+            <div class="col-12">
+                <label for="des" class="form-label">Description</label>
+                <textarea class="form-control" id="description"></textarea>
             </div>
-        </div>
-        <div class="col-12">
-            <label for="des" class="form-label">Description</label>
-            <textarea class="form-control" id="description"></textarea>
-        </div>
-        <div class="col-12">
-            <label for="numOfPeopleUpdate" class="form-label">Number of worker</label>
-            <input type="number" class="form-control" id="numOfPeopleUpdate">
-        </div>
-        <div class="col-12">
-            <label class="mb-1 text-capitalize">Image of the service</label>
-            <br>
-            <label for="imageFile" class="browseBtn border rounded py-1 px-2" role="button"
-                style="background-color: rgba(192, 192, 192, 0.5);">Browse...</label>
-            <span class="img-file-name ms-3">
-                Image name: <span class="clickableImgName" style="font-weight: bold;"></span>
-            </span>
-            <input type="file" class="uploadFile d-none form-control-file" id="imageFile" value="">
-        </div>
-        <div class="col-12 d-flex justify-content-end align-content-center">
-            <button type="button" class="btn btn-danger w-50" id="cancelUpdateService">Cancel</button>
-            <button type="submit" class="btn btn-primary ms-2 w-50" id="updateService">Update</button>
-        </div>
-    </form>
+            <div class="col-12">
+                <label for="numOfPeopleUpdate" class="form-label">Number of worker</label>
+                <input type="number" class="form-control" id="numOfPeopleUpdate">
+            </div>
+            <div class="col-12">
+                <label class="mb-1 text-capitalize">Image of the service</label>
+                <br>
+                <label for="imageFile" class="browseBtn border rounded py-1 px-2" role="button"
+                    style="background-color: rgba(192, 192, 192, 0.5);">Browse...</label>
+                <span class="img-file-name ms-3">
+                    Image name: <span class="clickableImgName" style="font-weight: bold;"></span>
+                </span>
+                <input type="file" class="uploadFile d-none form-control-file" id="imageFile" value="">
+            </div>
+            <div class="col-12 d-flex justify-content-end align-content-center">
+                <button type="button" class="btn btn-danger w-50" id="cancelUpdateService">Cancel</button>
+                <button type="submit" class="btn btn-primary ms-2 w-50" id="updateService">Update</button>
+            </div>
+        </form>
+    </div>
 
-    <div class="container service mt-4">
+    <div class="container service">
 
     </div>
 
@@ -215,8 +372,8 @@
                         const categoryId = item['serviceCategoryId'];
                         output +=
                             `
-                    <option value="${categoryId}">${categoryName}</option>
-                `
+                            <option value="${categoryId}">${categoryName}</option>
+                        `
                     })
                     document.getElementById("category").innerHTML = output;
                 })
@@ -275,8 +432,7 @@
                 clickableImgName[i].innerHTML = ''
 
             }
-            document.getElementById("createServiceForm").style.display = "none";
-            document.getElementById("createServiceFormContainer").style.display = "none";
+            document.getElementById("createServiceFormContainer").classList.toggle('d-none')
         })
         //Show Service
 
@@ -288,7 +444,7 @@
                 data.forEach(item => {
                     if (serviceCount % 2 === 0) {
                         // Start a new row every two services
-                        output += '<div class="row">';
+                        output += '<div class="row justify-content-center">';
                     }
 
                     const service = item['service'];
@@ -303,16 +459,16 @@
                     const url = service['urlImage'];
                     const numOfPeople = service['numOfPeople'];
                     output += `
-                        <div class="col-sm-6">
-                            <div class="card" style="width: 100%;">
-                                <img src="${url}" class="card-img-top" style="height: 300px">
-                                <div class="card-body">
-                                    <h5 class="card-title">${serviceName}</h5>
-                                    <p class="card-text">${description}</p>
-                                    <p>Category: ${categoryName}</p>
-                                    <p>Price: ${price}</p>
-                                    <a href="#" class="btn btn-primary" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
-                                    `
+                                <div class="col-sm-6 service-card">
+                                    <div class="card" style="width: 100%;">
+                                        <img src="${url}" class="card-img-top" style="height: 300px">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${serviceName}</h5>
+                                            <p class="card-text">${description}</p>
+                                            <p>Category: ${categoryName}</p>
+                                            <p>Price: ${price}</p>
+                                            <a href="#" class="btn btn-primary" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
+                                            `
 
                     if (status === 1) {
                         output +=
@@ -324,9 +480,9 @@
                     }
                     output +=
                         `
-                                </div>
-                            </div>
-                        </div>`;
+                                        </div>
+                                    </div>
+                                </div>`;
 
                     if (serviceCount % 2 !== 0 || serviceCount === Object.keys(data).length - 1) {
                         // Close the row at the end of each pair or when it's the last service
@@ -387,21 +543,21 @@
 
         })
 
-
+        document.getElementById("cancelUpdateService").addEventListener("click", function () {
+            document.getElementById("UpdateServiceForm").classList.toggle('d-none')
+            console.log("update form cancel btn clicked")
+            serviceId = '';
+            serviceNameUpdate = '';
+            priceUpdate = '';
+            des = '';
+            categoryIdUpdate = '';
+            urlUpdate = '';
+            numOfPeopleUpdate = '';
+        })
 
         // OPEN UPDATE FORM
         function updateForm(serviceId, serviceName, categoryName, price, description, url, numOfPeople, categoryId) {
-            document.getElementById("cancelUpdateService").addEventListener("click", function () {
-                console.log("update form cancel btn clicked")
-                document.getElementById("UpdateServiceForm").style.display = "none";
-                serviceId = '';
-                serviceNameUpdate = '';
-                priceUpdate = '';
-                des = '';
-                categoryIdUpdate = '';
-                urlUpdate = '';
-                numOfPeopleUpdate = '';
-            })
+
             console.log("show update service form")
             for (let i = 0; i < uploadFile.length; i++) {
                 uploadFile[i].value = ''
@@ -411,7 +567,7 @@
             document.getElementById("createServiceForm").style.display = "none";
             document.querySelectorAll('.form-control').forEach(form => form.value = "")
             document.getElementById("createServiceFormContainer").style.display = "none";
-            document.getElementById("UpdateServiceForm").style.display = "block";
+            document.getElementById("UpdateServiceForm").classList.toggle('d-none')
             document.getElementById("serviceNameUpdate").value = serviceName;
             document.getElementById("priceUpdate").value = price;
             document.getElementById("description").value = description;
@@ -486,8 +642,7 @@
 
             }
             document.querySelectorAll('.form-control').forEach(form => form.value = "")
-            document.getElementById("UpdateServiceForm").style.display = "none";
-            document.getElementById("createServiceFormContainer").style.display = "block";
+            document.getElementById("createServiceFormContainer").classList.toggle('d-none')
         })
 
 
@@ -542,11 +697,8 @@
             }
         }
 
-        //Check type of file
-        document.getElementById("SORT-SEARCH").style.visibility = "hidden";
+            //Check type of file
     </script>
-
-
     <!--UPDATE SERVICE-->
 
     <!-- Bootstrap JS -->
@@ -554,5 +706,53 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 </body>
+<script>
+    const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
+    const dropDownMenu = document.querySelector('#dropdownDivider')
+    const eventSource = new EventSource('/sse');
+
+    dropDownMenuBtn.addEventListener('click', () => {
+        console.log("clicked")
+        dropDownMenu.classList.toggle("d-none")
+    })
+
+    eventSource.addEventListener('leaveReportCount', function (event) {
+        const unreadCount = event.data;
+        const notificationCountElement = document.getElementById('notificationCount');
+        const notificationDotElement = document.getElementById('notificationDot');
+        // Update the unread count in the UI
+        notificationCountElement.innerText = unreadCount;
+
+        localStorage.setItem('unreadCount', unreadCount);
+
+        // Display/hide the red dot based on unread count
+        if (unreadCount > 0) {
+            notificationDotElement.classList.remove('d-none')
+        } else {
+            notificationDotElement.classList.add('d-none')
+        }
+    });
+
+    // Close the SSE connection when leaving the page
+    window.addEventListener('unload', function () {
+        eventSource.close();
+    });
+
+
+</script>
+<script>
+    document.getElementById("see-leave-report").addEventListener("click", function () {
+        localStorage.removeItem('unreadCount');
+        fetch("/sse/close", {
+            method: 'POST'
+        })
+            .then(res => {
+                if (res.status === 200) {
+                }
+            })
+    })
+
+
+</script>
 
 </html>

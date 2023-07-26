@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,25 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Getter
+@Setter
+class WorkerStatusSummary {
+    private Account account;
+    private ServiceCategory serviceCategory;
+    private Integer status;
+    private Integer allowedDayOff;
+    private Integer workCount;
+
+    public WorkerStatusSummary(Account account, ServiceCategory serviceCategory, Integer status, Integer allowedDayOff, Integer workCount) {
+        this.account = account;
+        this.serviceCategory = serviceCategory;
+        this.status = status;
+        this.allowedDayOff = allowedDayOff;
+        this.workCount = workCount;
+    }
+
+    // getters and setters
+}
 @RestController
 @RequestMapping(value = "/UserRestController")
 public class AdminAPI {
@@ -128,6 +149,8 @@ public class AdminAPI {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (Exception e) {
             System.out.println("something wrong with saving the account");
+            System.out.println("error" + e);
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
         return ResponseEntity.status(HttpStatus.OK).body(error);
@@ -146,12 +169,15 @@ public class AdminAPI {
         int CustomerRoleValue = 0;
         List<Account> CustomerList = new ArrayList<>();
         CustomerList = accountRepository.findByRoleEquals(CustomerRoleValue);
+        System.out.println(CustomerList);
         return CustomerList;
     }
 
-    @DeleteMapping(value = "/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Account>> deleteByIDAndReturn(@PathVariable long ID) {
+    @DeleteMapping(value = "/deleteWorker/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<WorkerStatusSummary> deleteWorkerByIDAndReturn(@PathVariable long ID) {
         System.out.println("call DELETE success, id is: " + ID);
+        List<WorkerStatus> workerStatusList = new ArrayList<>();
+        List<WorkerStatusSummary> workerStatusSummaryList = new ArrayList<>();
         Account getAccount = accountRepository.findByAccountId(ID);
         if (getAccount.getAccountStatus() == 1) {
             ResponseEntity<List<Account>> response = accountService.deleteByID(ID);
@@ -162,6 +188,29 @@ public class AdminAPI {
             accountRepository.save(getAccount);
             workerStatusRepository.save(getWorkerStatus);
         }
+        workerStatusList = workerStatusRepository.findAll();
+        for(int i = 0; i < workerStatusList.size(); i++){
+            WorkerStatusSummary workerStatusSummary =
+                    new WorkerStatusSummary(workerStatusList.get(i).getAccount(), workerStatusList.get(i).getServiceCategory(), workerStatusList.get(i).getStatus(), workerStatusList.get(i).getAllowedDayOff(),
+                            workerStatusList.get(i).getWorkCount());
+            workerStatusSummaryList.add(workerStatusSummary);
+        }
+        System.out.println(workerStatusSummaryList);
+        return workerStatusSummaryList;
+    }
+
+    @DeleteMapping(value = "/deleteCustomer/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Account>> deleteCustomerByIDAndReturn(@PathVariable long ID) {
+        System.out.println("call DELETE success, id is: " + ID);
+        Account getAccount = accountRepository.findByAccountId(ID);
+        if (getAccount.getAccountStatus() == 1) {
+            getAccount.setAccountStatus(0);
+            ResponseEntity<List<Account>> response = accountService.deleteByID(ID);
+            accountRepository.save(getAccount);
+        }else{
+            getAccount.setAccountStatus(1);
+            accountRepository.save(getAccount);
+        }
         List<Account> getList = accountRepository.findByRoleEquals(getAccount.getRole());
         return ResponseEntity.ok().body(getList);
     }
@@ -170,7 +219,7 @@ public class AdminAPI {
     public ResponseEntity<CreateErrorCatcher> updateByIdAndReturnWorker(@RequestBody JsonNode updateInfo) {
         System.out.println("inside update worker");
         int workerRole = 1;
-        System.out.println(updateInfo.asText());
+        System.out.println("updateInfo: " + updateInfo.asText());
         String  username, password, email, firstname, lastname, phonenumber, date;
         String daysoff,workcount,status,serviceId;
         Long phoneID,ID;
@@ -285,6 +334,7 @@ public class AdminAPI {
                  getServiceCategory = serviceCategoryRepository.findByServiceCategoryId(Long.parseLong(serviceId));
             }
             WorkerStatus getWorkerStatus = workerStatusRepository.findByAccount(account_to_update);
+            System.out.println(status);
             getWorkerStatus.setStatus(Integer.parseInt(status));
             getWorkerStatus.setAllowedDayOff(Integer.parseInt(daysoff));
             getWorkerStatus.setWorkCount(Integer.parseInt(workcount));
@@ -299,6 +349,7 @@ public class AdminAPI {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (Exception e) {
             System.out.println("something wrong with saving the account");
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
         System.out.println("okk, SAVE SUCCESS");
@@ -409,6 +460,7 @@ public class AdminAPI {
             }
         }
         isEnabled = updateInfo.get("isEnable").asInt();
+        System.out.println("isBlock: " + updateInfo.get("isBlock").asInt());
         if(updateInfo.get("isBlock").asInt()==1){
             isBlock = true;
         }else{
@@ -421,10 +473,9 @@ public class AdminAPI {
             LocalDate localDate = LocalDate.parse(updateInfo.get("txtDate").asText().trim(), formatter);
             Optional<Phone> phone1 = phoneRepository.findById(phoneID);
             // Phone.builder().number(updateInfo.get("txtPhonenumber").asText().trim()).build();
-            Address address1 = addressRepository.findById(account_to_update.getAddress().getAddress_id()).get();System.out.println("👤👤👤👤👤👤");
+            Address address1 = addressRepository.findById(account_to_update.getAddress().getAddress_id()).get();
             address1.setBuildingBlock(updateInfo.get("btnRadio").asText().trim());
             address1.setBuildingRoom(updateInfo.get("txtRoomnumber").asText().trim());
-            // Address.builder().buildingBlock(updateInfo.get("btnRadio").asText().trim()).buildingRoom(updateInfo.get("txtRoomnumber").asText()).build();
             System.out.println("yes work");
             addressRepository.save(address1);
 
@@ -456,19 +507,33 @@ public class AdminAPI {
         return ResponseEntity.status(HttpStatus.OK).body(error);
     }
 
-    @GetMapping(value = "/getWorkerStatus/{account_id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public WorkerStatus getWorkerStatus(@PathVariable long account_id) {
+//    @GetMapping(value = "/getWorkerStatus/{account_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public WorkerStatus getWorkerStatus(@PathVariable long account_id) {
+//        System.out.println("get in address");
+//        WorkerStatus workerStatus = workerStatusRepository.findWorkerStatusById(account_id);
+//        return workerStatus;
+//
+//    }
+    @GetMapping(value = "/getWorkerStatus", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<WorkerStatusSummary> getWorkerStatus() {
         System.out.println("get in address");
-        WorkerStatus workerStatus = workerStatusRepository.findWorkerStatusById(account_id);
-        return workerStatus;
-
+        List<WorkerStatus> workerStatusList = new ArrayList<>();
+        List<WorkerStatusSummary> workerStatusSummaryList = new ArrayList<>();
+            workerStatusList = workerStatusRepository.findAll();
+            for(int i = 0; i < workerStatusList.size(); i++){
+                WorkerStatusSummary workerStatusSummary =
+                        new WorkerStatusSummary(workerStatusList.get(i).getAccount(), workerStatusList.get(i).getServiceCategory(), workerStatusList.get(i).getStatus(), workerStatusList.get(i).getAllowedDayOff(),
+                                workerStatusList.get(i).getWorkCount());
+                workerStatusSummaryList.add(workerStatusSummary);
+            }
+            System.out.println(workerStatusSummaryList);
+            return workerStatusSummaryList;
     }
-
     @GetMapping(value = "/getServiceCategory", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ServiceCategory> getServiceCate() {
+    public ResponseEntity<?> getServiceCate() {
         System.out.println("yes in status");
         List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAll();
-        return serviceCategoryList;
+        return ResponseEntity.status(HttpStatus.OK).body(serviceCategoryList);
     }
     @GetMapping(value = "/getTotalCancelOrder",produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<Long,Integer>getCustomerWithOrderCancel(){
@@ -499,3 +564,5 @@ public class AdminAPI {
         return returnList;
     }
 }
+
+

@@ -10,45 +10,68 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
-
+    <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/tailwind/font.css">
+    <link rel="stylesheet" href="../static/tailwind/index.css">
 </head>
 
 <body>
     <header th:replace="~{./fragments/adminHeader.html}"></header>
 
+    <div class="container d-flex justify-content-around p-0 mt-3 ">
+        <div class="form-group  has-feedback col-md-4 d-flex justify-content-center ">
+            <!-- <label class="sr-only" for="search">Search</label> -->
+            <input type="text" class="form-control" name="q" id="search" placeholder="Search">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary dropdown-toggle capitalize" type="button"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    id="dropdown-title">none</button>
+                <div class="dropdown-menu" id="dropdown-category">
+
+                </div>
+            </div>
+            <span class="glyphicons glyphicons-xl glyphicons-group form-control-feedback">
+            </span>
+        </div>
+    </div>
+
     <!-- customer table -->
     <!-- customer table -->
     <!-- customer table -->
-    <div class="TABLE-FOR-CUSTOMER container col-12 mt-3">
-        <table class="table-customer table table-striped" style="display:block;">
+    <div class="TABLE-FOR-CUSTOMER container px-3 mt-3 ">
+        <table class="table-customer table-auto customer-table" style="display:block;" data-sort-order="desc">
             <thead>
-                <tr>
-                    <th id="heading-id-c" scope="col" class="asc" onclick='sortById(this)' style="width: 5%;">
-                        <span class="heading">accountID</span>
+                <tr class="bg-black">
+                    <th id="heading-id-c" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                        onclick="sortById(0)">
+                        <span class="heading capitalize text-white">accountID</span>
                     </th>
-                    <th id="heading-email-c" scope="col" class="asc" style="width: 20%;">
-                        <span class="heading">email</span>
+
+                    <th id="heading-email-c" class="table-heading py-3 asc text-center">
+                        <span class="heading capitalize text-white">email</span>
                     </th>
-                    <th id="heading-firstname-c" scope="col" class="asc" onclick='sortByFirstname(this)'
-                        style="width: 15%;">
-                        <span class="heading">Firstname</span>
+
+                    <th id="heading-firstname-c" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                        onclick="sortByFirstname(2)">
+                        <span class="heading capitalize text-white">full name</span>
                     </th>
-                    <th id="heading-lastname-c" scope="col" class="asc" onclick='sortByLastname(this)'
-                        style="width: 15%;">
-                        <span class="heading">Lastname</span>
+
+                    <th id="heading-dob-c" class="table-heading py-3 asc text-center" onclick="sortByDob(this)">
+                        <span class="heading capitalize text-white">Birthday</span>
                     </th>
-                    <th id="heading-dob-c" scope="col" class="asc" onclick='sortByDob(this)' style="width: 15%;">
-                        <span class="heading">Dob</span>
+
+                    <th id="heading-status-c" class="table-heading py-3 asc text-center" onclick="sortByStatus(this)">
+                        <span class="heading capitalize text-white">status</span>
                     </th>
-                    <th id="heading-status-c" scope="col" class="asc" onclick='sortByStatus(this)' style="width: 10%;">
-                        <span class="heading">status</span>
+
+                    <th id="heading-cancel-c" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                        onclick="sortByOrderCancel(6)">
+                        <span class="heading capitalize text-white">cancel Order</span>
                     </th>
-                    <th id="heading-cancel-c" scope="col" class="asc" onclick='sortByOrderCancel(this)' style="width: 15%;">
-                        <span class="heading">cancel order</span>
+
+                    <th class="table-heading py-3 text-center">
+                        <span class="capitalize text-white">action</span>
                     </th>
-                    <th id="heading-role-c" scope="col" class="asc" style="width: 20%;">Role</th>
-                    <th scope="col" class="asc" style="width: 20%;">update</th>
-                    <th scope="col" class="asc" style="width: 20%;">Delete</th>
                     <!-- <th scope="col" class="asc" style="width: 20%;">Orders </th> -->
                 </tr>
             </thead>
@@ -57,6 +80,8 @@
             </tbody>
         </table>
     </div>
+
+    <div th:replace="~{./adminUpdateCustomer.html}"></div>
     <!-- customer table -->
     <!-- customer table -->
     <!-- customer table -->
@@ -73,24 +98,253 @@
     error_lastname = document.getElementById("error-lastname")
     error_dob = document.getElementById("error-dob")
     error_phonenumber = document.getElementById("error-phonenumber")
+
+    const toggleSwitch = document.querySelectorAll('.toggleSwitch')
+
+    const tableHeading = document.querySelectorAll('.table-heading')
+    const errorMessage = document.querySelectorAll('.error-message')
+    const customerTable = document.querySelector('.customer-table')
+    const customerTableLength = customerTable.getBoundingClientRect().width
+
+    const updateFormInput = document.querySelectorAll('.updateFormInput')
+    const updateFormContainer = document.querySelector('.updateFormContainer')
+    const widthForEachColumn = parseInt(customerTableLength / tableHeading.length)
+    let ok = false;
+
+    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+    let phoneSpan = document.querySelectorAll('.phoneSpan')
+    const phoneInput = document.querySelector('.phoneInput')
+    const phoneSpanContainer = document.querySelector('.phoneSpanContainer')
+    const prohibitInput = document.querySelectorAll('.prohibit-input')
+    const prohibitInputRadio = document.querySelectorAll('.prohibit-input-radio')
+
+    let customerDict = {}
+
     //error_service = document.getElementById("error-service")
     var getDataList;
     var getOrderList;
+
+    let i = 0
+    tableHeading.forEach(h => {
+        if (i == tableHeading.length - 1) {
+            h.style.width = `${widthForEachColumn + 150}px`
+
+        }
+        else {
+            h.style.width = `${widthForEachColumn}px`
+
+        }
+        i++
+    })
+
+
+    toggleSwitch.forEach(toggle => {
+        toggle.checked = false
+        toggle.addEventListener('change', (e) => {
+            const enabledOrblock = toggle.getAttribute('id')
+            const dotEnabled = toggle.nextElementSibling.nextElementSibling
+            const active = dotEnabled.querySelector('.active')
+            const inactive = dotEnabled.querySelector('.inactive')
+
+            if (enabledOrblock === 'toggleEnabled') {
+                toggle.previousElementSibling.value = e.target.checked ? 1 : 0
+            }
+            if (enabledOrblock === 'toggleBlock') {
+                toggle.previousElementSibling.value = e.target.checked ? 1 : 0
+                alert('isBlock: ' + toggle.previousElementSibling.value)
+            }
+            dotEnabled.classList.toggle('left-1')
+            dotEnabled.classList.toggle('bg-white')
+            dotEnabled.classList.toggle('right-1')
+            dotEnabled.classList.toggle('bg-blue-300')
+            active.classList.toggle('hidden')
+            inactive.classList.toggle('hidden')
+        })
+    })
+
+    phoneDropDownButton.addEventListener('click', (e) => {
+        e.preventDefault()
+        phoneDropdownContainer.classList.toggle('hidden')
+    })
+
+    function getAdminCustomerPage() {
+        let dotEnabled = updateFormContainer.querySelectorAll('.dotEnabled')
+        let active = updateFormContainer.querySelectorAll('.active')
+        let inactive = updateFormContainer.querySelectorAll('.inactive')
+
+        updateFormInput.forEach(input => input.value = '')
+        dotEnabled.forEach(dot => {
+            dot.classList.add('left-1', 'bg-white')
+            dot.classList.remove('right-1', 'bg-blue-300')
+        })
+        active.forEach(a => {
+            a.classList.add('hidden')
+        })
+        inactive.forEach(i => {
+            i.classList.remove('hidden')
+        })
+        toggleSwitch.forEach(toggle => {
+            toggle.checked = false
+            toggle.previousElementSibling.value = 0
+        })
+        alert(document.querySelector('#isBlockValue').value)
+        while (phoneSpanContainer.firstChild) {
+            phoneSpanContainer.removeChild(phoneSpanContainer.firstChild)
+
+        }
+
+        updateFormContainer.classList.toggle('hidden')
+    }
+
+    prohibitInput.forEach(inp => {
+        inp.addEventListener('keydown', (e) => {
+            e.preventDefault()
+        })
+    })
+
+    prohibitInputRadio.forEach(radio => {
+        radio.addEventListener('click', (e) => {
+            e.preventDefault()
+        })
+    })
+
+    function openUpdateCustomerForm(id) {
+        toggleSwitch.forEach(toggle => {
+            toggle.checked = false
+            toggle.previousElementSibling.value = 0
+        })
+        error_username = document.getElementById("error-username-updateCustomer")
+        error_email = document.getElementById("error-email-updateCustomer")
+        error_firstname = document.getElementById("error-firstname-updateCustomer")
+        error_lastname = document.getElementById("error-lastname-updateCustomer")
+        error_phonenumber = document.getElementById("error-phonenumber-updateCustomer")
+        error_dob = document.getElementById("error-dob-updateCustomer")
+        let uid = updateFormContainer.querySelector('.uId')
+        let username = updateFormContainer.querySelector('.uName')
+
+        let email = updateFormContainer.querySelector('.uEmail')
+        let firstName = updateFormContainer.querySelector('.uFname')
+        let lastName = updateFormContainer.querySelector('.uLname')
+
+        let phone = updateFormContainer.querySelector('.uPhoneNumber')
+        let phoneId = updateFormContainer.querySelector('.uPhoneId')
+
+        let dob = updateFormContainer.querySelector('.uDob')
+
+        let room = updateFormContainer.querySelector('.uRoom')
+        let block = updateFormContainer.querySelectorAll('.uBlock')
+
+        let enableBtn = updateFormContainer.querySelector('.enableBtn')
+        let blockBtn = updateFormContainer.querySelector('.blockBtn')
+        let enableValue = updateFormContainer.querySelector('#isEnableValue')
+        let blockValue = updateFormContainer.querySelector('#isBlockValue')
+        let enableActive = enableBtn.querySelector('.active')
+        let blockActive = blockBtn.querySelector('.active')
+        let enableInactive = enableBtn.querySelector('.inactive')
+        let blockInactive = blockBtn.querySelector('.inactive')
+
+        uid.value = customerDict[id].accountId
+        username.value = customerDict[id].accountName
+        email.value = customerDict[id].email
+        firstName.value = customerDict[id].firstName
+        lastName.value = customerDict[id].lastName
+        dob.value = customerDict[id].dob
+        room.value = customerDict[id].address.buildingRoom
+        block.forEach(b => {
+            b.checked = b.value == customerDict[id].address.buildingBlock
+        })
+        if (customerDict[id].isEnable > 0) {
+            enableBtn.classList.toggle('right-1')
+            enableBtn.classList.toggle('left-1')
+            enableBtn.classList.toggle('bg-blue-300')
+            enableBtn.classList.toggle('bg-white')
+            enableActive.classList.toggle('hidden')
+            enableInactive.classList.toggle('hidden')
+
+        }
+        enableValue.value = customerDict[id].isEnable
+        enableValue.nextElementSibling.checked = enableValue.value > 0 ? 1 : 0
+
+        if (customerDict[id].isBlock === true) {
+            blockBtn.classList.toggle('right-1')
+            blockBtn.classList.toggle('left-1')
+            blockBtn.classList.toggle('bg-blue-300')
+            blockBtn.classList.toggle('bg-white')
+            blockActive.classList.toggle('hidden')
+            blockInactive.classList.toggle('hidden')
+        }
+        blockValue.value = customerDict[id].isBlock === false ? 0 : 1
+        blockValue.nextElementSibling.checked = blockValue.value > 0 ? 1 : 0
+        alert(blockValue.value)
+
+        if (customerDict[id].phones.length > 0) {
+            for (let i = 0; i < customerDict[id].phones.length; i++) {
+                let newPhoneSpan = addNewPhoneSpan(customerDict[id].phones[i].number, customerDict[id].phones[i].phoneId)
+                phoneSpanContainer.appendChild(newPhoneSpan)
+                newPhoneSpan.addEventListener('click', () => {
+                    phone.value = newPhoneSpan.querySelector('.phoneSpan').innerHTML
+                    phoneId.value = newPhoneSpan.querySelector('.phoneSpan').getAttribute('data-id')
+                    phoneDropdownContainer.classList.toggle('hidden')
+                    console.log(phone.value)
+                })
+            }
+            console.log(phoneSpanContainer)
+        }
+        phone.value = customerDict[id].phones[0].number
+        phoneId.value = customerDict[id].phones[0].phoneId
+
+
+        updateFormContainer.classList.toggle('hidden')
+    }
+
+    function addNewPhoneSpan(phoneNumber, phoneNumberId) {
+        const li = document.createElement('li')
+        const span = document.createElement('span')
+
+
+        li.setAttribute('class', 'relative')
+        span.setAttribute('class', 'phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer')
+        span.setAttribute('data-id', phoneNumberId)
+        span.innerHTML = phoneNumber
+        li.appendChild(span)
+
+        return li
+    }
+
     applyHeaderToSearchCategory()
     getCustomerList()
     async function getCustomerList() {
-        console.log("inside get customer")
         const response = await fetch("http://localhost:8080/UserRestController/getAccountCustomer")
         data = await response.json();
         getDataList = data;
         var ListCancelOrder = await getTotalCancelOrder();
         getOrderList = ListCancelOrder;
-        console.log(ListCancelOrder)
         printRow(data, "customer-list");
+
+        customerDict = data.reduce((acc, cur) => {
+            acc[cur.accountId] = cur;
+            return acc;
+        }, {})
+
+        const accountKeyFilter = ["accountId", "accountName", "accountStatus", "dob", "address", "email", "firstName", "lastName", "isBlock", "isEnable", "phones", "username"]
+        for (const key in customerDict) {
+            if (Object.hasOwnProperty.call(customerDict, key)) {
+                for (const customerDictKey in customerDict[key]) {
+                    if (Object.hasOwnProperty.call(customerDict[key], customerDictKey)) {
+                        if (!accountKeyFilter.includes(customerDictKey)) {
+                            delete customerDict[key][customerDictKey];
+                        }
+                    }
+                }
+            }
+        }
+        console.log("customer dict")
+        console.log(customerDict)
+
     }
 
     function printRow(data, IdOfTableBody) {
-        console.log(IdOfTableBody)
         var table_tag = document.getElementById(`${IdOfTableBody}`);
         // console.log(table_tag.innerHTML)
         table_tag.innerHTML = ""
@@ -103,51 +357,51 @@
             if (data[i].dob == null) {
                 date_output = "not yet imported"
             } else {
-                date_new = new Date(data[i].dob); console.log(date_new)
+                date_new = new Date(data[i].dob);
                 date_output = new Intl.DateTimeFormat('en-US').format(date_new);
             }
             // onclick='showFullCustomerInfo(${data[i].accountId})'
             output = `
-        <tr id="${data[i].accountId}" scope="row"  class='item-to-search' >
+        <tr id="${data[i].accountId}" class="item-to-search even:bg-[#c4c4c4] odd:bg-[#fffff4]">
         `
             if (data[i].role == 1) {
-                output += `<td class="accountid"><input  type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+                output += `<td class="accountid text-center" onclick="showFullWorkerInfo(${data[i].accountId})"><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
             } else {
-                output += `<td class="accountid"><input  type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
+                output += `<td class="accountid text-center" onclick="showFullCustomerInfo(${data[i].accountId})"><input type="hidden" name="txtID" value="${data[i].accountId}">${data[i].accountId}</td>`;
             }
             output += `
-                <td style="display: none;" ><input type="hidden" name="txtUsername" value="${data[i].accountName}"></td>
-                <td style="display: none;"><input type="hidden" name="txtPassword" value="${data[i].password}"></td>
-                <td class="email"><input type="hidden" name="txtEmail"value="${data[i].email}">${data[i].email}</td>
-                <td class="firstname"><input type="hidden" name="txtFirstname"value="${data[i].firstName}">${data[i].firstName}</td>
-                <td class="lastname"><input type="hidden" name="txtLastname"value="${data[i].lastName}">${data[i].lastName}</td>
-                <td class="dob"><input type="hidden" name="txtDob"value="${data[i].dob}">${date_output}</td>
-                <td class="status"><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
-                `
+            <td class="email py-3 text-center"><input type="hidden" name="txtEmail"value="${data[i].email}">${data[i].email}</td>
+            <td class="fullname py-3 text-center"><input type="hidden" name="txtFirstname"value="${data[i].firstName}">${data[i].firstName} ${data[i].lastName}</td>
+            <td class="hidden lastname py-3 text-center"><input type="hidden" name="txtLastname"value="${data[i].lastName}">${data[i].lastName}</td>
+            <td class="dob py-3 text-center"><input type="hidden" name="txtDob"value="${data[i].dob}">${date_output}</td>
+            <td class="status py-3 text-center"><input type="hidden" name="txtStatus"value="${data[i].accountStatus}">${statusString}</td>
+            `
             var getCount = getOrderList[`${data[i].accountId}`]
-            output += `<td class="cancelorder">${getCount}</td>`
+            output += `<td class="cancelorder py-3 text-center">${getCount}</td>
+                        <td style="display: none;" ><input type="hidden" name="txtUsername" value="${data[i].accountName}"></td>
+            <td style="display: none;"><input type="hidden" name="txtPassword" value="${data[i].password}"></td>`
             output +=
                 `
-                <td><input type="hidden" name="txtRole"value="${data[i].role}">${roleString}</td>
-                <td>
-                    <button><a href="/admin_UpdateCustomer/${data[i].accountId}">UPDATE</a></button>
-                </td>`
+                    <td class="py-3 text-center">
+                    <button class="updateBtn text-center bg-green-400 py-2 px-3 rounded-lg w-[45%] capitalize" onclick="openUpdateCustomerForm(${data[i].accountId})">update</button>
+                `
             if (data[i].accountStatus == 1) {
                 output +=
-                    `<td>
-                    <button onclick='deleteByID(${data[i].accountId})'>del</button>
+                    `
+                    <button class="text-center bg-slate-400 py-2 px-0 rounded-lg w-[45%] capitalize" onclick='confirmation(${data[i].accountId})'>deactivate</button>
                 </td>`
             } else {
                 output +=
-                    ` <td>
-                    <button onclick='deleteByID(${data[i].accountId})'>active</button>
-                </td>`;
+                    `
+                    <button class="text-center bg-yellow-400 px-3 py-2 rounded-lg w-[45%] capitalize" onclick='confirmation(${data[i].accountId})'>activate</button>
+                    </td>`;
             }
             output +=
                 `
             </tr>`
             table_tag.innerHTML += output;
             //<td><button class="viewOrderBtn" onclick='getUserOrders(${data[i].accountId})'>order</button></td>
+            sorttableCategory()
         }
     }
 
@@ -176,26 +430,52 @@
         //creatAccountService(service_list[0].serviceCategoryName,service_list[0].serviceCategoryId)
     }
 
-    async function deleteByID(id) {
-        console.log(id)
-        const response = await fetch(`http://localhost:8080/UserRestController/${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+    async function deleteByID(id, confirm) {
+        console.log("CONFIRMATION")
+        console.log(confirm)
+        if (confirm) {
+            console.log(id)
+            const response = await fetch(`/UserRestController/deleteCustomer/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            );
+            console.log("yes call api success DELETE")
+            console.log(response)
+            if (response.status == 500) {
+                alert("delete fail, might be server side");
+                return;
+            } else {
+                data = await response.json();
+                console.log(data)
+                console.log("role: " + data[0].role)
+                if (data[0].role == 1) {
+                    printRow(data, "worker-list");
+                } else {
+                    printRow(data, "customer-list");
+                }
+
+            }
+        } else {
+            return;
         }
-        );
-        var status = await response.status
-        var bodyJson = await response.json()
-        console.log("yes call api success DELETE")
-        if (status >= 200 && status <= 300) {
-            console.log(bodyJson[0].role)
-            printRow(bodyJson, "customer-list");
+
+    }
+
+    function confirmation(id) {
+        console.log("CONFIRMATION")
+        const getResult = confirm(" are you sure want to delete or re-active this account?");
+        const ok = getResult
+
+        if (ok) {
+            console.log(ok)
+            deleteByID(id, ok)
         }
         else {
-            alert("delete fail, might be server side");
-            return;
+            console.log(ok)
         }
     }
     async function getTotalCancelOrder() {
@@ -204,26 +484,80 @@
         var toJson = await response.json();
         return toJson;
     }
-    function sortByOrderCancel(htmlstuff) {
-        console.log(htmlstuff.className);
-        var ascOrNot = htmlstuff.className;
-        if (ascOrNot == "asc") {
-            htmlstuff.className = "desc"
-            getDataList = getDataList.sort((a, b) => { 
-                //getOrderList[`${a.accountId}`] > getOrderList[`${b.accountId}`]
-                return getOrderList[`${a.accountId}`] > getOrderList[`${b.accountId}`] ? 1 : -1 
-            })
+    function sortByOrderCancel(columnIndex) {
+        var table = document.querySelector(".table-worker") || document.querySelector(".table-customer");
+        var tbody = table.tBodies[0];
+        var rows = Array.from(tbody.rows);
+        var sortOrder = table.getAttribute('data-sort-order') || 'asc';
+        rows.sort((a, b) => {
+            var x = Number(a.cells[columnIndex].textContent);
+            var y = Number(b.cells[columnIndex].textContent);
+            return sortOrder === 'asc' ? x - y : y - x;
+        });
+        rows.forEach(row => tbody.appendChild(row));
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        table.setAttribute('data-sort-order', sortOrder);
 
-            printRow(data, "customer-list",getOrderList)
+    }
+    const update_form = document.getElementById("update-form");
+    update_form.addEventListener('submit', async function (event) {
+
+        console.log(update_form)
+        event.preventDefault();
+        var form_data = new FormData(update_form);
+        let data = Object.fromEntries(form_data);
+        // console.log(data);
+        var response = await fetch(`http://localhost:8080/UserRestController/UpdateAccountCustomer`,
+            {
+                method: "Put",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+        var status = await response.status;
+        var responseData = await response.json()
+        if (status < 200 || status > 300) {
+            // error_username.style.visibility = "visible"; error_username.innerHTML = "." + responseData.usernameErr
+            // //error_password.stylse.visibility = "visible"; error_password.innerHTML = responseData.passwordErr
+            // error_email.style.visibility = "visible"; error_email.innerHTML = "." + responseData.emailErr
+            // error_firstname.style.visibility = "visible"; error_firstname.innerHTML = "." + responseData.firstnameErr
+            // error_lastname.style.visibility = "visible"; error_lastname.innerHTML = "." + responseData.lastnameErr
+            // error_dob.style.visibility = "visible"; error_dob.innerHTML = "." + responseData.dateErr
+            // error_phonenumber.style.visibility = "visible"; error_phonenumber.innerHTML = "." + responseData.phonenumberErr
+            // error_address.style.visibility = "visible"; error_address.innerHTML = "." + responseData.addressErr
+            // if (responseData.usernameErr == "") { error_username.style.visibility = "hidden"; }
+            // if (responseData.emailErr == "") { error_email.style.visibility = "hidden"; }
+            // if (responseData.firstnameErr == "") { error_firstname.style.visibility = "hidden"; }
+            // if (responseData.lastnameErr == "") { error_lastname.style.visibility = "hidden"; }
+            // if (responseData.dateErr == "") { error_dob.style.visibility = "hidden"; }
+            // if (responseData.phonenumberErr == "") { error_phonenumber.style.visibility = "hidden"; }
+            // if (responseData.addressErr == "") { error_address.style.visibility = "hidden"; }
+
+
         } else {
-            htmlstuff.className = "asc"
-            getDataList = getDataList.sort((a, b) => { 
-                return getOrderList[`${a.accountId}`] > getOrderList[`${b.accountId}`] ? -1 : 1 
-            })
-            printRow(data, "customer-list",getOrderList)
+            // error_username.style.visibility = "hidden";
+            // //error_password.style.visibility = "hidden"; 
+            // error_email.style.visibility = "hidden";
+            // error_firstname.style.visibility = "hidden";
+            // error_lastname.style.visibility = "hidden";
+            // error_dob.style.visibility = "hidden";
+            // error_phonenumber.style.visibility = "hidden";
+            // error_address.style.visibility = "hidden";
+            getCustomerList()
+            phoneDropdownContainer.classList.add('hidden')
+            console.log('yes successs')
+            alert("successfully update");
+            // delay(500).then(() => {
+            //     getAdminCustomerPage()
+            // })
         }
 
     }
+    )
+
+
 
 </script>
 

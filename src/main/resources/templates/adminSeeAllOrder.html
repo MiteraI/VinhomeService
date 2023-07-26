@@ -1,209 +1,536 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeLeaf.org">
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="w-[100%] h-">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css">
+  <link rel="stylesheet" href="../static/tailwind/index.css">
+
+  <style>
+    .orderDetail::before {
+      content: "Order Information";
+      position: absolute;
+      top: -13px;
+      left: 3%;
+      background-color: white;
+    }
+
+    .orderDetail::before {
+      font-weight: bold;
+    }
+
+    .box::before {
+      content: "Worker Involved";
+      position: absolute;
+      top: -13px;
+      left: 3%;
+      background-color: white;
+    }
+
+    .box::before {
+      font-weight: bold;
+    }
+  </style>
 </head>
+
 <body>
-<header th:replace="~{./fragments/adminHeader.html}"></header>
-
-<div class="container d-flex justify-content-end p-0 mt-3">
-  <input type="date" value="" id="selectWorkDay">
-  <div id=""></div>
-    <select id="timeSlotSortSelect" value="" class=""  >
-
-    </select>
-    <div class="btn btn-success "onclick="Sorting()">sort</div>
+  <header th:replace="~{./fragments/adminHeader.html}"></header>
+  <div
+    class="confirmPicContainer fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center z-100 hidden"
+    style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="flex justify-center items-center" style="height: 90%; width: 60%;">
+      <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
+        class="confirmImg w-100 h-100 object-fit-contain">
+    </div>
+    <div role="button" class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2">Close</div>
   </div>
-</div>
-<div class="container">
-    <table class="table table-striped">
+
+
+  <!-- SHOW WORKER TABLE -->
+  <!-- SHOW WORKER TABLE -->
+  <!-- SHOW WORKER TABLE -->
+  <div id="main" class="container px-3 mt-3">
+    <div class="container flex justify-between p-0 my-3 ">
+      <div class="flex justify-center items-center">
+        <input type="date" value="" id="selectWorkDay" class="bg-slate-300 rounded-lg px-2 py-2">
+        <div id=""></div>
+        <select id="timeSlotSortSelect" value="" class="mx-1 py-2 px-2 bg-slate-300 rounded-lg">
+
+        </select>
+        <div role="button" class="py-2 px-3 bg-green-300 rounded-lg capitalize" onclick="Sorting()">sort</div>
+      </div>
+      <div class="flex justify-center w-[30%]">
+        <!-- <label class="sr-only" for="search">Search</label> -->
+        <input type="text" class="flex-1 bg-slate-300 rounded-lg px-2" name="q" id="search" placeholder="Search">
+        <div class="">
+          <button class="py-2 px-3 bg-green-300 rounded-lg dropdown-toggle capitalize" type="button"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdown-title">none</button>
+          <div class="dropdown-menu" id="dropdown-category">
+
+          </div>
+        </div>
+        <span class="glyphicons glyphicons-xl glyphicons-group">
+        </span>
+      </div>
+    </div>
+    <div class="mt-3">
+      <table class="block table-order">
         <thead>
-            <tr>
-                <th><span class="heading">Username</span></th>
-                <th><span class="heading">Service Name</span></th>
-                <th><span class="heading">payment</span></th>
-                <th><span class="heading">WorkDay</span></th>
-                <th><span class="heading">Start time</span></th>
-                <th><span class="heading">Status</span></th>
-                <th><span class="">view Detail</span></th>
-                <th><span class="heading">Action</span></th>
-                <th><span class="">Image Confirm</span></th>
-                <th><span class="">Cancel</span></th>
-            </tr>
+          <tr class="bg-black">
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Order Id</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Username</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Service
+                Name</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">payment</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">WorkDay</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Start time</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Status</span>
+            </th>
+            <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">view Detail</span></th>
+            <!-- <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Action</span>
+            </th> -->
+            <!-- <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">Cancel</span></th> -->
+          </tr>
         </thead>
         <tbody id="tbody-orders">
 
         </tbody>
-    </table>
-</div>
-<script src="../static/js/AdminPublicFunction.js"></script>
+      </table>
+    </div>
+  </div>
+  <!--  WORKER FORM -->
+  <!--  WORKER FORM -->
+  <!--  WORKER FORM -->
+
+
+  <div th:replace="~{./adminUpdateOrder.html}"></div>
+  <div th:replace="~{./adminOrderTransaction.html}"></div>
+  <script src="../static/js/AdminPublicFunction.js">
+  </script>
+  <script src="../static/js/orderTransaction.js"></script>
   <script>
     const timeSlotSortSelect = document.getElementById("timeSlotSortSelect")
-    let OrderList ;
+    const transactionId = document.querySelector('#transactionId')
 
-      applyHeaderToSearchCategory()
-      getAllTimeSlot()
+    const updateOrderContainer = document.querySelector('.updateOrderContainer')
+    const orderid = updateOrderContainer.querySelector('.orderId')
+    const username = updateOrderContainer.querySelector('.uName')
+    const fullname = updateOrderContainer.querySelector('.uFname')
+    const email = updateOrderContainer.querySelector('.uEmail')
+    const phone = updateOrderContainer.querySelector('.uPhoneNumber')
+    const createtime = updateOrderContainer.querySelector('.uOrderCreateTime')
+    const servicename = updateOrderContainer.querySelector('.uServiceName')
+    const serviceprice = updateOrderContainer.querySelector('.uServicePrice')
+    const workday = updateOrderContainer.querySelector('.uWorkDay')
+    const starttime = updateOrderContainer.querySelector('.uStartTime')
+    const endtime = updateOrderContainer.querySelector('.uEndTime')
+    const cancelOrderBtn = updateOrderContainer.querySelector('.cancelOrderBtn')
+
+    const clickableImageName = updateOrderContainer.querySelector('.clickAbleImageName')
+    const confirmPicContainer = document.querySelector('.confirmPicContainer')
+    const confirmImg = document.querySelector('.confirmImg')
+    const closeBtn = document.querySelector('.closeBtn')
+    const contactHeading = document.querySelector('.contactHeading')
+    const closeOrderTransactionForm = document.querySelector('.closeOrderTransactionForm')
+
+    const tableHeading = document.querySelectorAll('.table-heading')
+    const transactionFormInput = document.querySelectorAll('.transactionFormInput')
+
+    const workerTable = document.querySelector('.table-order')
+    const workerTableLength = workerTable.getBoundingClientRect().width
+    const widthForEachColumn = parseInt(workerTableLength / tableHeading.length + 10)
+    const workerInvoledTable = document.querySelector('.workerInvoledTable')
+
+    const viewTransactionDetail = document.querySelector('.viewTransactionDetail')
+
+    const phoneDropDownButton = document.querySelector('.phoneDropDownButton')
+    const phoneDropdownContainer = document.querySelector('#phoneDropdownContainer')
+    const phoneSpanContainer = document.querySelector('.phoneSpanContainer')
+
+    const orderTransactionForm = document.querySelector('.orderTransactionForm')
+
+    let orderDict = {}
+    let txn = ""
+    let oid = ""
+
+    let OrderList;
+
+    let i = 0
+    tableHeading.forEach(h => {
+      if (i == tableHeading.length - 1) {
+        h.style.width = `${widthForEachColumn}px`
+
+      }
+      else {
+        h.style.width = `${widthForEachColumn}px`
+
+      }
+      i++
+    })
+
+    phoneDropDownButton.addEventListener('click', (e) => {
+      e.preventDefault()
+      phoneDropdownContainer.classList.toggle('hidden')
+    })
+
+    viewTransactionDetail.addEventListener('click', () => {
+      console.log("clicked")
+      getTransactionStatus(txn)
+        .then(() => {
+          orderTransactionForm.classList.remove('hidden')
+        })
+    })
+
+    closeOrderTransactionForm.addEventListener('click', () => {
+      vnp_Amount.value = ''
+      vnp_FeeAmount.value = ''
+      vnp_TransactionStatus.value = ''
+      transactionFormInput.forEach(input => {
+        input.classList.remove('text-red-400')
+      })
+      orderTransactionForm.classList.add('hidden')
+    })
+
+    cancelOrderBtn.addEventListener('click', () => {
+      cancelOrderAdmin(oid)
+    })
+
+    function openUpdateOrder(id) {
+      phoneDropdownContainer.classList.add('hidden')
+      orderid.innerHTML = orderDict[id].orderId
+      oid = orderDict[id].orderId
+      username.value = orderDict[id].accountName
+      fullname.value = orderDict[id].firstName + " " + orderDict[id].lastName
+      email.value = orderDict[id].email
+      phone.value = orderDict[id].phones.length > 0 ? orderDict[id].phones[0].number : "No phone number available"
+      createtime.value = orderDict[id].createTime.split("T")[0] + "  " + orderDict[id].createTime.split("T")[1]
+      servicename.value = orderDict[id].serviceName
+      serviceprice.value = orderDict[id].price
+      workday.value = orderDict[id].workDay
+      starttime.value = orderDict[id].timeSlot.startTime
+      endtime.value = orderDict[id].timeSlot.endTime
+      if (orderDict[id].urlImageConfirm != null) {
+        clickableImageName.classList.add("hover:text-blue-600", "hover:underline", "cursor-pointer")
+        clickableImageName.innerHTML = orderDict[id].urlImageConfirm
+        clickableImageName.addEventListener('click', () => {
+          confirmImg.src = orderDict[id].urlImageConfirm
+          confirmPicContainer.classList.remove('hidden')
+          updateOrderContainer.classList.add('hidden')
+        })
+      }
+      else {
+        clickableImageName.innerHTML = "No image available"
+        clickableImageName.classList.remove("hover:text-blue-600", "hover:underline", "cursor-pointer")
+      }
+
+      if (orderDict[id].phones.length > 0) {
+        for (let i = 0; i < orderDict[id].phones.length; i++) {
+          let newPhoneSpan = addNewPhoneSpan(orderDict[id].phones[i].number, orderDict[id].phones[i].phoneId)
+          phoneSpanContainer.appendChild(newPhoneSpan)
+          newPhoneSpan.addEventListener('click', () => {
+            phone.value = newPhoneSpan.querySelector('.phoneSpan').innerHTML
+            phoneDropdownContainer.classList.toggle('hidden')
+          })
+        }
+        console.log(phoneSpanContainer)
+      }
+
+      if (orderDict[id].workers.length > 3) {
+        console.log('> 3')
+        workerInvoledTable.classList.add("overflow-y-scroll", "h-[72px]")
+      }
+      for (let i = 0; i < orderDict[id].workers.length; i++) {
+        var newDiv = `<div class="even:bg-[#c4c4c4] odd:bg-[#fffff4] flex items-center justify-between">
+        <span class="flex-1 text-center">${orderDict[id].workers[i].accountId}</span>
+        <span class="flex-1 text-center">${orderDict[id].workers[i].firstName} ${orderDict[id].workers[i].lastName}</span>
+        <span class="flex-1 text-center">${orderDict[id].workers[i].phones.length > 0 ? orderDict[id].workers[i].phones[0].number : 'N/A'}</span>
+    </div>`
+        workerInvoledTable.innerHTML += newDiv
+      }
+
+      if (orderDict[id].payment.paymentId == 2) {
+        viewTransactionDetail.classList.remove('hidden')
+        txn = orderDict[id].vnpTxnRef
+        transactionId.value = txn
+      }
+
+      if (orderDict[id].status != "CANCEL" && orderDict[id].status != "SUCCESS") {
+        cancelOrderBtn.classList.remove('hidden')
+      }
+
+      updateOrderContainer.classList.toggle('hidden')
+    }
+
+    function addNewPhoneSpan(phoneNumber, phoneNumberId) {
+      const li = document.createElement('li')
+      const span = document.createElement('span')
+
+
+      li.setAttribute('class', 'relative')
+      span.setAttribute('class', 'phoneSpan block text-black px-3 py-1 hover:bg-gray-300 cursor-pointer')
+      span.setAttribute('data-id', phoneNumberId)
+      span.innerHTML = phoneNumber
+      li.appendChild(span)
+
+      return li
+    }
+
+    function closeUpdateOrder() {
+      while (phoneSpanContainer.firstChild) {
+        phoneSpanContainer.removeChild(phoneSpanContainer.firstChild)
+      }
+      workerInvoledTable.innerHTML = ''
+      cancelOrderBtn.classList.add('hidden')
+      viewTransactionDetail.classList.add('hidden')
+      phoneDropdownContainer.classList.toggle('hidden')
+      updateOrderContainer.classList.toggle('hidden')
+    }
+
+    closeBtn.addEventListener('click', () => {
+      confirmPicContainer.classList.add('hidden')
+      updateOrderContainer.classList.remove('hidden')
+    })
+
+    applyHeaderToSearchCategory()
+    getAllTimeSlot()
     fetch('/api/order/all')
-            .then(response => response.json())
-            .then(data => {
-              OrderList = data
-              printRowOrder(data)
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      .then(response => response.json())
+      .then(data => {
+        OrderList = data
+        console.log(data)
+        convertToOrderDictionary(data)
+        printRowOrder(OrderList)
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 
 
-            async function cancelOrderAdmin(orderId){
-              var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
-              var status = await response.status
-              var toText = await response.text()
-              if(status >= 200 && status <= 200){
-                alert("success:" +toText);
-              }else{
-                alert("fail: "+ toText);
-              }
-              window.location.href = "/see-all-order-by-admin"
-            }
+    async function cancelOrderAdmin(orderId) {
+      var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
+      var status = await response.status
+      var toText = await response.text()
+      if (status >= 200 && status <= 200) {
+        alert("success:" + toText);
+      } else {
+        alert("fail: " + toText);
+      }
+      window.location.href = "/see-all-order-by-admin"
+    }
 
-            function openDetail(id){
-              window.location.href = `/admin-order-detail/${id}`
-            }
-            
-             
+    function openDetail(id) {
+      window.location.href = `/admin-order-detail/${id}`
+    }
 
 
-            async function getAllTimeSlot(){
-              var response = await fetch('/api/order/timeSlot')
-              var status = await response.status
-              var toJson = await response.json()  
-              const timeSlotSort = document.getElementById("timeSlotSortSelect");    
-              var output = "" 
-                output += `<option  value="none">none</option>`
-                timeSlotSort.value = 'none'
-                // Create option elements for each payment option
-                toJson.forEach((timeslot) => {
-                  output += `
-                  <option  value="${timeslot.timeSlotId}">${timeslot.startTime}</option>
+
+
+    async function getAllTimeSlot() {
+      var response = await fetch('/api/order/timeSlot')
+      var status = await response.status
+      var toJson = await response.json()
+      const timeSlotSort = document.getElementById("timeSlotSortSelect");
+      var output = ""
+      output += `<option value="none">none</option>`
+      timeSlotSort.value = 'none'
+      // Create option elements for each payment option
+      toJson.forEach((timeslot) => {
+        output += `
+                  <option value="${timeslot.timeSlotId}">${timeslot.startTime}</option>
                   `
-                });
-                timeSlotSort.innerHTML = output
-            
-          }
-          function Sorting(){
-              console.log("called: "+timeSlotSortSelect.value)
-              console.log(OrderList)
-              var getReturnList = sortTimeslot_Workday()
-              console.log(getReturnList)
-              printRowOrder(getReturnList)
-              console.log(getWorkDaySort())
-            }
-          
+      });
+      timeSlotSort.innerHTML = output
 
-          function sortTimeslot_Workday() {
-            let returnList = new Array() ;
-            let workday = getWorkDaySort();
-            let timeslotid = timeSlotSortSelect.value.trim()
-            if(timeslotid == 'none'){
-                timeslotid ='';
-            }
-            OrderList.forEach( (item) =>{
-              if(String(item.order.schedule.timeSlot.timeSlotId).includes(timeslotid.trim()) && String(item.order.schedule.workDay).includes(workday)){
-                returnList.push(item)
-              }
-            })
-            return returnList;
-          }
-          function printRowOrder(data){
-            let output = '';
-              data.forEach(item => {
-                const order = item['order'];
-                const account = item['account'];
-                console.log(account)
-                const accountName = account.accountName;
-                const schedule = order.schedule
-                //console.log(schedule)
-                const scheduleStartTime = schedule.timeSlot.startTime
-                const scheduleTimeslotId = schedule.timeSlot.timeSlotId
-                const scheduleId = schedule.scheduleId
-                const scheduleWorkDay = schedule.workDay
-                const service = item['service'];
-                const payment = item['payment'];
-                const transaction = item['transaction'];
-                const txn = transaction['vnpTxnRef']
-                const orderId = order['orderId']
-                const serviceName = service['serviceName'];
-                const paymentName = payment['paymentName'];
-                const status = order['status'];
-                const imageConfirm = order['urlImageConfirm'];
-                output += `
-                        <tr class='item-to-search'>
-                          <td class="username" >${accountName}</td>
-                          <td class="servicename">${serviceName}</td>
-                          <td class="payment">${paymentName}</td>
-                          <td class="workday">${scheduleWorkDay}</td>
-                          <td class="starttime" value=${scheduleId}>${scheduleStartTime}</td>
-                          <td class="status">${status}</td>
-                          <td ><button class="btn btn-primary" onclick="openDetail(${orderId})">Detail</button></td>
-                          <td>
+    }
+    function Sorting() {
+      // console.log("called: " + timeSlotSortSelect.value)
+      // console.log(OrderList)
+      var getReturnList = sortTimeslot_Workday()
+      // console.log(getReturnList)
+      printRowOrder(getReturnList)
+      // console.log(getWorkDaySort())
+    }
+
+
+    function sortTimeslot_Workday() {
+      let returnList = new Array();
+      let workday = getWorkDaySort();
+      let timeslotid = timeSlotSortSelect.value.trim()
+      if (timeslotid == 'none') {
+        timeslotid = '';
+      }
+      OrderList.forEach((item) => {
+        if (String(item.order.schedule.timeSlot.timeSlotId).includes(timeslotid.trim()) && String(item.order.schedule.workDay).includes(workday)) {
+          returnList.push(item)
+        }
+      })
+      return returnList;
+    }
+    function printRowOrder(data) {
+      let output = '';
+      data.forEach(item => {
+        const order = item['order'];
+        const account = item['account'];
+        const accountName = account.accountName;
+        const schedule = order.schedule
+        //console.log(schedule)
+        const scheduleStartTime = schedule.timeSlot.startTime
+        const scheduleTimeslotId = schedule.timeSlot.timeSlotId
+        const scheduleId = schedule.scheduleId
+        const scheduleWorkDay = schedule.workDay
+        const service = item['service'];
+        const payment = item['payment'];
+        const transaction = item['transaction'];
+        const txn = transaction['vnpTxnRef']
+        const orderId = order['orderId']
+        const serviceName = service['serviceName'];
+        const paymentName = payment['paymentName'];
+        const status = order['status'];
+        const imageConfirm = order['urlImageConfirm'];
+        output += `
+                        <tr class="item-to-search item-to-search even:bg-[#c4c4c4] odd:bg-[#fffff4]">
+                          <td class="username py-3 text-center" >${orderId}</td>
+                          <td class="username py-3 text-center" >${accountName}</td>
+                          <td class="servicename py-3 text-center">${serviceName}</td>
+                          <td class="payment py-3 text-center">${paymentName}</td>
+                          <td class="workday py-3 text-center">${scheduleWorkDay}</td>
+                          <td class="starttime py-3 text-center" value=${scheduleId}>${scheduleStartTime}</td>
+                          <td class="status py-3 text-center"><mark class="highlightStatus">${status}</mark></td>
                              `
-                                if (paymentName == "VNPAY") {
-                                    output +=
-                                    `
-                                        <a href="/admin_OrderTransaction/${txn}">View Transaction</a>
-                                    `
-                                }
-                                else {
-                                    output +=
-                                    `
-                                        <a href="#" ></a>
-                                    `
-                                }
-                                output +=
-                            `
-                          </td>
-                          <td>
-                               `
-                                    if (status === 'SUCCESS') {
-                                        output+=
-                                        `<a href="${imageConfirm}">Image Confirm</a>`
-                                    }else{
-                                      output+= 
-                                      `<a href="#"  ></a>`
-                                    }
-                                    output+=
-                                `
-                        </td>
-                          <td>
-                            `
-                            if(status != "CANCEL" && status != "SUCCESS" ){
-                              output += `<button onclick="cancelOrderAdmin(${orderId})" class="btn btn-danger" >Cancel</button>`
-                            }else{
-                              output += `<a href="#"></a>`
-                            }
-                            output+=
-                            `
-                            </td>
+        output +=
+          `
+          <td class="py-3 text-center"><button class="text-center btn btn-primary w-1/2" onclick="openUpdateOrder(${orderId})">Detail</button></td>
+          <!--<td class="py-3 text-center">-->`
+        // if (paymentName == "VNPAY") {
+        //   output +=
+        //     `<a class="py-3 text-center" href="/admin_OrderTransaction/${txn}">Transaction Detail</a>`
+        // }
+        // else {
+        //   output +=
+        //     `<a class="py-3 text-center" href="#" ></a>`
+        // }
+        // output +=
+        //   `</td>`
+        //     <td class="py-3 text-center">
+        // if (status != "CANCEL" && status != "SUCCESS") {
+        //   output += `<button onclick="cancelOrderAdmin(${orderId})" class="btn btn-danger">Cancel</button>`
+        // } else {
+        //   output += `<a href="#">${status}</a>`
+        // }
+        output +=
+          `
                         </tr>
                       `;
-              });
+      });
 
-              document.getElementById('tbody-orders').innerHTML = output;
-          }
+      document.getElementById('tbody-orders').innerHTML = output;
 
-          function getWorkDaySort(){
-              var date = document.getElementById("selectWorkDay").value
-              return date
-            }  
-            
+      const getStatus = document.querySelectorAll('.highlightStatus')
+
+      getStatus.forEach(status => {
+        switch (status.innerHTML.toLowerCase()) {
+          case 'success':
+            status.classList.add('bg-green-400')
+            break
+          case 'cancel':
+            status.classList.add('bg-red-400')
+            break
+          case 'pending':
+            status.classList.add('bg-blue-400')
+            break
+        }
+      })
+    }
+
+    function getWorkDaySort() {
+      var date = document.getElementById("selectWorkDay").value
+      return date
+    }
+
+    function convertToOrderDictionary(data) {
+      orderDict = data.reduce((order, cur) => {
+        order[cur.order.orderId] = cur
+        return order
+      }, {})
+      console.log(orderDict)
+      const accountKeyFilter = ["accountId", "accountName", "email", "firstName", "lastName", "phones"]
+      const orderKeyFilter = ["orderId", "status", "createTime", "schedule", "urlImageConfirm"]
+      const serviceKeyFilter = ["serviceName", "price"]
+      const scheduleKeyFilter = ["timeSlot", "workDay", "workers"]
+      const transactionKeyFilter = ["vnpTxnRef"]
+      for (let key in orderDict) {
+        const account = orderDict[key].account
+        const order = orderDict[key].order
+        const service = orderDict[key].service
+        const transaction = orderDict[key].transaction
+
+        const filteredAccount = Object.keys(account).filter(key => accountKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = account[key]
+          return obj
+        }, {})
+
+        const filteredOrder = Object.keys(order).filter(key => orderKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = order[key]
+          return obj
+        }, {})
+
+        const filteredService = Object.keys(service).filter(key => serviceKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = service[key]
+          return obj
+        }, {})
+
+        const filteredTransaction = Object.keys(transaction).filter(key => transactionKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = transaction[key]
+          return obj
+        }, {})
+
+        orderDict[key] = { ...orderDict[key], ...filteredAccount }
+        orderDict[key] = { ...orderDict[key], ...filteredOrder }
+        orderDict[key] = { ...orderDict[key], ...filteredService }
+        orderDict[key] = { ...orderDict[key], ...filteredTransaction }
+
+        delete orderDict[key].account
+        delete orderDict[key].order
+        delete orderDict[key].service
+        delete orderDict[key].transaction
+      }
+      for (let key in orderDict) {
+        const schedule = orderDict[key].schedule
+
+        const filteredSchedule = Object.keys(schedule).filter(key => scheduleKeyFilter.includes(key)).reduce((obj, key) => {
+          obj[key] = schedule[key]
+          return obj
+        }, {})
+
+        orderDict[key] = { ...orderDict[key], ...filteredSchedule }
+
+        delete orderDict[key].schedule
+      }
+
+    }
+
+
+
   </script>
 
+
+  <!-- <script defer src="../static/js/AdminPublicFunction.js"></script> -->
 </body>
+
 </html>
