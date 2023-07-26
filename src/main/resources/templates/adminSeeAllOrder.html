@@ -87,6 +87,8 @@
       <table class="block table-order">
         <thead>
           <tr class="bg-black">
+            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Order Id</span>
+            </th>
             <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Username</span>
             </th>
             <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Service
@@ -138,6 +140,7 @@
     const workday = updateOrderContainer.querySelector('.uWorkDay')
     const starttime = updateOrderContainer.querySelector('.uStartTime')
     const endtime = updateOrderContainer.querySelector('.uEndTime')
+    const cancelOrderBtn = updateOrderContainer.querySelector('.cancelOrderBtn')
 
     const clickableImageName = updateOrderContainer.querySelector('.clickAbleImageName')
     const confirmPicContainer = document.querySelector('.confirmPicContainer')
@@ -164,6 +167,7 @@
 
     let orderDict = {}
     let txn = ""
+    let oid = ""
 
     let OrderList;
 
@@ -203,9 +207,14 @@
       orderTransactionForm.classList.add('hidden')
     })
 
+    cancelOrderBtn.addEventListener('click', () => {
+      cancelOrderAdmin(oid)
+    })
+
     function openUpdateOrder(id) {
       phoneDropdownContainer.classList.add('hidden')
       orderid.innerHTML = orderDict[id].orderId
+      oid = orderDict[id].orderId
       username.value = orderDict[id].accountName
       fullname.value = orderDict[id].firstName + " " + orderDict[id].lastName
       email.value = orderDict[id].email
@@ -261,6 +270,10 @@
         transactionId.value = txn
       }
 
+      if (orderDict[id].status != "CANCEL" && orderDict[id].status != "SUCCESS") {
+        cancelOrderBtn.classList.remove('hidden')
+      }
+
       updateOrderContainer.classList.toggle('hidden')
     }
 
@@ -283,6 +296,7 @@
         phoneSpanContainer.removeChild(phoneSpanContainer.firstChild)
       }
       workerInvoledTable.innerHTML = ''
+      cancelOrderBtn.classList.add('hidden')
       viewTransactionDetail.classList.add('hidden')
       phoneDropdownContainer.classList.toggle('hidden')
       updateOrderContainer.classList.toggle('hidden')
@@ -391,6 +405,7 @@
         const imageConfirm = order['urlImageConfirm'];
         output += `
                         <tr class="item-to-search item-to-search even:bg-[#c4c4c4] odd:bg-[#fffff4]">
+                          <td class="username py-3 text-center" >${orderId}</td>
                           <td class="username py-3 text-center" >${accountName}</td>
                           <td class="servicename py-3 text-center">${serviceName}</td>
                           <td class="payment py-3 text-center">${paymentName}</td>
@@ -455,7 +470,7 @@
       }, {})
       console.log(orderDict)
       const accountKeyFilter = ["accountId", "accountName", "email", "firstName", "lastName", "phones"]
-      const orderKeyFilter = ["orderId", "createTime", "schedule", "urlImageConfirm"]
+      const orderKeyFilter = ["orderId", "status", "createTime", "schedule", "urlImageConfirm"]
       const serviceKeyFilter = ["serviceName", "price"]
       const scheduleKeyFilter = ["timeSlot", "workDay", "workers"]
       const transactionKeyFilter = ["vnpTxnRef"]

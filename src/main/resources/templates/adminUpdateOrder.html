@@ -109,13 +109,20 @@
                 </div>
             </div>
 
-            <div class="hidden mb-2 viewTransactionDetail font-semibold hover:text-blue-600 hover:underline cursor-pointer">
+            <div
+                class="hidden mb-2 viewTransactionDetail font-semibold hover:text-blue-600 hover:underline cursor-pointer">
                 view transaction detail
             </div>
 
-            <button class="w-full py-2 border-2 border-red-400 bg-red-400 rounded-lg hover:bg-transparent mb-3"
-                type="button" onclick="closeUpdateOrder()">Close</button>
+            <div class="flex justify-between items-center">
+                <button
+                    class="w-full py-2 border-2 border-red-400 bg-red-400 rounded-lg hover:bg-transparent mb-3 font-semibold"
+                    type="button" onclick="closeUpdateOrder()">Close</button>
 
+                <button
+                    class="cancelOrderBtn hidden w-full ml-2 py-2 border-2 border-blue-400 bg-blue-400 rounded-lg hover:bg-transparent mb-3 font-semibold"
+                    type="button" onclick="">Cancel Order</button>
+            </div>
         </form>
     </div>
 </div>
