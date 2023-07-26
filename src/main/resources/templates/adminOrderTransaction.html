@@ -1,334 +1,38 @@
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <div style="display: block;">
-        <div class="position-relative">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" data-bs-theme="dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- <div class="container-fluid p-0 "> -->
-                    <a class="navbar-brand" href="#">
-                        <img src="../static/MinhBootstrapIcon/person.svg" width="40" height="40"
-                            class="d-inline-block align-top mx-3" alt="">
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="/adminDisplayWorker_page">
-                                    <h4>WORKER</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link text-white  m-0" href="/adminDisplayCustomer_page">
-                                    <!-- href="./adminDisplayCustomer.html" -->
-                                    <h4>USER</h4>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  m-0" href="#" id="see-all-leave-report">
-                                    <h4>See Leave Report</h4>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <form action="/logout">
-                    <button type="submit">Logout</button>
-                </form>
-
-                <!-- </div> -->
-            </nav>
-        </div>
-    </div>
-    <div class="container-fluid " style="height: 80px;">
-        sfad
-    </div>
-
-    <!-- top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);  -->
-
-    <div class="container container-fluid vh-100 vw-100  position-relative ">
-        <div class=" position-absolute border border-1 border-dark rounded col-12 vh-100 vw-100  bottom-0 start-50 translate-middle "
-            style="max-width: 80%;max-height: 60%; display: block;">
-            <form id="transaction-form" class="p-2 pb-5">
-                <h1 id="WARNING_COD" style="color:red; position: fixed;
+<div class="container hidden orderTransactionForm fixed top-0 start-0 w-100 h-100 flex flex-col justify-center items-center form z-99"
+    style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="bg-white  w-[30%]">
+        <form id="transaction-form" class="py-2 px-3">
+            <h1 id="WARNING_COD" style="color:red; position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 display: none;">FAIL</h1>
-                <div id="TRANSACTIONBODY" style="display: block;">
-                    <div class="container p-0 m-0 d-flex justify-content-center mb-3">
-                        <div class="align-items-center">
-                            <label for="txtID"> <!-- ID: -->ID:
-                                <input name="txtID" id="w-update-form-id" type="hidden" value="">
-                            </label>
-                        </div>
-                    </div>
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex align-items-center justify-content-end">
-                            <label class="me-5"> vnp_ResponseCode</label>
-                            <input id="vnp_ResponseCode" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_Message</label>
-                            <input id="vnp_Message" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                    </div>
+            <div id="TRANSACTIONBODY" style="">
+                <input name="txtID" id="transactionId" type="hidden" value="">
+                <label class="capitalize">Amount</label>
+                <input type="text" id="vnp_Amount"
+                    class="transactionFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtFirstname" value="">
 
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_TxnRef</label>
-                            <input id="vnp_TxnRef" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_Amount</label>
-                            <input id="vnp_Amount" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                    </div>
+                <label class="capitalize">Transaction Status</label>
+                <input type="text" id="vnp_TransactionStatus"
+                    class="transactionFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtFirstname" value="">
 
-
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex align-items-center justify-content-end">
-                            <label class="me-5"> vnp_OrderInfo</label>
-                            <input id="vnp_OrderInfo" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_BankCode</label>
-                            <input id="vnp_BankCode" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                    </div>
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_PayDate</label>
-                            <input id="vnp_PayDate" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_TransactionNo</label>
-                            <input id="vnp_TransactionNo" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                    </div>
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_TransactionType</label>
-                            <input id="vnp_TransactionType" type="text" class="form-control form-control-sm w-50 "
-                                name="" value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_TransactionStatus</label>
-                            <input id="vnp_TransactionStatus" type="text" class="form-control form-control-sm w-50 "
-                                name="" value="" readonly>
-                        </div>
-                    </div>
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_CardHolder</label>
-                            <input id="vnp_CardHolder" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex align-items-center justify-content-end">
-                            <label class="me-5"> vnp_CardNumber</label>
-                            <input id="vnp_CardNumber" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                    </div>
-                    <div class="container p-0 mt-4 mb-4 d-flex ">
-                        <div class="form-group col-6  p-0 m-0 d-flex  align-items-center justify-content-end">
-                            <label class="me-5"> vnp_Issuer</label>
-                            <input id="vnp_Issuer" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                        <div class="form-group col-6  p-0 m-0 d-flex align-items-center justify-content-end">
-                            <label class="me-5"> vnp_FeeAmount</label>
-                            <input id="vnp_FeeAmount" type="text" class="form-control form-control-sm w-50 " name=""
-                                value="" readonly>
-                        </div>
-                    </div>
-                </div>
-
-            </form>
-            <div class="container-fluid position-fixed bottom-0 d-flex justify-content-around">
-                <button id="btnGetAdminPage" class="btn btn-primary " onclick="getAdminCustomerPage()">customer
-                    page</button>
-                <button id="btnGetRefundCustomer" class="btn btn-primary " onclick="getRefundTransaction()">refund
-                    customer</button>
+                <label class="capitalize">Fee Amount</label>
+                <input type="text" id="vnp_FeeAmount"
+                    class="transactionFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" placeholder=""
+                    name="txtFirstname" value="">
             </div>
-        </div>
+            <div class="flex justify-center items-center mt-3">
+                <button type="button" id="btnGetAdminPage"
+                    class="closeOrderTransactionForm border-2 border-red-300 bg-red-300 py-2 px-3 rounded-lg w-full mr-2 hover:bg-transparent"
+                    onclick="">Close</button>
+                <button type="button" id="btnGetRefundCustomer"
+                    class="border-2 border-blue-300 bg-blue-300 py-2 px-3 rounded-lg w-full hover:bg-transparent"
+                    onclick="getRefundTransaction()">Refund</button>
+            </div>
+        </form>
 
-
-
-</body>
-<script>
-    //var vnp_Amount,vnp_BankCode,vnp_CardHolder,vnp_CardNumber,vnp_FeeAmount,vnp_Issuer,vnp_Message,vnp_OrderInfo,
-    //vnp_PayDate,vnp_ResponseCode,vnp_TransactionNo,vnp_TransactionStatus,vnp_TransactionType,vnp_TxnRef;
-    var vnp_Amount = document.getElementById("vnp_Amount")
-    var vnp_BankCode = document.getElementById("vnp_BankCode")
-    var vnp_CardHolder = document.getElementById("vnp_CardHolder")
-    var vnp_CardNumber = document.getElementById("vnp_CardNumber")
-    var vnp_FeeAmount = document.getElementById("vnp_FeeAmount")
-    var vnp_Issuer = document.getElementById("vnp_Issuer")
-    var vnp_Message = document.getElementById("vnp_Message")
-    var vnp_OrderInfo = document.getElementById("vnp_OrderInfo")
-    var vnp_PayDate = document.getElementById("vnp_PayDate")
-    var vnp_ResponseCode = document.getElementById("vnp_ResponseCode")
-    var vnp_TransactionNo = document.getElementById("vnp_TransactionNo")
-    var vnp_TransactionStatus = document.getElementById("vnp_TransactionStatus")
-    var vnp_TransactionType = document.getElementById("vnp_TransactionType")
-    var vnp_TxnRef = document.getElementById("vnp_TxnRef")
-    const transaction_body = document.getElementById("TRANSACTIONBODY")
-    const warning_COD = document.getElementById("WARNING_COD")
-    const getVnpTxnRef = window.location.href.split(/(\\|\/)/g).pop()
-    const refundButton = document.getElementById("btnGetRefundCustomer")
-    console.log(getVnpTxnRef)
-    //const queryString = window.location.search;
-    //const getVnpTxnRef = new URLSearchParams(queryString).get('vnpTxnRef'); console.log(getVnpTxnRef)
-    getTransactionStatus()
-        .then(() => {
-            getQueryTransaction()
-        })
-
-
-
-
-    async function getQueryTransaction() {
-        if (getVnpTxnRef.startsWith("admin") || getVnpTxnRef.toLowerCase() == "NULL".toLowerCase()) {
-            alert("fail to get transaction")
-            transaction_body.style.display = "none";
-            warning_COD.style.display = "block";
-            refundButton.disabled = true;
-            return;
-        }
-        let response = await fetch(`http://localhost:8080/transaction/queryTransaction/${getVnpTxnRef}`, {
-            method: "get"
-        })
-        var status = await response.status
-        var toJson = await response.json()
-        console.log(toJson)
-        if (status >= 200 && status <= 300) {
-            if (toJson.vnp_ResponseCode == "00") {
-                if (toJson.vnp_TransactionStatus == "00") {
-                    alert("yes get transaction Success");
-                    vnp_Amount.value = toJson.vnp_Amount
-                    vnp_BankCode.value = toJson.vnp_BankCode
-                    vnp_CardHolder.value = toJson.vnp_CardHolder
-                    vnp_CardNumber.value = toJson.vnp_CardNumber
-                    vnp_FeeAmount.value = toJson.vnp_FeeAmount
-                    vnp_Issuer.value = toJson.vnp_Issuer
-                    vnp_Message.value = toJson.vnp_Message
-                    vnp_OrderInfo.value = toJson.vnp_OrderInfo
-                    vnp_PayDate.value = toJson.vnp_PayDate
-                    vnp_ResponseCode.value = toJson.vnp_ResponseCode
-                    vnp_TransactionNo.value = toJson.vnp_TransactionNo
-                    vnp_TransactionStatus.value = toJson.vnp_TransactionStatus
-                    vnp_TransactionType.value = toJson.vnp_TransactionType
-                    vnp_TxnRef.value = toJson.vnp_TxnRef
-                } else {
-                    alert("yes get transaction cancel")
-                    vnp_Amount.value = toJson.vnp_Amount
-                    vnp_BankCode.value = toJson.vnp_BankCode
-                    vnp_CardHolder.value = "UNAVAILABLE"; vnp_CardHolder.style.color = "red"
-                    vnp_CardNumber.value = "UNAVAILABLE"; vnp_CardNumber.style.color = "red"
-                    vnp_FeeAmount.value = toJson.vnp_FeeAmount
-                    vnp_Issuer.value = "UNAVAILABLE"; vnp_Issuer.style.color = "red"
-                    vnp_Message.value = toJson.vnp_Message
-                    vnp_OrderInfo.value = toJson.vnp_OrderInfo
-                    vnp_PayDate.value = toJson.vnp_PayDate
-                    vnp_ResponseCode.value = toJson.vnp_ResponseCode
-                    vnp_TransactionNo.value = toJson.vnp_TransactionNo
-                    vnp_TransactionStatus.value = toJson.vnp_TransactionStatus
-                    vnp_TransactionType.value = toJson.vnp_TransactionType
-                    vnp_TxnRef.value = toJson.vnp_TxnRef
-                    // refundButton.disabled = true;
-                }
-            } else {
-                alert("fail to get transaction, this might be the transaction is not exist or pre cancel")
-                vnp_Amount.value = "UNAVAILABLE"; vnp_Amount.style.color = "red"
-                vnp_BankCode.value = "UNAVAILABLE"; vnp_BankCode.style.color = "red"
-                vnp_CardHolder.value = "UNAVAILABLE"; vnp_CardHolder.style.color = "red"
-                vnp_CardNumber.value = "UNAVAILABLE"; vnp_CardNumber.style.color = "red"
-                vnp_FeeAmount.value = "UNAVAILABLE"; vnp_FeeAmount.style.color = "red"
-                vnp_Issuer.value = "UNAVAILABLE"; vnp_Issuer.style.color = "red"
-                vnp_Message.value = toJson.vnp_Message
-                vnp_OrderInfo.value = "UNAVAILABLE"; vnp_OrderInfo.style.color = "red"
-                vnp_PayDate.value = "UNAVAILABLE"; vnp_PayDate.style.color = "red"
-                vnp_ResponseCode.value = toJson.vnp_ResponseCode
-                vnp_TransactionNo.value = "UNAVAILABLE"; vnp_TransactionNo.style.color = "red"
-                vnp_TransactionStatus.value = "UNAVAILABLE"; vnp_TransactionStatus.style.color = "red"
-                vnp_TransactionType.value = "UNAVAILABLE"; vnp_TransactionType.style.color = "red"
-                vnp_TxnRef.value = toJson.vnp_TxnRef
-                // refundButton.disabled = true;
-            }
-        } else {
-            alert("fail to get transaction")
-            transaction_body.style.display = "none";
-            warning_COD.style.display = "block";
-            refundButton.disabled = true;
-        }
-    }
-    async function getTransactionStatus() {
-        var response = await fetch("http://localhost:8080/transaction/getStatus/" + getVnpTxnRef, {
-            method: "GET"
-        })
-        var status = await response.status
-        var toText = await response.text()
-        console.log(status)
-        console.log(toText)
-        if (status >= 200 & status <= 300) {
-            if (toText.startsWith("REFUNDED")) {
-                refundButton.disabled = true;
-            } else {
-                refundButton.disabled = false;
-            }
-        } else {
-            transaction_body.style.display = "none";
-            warning_COD.style.display = "block";
-            refundButton.disabled = true;
-        }
-    }
-    function getAdminCustomerPage() {
-        console.log("inside return main page")
-        window.location.href = "/see-all-order-by-admin";
-    }
-    async function getRefundTransaction() {
-        var response = await fetch("http://localhost:8080/transaction/admin/refundTransaction/" + getVnpTxnRef,
-            {
-                method: "GET"
-            });
-        var status = await response.status; console.log(status)
-        var toText = await response.text(); console.log(toText)
-        if (status < 200 || status > 300) {
-            console.log("refund fail");
-            alert("refund fail: " + toText)
-        } else {
-            console.log("refund success");
-            alert("refund success: " + toText)
-            getAdminCustomerPage()
-        }
-    }
-</script>
-
-</html>
+    </div>
+</div>
