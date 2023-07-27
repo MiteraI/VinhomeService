@@ -112,6 +112,7 @@ public class SecurityConfig {
                     authAdmin.requestMatchers("/see-all-categories").hasAuthority("2");
                     authAdmin.requestMatchers("/admin-order-detail/**").hasAuthority("2");
                 })
+                //.authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/resources/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/homepage").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll())

@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 public class CustomerSessionListener implements HttpSessionListener  {
-    private static int SESSION_TIMEOUT = 200;
+    private static int SESSION_TIMEOUT = 300;
     private static final Map<String, HttpSession> SESSION_HASH_MAP = new HashMap<>();
 
     public List<HttpSession> getActiveSessions() {

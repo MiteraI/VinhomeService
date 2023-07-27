@@ -105,9 +105,8 @@ public class CancelRequestAPI {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("number format exception");
         }
     }
-    @PutMapping(value = "/worker-update")
+    @PostMapping(value = "/worker-update")
     public ResponseEntity<String> workerUpdateCancelRequest(@RequestParam("cancelRequestId") long cancelRequestId){
-
         CancelRequest getCancelRequest = cancelRequestService.getCancelRequest(cancelRequestId);
         if(getCancelRequest == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not found request cancel");

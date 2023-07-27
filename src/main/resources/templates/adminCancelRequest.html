@@ -49,7 +49,7 @@
       </th>
     </tr>
     </thead>
-    <tbody id="tbody-see-all-leave-report">
+    <tbody id="tbody-see-all-cancel-request">
 
     </tbody>
   </table>
@@ -92,13 +92,13 @@
           .then(data => {
             let output = '';
             data.forEach(item => {
-              const request = item['leaveReport'];
-              const account = item['account'];
-              const firstName = account['firstName'];
-              const lastName = account['lastName'];
-              const timeCancel = request['timeCancel'];
-              const reason = request['reason'];
-              const link = request['fileURL'];
+              // const request = item['cancelRequest']
+              const account = item['worker'];
+              const firstName = account.firstName;
+              const lastName = account.lastName;
+              const timeCancel = item['timeCancel'];
+              const reason = item['reason'];
+              const link = item['fileURL'];
               output += `
                                 <tr class="even:bg-[#c4c4c4] odd:bg-[#fffff4]">
                                   <td class="py-3 text-center">${firstName}</td>
@@ -108,14 +108,14 @@
 
                                     <td class="py-3 text-center" th:if="${link != null}"><a href="${link}">Link</a></td>
                                     <td class="py-3 text-center">
-                                      <button class="btn btn-success" onclick="approveLeave('${request['cancelRequestId']}')">Accept</button>
-                                      <button class="btn btn-danger" onclick="rejectLeave('${request['cancelRequestId']}')">Reject</button>
+                                      <button class="btn btn-success" onclick="approveCancel('${item['cancelRequestId']}')">Accept</button>
+                                      <button class="btn btn-danger" onclick="rejectCancel('${item['cancelRequestId']}')">Reject</button>
                                     </td>
                                 </tr>
                               `;
             });
 
-            document.getElementById('tbody-see-all-leave-report').innerHTML = output;
+            document.getElementById('tbody-see-all-cancel-request').innerHTML = output;
           })
           .catch(error => {
             console.error('Error:', error);
@@ -123,11 +123,11 @@
 
 
 
-  function approveLeave(CancelReportId) {
+  function approveCancel(CancelReportId) {
     performAction('/api/cancel-request/admin-update', CancelReportId, 1); // Assuming 1 represents the 'approve' status
   }
 
-  function rejectLeave(CancelReportId) {
+  function rejectCancel(CancelReportId) {
     performAction('/api/cancel-request/admin-update', CancelReportId, 2); // Assuming 0 represents the 'reject' status
   }
 
@@ -152,7 +152,6 @@
     })
             .then(data => {
               if (data.status === 200) {
-                console.log(data.text());
                 window.location.reload();
               }
             })
@@ -164,54 +163,54 @@
 <script>
   // const eventSource = new EventSource('/sse');
 
-  eventSource.addEventListener('open', function (event) {
-    console.log(event);
-    console.log('SSE connection established');
-  });
-
-  eventSource.addEventListener('error', function (event) {
-    if (event.readyState === EventSource.CLOSED) {
-      console.log('SSE connection closed');
-    } else {
-      console.error('Error occurred in SSE connection:', event);
-    }
-  });
-
-  eventSource.addEventListener('leaveReport', function (event) {
-    const leaveReportDetail = JSON.parse(event.data);
-    const leaveReport = leaveReportDetail['leaveReport'];
-    const account = leaveReportDetail['account'];
-    const firstName = account['firstName'];
-    const lastName = account['lastName'];
-    const startDate = leaveReport['startTime'];
-    const endDate = leaveReport['endTime'];
-    const reason = leaveReport['reason'];
-    const link = leaveReport['fileURL'];
-    // const file = leaveReport['file'];
-    const newRow = document.createElement('tr');
-    newRow.innerHTML += `
-                                          <td>${firstName}</td>
-                                          <td>${lastName}</td>
-                                          <td>${startDate}</td>
-                                          <td>${endDate}</td>
-                                          <td>${reason}</td>
-
-                                            <td th:if="${link != null}"><a href="${link}">Link</a></td>
-                                            <td>
-                                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['cancelRequestId']}')">Accept</button>
-                                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['cancelRequestId']}')">Reject</button>
-                                            </td>
-                                      `;
-    document.getElementById('tbody-see-all-leave-report').appendChild(newRow);
-    window.addEventListener('unload', function () {
-      eventSource.close();
-    });
-  });
-
-
-
-
-  // document.getElementById("see-leave-report").addEventListener("click", function () {
+  // eventSource.addEventListener('open', function (event) {
+  //   console.log(event);
+  //   console.log('SSE connection established');
+  // });
+  //
+  // eventSource.addEventListener('error', function (event) {
+  //   if (event.readyState === EventSource.CLOSED) {
+  //     console.log('SSE connection closed');
+  //   } else {
+  //     console.error('Error occurred in SSE connection:', event);
+  //   }
+  // });
+  //
+  // eventSource.addEventListener('leaveReport', function (event) {
+  //   const leaveReportDetail = JSON.parse(event.data);
+  //   const leaveReport = leaveReportDetail['leaveReport'];
+  //   const account = leaveReportDetail['account'];
+  //   const firstName = account['firstName'];
+  //   const lastName = account['lastName'];
+  //   const startDate = leaveReport['startTime'];
+  //   const endDate = leaveReport['endTime'];
+  //   const reason = leaveReport['reason'];
+  //   const link = leaveReport['fileURL'];
+  //   // const file = leaveReport['file'];
+  //   const newRow = document.createElement('tr');
+  //   newRow.innerHTML += `
+  //                                         <td>${firstName}</td>
+  //                                         <td>${lastName}</td>
+  //                                         <td>${startDate}</td>
+  //                                         <td>${endDate}</td>
+  //                                         <td>${reason}</td>
+  //
+  //                                           <td th:if="${link != null}"><a href="${link}">Link</a></td>
+  //                                           <td>
+  //                                             <button class="btn btn-success" onclick="approveLeave('${leaveReport['cancelRequestId']}')">Accept</button>
+  //                                             <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['cancelRequestId']}')">Reject</button>
+  //                                           </td>
+  //                                     `;
+  //   document.getElementById('tbody-see-all-leave-report').appendChild(newRow);
+  //   window.addEventListener('unload', function () {
+  //     eventSource.close();
+  //   });
+  // });
+  //
+  //
+  //
+  //
+  // // document.getElementById("see-leave-report").addEventListener("click", function () {
   //   localStorage.removeItem('unreadCount');
   //   fetch("/sse", {
   //     method: 'POST'

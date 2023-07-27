@@ -20,13 +20,8 @@ public class SseController {
     public SseEmitter subscribeToEvents() {
         SSEEmitterWithStatus emitter = new SSEEmitterWithStatus();
         emitters.add(emitter);
-
         // Remove the emitter when it is completed
         emitter.onCompletion(() -> emitters.remove(emitter));
-
-        // Handle any timeout events
-        emitter.onTimeout(emitter::complete);
-
         return emitter;
     }
 
@@ -34,6 +29,7 @@ public class SseController {
     public void sendSSEEvent(String eventName, Object eventData) {
         List<SSEEmitterWithStatus> completedEmitters = new ArrayList<>();
         for (SSEEmitterWithStatus emitter : emitters) {
+            System.out.println("i");
             try {
                 emitter.send(SseEmitter.event().name(eventName).data(eventData));
                 if (!emitter.isRead()) {
@@ -60,6 +56,7 @@ public class SseController {
             try {
                 emitter.send(SseEmitter.event().name(eventName).data(unreadCount));
             } catch (Exception e) {
+                System.out.println("in here");
                 // If there is an error sending the event, complete the emitter
                 emitter.completeWithError(e);
                 completedEmitters.add(emitter);
