@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../dist/index.css">
+</head>
+
+<body>
+    <header class="bg-blue-bootstrap sticky" id="Home">
+        <nav class="navBar mx-3 flex justify-between">
+
+            <div class="profile-btn flex items-center justify-center flex-col">
+                <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
+                    class="h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 rounded-lg px-2 py-2 text-center inline-flex items-center justify-between w-[200px] font-semibold text-lg dropdown-toggle"
+                    type="button">
+                    Manage
+                </button>
+
+                <div id="dropdownDivider" class="z-10 hidden rounded-lg w-[200px]">
+                    <ul class="absolute w-inherit rounded-lg border-2 border-blue-700 bg-white"
+                        aria-labelledby="dropdownDividerButton">
+                        <li class="relative">
+                            <a href="/adminDisplayWorker_page"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300 rounded-t-lg"><i
+                                    class="bx bx-hard-hat mr-2"></i>Worker</a>
+                        </li>
+                        <li class="relative">
+                            <a href="/adminDisplayCustomer_page"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300"><i
+                                    class="bx bx-user mr-2"></i>Customer</a>
+                        </li>
+                        <li class="relative flex hover:bg-gray-300 cursor-pointer">
+
+                            <a href=" /see-leave-report"
+                                class="block font-bold text-[16px] text-blue-bootstrap pl-2 py-2"><i
+                                    class="bx bx-calendar-event mr-2" id="see-leave-report"></i>Leave Report</a>
+                            <div id="notificationDot"
+                                class="bg-red-500 rounded-full w-[20px] h-[20px] text-center mr-2 hidden">
+                                <span id="notificationCount"
+                                    class="text-white font-bold font-inherit flex justify-center items-center h-inherit"></span>
+                            </div>
+                        </li>
+                        <li class="relative">
+
+                            <a href="/see-all-order-by-admin"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300"><i
+                                    class="bx bx-cart mr-2"></i>Order</a>
+                        </li>
+                        <li class="relative">
+
+                            <a href="/see-all-services"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300"><i
+                                    class="bx bx-book-content mr-2"></i>Services</a>
+                        </li>
+                        <li class="relative">
+
+                            <a href="/see-all-categories"
+                                class="block font-bold text-[16px] text-blue-bootstrap px-2 py-2 hover:bg-gray-300 rounded-b-lg"><i
+                                    class="bx bx-category-alt mr-2"></i>Category</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <form action="/logout" class="m-0">
+                    <button type="submit" class="py-2 px-3 bg-red-400 rounded-lg">Logout</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <section class="flex flex-col items-center mx-48">
+        <div class="w-1/4 bg-blue-bootstrap rounded-lg my-10">
+            <p class="text-center text-white text-2xl font-bold p-4">Admin Dashboard</p>
+        </div>
+        <div class="flex items-center my-10 space-x-10">
+            <div>
+                <label for="months">Month:</label>
+                <select class="border-2 border-black rounded-lg" id="months">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div>
+                <label for="years">Year:</label>
+                <select class="border-2 border-black rounded-lg" id="years">
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <button class="bg-blue-bootstrap px-8 py-2 rounded-lg text-white">Filter</button>
+        </div>
+        <div class="flex w-full space-x-4">
+            <div class="flex flex-col justify-between w-1/4 bg-blue-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Total order:</P>
+                </div>
+                <div>
+                    <p class="fond-bold text-3xl text-right">200</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between w-1/4 bg-red-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Cancelled order:</P>
+                </div>
+                <div>
+                    <p class="fond-bold text-3xl text-right">50</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between bg-green-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Completed order:</P>
+                </div>
+                <div>
+                    <p class="fond-bold text-3xl text-right">150</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between w-1/4 bg-yellow-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Revenue:</P>
+                </div>
+                <div>
+                    <p class="text-xs text-right">VND</p>
+                    <p class="fond-bold text-3xl text-right">150 000 000</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="flex justify-between mx-48 my-10">
+        <div class="flex flex-col items-center w-1/2 border-2 border-black rounded-lg bg-slate-50 p-10">
+            <div class="w-1/2">
+                <canvas id="pieChart" width="250" height="250"></canvas>
+            </div>
+            <div class="w-1/2 my-6">
+                <p class="text-center text-lg">Cancel/Complete Pie Chart</p>
+            </div>
+        </div>
+        <div class="w-1/3 bg-slate-50 border-2 border-black rounded-lg p-6">
+            <p class="text-center text-lg font-bold">Ordered service from most to least</p>
+            <br>
+            <table class="w-full border-blue-bootstrap border-t-2 border-b-2">
+                <tr>
+                    <th class="border-r-2 border-blue-bootstrap">Service's name</th>
+                    <th>Quantity</th>
+                </tr>
+                <tr>
+                    <td class="border-r-2 border-blue-bootstrap">Bombing day</td>
+                    <td class="text-center">100</td>
+                </tr>
+                <tr>
+                    <td class="border-r-2 border-blue-bootstrap">Killing day</td>
+                    <td class="text-center">100</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Parameters (you can update these values as needed)
+            const totalOrders = 100;
+            const canceledOrders = 30;
+            const completedOrders = 70;
+
+            // Get the canvas element and its context
+            const canvas = document.getElementById("pieChart");
+            const ctx = canvas.getContext("2d");
+
+            // Calculate percentages
+            const canceledPercentage = (canceledOrders / totalOrders) * 100;
+            const completedPercentage = (completedOrders / totalOrders) * 100;
+
+            // Convert percentage to radians
+            const canceledAngle = (canceledPercentage / 100) * 2 * Math.PI;
+            const completedAngle = (completedPercentage / 100) * 2 * Math.PI;
+
+            // Set colors for the slices
+            const canceledColor = "#FF5733"; // Red for canceled
+            const completedColor = "#33FF57"; // Green for completed
+
+            // Set the center of the chart
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY);
+
+            // Draw the canceled slice
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, 0, canceledAngle);
+            ctx.fillStyle = canceledColor;
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw the completed slice
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, canceledAngle, canceledAngle + completedAngle);
+            ctx.fillStyle = completedColor;
+            ctx.closePath();
+            ctx.fill();
+        });
+
+        // Function to get the current month (1 to 12) and year (e.g., 2020)
+        function getCurrentMonthAndYear() {
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so we add 1
+            const currentYear = currentDate.getFullYear();
+
+            return { month: currentMonth, year: currentYear };
+        }
+
+        // Function to select the current month and year options
+        function selectCurrentMonthAndYear() {
+            const { month, year } = getCurrentMonthAndYear();
+
+            const monthsSelect = document.getElementById("months");
+            const yearsSelect = document.getElementById("years");
+
+            // Select the current month and year options
+            monthsSelect.value = month;
+            yearsSelect.value = year;
+        }
+
+        // Call the function to select the current month and year options
+        selectCurrentMonthAndYear();
+    </script>
+</body>
+
+</html>
