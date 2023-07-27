@@ -164,6 +164,7 @@
   </section>
   <br><br><br><br><br>
   <div th:replace="~{./fragments/confirm-form.html}"></div>
+  <div th:replace="~{./fragments/cancel-request-form.html}"></div>
   <footer th:replace="~{./fragments/footer.html}"></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -222,12 +223,22 @@
             let button = '';
             if (workers[0].accountId == loggedInAccount.accountId) {
               button = document.createElement("button");
-              button.classList.add("bg-blue-bootstrap", "rounded-lg")
-              button.textContent = "Confirm Form";
+              button.classList.add("bg-blue-bootstrap", "rounded-lg", "text-white")
+              button.textContent = "Confirm Order";
               button.addEventListener("click", function () {
                 document.getElementById("confirm-form").style.display = "block";
                 document.getElementById("form-customer-name").innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}`
                 document.getElementById("input-orderid").value = order.orderId;
+              })
+
+              buttonCancel = document.createElement("button");
+              buttonCancel.classList.add("bg-red-cancel", "rounded-lg", "text-white")
+              buttonCancel.textContent = "Cancel Request";
+
+              buttonCancel.addEventListener("click", function () {
+                document.getElementById("cancel-form").style.display = "block";
+                document.getElementById("input-orderid2").value = order.orderId;
+                document.getElementById("input-workerid").value = loggedInAccount.accountId;
               })
             }
             // Set the worker names as the cell content
@@ -240,6 +251,7 @@
             <br> Status: <span class='text-blue-bootstrap'>${order.status}</span>
             <br>`
               cell.appendChild(button);
+              cell.appendChild(buttonCancel);
             } else {
               cell.innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}
             <br> Service: ${order.service.serviceName}

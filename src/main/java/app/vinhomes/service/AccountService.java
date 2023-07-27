@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class AccountService {
@@ -173,6 +174,14 @@ public class AccountService {
         }catch (Exception e){
             System.out.println(e.getMessage());
             return "ERROR server error: ";
+        }
+    }
+    public Account getAccountById(Long id){
+        Optional<Account> getAccount = accountRepository.findById(id);
+        if(getAccount.isPresent()){
+            return getAccount.get();
+        }else{
+            return null;
         }
     }
 }

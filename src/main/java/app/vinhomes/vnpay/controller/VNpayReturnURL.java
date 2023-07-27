@@ -116,7 +116,6 @@ public class VNpayReturnURL {
             throw new RuntimeException(e);
         } catch (Exception e) {
             return "redirect:/transactionReturn?message=error on serverside, please make another order";
-
         }
     }
 }

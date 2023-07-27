@@ -35,15 +35,14 @@ public class LeaveReport {
     private LocalDate startTime;
     private LocalDate endTime;
     @Lob
+    @Column(
+            length = 1024
+    )
     private String reason;
     private String fileURL;
 
     @Column(columnDefinition = "integer default 0")
     private int status;
 
-    @OneToMany (
-            mappedBy = "leaveReport",
-            cascade = CascadeType.ALL
-    )
-    private List<Leave> leave;
+
 }

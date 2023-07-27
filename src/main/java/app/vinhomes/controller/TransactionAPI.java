@@ -141,19 +141,20 @@ public class TransactionAPI {
                             if(getResponseCodeFromRefund.equals("00")){
                                 orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
                                 transactionService.setTransactionStatus(getTransaction, TransactionStatus.REFUNDED);
-                                eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getAccount,getTransaction,true));
+                                eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getAccount,getTransaction,false));
                                 return ResponseEntity.status(HttpStatus.OK).body("YES successfully refund this transaction of admin");
                             }
-                            orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
-                            transactionService.setTransactionStatus(getTransaction,TransactionStatus.REFUNDED);
+                            //todo check lại logic
+                            //orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
+                            //transactionService.setTransactionStatus(getTransaction,TransactionStatus.REFUNDED);
                             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR cannot refund vnpay, this transaction has already refunded ");
                         }
                         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR cannot refund vnpay, try again later: ");
                     }
                     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction is not valid for refund, this is because this order is cancel by customer");
                 }
-                return transactionService.refundWithOrderID(getOrder.getOrderId().toString(),request,response);
-                //return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction might not exist on vnpay database");
+                //return transactionService.refundWithOrderID(getOrder.getOrderId().toString(),request,response);
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction might not exist on vnpay database");
             }else{
                 System.out.println("ERROR query: "+ responseQuery.getBody());
                 return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR EXCEPTION IN API");
@@ -203,7 +204,6 @@ public class TransactionAPI {
             orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
             transactionService.setTransactionStatus(getTransaction,TransactionStatus.FAIL);
             return ResponseEntity.status(HttpStatus.OK).body("OK cancel cod");
-
         }else{
             return refundVNPAY(getTransaction.getVnpTxnRef(),request,response);
         }

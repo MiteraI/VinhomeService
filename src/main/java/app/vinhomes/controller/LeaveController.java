@@ -181,7 +181,6 @@ public class LeaveController {
                 Leave leave = Leave.builder()
                         .leaveDay(addDate)
                         .account(account)
-                        .leaveReport(leaveReport)
                         .build();
                 leaveRepository.save(leave);
             }

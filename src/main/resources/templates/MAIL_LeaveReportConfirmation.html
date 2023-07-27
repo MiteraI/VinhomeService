@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:remove="all">Template for HTML email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<style>
+
+</style>
+
+<body style="background-color: white;">
+    <div class="container d-flex justify-content-center align-items-center0" style="
+border: 1px solid black;
+border-radius: 20px;
+border-top-left-radius: 20px ; border-top-right-radius: 20px;
+">
+        <div style="background-color:#0d6efd;border-top-left-radius: 20px ; border-top-right-radius: 20px;">
+            <h2 style="
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding-top: 20px;
+            padding-bottom: 20px;
+
+            ">
+                Worker <span th:text="${Account.firstName}"></span> <span th:text="${Account.lastName}"></span> </h2>
+        </div>
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td align="center">
+                    <div style=" margin: 0 auto;
+                    position: relative;
+                    width: 100%;">
+                        <div style="margin: 0 auto;
+                        position: absolute;
+                        /* left: 50%;
+                        transform: translateX(-50%); */
+                        ">
+                            <p style="visibility: hidden; color: white;">
+                                    div 
+                            </p>
+                                <table
+                                    style="border: 1px solid gray; border-collapse: collapse; align-items: start; width: 70%; ">
+                                    <caption
+                                        style="background-color: #0d6efd; color: white; border-top-left-radius: 5px; border-top-right-radius: 5px; height: 40px;  text-align: center; ">
+                                        <p
+                                            style="font-weight: bold; font-size: larger;top: 50% ; transform: translateY(-50%);">
+                                            Yes this mail is confirmed by email</p>
+                                    </caption>
+                                    <tbody>
+                                        <tr style="border: 1px solid gray;">
+                                            <td
+                                                style="border: 1px solid gray; padding: 3px;font-size: large; width: 50%;">
+                                                <span>name :</span>
+                                            </td>
+                                            <td th:text="${Account.accountName}"
+                                                style="padding: 3px;font-size: large; text-align: center;width: 50%;">
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 1px solid gray;">
+                                            <td
+                                                style="border: 1px solid gray; padding: 3px;font-size: large; width: 50%;">
+                                                <span>reportId: </span>
+                                            </td>
+                                            <td th:text="${Report.leaveReportId}"
+                                                style="padding: 3px;font-size: large; text-align: center;width: 50%;">
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 1px solid gray;">
+                                            <td
+                                                style="border: 1px solid gray; padding: 3px;font-size: large; width: 50%;">
+                                                <span>report Start time:</span>
+                                            </td>
+                                            <td th:text="${Report.startTime}"
+                                                style="padding: 3px;font-size: large; text-align: center;width: 50%;">
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 1px solid gray;">
+                                            <td
+                                                style="border: 1px solid gray; padding: 3px;font-size: large; width: 50%;">
+                                                <span>report end time:</span>
+                                            </td>
+                                            <td th:text="${Report.endTime}"
+                                                style="padding: 3px;font-size: large; text-align: center;width: 50%;">
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 1px solid gray;">
+                                            <td
+                                                style="border: 1px solid gray; padding: 3px;font-size: large; width: 50%;">
+                                                <span>report reason:</span>
+                                            </td>
+                                            <td th:text="${Report.reason}"
+                                                style="padding: 3px;font-size: large; text-align: center;width: 50%;">
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 1px solid gray;">
+                                            <td
+                                                style="border: 1px solid gray; padding: 3px;font-size: large; width: 50%;">
+                                                <span>report status:</span>
+                                            </td>
+                                            <td th:text="${Status}"
+                                                style="padding: 3px;font-size: large; text-align: center;width: 50%;">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p>
+                                    Regards, Mr/Ms <span th:text="${Account.firstName}"></span> <span th:text="${Account.lastName}"></span><br />
+                                    <em>Vinhome Cleaning Service</em>
+                                </p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+
+        </table>
+
+
+
+
+
+    </div>
+</body>
+
+</html>

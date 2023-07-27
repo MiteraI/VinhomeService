@@ -1,9 +1,12 @@
+
 package app.vinhomes.security.email.email_service;
 
 import app.vinhomes.entity.Account;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.customer.Address;
+import app.vinhomes.entity.worker.CancelRequest;
+import app.vinhomes.entity.worker.LeaveReport;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.security.email.email_dto.TokenEntity;
 import app.vinhomes.entity.order.Service;
@@ -54,6 +57,10 @@ public class EmailService {
     private String ORDERFINISH_MAIL;
     @Value("${mail.mailType.adminRefundTransaction}")
     private String ADMIN_REFUNDTRANSACTION_MAIL;
+    @Value("${mail.mailType.acceptLeaveReport}")
+    private String LEAVE_REPORT;
+    @Value("${mail.mailType.cancelRequest}")
+    private String CANCEL_REQUEST;
     @Autowired
     private TokenService tokenService;
     private final Map<String, TokenEntity> tokenEntityMap = new HashMap<>();
@@ -64,7 +71,8 @@ public class EmailService {
                 verificationMailBuilder(account);
             } else if (mailType.equals(FORGETACCOUNT_MAIL)) {
                 forgetAccountMailBuilder(account);
-            } else {
+            }
+            else {
                 return "ERROR";
             }
             return "SUCCESS send email";
@@ -73,23 +81,51 @@ public class EmailService {
             return "ERROR while Sending Mail";
         }
     }
-
-    public String sendMailWithTemplate(Account account, String mailType, Transaction transaction) {
+    public String sendMailWithTemplate(Account account, String mailType, LeaveReport report) {
         try {
-            if (mailType.equals(ADMIN_REFUNDTRANSACTION_MAIL)) {
-                System.out.println("admin-refund-transaction-mail TYPE");
-                return this.admin_refundTransactionBuilder(account, transaction);
-            } else if (mailType.equals(ORDERFINISH_MAIL)) {
-                System.out.println("orderfinish_mail");
-                return this.onOrderFinish_ConfirmByWorker(account, transaction);
-            } else {
+            if (mailType.equals(LEAVE_REPORT)) {
+                onLeaveReportAccept_Denied(account,report);
+            }else {
                 return "ERROR";
             }
+            return "SUCCESS send email";
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return "ERROR while Sending Mail";
         }
     }
+    public String sendMailWithTemplate(String mailType, CancelRequest cancelRequest) {
+        try {
+            if (mailType.equals(CANCEL_REQUEST)) {
+                onCancelRequest_Worker(cancelRequest);
+            }
+            else {
+                return "ERROR";
+            }
+            return "SUCCESS send email";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "ERROR while Sending Mail";
+        }
+    }
+    public String sendMailWithTemplate(Account account, String mailType, Transaction transaction) {
+        try {
+            if (mailType.equals(ADMIN_REFUNDTRANSACTION_MAIL)) {
+                System.out.println("admin-refund-transaction-mail TYPE");
+                 this.admin_refundTransactionBuilder(account, transaction);
+            } else if (mailType.equals(ORDERFINISH_MAIL)) {
+                System.out.println("orderfinish_mail");
+                 this.onOrderFinish_ConfirmByWorker(account, transaction);
+            } else {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "ERROR while Sending Mail";
+        }
+    }
+
 
     private void verificationMailBuilder(Account account) {
         try {
@@ -147,7 +183,7 @@ public class EmailService {
         }
     }
 
-    private String admin_refundTransactionBuilder(Account account, Transaction transaction) {
+    private void admin_refundTransactionBuilder(Account account, Transaction transaction) {
         try {
             Order getOrder = transaction.getOrder();
             Service getService = getOrder.getService();
@@ -168,18 +204,14 @@ public class EmailService {
             helper.setText(html, true);
             System.out.println("now send mail");
             javaMailSender.send(mailMessage);
-            return "SUCCESS";
-
         } catch (SendFailedException e) {
             System.out.println("ERROR this mail cannot be sent: " + e.getMessage());
-            return "ERROR " + e.getMessage();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "ERROR " + e.getMessage();
         }
     }
 
-    private String onOrderFinish_ConfirmByWorker(Account account, Transaction transaction) {
+    private void onOrderFinish_ConfirmByWorker(Account account, Transaction transaction) {
         try {
             Order getOrder = transaction.getOrder();
             Service getService = getOrder.getService();
@@ -200,18 +232,57 @@ public class EmailService {
             mailMessage.setSubject("worker has confirm this order");
             String html = templateEngine.process("MAIL_onConfirmOrder", context);
             helper.setText(html, true);
-            try {
-                javaMailSender.send(mailMessage);
-                return "SUCCESS";
-            } catch (MailException e) {
-                return "ERROR: " + e.getMessage();
-            }
+            javaMailSender.send(mailMessage);
         } catch (SendFailedException e) {
             System.out.println("ERROR this mail cannot be sent: " + e.getMessage());
-            return "ERROR " + e.getMessage();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "ERROR " + e.getMessage();
+        }
+    }
+    private void onLeaveReportAccept_Denied(Account account,LeaveReport report) {
+        try {
+            System.out.println("inside sending email on accept leave reprot");
+            MimeMessage mailMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("Account",account);
+            context.setVariable("Report",report);
+            if(report.getStatus() == 0 ){
+                context.setVariable("Status","Reject");
+            }else{
+                context.setVariable("Status","Accept");
+            }
+            helper.setFrom(sender);
+            helper.setTo(account.getEmail());
+            mailMessage.setSubject("admin accept leave report");
+            String html = templateEngine.process("MAIL_LeaveReportConfirmation", context);
+            helper.setText(html, true);
+            javaMailSender.send(mailMessage);
+        } catch (SendFailedException e) {
+            System.out.println("ERROR this mail cannot be sent: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private void onCancelRequest_Worker( CancelRequest cancelRequest){
+        try {
+            System.out.println("inside sending email on cancel order");
+            MimeMessage mailMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            Context context = new Context();
+            context.setVariable("status",cancelRequest.getStatus().name());
+            context.setVariable("Account",cancelRequest.getWorker());
+            context.setVariable("Order",cancelRequest.getOrder());
+            helper.setFrom(sender);
+            helper.setTo(cancelRequest.getWorker().getEmail());
+            mailMessage.setSubject("cancel request from manager ");
+            String html = templateEngine.process("MAIL_cancelRequestWorker", context);
+            helper.setText(html, true);
+            javaMailSender.send(mailMessage);
+        } catch (SendFailedException e) {
+            System.out.println("ERROR this mail cannot be sent: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -267,3 +338,4 @@ public class EmailService {
 
 
 }
+

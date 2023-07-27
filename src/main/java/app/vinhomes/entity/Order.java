@@ -73,7 +73,9 @@ public class Order {
     @Column(columnDefinition = "integer default 0")
     private int rating;
 
-    @Column(columnDefinition = "varchar(255) default ' '")
+    @Column(
+            length = 1024
+    )
     private String comment;
 
     @ManyToOne

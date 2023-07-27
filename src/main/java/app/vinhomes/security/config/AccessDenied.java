@@ -28,7 +28,8 @@ public class AccessDenied implements AccessDeniedHandler {
         }else{
             System.out.println("cannot find security context for this user");
         }
-        response.sendRedirect(request.getContextPath()+ "/accessDenied");
+        response.sendRedirect(request.getContextPath()+ "error/accessDenied");
 
     }
 }
+

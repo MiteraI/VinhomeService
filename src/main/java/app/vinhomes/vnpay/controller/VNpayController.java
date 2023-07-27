@@ -114,7 +114,7 @@ public class VNpayController extends HttpServlet {
             } else {
                 System.out.println("order id is not assigned");
                 System.out.println(response.getBody());
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("fail to aquire orderID");
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response.getBody());
             }
         } else {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("choose your payment method");
