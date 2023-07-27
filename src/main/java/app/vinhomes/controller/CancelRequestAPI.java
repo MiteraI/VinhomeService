@@ -84,7 +84,7 @@ public class CancelRequestAPI {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("input fields are invalid, cannot find related information to it");
             }
             if(cancelRequestService.checkIfValidForCreate(getWorker,getOrder) == false){
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("a cancel request for this order has been made or has been confirmed by manager");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("a cancel request for this order has been made or has been confirmed by manager and only be canceled before 1 day");
             }
             //todo: create cancle requets, at filename and upload file
             String uploadFileName = returnFileName_SaveToAzure(file,parsedWorkerId,parsedOrderId);
@@ -105,9 +105,8 @@ public class CancelRequestAPI {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("number format exception");
         }
     }
-    @PutMapping(value = "/worker-update")
+    @PostMapping(value = "/worker-update")
     public ResponseEntity<String> workerUpdateCancelRequest(@RequestParam("cancelRequestId") long cancelRequestId){
-
         CancelRequest getCancelRequest = cancelRequestService.getCancelRequest(cancelRequestId);
         if(getCancelRequest == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not found request cancel");

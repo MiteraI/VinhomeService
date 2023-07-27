@@ -368,18 +368,19 @@
             const link = leaveReport['fileURL'];
             // const file = leaveReport['file'];
             const newRow = document.createElement('tr');
+            newRow.setAttribute("class", "even:bg-[#c4c4c4] odd:bg-[#fffff4]")
             newRow.innerHTML += `
-                                          <td>${firstName}</td>
-                                          <td>${lastName}</td>
-                                          <td>${startDate}</td>
-                                          <td>${endDate}</td>
-                                          <td>${reason}</td>
-        
-                                            <td th:if="${link != null}"><a href="${link}">Link</a></td>
-                                            <td>
-                                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
-                                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
-                                            </td>
+                                          <td class="py-3 text-center">${firstName}</td>
+                                  <td class="py-3 text-center">${lastName}</td>
+                                  <td class="py-3 text-center">${startDate}</td>
+                                  <td class="py-3 text-center">${endDate}</td>
+                                  <td class="py-3 text-center">${reason}</td>
+
+                                    <td class="py-3 text-center" th:if="${link != null}"><a href="${link}">Link</a></td>
+                                    <td class="py-3 text-center">
+                                      <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
+                                      <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
+                                    </td>
                                       `;
             document.getElementById('tbody-see-all-leave-report').appendChild(newRow);
             window.addEventListener('unload', function () {

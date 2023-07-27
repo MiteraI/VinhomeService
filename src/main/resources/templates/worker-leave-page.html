@@ -132,6 +132,7 @@
     const submitLeaveForm = document.getElementById("submit-leave-form");
     submitLeaveForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      document.getElementById("submit-leave").disabled = true
       const formData = new FormData();
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
@@ -159,6 +160,7 @@
         } catch (error) {
           console.log("Error: ", error);
         }
+        document.getElementById("submit-leave").disabled = false
       }
       fetchData();
     })

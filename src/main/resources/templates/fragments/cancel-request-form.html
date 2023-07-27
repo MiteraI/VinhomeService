@@ -65,30 +65,54 @@
     formData.append("reason", reason);
     formData.append("orderId", orderId);
     formData.append("workerId", workerid);
-    fetch("/api/cancel-request/create-request", {
-      method: 'POST',
-      body: formData
-    })
-            .then(res => {
-              if (res.status === 200) {
-                // var text = res.text();
-                alert("Send request success, wait for manager to reply");
-                window.location.reload();
-              }
-              else if(res.status === 400){
-                alert("Some fields are missing or inappropriate, try again")
-              }else if(res.status === 406){
-                alert("a request for this order has been made")
-              }
-              else{
-                alert("Unknown error, try again later")
-              }
-
-            })
-            .catch(err => {
-              console.log(err);
-            })
+    async function fetchData() {
+      try {
+        const response = await fetch("/api/cancel-request/create-request", {
+          method: 'POST',
+          body: formData
+        });
+        const dataNoti = await response.text();
+        if (response.status === 202) {
+          alert(dataNoti);
+          window.location.reload();
+        } else if(response.status === 400){
+          alert(dataNoti)
+        }else if(response.status === 406){
+          alert(dataNoti)
+        }
+        else{
+          alert(dataNoti)
+        }
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    }
+    fetchData();
   })
+  //   fetch("/api/cancel-request/create-request", {
+  //     method: 'POST',
+  //     body: formData
+  //   })
+  //           .then(res => {
+  //             if (res.status === 200) {
+  //               // var text = res.text();
+  //               alert("Send request success, wait for manager to reply");
+  //               window.location.reload();
+  //             }
+  //             else if(res.status === 400){
+  //               alert("Some fields are missing or inappropriate, try again")
+  //             }else if(res.status === 406){
+  //               alert("a request for this order has been made")
+  //             }
+  //             else{
+  //               alert("Unknown error, try again later")
+  //             }
+  //
+  //           })
+  //           .catch(err => {
+  //             console.log(err);
+  //           })
+  // })
 
   document.getElementById("cancelCancelRequest").addEventListener("click", function (e) {
     e.preventDefault();

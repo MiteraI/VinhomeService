@@ -196,6 +196,11 @@ public class OrderService {
                 case 2 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 2));
                 case 3 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 3));
                 case 4 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 4));
+                case 5 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 5));
+                case 6 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 6));
+                case 7 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 7));
+                case 8 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 8));
+                case 9 -> schedule.setWorkers(freeWorkerAccounts.subList(0, 9));
             }
         } catch (Exception ex) {
             System.out.println("Not enough worker");

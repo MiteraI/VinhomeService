@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Your leave registration</title>
+  <link rel="stylesheet" href="../static/tailwind/index.css">
+  <style>
+    /* CSS styles to center the form */
+    #form-display {
+      position: fixed;
+      background-color: white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+<header th:replace="~{./fragments/worker-header.html}"></header>
+<section th:each="cancelRequest : ${cancelList}" class="mx-48 my-10">
+  <div th:if="${cancelRequest.status.name() == 'PENDING'}" class="pending border-2 border-black rounded-lg p-4">
+    <p>
+      Status: <span class="text-blue-bootstrap">PENDING</span>
+    </p>
+    <div class="flex p-4 space-x-6">
+      <div class="w-2/6">
+        <p>Time cancel <span class="text-blue-bootstrap" th:text="${cancelRequest.timeCancel}"></span></p>
+        <p th:text="'Reason: ' + ${cancelRequest.reason}">new </p>
+        <a th:href="${cancelRequest.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${cancelRequest.fileURL != null} ? 'File Link' : '' "></a>
+        <button onclick="cancel(this.value)" th:value="${cancelRequest.cancelRequestId}">Cancel Request</button>
+        </br>
+      </div>
+    </div>
+  </div>
+  <div th:if="${cancelRequest.status.name() == 'ACCEPT'}" class="pending border-2 border-black rounded-lg p-4">
+    <p>
+      Status: <span style="color: green">ACCEPT</span>
+    </p>
+    <div class="flex p-4 space-x-6">
+      <div class="w-2/6">
+        <p>Time cancel <span class="text-blue-bootstrap" th:text="${cancelRequest.timeCancel}"></span></p>
+        <p th:text="'Reason: ' + ${cancelRequest.reason}">new </p>
+        <a th:href="${cancelRequest.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${cancelRequest.fileURL != null} ? 'File Link' : '' "></a>
+        </br>
+      </div>
+    </div>
+  </div>
+  <div th:if="${cancelRequest.status.name() == 'REJECT'}" class="pending border-2 border-black rounded-lg p-4">
+    <p>
+      Status: <span style="color: red">REJECT</span>
+    </p>
+    <div class="flex p-4 space-x-6">
+      <div class="w-2/6">
+        <p>Time cancel <span class="text-blue-bootstrap" th:text="${cancelRequest.timeCancel}"></span></p>
+        <p th:text="'Reason: ' + ${cancelRequest.reason}">new </p>
+        <a th:href="${cancelRequest.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${cancelRequest.fileURL != null} ? 'File Link' : '' "></a>
+        </br>
+      </div>
+    </div>
+  </div>
+  <div th:if="${cancelRequest.status.name() == 'CANCEL'}" class="pending border-2 border-black rounded-lg p-4">
+    <p>
+      Status: <span style="color: brown">CANCEL</span>
+    </p>
+    <div class="flex p-4 space-x-6">
+      <div class="w-2/6">
+        <p>Time cancel <span class="text-blue-bootstrap" th:text="${cancelRequest.timeCancel}"></span></p>
+        <p th:text="'Reason: ' + ${cancelRequest.reason}">new </p>
+        <a th:href="${cancelRequest.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${cancelRequest.fileURL != null} ? 'File Link' : '' "></a>
+        </br>
+      </div>
+    </div>
+  </div>
+</section>
+  <script>
+    function cancel (cancelId) {
+      const formData = new FormData();
+      formData.append("cancelRequestId", cancelId);
+      fetchData(formData);
+    }
+    async function fetchData(formData) {
+      try {
+        const response = await fetch("api/cancel-request/worker-update", {
+          method: 'POST',
+          body: formData
+        });
+        const dataNoti = await response.text();
+        if (response.status === 200) {
+          alert(dataNoti);
+          window.location.reload();
+        }
+        else{
+          alert(dataNoti)
+        }
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -81,20 +82,27 @@ public class CancelRequestService {
     }
     public boolean checkIfValidForCreate(Account account , Order order){
         boolean checkIfValid = false;
-        Optional<List<CancelRequest>> getList = cancelRequestRepository.findByWorkerAndOrder(account,order);
-        if(getList.isPresent() || getList.isEmpty() == false){
-            for (CancelRequest request : getList.get()){
-                if(request.getStatus().equals(CancelRequestStatus.CANCEL)){
-                    checkIfValid = true;
-                }else{
-                    checkIfValid =  false;
-                    break;
+        LocalDate date = order.getSchedule().getWorkDay().minusDays(1);
+        LocalDate dateNow = LocalDate.now();
+        if (dateNow.isAfter(date) || dateNow.isEqual(date)) {
+            Optional<List<CancelRequest>> getList = cancelRequestRepository.findByWorkerAndOrder(account,order);
+            if(getList.isPresent() || getList.isEmpty() == false){
+                for (CancelRequest request : getList.get()){
+                    if(request.getStatus().equals(CancelRequestStatus.CANCEL)){
+                        checkIfValid = true;
+                    }else{
+                        checkIfValid =  false;
+                        break;
+                    }
                 }
+                return checkIfValid;
+            }else{
+                // duoc quyen tao moi
+                return true;
             }
-            return checkIfValid;
-        }else{
-            // duoc quyen tao moi
-            return true;
+        }
+        else {
+            return false;
         }
     }
 }
