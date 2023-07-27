@@ -31,69 +31,7 @@
 </head>
 
 <body>
-  <header class="bg-primary" id="Home">
-    <nav class="navbar mx-3 justify-content-between">
-
-      <div class="profile-btn d-flex flex-column justify-content-center align-items-center">
-        <button id="dropdownDividerButton" data-toggle="dropdownDivider"
-          class="h-inherit bg-white border-2 border-primary hover:bg-gray-300 focus:outline-0 focus:ring-0 rounded px-2 py-2 text-center d-inline-flex align-items-center justify-content-between font-weight-bold text-lg dropdown-toggle"
-          type="button" style="width: 200px; font-size: 18px; font-weight: 600;">
-          Manage
-        </button>
-
-        <div id="dropdownDivider" class="z-10 d-none rounded-lg" style="width: 200px; z-index: 10;">
-          <ul class="position-absolute rounded border-primary bg-white list-unstyled"
-            style="width: inherit; border: 2px solid blue" aria-labelledby="dropdownDividerButton">
-            <li class="position-relative">
-              <a href="/adminDisplayWorker_page"
-                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300 rounded-top-lg"
-                style="font-size: 16px; font-weight: 700;"><i class="bx bx-hard-hat me-2"></i>Worker</a>
-            </li>
-            <li class="position-relative">
-              <a href="/adminDisplayCustomer_page"
-                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300"
-                style="font-size: 16px; font-weight: 700;"><i class="bx bx-user me-2"></i>Customer</a>
-            </li>
-            <li class="position-relative d-flex hover:bg-gray-300 cursor-pointer">
-
-              <a href=" /see-leave-report"
-                class="d-block font-weight-bold text-decoration-none text-16 text-primary ps-2 py-2"
-                style="font-size: 16px; font-weight: 700;"><i class="bx bx-calendar-event me-2"
-                  id="see-leave-report"></i>Leave Report</a>
-              <div id="notificationDot" class="bg-danger rounded-full w-20 h-20 text-center me-2 d-none">
-                <span id="notificationCount"
-                  class="text-white font-weight-bold d-flex justify-content-center align-items-center h-inherit"></span>
-              </div>
-            </li>
-            <li class="position-relative">
-
-              <a href="/see-all-order-by-admin"
-                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300"
-                style="font-size: 16px; font-weight: 700;"><i class="bx bx-cart me-2"></i>Order</a>
-            </li>
-            <li class="position-relative">
-
-              <a href="/see-all-services"
-                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300"
-                style="font-size: 16px; font-weight: 700;"><i class="bx bx-book-content me-2"></i>Services</a>
-            </li>
-            <li class="position-relative">
-
-              <a href="/see-all-categories"
-                class="d-block font-weight-bold text-decoration-none text-16 text-primary px-2 py-2 hover:bg-gray-300 rounded-bottom-lg"
-                style="font-size: 16px; font-weight: 700;"><i class="bx bx-category-alt me-2"></i>Category</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div>
-        <form action="/logout" class="m-0">
-          <button type="submit" class="py-2 px-3 rounded" style="background-color: #F87171;">Logout</button>
-        </form>
-      </div>
-    </nav>
-  </header>
-
+  <header th:replace="~{./fragments/adminHeaderBootstrap.html}"></header>
 
   <div class="container">
     <div class="px-3 my-3">
