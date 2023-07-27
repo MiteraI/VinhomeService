@@ -40,25 +40,30 @@ public class ApplicationConfig  {
                         System.out.println("IN USER DETAIL SERVICE,yes found in db");
                         if(account.get().getAccountStatus() == 0){
                             System.out.println("this account is set inactive by manager, please contact us to get your account back");
-                            return null;
+                            //return null;
+                            throw new UsernameNotFoundException("not found");
                         }
                         if(account.get().getIsBlock() == false){
                             return new User(account.get().getUsername(),account.get().getPassword(),roleToAuthority(account.get().getRole()));
                         }else{
                             System.out.println("this account has been blocked");
-                            return null;
+                            //return null;
+                            throw new UsernameNotFoundException("not found");
                         }
                     }
                     else{
                         System.out.println("not in db");
-                        return null;
+                        //return null;
+                        throw new UsernameNotFoundException("not found");
                     }
                 }catch (UsernameNotFoundException e){
                     System.out.println("not in db");
-                    return null;
+                    //return null;
+                    throw new UsernameNotFoundException("not found");
                 }catch (Exception e){
                     System.out.println("ERROR in load username");
-                    return null;
+                    //return null;
+                    throw new UsernameNotFoundException("not found");
                 }
             }
         };

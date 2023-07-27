@@ -230,7 +230,7 @@ public class OrderService {
             Order order = this.officialCreateOrder(orderJSON, request);//
             System.out.println("pass official create order");
             if (order == null) {
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("The timeslot is fully occupied");
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("the timeslot is fully occupied (not enough workers)");
             } else {
                 if (order.getAccount() == null) {
                     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Have not logged in");

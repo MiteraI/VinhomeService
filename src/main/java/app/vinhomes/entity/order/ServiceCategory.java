@@ -28,7 +28,10 @@ public class ServiceCategory {
     @Column(name = "servicecate_name", nullable = false)
     private String serviceCategoryName;
 
-    @Column(name = "description")
+    @Column(
+            name = "description",
+            length = 1024
+    )
     private String description;
 
     @OneToMany(

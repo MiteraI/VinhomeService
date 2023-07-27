@@ -2,13 +2,26 @@ package app.vinhomes.unittest;
 
 import app.vinhomes.controller.WorkerApi;
 import app.vinhomes.entity.Account;
+import app.vinhomes.entity.Order;
+import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.TimeSlot;
+import app.vinhomes.entity.type_enum.CancelRequestStatus;
+import app.vinhomes.entity.type_enum.OrderStatus;
+import app.vinhomes.entity.worker.CancelRequest;
+import app.vinhomes.entity.worker.LeaveReport;
+import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.OrderRepository;
+import app.vinhomes.repository.TransactionRepository;
 import app.vinhomes.repository.order.ScheduleRepository;
 import app.vinhomes.repository.order.TimeSlotRepository;
+import app.vinhomes.repository.worker.CancelRequestRepository;
+import app.vinhomes.repository.worker.LeaveReportRepository;
+import app.vinhomes.security.email.email_service.EmailService;
 import app.vinhomes.security.esms.otp_service.ESMSservice;
 import app.vinhomes.service.ScheduleService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -50,7 +63,10 @@ public class test2 {
     private ScheduleService scheduleService;
     @Autowired
     private ScheduleRepository scheduleRepository;
-
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private EmailService emailService;
     @Test
     void testGetPolicyOrder(){
         Assertions.assertEquals("1",DAY_POLICY_ORDER);
@@ -132,5 +148,124 @@ public class test2 {
             System.out.println(item);
         });
     }
+    @Autowired
+    private CancelRequestRepository cancelRequestRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Test
+    @Disabled
+    void testCancelRequest(){
+        LocalDateTime timeNow = LocalDateTime.now();
+        long orderId = 96;
+        long workerId = 2;
+        Order getOrder = orderRepository.findByOrderId(orderId);
+        Account getWorker = accountRepository.findByAccountId(workerId);
+        CancelRequest create = CancelRequest.builder()
+                .fileURL("adsfadsds")
+                .reason("asdfasdfds")
+                .timeCancel(timeNow)
+                .worker(getWorker)
+                .order(getOrder)
+                .status(CancelRequestStatus.PENDING)
+                .build();
+        cancelRequestRepository.save(create);
+    }
+    @Test
+    void getCancelRequest(){
+        CancelRequest getRequest = cancelRequestRepository.findById(1l).get();
+        System.out.println(getRequest.toString());
+        Order getOrder = getRequest.getOrder();
+        Account getWorker = getRequest.getWorker();
+        System.out.println(getOrder);
+        System.out.println(getWorker);
+
+    }
+    @Test
+    void checkForCancel(){
+        CancelRequest getRequest = cancelRequestRepository.findById(1l).get();
+        Order getOrder = getRequest.getOrder();
+        System.out.println(getRequest.getStatus());
+        if(getRequest.getStatus() == CancelRequestStatus.PENDING){
+            OrderStatus getStatus = getOrder.getStatus();
+            if(getStatus == OrderStatus.PENDING){
+                System.out.println("yes inside dealing with logic");
+                getRequest.setStatus(CancelRequestStatus.ACCEPT);
+                cancelRequestRepository.save(getRequest);
+            }
+            System.out.println("Order is not pending");
+            getRequest.setStatus(CancelRequestStatus.REJECT);
+            cancelRequestRepository.save(getRequest);
+            return;
+        }
+        //cancelRequestRepository.save(getRequest);
+        System.out.println("request is not pending");
+    }
+    @Test
+    void requestForCancel(){
+        long orderId = 1l;
+        long workerId = 2l ;
+        String reason = "adsfsadf";
+        String urlImage = "asdfsadf";
+        Order getOrder = orderRepository.findByOrderId(orderId);
+        Account getWorker =accountRepository.findByAccountId(workerId);
+        if(getOrder == null || getWorker == null){
+            return ;
+        }
+        if(reason.isEmpty() || urlImage.isEmpty()){
+
+        }
+        if(getOrder.getSchedule().getWorkDay().isAfter(LocalDate.now()) == false){
+            System.out.println("yes this order is not after current date : "+ getOrder.getSchedule().getWorkDay());
+            if(getOrder.getSchedule().getTimeSlot().getStartTime().isAfter(LocalTime.now()) == false){
+                System.out.println("yes this order is not after current time : "+ getOrder.getSchedule().getTimeSlot().getStartTime());
+                //logic here
+                CancelRequest newRequest = CancelRequest.builder()
+                        .status(CancelRequestStatus.PENDING)
+                        .fileURL(urlImage)
+                        .reason(reason)
+                        .timeCancel(LocalDateTime.now())
+                        .order(getOrder)
+                        .worker(getWorker)
+                        .build();
+                System.out.println(newRequest);
+            }
+            System.out.println("time slot invalid");
+        }else{
+            System.out.println("date invalid");
+        }
+
+    }
+    @Autowired
+    private LeaveReportRepository leaveReportRepository;
+    @Value("${mail.mailType.acceptLeaveReport}")
+    private String LEAVE_REPORT;
+    @Test
+    void sendAcceptEmail(){
+        Account getAccount = accountRepository.findByAccountId(54l);
+        LeaveReport getReport = leaveReportRepository.findByLeaveReportId(2l);
+        emailService.sendMailWithTemplate(getAccount,LEAVE_REPORT,getReport);
+    }
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Value("${mail.mailType.adminRefundTransaction}")
+    private String ADMIN_REFUNDTRANSACTION_MAIL;
+    @Test
+    void sendRefundEmail(){
+        Account getAccount = accountRepository.findByAccountId(54l);
+        Transaction getTransaction = transactionRepository.findById(60l).get();
+        emailService.sendMailWithTemplate(getAccount,ADMIN_REFUNDTRANSACTION_MAIL,getTransaction);
+    }
+    @Value("${mail.mailType.cancelRequest}")
+    private String CANCEL_REQUEST;
+    @Test
+    void sendCancelRequestEmail(){
+        CancelRequest getCancelRequest = cancelRequestRepository.findById(1l).get();
+        emailService.sendMailWithTemplate(CANCEL_REQUEST,getCancelRequest);
+    }
 
 }
+
+
+
+
+

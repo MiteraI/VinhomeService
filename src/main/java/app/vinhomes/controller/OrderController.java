@@ -8,6 +8,7 @@ import app.vinhomes.entity.order.Payment;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.TimeSlot;
+import app.vinhomes.entity.type_enum.OrderStatus;
 import app.vinhomes.repository.*;
 import app.vinhomes.repository.order.PaymentRepository;
 import app.vinhomes.repository.order.TimeSlotRepository;
@@ -132,6 +133,9 @@ public class OrderController {
         } else {
             //update comment and rating of the order//
             Order order = orderRepository.findById(orderId).get();
+            if(order.getStatus() != OrderStatus.SUCCESS){
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Must complete order to comment");
+            }
             order.setComment(comment);
             order.setRating(rating);
             orderRepository.save(order);

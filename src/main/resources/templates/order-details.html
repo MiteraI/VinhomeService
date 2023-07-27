@@ -142,8 +142,10 @@
           console.log(res);
           if (res.status === 200) {
             alert("You have commented successfully");
-          } else {
-            alert("Fail in comment");
+          } else if(res.status === 503) {
+            alert("Must complete order to comment");
+          }else{
+            alert("Fail to commit comment")
           }
         })
         .catch((err) => {

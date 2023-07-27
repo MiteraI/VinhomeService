@@ -28,7 +28,10 @@ public class Service {
     @Column(name = "pnum", nullable = false)
     private int numOfPeople;
 
-    @Column(name = "description")
+    @Column(
+        name = "description",
+        length = 1024
+    )
     private String description;
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

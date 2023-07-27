@@ -1,0 +1,101 @@
+<html lang="en">
+
+<head>
+  <style>
+    #cancel-form {
+      position: fixed;
+      background-color: white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+<div class="flex justify-center p-4 border-2 border-black" id="cancel-form" style="display: none;">
+  <form class="my-6">
+    <div class="form-group">
+      <p id="form-customer-name"></p>
+    </div>
+    <input type="hidden" id="input-orderid2">
+    <input type="hidden" id="input-workerid">
+    <div class="form-group">
+      <label for="imageConfirmCancel">Image:</label>
+      <input type="file" class="form-control-file" id="imageConfirmCancel" onchange="previewImage(event)" required>
+      <img id="preview" src="#" alt="Preview" style="display: none; max-width: 400px; margin-top: 10px;" />
+    </div>
+    <div>
+      <p >Reason:</p>
+      <textarea  id="reason" required style="width: 90%; border: 1px solid black;"></textarea>
+    </div>
+    <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg">Request Cancel</button>
+    <button type="button" class="bg-red-cancel py-2 px-10 rounded-lg" id="cancelCancelRequest">Cancel</button>
+  </form>
+</div>
+
+
+<script>
+  function previewImage(event) {
+    var input = event.target;
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        var preview = document.getElementById('preview');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  document.getElementById("cancel-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const imageConfirm = document.getElementById("imageConfirmCancel").files[0];
+    const orderId = document.getElementById("input-orderid2").value;
+    const workerid = document.getElementById("input-workerid").value;
+    const reason = document.getElementById("reason").value;
+    console.log(orderId);
+    var formData = new FormData();
+    formData.append("image", imageConfirm);
+    formData.append("reason", reason);
+    formData.append("orderId", orderId);
+    formData.append("workerId", workerid);
+    fetch("/api/cancel-request/create-request", {
+      method: 'POST',
+      body: formData
+    })
+            .then(res => {
+              if (res.status === 200) {
+                // var text = res.text();
+                alert("Send request success, wait for manager to reply");
+                window.location.reload();
+              }
+              else if(res.status === 400){
+                alert("Some fields are missing or inappropriate, try again")
+              }else if(res.status === 406){
+                alert("a request for this order has been made")
+              }
+              else{
+                alert("Unknown error, try again later")
+              }
+
+            })
+            .catch(err => {
+              console.log(err);
+            })
+  })
+
+  document.getElementById("cancelCancelRequest").addEventListener("click", function (e) {
+    e.preventDefault();
+    document.getElementById("cancel-form").style.display = "none";
+  })
+</script>
+
+</body>
+
+</html>

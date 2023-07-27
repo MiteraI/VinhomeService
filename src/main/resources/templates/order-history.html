@@ -223,10 +223,10 @@
       var toText = await response.text(); console.log(toText)
       if (status < 200 || status > 300) {
         console.log("refund fail");
-        alert("refund fail: " + toText)
+        alert("Refunded fail: " + toText.toLowerCase())
       } else {
         console.log("refund success");
-        alert("refund success: " + toText)
+        alert("Refunded successfully " )
         reloadPage()
       }
 

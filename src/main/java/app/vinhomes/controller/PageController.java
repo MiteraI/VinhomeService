@@ -315,7 +315,7 @@ public class PageController {
 
     @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
     public String accessDenied() {
-        return "accessDenied";
+        return "error/accessDenied";
     }
 
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)
@@ -387,5 +387,9 @@ public class PageController {
     @RequestMapping(value = "/admin-order-detail/{orderID}", method = RequestMethod.GET)
     public String seeDetailOrderAdmin(@PathVariable String orderID) {
         return "adminUpdateOrder";
+    }
+    @RequestMapping(value = "/see-all-cancel-request", method = RequestMethod.GET)
+    public String seeCancelRequest() {
+        return "adminCancelRequest";
     }
 }

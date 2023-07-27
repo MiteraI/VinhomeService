@@ -172,19 +172,19 @@
       if(status == 200){
 
         if(toText === "COD"){
-          alert("success")
+          alert("Successfully created order")
           console.log("COD success")
-          window.location.href = "/"
+          window.location.href = "/order-history"
         }else if(toText.includes("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html") == false){
           window.location.href = "/login"
         }
         else{
-          alert("success")
+          alert("Successfully created order")
           window.location.replace(toText)
         }
       }else{
         console.log("Fail");
-        alert("Fail in ordering "+toText);
+        alert("Fail in ordering: "+toText);
       }
       
     });
