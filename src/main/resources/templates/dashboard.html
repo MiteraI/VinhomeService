@@ -185,53 +185,71 @@
         }
 
         function getServiceByOrderQuantity() {
-                const monthsSelect = document.getElementById("months");
-                const yearsSelect = document.getElementById("years");
-                const apiUrl = "api/admin/dashboard/service-quantity";
-                const yearMonth = {
-                    "month": monthsSelect.value,
-                    "year": yearsSelect.value
-                }
+            const monthsSelect = document.getElementById("months");
+            const yearsSelect = document.getElementById("years");
+            const apiUrl = "api/admin/dashboard/service-quantity";
+            //Reset table content
+            serviceTable.innerHTML = "";
+            const headRow = document.createElement("tr");
 
-                fetch(apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(yearMonth)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the response data here
-                        for(const service in data) {
-                            if (data.hasOwnProperty(service)) {
-                                const serviceName = service.match(/serviceName=([^,]+)/)[1];
-                                const quantity = data[service];
+            // Create the first table cell for the service name
+            const name = document.createElement("th");
+            name.classList.add("border-r-2", "border-blue-bootstrap")
+            name.textContent = "Service's name";
+            headRow.appendChild(name);
 
-                                const row = document.createElement("tr");
+            // Create the second table cell for the quantity
+            const quantity = document.createElement("th");
+            quantity.classList.add("text-center")
+            quantity.textContent = "Quantity";
+            headRow.appendChild(quantity);
 
-                                // Create the first table cell for the service name
-                                const nameCell = document.createElement("td");
-                                nameCell.classList.add("border-r-2", "border-blue-bootstrap")
-                                nameCell.textContent = serviceName;
-                                row.appendChild(nameCell);
-
-                                // Create the second table cell for the quantity
-                                const quantityCell = document.createElement("td");
-                                quantityCell.classList.add("text-center")
-                                quantityCell.textContent = quantity;
-                                row.appendChild(quantityCell);
-
-                                // Add the row to the table
-                                serviceTable.appendChild(row);
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        // Handle any errors that occurred during the fetch
-                        console.error("Error:", error);
-                    });
+            // Add the row to the table
+            serviceTable.appendChild(headRow);
+            const yearMonth = {
+                "month": monthsSelect.value,
+                "year": yearsSelect.value
             }
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(yearMonth)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here
+                    for (const service in data) {
+                        if (data.hasOwnProperty(service)) {
+                            const serviceName = service.match(/serviceName=([^,]+)/)[1];
+                            const quantity = data[service];
+
+                            const row = document.createElement("tr");
+
+                            // Create the first table cell for the service name
+                            const nameCell = document.createElement("td");
+                            nameCell.classList.add("border-r-2", "border-blue-bootstrap")
+                            nameCell.textContent = serviceName;
+                            row.appendChild(nameCell);
+
+                            // Create the second table cell for the quantity
+                            const quantityCell = document.createElement("td");
+                            quantityCell.classList.add("text-center")
+                            quantityCell.textContent = quantity;
+                            row.appendChild(quantityCell);
+
+                            // Add the row to the table
+                            serviceTable.appendChild(row);
+                        }
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error("Error:", error);
+                });
+        }
 
         function piechart(data) {
             // Parameters (you can update these values as needed)

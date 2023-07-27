@@ -349,7 +349,7 @@ public class PageController {
     @RequestMapping(value = "/see-all-cancel-request", method = RequestMethod.GET)
     public String seeCancelRequest() {
         return "adminCancelRequest";
-
+    }
     @RequestMapping(value = "/dashboard")
     public String seeDashboard() {
         return "dashboard";
