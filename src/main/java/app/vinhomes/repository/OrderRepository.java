@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -21,7 +22,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByAccount(Account account);
 
     List<Order> findAllBySchedule_WorkDayAndSchedule_TimeSlotAndService_ServiceCategoryAndStatus(LocalDate workDay, TimeSlot timeSlot, ServiceCategory serviceCategory, OrderStatus status);
-    List<Order> findAllByAccount_AccountId(Long accountId);
 
     Order findByAccount_AccountIdAndOrderId(Long accountId, Long orderId);
 
@@ -29,4 +29,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     int COUNT_RATING_FOR_SERVICE(@Param("serviceId") Integer service_id, @Param("rating")Integer rating);
 
     Order findByOrderId (Long orderId);
+
+    List<Order> findAllByCreateTimeBetween(LocalDateTime start, LocalDateTime end);
+    List<Order> findAllByCreateTimeBetweenAndStatus(LocalDateTime start, LocalDateTime end, OrderStatus status);
 }
