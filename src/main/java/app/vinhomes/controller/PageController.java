@@ -281,38 +281,6 @@ public class PageController {
         return "forgetAccount";
     }
 
-    @RequestMapping(value = "/adminDisplayWorker_page", method = RequestMethod.GET)
-    public String adminDisplayWorker(Model model) {
-        model.addAttribute("category", serviceCategoryRepository.findAll());
-        return "adminDisplayWorker";
-    }
-
-    @RequestMapping(value = "/adminDisplayCustomer_page", method = RequestMethod.GET)
-    public String adminDisplayCustomer() {
-        return "adminDisplayCustomer";
-    }
-
-    @RequestMapping(value = "/admin_UpdateWorker/{workerAccountId}", method = RequestMethod.GET)
-    public String adminUpdateWorker(@PathVariable String workerAccountId) {
-        return "adminUpdateWorker";//?accountId="+workerAccountId//redirect:/
-    }
-
-    @RequestMapping(value = "/admin_UpdateCustomer/{customerId}", method = RequestMethod.GET)
-    public String adminUpdateWorker() {
-        return "adminUpdateCustomer";
-    }
-
-    @RequestMapping(value = "/admin_OrderTransaction/{vnpTxnRef}", method = RequestMethod.GET)
-    public String adminOrderTransaction() {
-        System.out.println("inside orderTransactionAdmin");
-        return "adminOrderTransaction";
-    }
-
-    @RequestMapping(value = "/admin_OrderTransaction", method = RequestMethod.GET)
-    public String adminOrder() {
-        return adminOrderTransaction();
-    }
-
     @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
     public String accessDenied() {
         return "error/accessDenied";
@@ -321,16 +289,6 @@ public class PageController {
     @RequestMapping(value = "/TESTBED", method = RequestMethod.GET)
     public String TESTBED() {
         return "TESTBED";
-    }
-
-    @RequestMapping(value = "/see-leave-report", method = RequestMethod.GET)
-    public String seeAllLeaveReport() {
-        return "adminSeeLeaveReport";
-    }
-
-    @RequestMapping(value = "/see-all-order-by-admin", method = RequestMethod.GET)
-    public String seeAllLeaveOrderByAdmin() {
-        return "adminSeeAllOrder";
     }
 
     @RequestMapping(value = "/mail/verification")
@@ -391,5 +349,9 @@ public class PageController {
     @RequestMapping(value = "/see-all-cancel-request", method = RequestMethod.GET)
     public String seeCancelRequest() {
         return "adminCancelRequest";
+    }
+    @RequestMapping(value = "/dashboard")
+    public String seeDashboard() {
+        return "dashboard";
     }
 }

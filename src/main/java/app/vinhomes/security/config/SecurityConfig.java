@@ -115,6 +115,7 @@ public class SecurityConfig {
                 //.authorizeHttpRequests(any -> any.anyRequest().permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/resources/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/homepage").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/createAccountAPI/createAccountCustomer/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/static/**","/src/**","/template/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll())

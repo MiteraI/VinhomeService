@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="w-[100%] h-">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/tailwind/font.css">
+    <link rel="stylesheet" href="../static/tailwind/index.css">
+</head>
+
+<body>
+    <header th:replace="~{./fragments/adminHeader.html}"></header>
+
+    <section class="flex flex-col items-center mx-48">
+        <div class="flex items-center my-10 space-x-10">
+            <div>
+                <label for="months">Month:</label>
+                <select class="border-2 border-black rounded-lg" id="months">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div>
+                <label for="years">Year:</label>
+                <select class="border-2 border-black rounded-lg" id="years">
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <button class="bg-blue-bootstrap px-8 py-2 rounded-lg text-white hover:cursor-pointer"
+                id="filter">Filter</button>
+        </div>
+        <div class="flex w-full space-x-4">
+            <div class="flex flex-col justify-between w-1/4 bg-blue-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Total order:</P>
+                </div>
+                <div>
+                    <p class="fond-bold text-3xl text-right" id="total-order"></p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between w-1/4 bg-red-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Cancelled order:</P>
+                </div>
+                <div>
+                    <p class="fond-bold text-3xl text-right" id="cancelled-order"></p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between bg-green-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Completed order:</P>
+                </div>
+                <div>
+                    <p class="fond-bold text-3xl text-right" id="completed-order"></p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between w-1/4 bg-yellow-300 p-4 rounded-lg">
+                <div>
+                    <P class="font-bold text-xl">Revenue:</P>
+                </div>
+                <div>
+                    <p class="text-xs text-right">VND</p>
+                    <p class="fond-bold text-3xl text-right" id="revenue"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="flex justify-between mx-48 my-10">
+        <div class="flex flex-col items-center w-1/2 border-2 border-black rounded-lg bg-slate-50 p-6">
+            <div class="w-1/2">
+                <canvas id="pieChart" width="250" height="250"></canvas>
+            </div>
+            <div class="w-1/2 my-6">
+                <p class="text-center text-lg">Month's Performance Pie Chart</p>
+                <p class="text-center"><i class="fa-solid fa-square" style="color: #3377FF;"></i>&emsp;Pending Orders
+                </p>
+                <p class="text-center"><i class="fa-solid fa-square" style="color: #FF5733;"></i>&emsp;Cancelled Orders
+                </p>
+                <p class="text-center"><i class="fa-solid fa-square" style="color: #33FF57;"></i>&emsp;Pending Orders
+                </p>
+            </div>
+        </div>
+        <div class="w-1/3 bg-slate-50 border-2 border-black rounded-lg p-6">
+            <p class="text-center text-lg font-bold">Ordered service from most to least</p>
+            <br>
+            <table class="w-full border-blue-bootstrap border-t-2 border-b-2" id="service-table">
+                <tr>
+                    <th class="border-r-2 border-blue-bootstrap">Service's name</th>
+                    <th class="text-center">Quantity</th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <script>
+        const totalOrder = document.getElementById("total-order");
+        const completedOrder = document.getElementById("completed-order");
+        const cancelledOrder = document.getElementById("cancelled-order");
+        const revenue = document.getElementById("revenue");
+        const filterBtn = document.getElementById("filter");
+        const serviceTable = document.getElementById("service-table")
+
+        filterBtn.addEventListener("click", function () {
+            getOrdersData();
+            getRevenue();
+            getServiceByOrderQuantity();
+        })
+
+        function getOrdersData() {
+            const monthsSelect = document.getElementById("months");
+            const yearsSelect = document.getElementById("years");
+            const apiUrl = "api/admin/dashboard/data";
+            const yearMonth = {
+                "month": monthsSelect.value,
+                "year": yearsSelect.value
+            }
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(yearMonth)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here
+                    console.log(data);
+                    totalOrder.innerHTML = data[3];
+                    completedOrder.innerHTML = data[1];
+                    cancelledOrder.innerHTML = data[2];
+                    piechart(data)
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error("Error:", error);
+                });
+        }
+
+        function getRevenue() {
+            const monthsSelect = document.getElementById("months");
+            const yearsSelect = document.getElementById("years");
+            const apiUrl = "api/admin/dashboard/revenue";
+            const yearMonth = {
+                "month": monthsSelect.value,
+                "year": yearsSelect.value
+            }
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(yearMonth)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here
+                    console.log(data);
+                    revenue.innerHTML = formatLongInteger(data);
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error("Error:", error);
+                });
+        }
+
+        function getServiceByOrderQuantity() {
+            const monthsSelect = document.getElementById("months");
+            const yearsSelect = document.getElementById("years");
+            const apiUrl = "api/admin/dashboard/service-quantity";
+            //Reset table content
+            serviceTable.innerHTML = "";
+            const headRow = document.createElement("tr");
+
+            // Create the first table cell for the service name
+            const name = document.createElement("th");
+            name.classList.add("border-r-2", "border-blue-bootstrap")
+            name.textContent = "Service's name";
+            headRow.appendChild(name);
+
+            // Create the second table cell for the quantity
+            const quantity = document.createElement("th");
+            quantity.classList.add("text-center")
+            quantity.textContent = "Quantity";
+            headRow.appendChild(quantity);
+
+            // Add the row to the table
+            serviceTable.appendChild(headRow);
+            const yearMonth = {
+                "month": monthsSelect.value,
+                "year": yearsSelect.value
+            }
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(yearMonth)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here
+                    for (const service in data) {
+                        if (data.hasOwnProperty(service)) {
+                            const serviceName = service.match(/serviceName=([^,]+)/)[1];
+                            const quantity = data[service];
+
+                            const row = document.createElement("tr");
+
+                            // Create the first table cell for the service name
+                            const nameCell = document.createElement("td");
+                            nameCell.classList.add("border-r-2", "border-blue-bootstrap")
+                            nameCell.textContent = serviceName;
+                            row.appendChild(nameCell);
+
+                            // Create the second table cell for the quantity
+                            const quantityCell = document.createElement("td");
+                            quantityCell.classList.add("text-center")
+                            quantityCell.textContent = quantity;
+                            row.appendChild(quantityCell);
+
+                            // Add the row to the table
+                            serviceTable.appendChild(row);
+                        }
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error("Error:", error);
+                });
+        }
+
+        function piechart(data) {
+            // Parameters (you can update these values as needed)
+            const totalOrders = data[3];
+            const canceledOrders = data[2];
+            const completedOrders = data[1];
+            const pendingOrders = data[0];
+
+            // Get the canvas element and its context
+            const canvas = document.getElementById("pieChart");
+            const ctx = canvas.getContext("2d");
+
+            // Calculate percentages
+            const canceledPercentage = (canceledOrders / totalOrders) * 100;
+            const completedPercentage = (completedOrders / totalOrders) * 100;
+            const pendingPercentage = (pendingOrders / totalOrders) * 100;
+
+            // Convert percentage to radians
+            const canceledAngle = (canceledPercentage / 100) * 2 * Math.PI;
+            const completedAngle = (completedPercentage / 100) * 2 * Math.PI;
+            const pendingAngle = (pendingPercentage / 100) * 2 * Math.PI;
+
+            // Set colors for the slices
+            const canceledColor = "#FF5733"; // Red for canceled
+            const completedColor = "#33FF57"; // Green for completed
+            const pendingColor = "#3377FF"; // Blue for pending
+
+            // Set the center of the chart
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY);
+
+            // Draw the canceled slice
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, 0, canceledAngle);
+            ctx.fillStyle = canceledColor;
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw the completed slice
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, canceledAngle, canceledAngle + completedAngle);
+            ctx.fillStyle = completedColor;
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw the pending slice
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, canceledAngle + completedAngle, 2 * Math.PI);
+            ctx.fillStyle = pendingColor;
+            ctx.closePath();
+            ctx.fill();
+        };
+
+        // Function to select the current month and year options
+        function selectCurrentMonthAndYear() {
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so we add 1
+            const currentYear = currentDate.getFullYear();
+
+            const monthsSelect = document.getElementById("months");
+            const yearsSelect = document.getElementById("years");
+
+            // Select the current month and year options
+            monthsSelect.value = currentMonth;
+            yearsSelect.value = currentYear;
+        }
+
+        // Display revenue with better number format
+        function formatLongInteger(number) {
+            const strNumber = String(number);
+            const length = strNumber.length;
+
+            // No need to add spaces if the number is less than 4 digits
+            if (length < 4) {
+                return strNumber;
+            }
+
+            let formattedNumber = "";
+            let counter = 0;
+
+            // Start from the end of the string and add spaces after every 3 digits
+            for (let i = length - 1; i >= 0; i--) {
+                formattedNumber = strNumber[i] + formattedNumber;
+                counter++;
+
+                if (counter === 3 && i !== 0) {
+                    formattedNumber = " " + formattedNumber;
+                    counter = 0;
+                }
+            }
+            return formattedNumber;
+        }
+
+        // Call the function to select the current month and year options
+        selectCurrentMonthAndYear();
+        getOrdersData();
+        getRevenue();
+        getServiceByOrderQuantity();
+    </script>
+</body>
+
+</html>
