@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeLeaf.org" class="w-[100%] h-">
 
 <head>
@@ -141,10 +141,11 @@
                     </option>
                 </select>
                 <div class="flex justify-center items-center">
-                    <input class="rounded-lg bg-red-300 px-3 py-2 w-full hover:bg-red-400" type="button" value="Close"
-                        onclick="closeCreateForm()">
-                    <input class="ml-2 rounded-lg bg-blue-300 px-3 py-2 w-full hover:bg-blue-400" type="submit"
-                        value="Submit">
+                    <input class="rounded-lg bg-red-300 border-2 border-red-400 px-3 py-2 w-full hover:bg-transparent"
+                        type="button" value="Close" onclick="closeCreateForm()">
+                    <input
+                        class="ml-2 createWorkerBtn rounded-lg bg-blue-300 border-2 border-blue-400 px-3 py-2 w-full hover:bg-transparent disabled:bg-blue-50 disabled:cursor-default"
+                        type="submit" value="Submit">
                 </div>
             </form>
         </div>
@@ -169,9 +170,11 @@
     let workerStatusDict = null
     let updateBtn = ""
     const updateFormContainer = document.querySelector('.updateFormContainer')
+    const updateWorkerBtn = document.querySelector('.updateWorkerBtn')
 
     console.log(workerTableLength)
     const createForm = document.getElementById("FORM")
+    const createWorkerBtn = document.querySelector('.createWorkerBtn')
 
 
     //error_service = document.getElementById("error-service")
@@ -365,6 +368,7 @@
 
     const form = document.getElementById("create-form");
     form.addEventListener('submit', async function (event) {
+        createWorkerBtn.disabled = true
         console.log(form)
         event.preventDefault();
         const form_data = new FormData(form);
@@ -408,10 +412,12 @@
             closeCreateForm()
             getWorkerList()
         }
+        createWorkerBtn.disabled = true
 
     })
 
     w_update_form.addEventListener('submit', async function (event) {
+        updateWorkerBtn.disabled = true
         console.log(w_update_form)
         event.preventDefault();
         var form_data = new FormData(w_update_form);
@@ -439,7 +445,7 @@
             error_dob.style.visibility = "hidden";
             error_phonenumber.style.visibility = "hidden";
             console.log('yes successs')
-            alert("successfully update");
+            // alert("successfully update");
             getWorkerList()
         } else {
             console.log(error_username)
@@ -456,7 +462,7 @@
             if (responseData.dateErr == "") { error_dob.style.visibility = "hidden"; }
             if (responseData.phonenumberErr == "") { error_phonenumber.style.visibility = "hidden"; }
         }
-
+        updateWorkerBtn.disabled = false
     })
 
     function closeCreateForm() {
