@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeLeaf.org" class="h-[100%] w-[100%]">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/tailwind/font.css" />
+  <link rel="stylesheet" href="../static/tailwind/index.css" />
+  <title>Service name goes here</title>
+</head>
+
+<body class="overflow-x-hidden h-[100%] w-[100%]">
+
+  <header th:replace="~{./fragments/worker-header.html}"></header>
+
+  <div class="mt-7 border-2 border-black mb-7 xl:mx-20 lg:mx-20 md:mx-20 sm:mx-0 xm:mx-0">
+
+    <div class="mx-10 my-8 h-[100%] flex">
+      <div class="w-[40%] h-[100%]">
+        <!--<div class="">
+          <div class="bg-blue-400 flex justify-center items-center py-[5%] rounded-lg">
+            <div class=" w-[40%]">
+              <img class="pfp object-cover w-[200px] h-[200px] border-8 border-white rounded-full"
+                src="../static/assets/images/user.png" alt="" srcset="" id="imgFile">
+              <script th:inline="javascript">
+                var imgUrl = [[${ session.loginedUser.imgProfileExtension }]]
+                console.log(imgUrl)
+                var image = document.getElementById('imgFile');
+                var linkFile = ''
+                if (imgUrl.length > 0) {
+                  console.log('imgUrl.length > 0')
+                  linkFile = imgUrl;
+                }
+                else {
+                  console.log('imgUrl.length < 0')
+                  linkFile = '../static/assets/images/user.png'
+                }
+
+                image.src = linkFile; // Set the dynamic image URL
+
+              </script>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="flex flex-col items-center">
+          <button
+            class="edit-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Edit
+            Profile</button>
+          <button class="mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium"><a
+              class="text-decoration-none text-black w-[100%]" href="/resetpwd" target="_blank">Change
+              Password</a></button>
+          <!-- <button
+            class="change-pfp-btn mt-7 bg-blue-300 hover:bg-blue-400 w-[50%] py-[1%] rounded-lg text-xl font-medium">Change
+            Profile
+            Picture</button> -->
+          <!-- <div class="upload-btn-container hidden w-[50%] mt-7 flex flex-col items-center"> 
+            <span class="w-[100%] flex justify-center">
+              <label for="upload-file"
+                class="pfp-group browse-pfp-btn w-[50%] bg-slate-300 hover:bg-slate-400 rounded-lg text-xl font-medium py-[1%] flex-1 text-center mr-[1%] flex justify-center">
+                <span class="flex justify-center items-center"><i class="fa fa-upload mr-[5%]"
+                    aria-hidden="true"></i>Browse</span>
+              </label>
+              <input type="file" class="hidden" value="" id="upload-file">
+              <button
+                class="pfp-group upload-pfp-btn w-[50%] bg-green-300 hover:bg-green-400 py-[1%] px-[2%] rounded-lg text-xl font-medium flex-1 ml-[1%] disabled:opacity-25"
+                th:attr="onclick='upload(\'' + ${acc.accountId} + '\')'">Upload</button>
+            </span>
+            <button
+              class="pfp-group cancel-pfp-btn mt-7 bg-red-300 hover:bg-red-400 w-[50%] py-[1%] rounded-lg text-xl font-medium disabled:opacity-25">Cancel
+            </button>
+          </div>  -->
+
+          <div class="mt-7">
+            <p class="img-file-name hidden"></p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="edit-form-container w-[60%] pl-[2%] pointer-events-none">
+        <form class="edit-profile-form">
+          <input type="hidden" class="uid" th:value="${acc != null} ? ${acc.accountId}">
+          <label for="">Username<span
+              class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtUsername" value="" th:placeholder="${acc != null} ? ${acc.accountName}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
+
+          <label for="">Email<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtEmail" value="" th:placeholder="${acc != null} ? ${acc.email}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
+
+          <label for="">First Name</label><br>
+          <span class="mb-3 flex">
+            <input type="text" th:placeholder="${acc != null} ? ${acc.firstName}"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
+            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+              title="you can't edit this field"></i></span>
+
+          <label for="">Last Name</label><br>
+          <span class="mb-3 flex">
+            <input type="text" th:placeholder="${acc != null} ? ${acc.lastName}"
+              class="prohibit-input w-[100%] border-2 rounded-l-lg bg-slate-200 px-3 py-2 pointer-event-none focus:outline-0 capitalize">
+            <i class="fa fa-lock flex items-center border-2 rounded-r-lg bg-slate-200 pr-3"
+              title="you can't edit this field"></i></span>
+
+          <label for="">Date of Birth<span
+              class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <input type="text" name="txtDate" value="" th:placeholder="${acc != null} ? ${acc.dob}"
+            class="profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 mb-3 focus:outline-0">
+
+          <label for="">Phone<span class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+          <div class="mb-3 w-[100%]">
+            <span class="flex">
+              <input type="text" name="txtPhone" value="" th:placeholder="${phone != null} ? ${phone[0].number}"
+                class="phoneInput profile-form-input w-[100%] border-2 rounded-lg bg-slate-200 px-3 py-2 focus:outline-0">
+              <input type="hidden" name="txtPhoneId" th:value="${phone != null} ? ${phone[0].phoneId}">
+            </span>
+          </div>
+
+
+          <div class="flex justify-end ">
+            <button class="cancel-btn px-3 py-2 bg-red-400 mr-[2%] rounded-lg hover:bg-red-500">Cancel</button>
+            <button type="submit"
+              class="submit-btn px-3 py-2 bg-blue-400 mr-[2%] rounded-lg hover:bg-blue-500">Save</button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+  <footer th:replace="~{./fragments/footer.html}"></footer>
+
+  <script src="../static/js/workerEditProfile.js">
+
+  </script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+</html>

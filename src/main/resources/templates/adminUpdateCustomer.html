@@ -1,5 +1,5 @@
 <div class="updateFormContainer hidden container fixed top-0 start-0 w-100 h-100 flex flex-col justify-center items-center form z-99"
-    id="update-form-container" style="background-color: rgba(0, 0, 0, 0.5);">
+     id="update-form-container" style="background-color: rgba(0, 0, 0, 0.5);">
     <div class="w-[50%] rounded-lg bg-white">
         <form id="update-form" class="px-4">
             <div class="font-semibold text-[20px] text-center my-3">Update Customer Information</div>
@@ -7,52 +7,52 @@
 
             <label class="capitalize">Username</label>
             <span id="error-username-updateCustomer"
-                class="ml-1 font-semibold text-sm error-message italic text-red-500">
+                  class="ml-1 font-semibold text-sm error-message italic text-red-500">
             </span>
             <input type="text" id="update-form-username"
-                class="prohibit-input uName updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
+                   class="prohibit-input uName updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                   aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
 
             <label class="capitalize">email</label><span id="error-email-updateCustomer"
-                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                                                         class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
             <input type="text" id="update-form-email"
-                class="prohibit-input uEmail updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                   class="prohibit-input uEmail updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                   aria-describedby="emailHelp" placeholder="" name="txtEmail">
 
 
             <label class="capitalize">Firstname</label><span id="error-firstname-updateCustomer"
-                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                                                             class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
             <input type="text" id="update-form-firstname"
-                class="prohibit-input uFname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                placeholder="" name="txtFirstname" value="">
+                   class="prohibit-input uFname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                   placeholder="" name="txtFirstname" value="">
 
             <label class="capitalize">Lastname</label><span id="error-lastname-updateCustomer"
-                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                                                            class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
             <input type="text" id="update-form-lastname"
-                class="prohibit-input uLname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                placeholder="" name="txtLastname" value="">
+                   class="prohibit-input uLname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                   placeholder="" name="txtLastname" value="">
 
 
             <label class="capitalize">Dob</label><span id="error-dob-updateCustomer"
-                class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                                                       class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
             <input type="date" id="update-form-dob"
-                class="prohibit-input uDob updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                placeholder="" name="txtDate" value="">
+                   class="prohibit-input uDob updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                   placeholder="" name="txtDate" value="">
 
             <label for="">PhoneNumber<span id="error-phonenumber-updateWorker"
-                    class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
+                                           class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
             <div class="mb-2 w-[100%]">
                 <span class="flex">
                     <input type="text" name="txtPhonenumber" value=""
-                        class="prohibit-input uPhoneNumber phoneInput updateFormInput profile-form-input w-[100%] rounded-l-lg bg-slate-200 px-2 py-1"
-                        id="update-form-phonenumber">
+                           class="prohibit-input uPhoneNumber phoneInput updateFormInput profile-form-input w-[100%] rounded-l-lg bg-slate-200 px-2 py-1"
+                           id="update-form-phonenumber">
                     <input type="hidden" name="txtPhoneID" value="" id="update-form-phoneid" class="uPhoneId">
                     <i
-                        class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 px-2 py-1 cursor-pointer"></i>
+                            class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 px-2 py-1 cursor-pointer"></i>
                 </span>
 
                 <div id="phoneDropdownContainer"
-                    class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
+                     class="z-10 divide-y hidden divide-gray-100 rounded-lg shadow w-inherit relative">
                     <ul class="phoneSpanContainer absolute w-inherit  border-2 border-black bg-slate-200 overflow-y-scroll"
                         aria-labelledby="dropdownDividerButton">
 
@@ -63,10 +63,10 @@
             <div class="mb-3 w-[100%] flex items-center">
                 <div class="w-[100%]">
                     <label>Room</label><span id="error-address"
-                        class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
+                                             class="ml-1 font-semibold text-sm error-message italic text-red-500"></span>
                     <input type="text" id="update-form-room"
-                        class="prohibit-input uRoom updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                        aria-describedby="emailHelp" placeholder="" name="txtRoomnumber" value="">
+                           class="prohibit-input uRoom updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
+                           aria-describedby="emailHelp" placeholder="" name="txtRoomnumber" value="">
                 </div>
 
                 <div class="ml-[6%] w-inherit flex flex-col justify-center">
@@ -97,24 +97,24 @@
                     <label for="toggleEnabled" class="flex cursor-pointer select-none items-center">
                         <div class="relative">
                             <input type="hidden" name="isEnable" id="isEnableValue" value="" class=""
-                                readonly="readonly">
+                                   readonly="readonly">
                             <input type="checkbox" id="toggleEnabled" class="toggleSwitch sr-only" />
                             <div class="block h-8 w-14 rounded-full bg-[#E5E7EB]"></div>
                             <div
-                                class="dotEnabled enableBtn absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all duration-300">
+                                    class="dotEnabled enableBtn absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all duration-300">
                                 <span class="active text-body-color hidden">
                                     <svg width="11" height="8" viewBox="0 0 11 8" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
-                                            d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
-                                            fill="white" stroke="white" stroke-width="0.4"></path>
+                                                d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
+                                                fill="white" stroke="white" stroke-width="0.4"></path>
                                     </svg>
                                 </span>
                                 <span class="inactive text-body-color">
                                     <svg class="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12">
+                                              d="M6 18L18 6M6 6l12 12">
                                         </path>
                                     </svg>
                                 </span>
@@ -131,20 +131,20 @@
                             <input type="checkbox" id="toggleBlock" class="toggleSwitch sr-only" />
                             <div class="block h-8 w-14 rounded-full bg-[#E5E7EB]"></div>
                             <div
-                                class="dotEnabled blockBtn absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all duration-300">
+                                    class="dotEnabled blockBtn absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all duration-300">
                                 <span class="active text-body-color hidden">
                                     <svg width="11" height="8" viewBox="0 0 11 8" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
-                                            d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
-                                            fill="white" stroke="white" stroke-width="0.4"></path>
+                                                d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
+                                                fill="white" stroke="white" stroke-width="0.4"></path>
                                     </svg>
                                 </span>
                                 <span class="inactive text-body-color">
                                     <svg class="h-4 w-4 stroke-current" fill="none" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12">
+                                              d="M6 18L18 6M6 6l12 12">
                                         </path>
                                     </svg>
                                 </span>
@@ -190,11 +190,11 @@
 
             <div class="flex justify-center items-center">
                 <button type="button"
-                    class="w-[50%] py-2 rounded-lg bg-red-300 border-2 border-red-400 capitalize hover:bg-transparent"
-                    onclick="getAdminCustomerPage()">close</button>
+                        class="w-[50%] py-2 rounded-lg bg-red-300 border-2 border-red-400 capitalize hover:bg-transparent"
+                        onclick="getAdminCustomerPage()">close</button>
                 <input
-                    class="w-[50%] ml-2 py-2 rounded-lg bg-blue-300 border-2 border-blue-400 capitalize hover:bg-transparent"
-                    type="submit" value="Update">
+                        class="w-[50%] updateCustomerBtn ml-2 py-2 rounded-lg bg-blue-300 border-2 border-blue-400 capitalize hover:bg-transparent disabled:cursor-default disabled:bg-blue-50"
+                        type="submit" value="Update">
             </div>
 
         </form>

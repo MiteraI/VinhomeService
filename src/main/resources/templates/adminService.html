@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="../static/tailwind/font.css">
 
-    <title>Service Management</title>
+    <title>Title</title>
     <style>
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
@@ -151,24 +151,15 @@
             background-color: rgba(0, 0, 0, 0.2);
         }
 
-        #dropdownDivider ul li:hover {
-            background-color: #D1D5DB;
-        }
-
-
-        #dropdownDivider ul li:first-child:hover {
-            border-top-right-radius: 0.3rem;
-            border-top-left-radius: 0.3rem;
-        }
-
-        #dropdownDivider ul li:last-child:hover {
-            border-bottom-right-radius: 0.3rem;
-            border-bottom-left-radius: 0.3rem;
+        .formBtn:disabled {
+            cursor: default;
+            opacity: 0.5;
         }
     </style>
 </head>
 
 <body>
+    <header th:replace="~{./fragments/adminHeaderBootstrap.html}"></header>
     <div class="servicePicContainer position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center d-none"
         style="z-index: 99; background-color: rgba(0, 0, 0, 0.5);">
         <div class="d-flex justify-content-center align-items-center" style="height: 70%; width: 60%;">
@@ -176,7 +167,6 @@
         </div>
         <div class="closeBtn btn btn-danger w-25 py-2 mt-5">Close</div>
     </div>
-    <header th:replace="~{./fragments/adminHeaderBootstrap.html}"></header>
     <!-- CREATE SERVICE FORM-->
     <!-- CREATE SERVICE FORM-->
     <!-- CREATE SERVICE FORM-->
@@ -226,7 +216,8 @@
                     </div>
                     <div class="d-flex justify-content-end align-content-center">
                         <button type="button" class="btn btn-danger w-50" id="cancelCreateService">Cancel</button>
-                        <button type="submit" class="btn btn-primary ms-2 w-50">Create</button>
+                        <button type="submit" class="formBtn btn btn-primary ms-2 w-50"
+                            id="createServiceBtn">Create</button>
                     </div>
                 </form>
             </div>
@@ -284,7 +275,7 @@
             </div>
             <div class="col-12 d-flex justify-content-end align-content-center">
                 <button type="button" class="btn btn-danger w-50" id="cancelUpdateService">Cancel</button>
-                <button type="submit" class="btn btn-primary ms-2 w-50" id="updateService">Update</button>
+                <button type="submit" class="formBtn btn btn-primary ms-2 w-50" id="updateService">Update</button>
             </div>
         </form>
     </div>
@@ -307,6 +298,8 @@
 
         const uploadFile = document.querySelectorAll('.uploadFile')
         const UpdateServiceForm = document.querySelector('#UpdateServiceForm')
+        const updateServiceBtn = document.querySelector('#updateService')
+        const createServiceBtn = document.querySelector('#createServiceBtn')
 
         var _validFileExtensions = [".jpg", ".jpeg", ".png"];
 
@@ -335,6 +328,7 @@
 
         })
         document.getElementById('createServiceForm').addEventListener('submit', function (event) {
+            createServiceBtn.disabled = true
             event.preventDefault(); // Prevent form submission
 
             // Get form values
@@ -353,7 +347,6 @@
             formData.append('description', description);
             formData.append('numOfPeople', numOfPeople);
             formData.append('image', image);
-
             // Send POST request using fetch
             fetch('/api/services/create', {
                 method: 'POST',
@@ -376,6 +369,7 @@
                     // Handle network error
                     console.log('Network error:', error);
                 });
+            createServiceBtn.disabled = false
         });
 
         document.getElementById("cancelCreateService").addEventListener("click", function () {
@@ -547,6 +541,7 @@
 
             const form = document.getElementById("UpdateServiceForm");
             form.addEventListener("submit", function (e) {
+                updateServiceBtn.disabled = true
                 e.preventDefault();
                 formData.append('description', des);
                 formData.append('serviceName', serviceNameUpdate);
@@ -569,6 +564,7 @@
                     .catch(err => {
                         console.log(err);
                     })
+                updateServiceBtn.disabled = false
             })
             // function update(serviceId) {
             //     console.log(serviceId);

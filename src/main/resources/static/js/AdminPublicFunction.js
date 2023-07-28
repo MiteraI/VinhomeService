@@ -96,7 +96,7 @@ function sorttableCategory() {
     }
 }
 function sortById(columnIndex) {
-    var table = document.querySelector(".table-worker") || document.querySelector(".table-customer");
+    var table = document.querySelector(".table-worker") || document.querySelector(".table-customer") || document.querySelector(".sort");
     var tbody = table.tBodies[0];
     var rows = Array.from(tbody.rows);
     var sortOrder = table.getAttribute('data-sort-order') || 'asc';

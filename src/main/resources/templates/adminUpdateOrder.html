@@ -9,17 +9,17 @@
                 <label class="capitalize">Username</label>
                 <input type="text" id=""
                     class="prohibit-input uName updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                    aria-describedby="emailHelp" placeholder="" name="txtUsername" value="">
+                    aria-describedby="emailHelp" placeholder="" name="txtUsername" value="" readonly>
 
                 <label class="capitalize">Full Name</label>
                 <input type="text" id=""
                     class="prohibit-input uFname updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                    placeholder="" name="txtFirstname" value="">
+                    placeholder="" name="txtFirstname" value="" readonly>
 
                 <label class="capitalize">email</label>
                 <input type="text" id=""
                     class="prohibit-input uEmail updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                    aria-describedby="emailHelp" placeholder="" name="txtEmail">
+                    aria-describedby="emailHelp" placeholder="" name="txtEmail" readonly>
 
                 <label for="">PhoneNumber<span id="error-phonenumber-updateWorker"
                         class="error-message italic text-red-500 ml-1 hidden text-[13px]"></span></label><br>
@@ -27,7 +27,7 @@
                     <span class="flex">
                         <input type="text" name="txtPhonenumber" value=""
                             class="prohibit-input uPhoneNumber phoneInput updateFormInput profile-form-input w-[100%] rounded-l-lg bg-slate-200 px-2 py-1"
-                            id="update-form-phonenumber">
+                            id="update-form-phonenumber" readonly>
                         <input type="hidden" name="txtPhoneID" value="" id="update-form-phoneid" class="uPhoneId">
                         <i
                             class="phoneDropDownButton fa fa-angle-down flex items-center border-2 rounded-r-lg bg-slate-200 px-2 py-1 cursor-pointer"></i>
@@ -46,21 +46,21 @@
                         <label class="capitalize">Order Create Time</label>
                         <input type="text" id="CreateTime"
                             class="prohibit-input uOrderCreateTime updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                            aria-describedby="emailHelp" placeholder="" name="" value="">
+                            aria-describedby="emailHelp" placeholder="" name="" value="" readonly>
                     </div>
 
                     <div class="w-[50%] flex flex-col mx-1">
                         <label class="capitalize">Service Name</label>
                         <input type="text" id="ServiceName"
                             class="prohibit-input uServiceName updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                            aria-describedby="emailHelp" placeholder="" name="" value="">
+                            aria-describedby="emailHelp" placeholder="" name="" value="" readonly>
                     </div>
 
                     <div class="w-[50%] flex flex-col">
                         <label class="capitalize">Service Price</label>
                         <input type="text" id="ServicePrice"
                             class="prohibit-input uServicePrice updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                            aria-describedby="emailHelp" placeholder="" name="" value="">
+                            aria-describedby="emailHelp" placeholder="" name="" value="" readonly>
                     </div>
                 </div>
 
@@ -69,21 +69,21 @@
                         <label class="capitalize">Work Day</label>
                         <input type="text" id="WorkDay"
                             class="prohibit-input uWorkDay updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                            aria-describedby="emailHelp" placeholder="" name="" value="">
+                            aria-describedby="emailHelp" placeholder="" name="" value="" readonly>
                     </div>
 
                     <div class="w-[50%] flex flex-col mx-1">
                         <label class="capitalize">Start Time</label>
                         <input type="text" id="StartTime"
                             class="prohibit-input uStartTime updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                            aria-describedby="emailHelp" placeholder="" name="" value="">
+                            aria-describedby="emailHelp" placeholder="" name="" value="" readonly>
                     </div>
 
                     <div class="w-[50%] flex flex-col">
                         <label class="capitalize">End Time</label>
                         <input type="text" id="EndTime"
                             class="prohibit-input uEndTime updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2"
-                            aria-describedby="emailHelp" placeholder="" name="" value="">
+                            aria-describedby="emailHelp" placeholder="" name="" value="" readonly>
                     </div>
                 </div>
             </div>
@@ -116,11 +116,11 @@
 
             <div class="flex justify-between items-center">
                 <button
-                    class="w-full py-2 border-2 border-red-400 bg-red-400 rounded-lg hover:bg-transparent mb-3 font-semibold"
+                    class="w-full py-2 border-2 border-red-400 bg-red-400 rounded-lg hover:bg-transparent mb-3 font-semibold disabled:cursor-default disabled:bg-blue-50"
                     type="button" onclick="closeUpdateOrder()">Close</button>
 
                 <button
-                    class="cancelOrderBtn hidden w-full ml-2 py-2 border-2 border-blue-400 bg-blue-400 rounded-lg hover:bg-transparent mb-3 font-semibold"
+                    class="cancelOrderBtn hidden w-full ml-2 py-2 border-2 border-blue-400 bg-blue-400 rounded-lg hover:bg-transparent mb-3 font-semibold disabled:cursor-default disabled:bg-blue-50"
                     type="button" onclick="">Cancel Order</button>
             </div>
         </form>

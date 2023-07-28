@@ -1,0 +1,44 @@
+<div
+  class="reasonForm hidden container fixed top-0 start-0 w-100 h-100 flex flex-col justify-center items-center form z-99"
+  id="w-update-form-container" style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="w-[50%] rounded-lg bg-white">
+    <form id="w-update-form" class="px-4">
+      <div class="font-semibold text-[20px] text-center my-3">Leave Report Reason</div>
+      <input class="uId" name="txtID" id="w-update-form-id" type="hidden" value="">
+
+      <label class="capitalize">Worker Name</label>
+      <input type="text" id="w-update-form-username"
+        class="uName updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" aria-describedby="emailHelp"
+        placeholder="" name="txtUsername" value="" readonly>
+
+      <label class="capitalize">mail</label>
+      <input type="text" id="w-update-form-email"
+        class="uEmail updateFormInput bg-slate-200 rounded-lg w-[100%] py-1 px-2 mb-2" aria-describedby="emailHelp"
+        placeholder="" name="txtEmail" readonly>
+
+      <label class="capitalize">Reason</label>
+      <textarea rows="5" class="uReason w-full rounded-lg bg-slate-200 mb-2 px-2 py-1" readonly>
+
+      </textarea>
+
+      <div class="mb-2 overflow-hidden flex justify-between">
+        <div>Image Confirm: </div>
+        <div class="clickAbleImageName w-[81%] font-semibold hover:text-blue-600 hover:underline cursor-pointer">
+          image
+          name
+        </div>
+      </div>
+
+      <div class="flex justify-between mb-2">
+        <button type="button"
+          class="rejectBtn bg-red-300 px-3 py-2 w-1/2 border-2 border-red-400 rounded-lg mr-2 hover:bg-transparent disabled: cursor-default disabled: bg-red-50">Reject</button>
+        <button type="button"
+          class="approveBtn bg-green-300 px-3 py-2 w-1/2 border-2 border-green-400 rounded-lg hover:bg-transparent disabled: cursor-default disabled: bg-green-50">Approve</button>
+      </div>
+      <button type="button"
+        class="bg-red-500 px-3 py-2 w-full border-2 border-red-600 rounded-lg mr-2 hover:bg-transparent"
+        onclick="closeReasonForm()">Close</button>
+
+    </form>
+  </div>
+</div>

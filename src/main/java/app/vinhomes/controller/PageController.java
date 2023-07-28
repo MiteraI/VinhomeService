@@ -72,7 +72,7 @@ public class PageController {
                 model.addAttribute("worker", workerStatusRepository.findAll());
                 System.out.println(serviceCategoryRepository.findAll());
                 System.out.println(workerStatusRepository.findAll());
-                return "adminDisplayWorker";
+                return "dashboard";
             } else if (acc.getRole() == 1) {
                 return "worker-homepage";
             }
@@ -117,6 +117,16 @@ public class PageController {
         model.addAttribute("address", address);
         model.addAttribute("phone", phoneNumber);
         return "profile";
+    }
+
+    @RequestMapping(value = "/worker-Profile", method = RequestMethod.GET)
+    public String getWorkerProfile(HttpServletRequest request, Model model) {
+        Account acc = getSessionAccount(request);
+        List<Phone> phoneNumber = getUserFone(request);
+        System.out.println(phoneNumber);
+        model.addAttribute("acc", acc);
+        model.addAttribute("phone", phoneNumber);
+        return "workerProfile";
     }
 
     @RequestMapping(value = "/resetpwd", method = RequestMethod.GET)

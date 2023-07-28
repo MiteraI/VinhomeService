@@ -16,7 +16,7 @@ async function getQueryTransaction(txn, text) {
     alert("fail to get transaction")
     transaction_body.style.display = "none";
     warning_COD.style.display = "block";
-    refundButton.disabled = true;
+    refundButton.classList.add('hidden')
     return;
   }
   let response = await fetch(`http://localhost:8080/transaction/queryTransaction/${txn}`, {
@@ -28,52 +28,60 @@ async function getQueryTransaction(txn, text) {
   if (status >= 200 && status <= 300) {
     if (toJson.vnp_ResponseCode == "00") {
       if (toJson.vnp_TransactionStatus == "00") {
-        alert("yes get transaction Success");
-        vnp_Amount.value = toJson.vnp_Amount
-        vnp_FeeAmount.value = toJson.vnp_FeeAmount
-        vnp_TransactionStatus.value = text == 'FAIL' ? 'CANCELLED' : text
+        // alert("yes get transaction Success");
+        console.log(toJson.vnp_Amount)
+        console.log(text)
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+        vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
+        vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       } else {
-        alert("yes get transaction cancel")
-        vnp_Amount.value = toJson.vnp_Amount
-        vnp_FeeAmount.value = toJson.vnp_FeeAmount
-        vnp_TransactionStatus.value = text == 'FAIL' ? 'CANCELLED' : text
+        console.log(toJson.vnp_Amount)
+        console.log(text)
+        // alert("yes get transaction cancel")
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+        vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
+        vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
         // refundButton.disabled = true;
       }
     } else {
-      alert("fail to get transaction, this might be the transaction is not exist or pre cancel")
-      vnp_Amount.value = "UNAVAILABLE"
-      vnp_FeeAmount.value = "UNAVAILABLE"
-      vnp_TransactionStatus.value = "UNAVAILABLE";
-      vnp_Amount.classList.toggle('text-red-400')
-      vnp_FeeAmount.classList.toggle('text-red-400')
-      vnp_TransactionStatus.classList.toggle('text-red-400')
+      console.log(toJson.vnp_Amount)
+      console.log(text)
+      // alert("fail to get transaction, this might be the transaction is not exist or pre cancel")
+      refundButton.classList.add('hidden')
+      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+      vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
+      vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       // refundButton.disabled = true;
     }
   } else {
-    alert("fail to get transaction")
+    // alert("fail to get transaction")
     transaction_body.style.display = "none";
     warning_COD.style.display = "block";
-    refundButton.disabled = true;
+    refundButton.classList.add('hidden')
   }
 }
 async function getTransactionStatus(txn) {
   var response = await fetch("http://localhost:8080/transaction/getStatus/" + txn, {
     method: "GET"
   })
+  refundButton.classList.remove('hidden')
   var status = await response.status
   var toText = await response.text()
-  console.log(status)
+  console.log("getTransactionStatus")
   console.log(toText)
   if (status >= 200 & status <= 300) {
+    console.log(status)
     if (toText.startsWith("REFUNDED")) {
-      refundButton.disabled = true;
+      console.log("startWith refunded")
+      refundButton.classList.add('hidden')
     } else {
-      refundButton.disabled = false;
+      console.log("not startWith refunded")
+      refundButton.classList.remove('hidden')
     }
   } else {
     transaction_body.style.display = "none";
     warning_COD.style.display = "block";
-    refundButton.disabled = true;
+    refundButton.classList.add('hidden')
   }
   getQueryTransaction(txn, toText)
 }
@@ -81,21 +89,4 @@ function getAdminCustomerPage() {
   console.log("inside return main page")
   window.location.href = "/see-all-order-by-admin";
 }
-async function getRefundTransaction() {
 
-  const txn = transaction_body.querySelector('#transactionId').value
-  var response = await fetch("http://localhost:8080/transaction/admin/refundTransaction/" + txn,
-    {
-      method: "GET"
-    });
-  var status = await response.status; console.log(status)
-  var toText = await response.text(); console.log(toText)
-  if (status < 200 || status > 300) {
-    console.log("refund fail");
-    alert("refund fail: " + toText)
-  } else {
-    console.log("refund success");
-    alert("refund success: " + toText)
-  }
-  getAdminCustomerPage()
-}
