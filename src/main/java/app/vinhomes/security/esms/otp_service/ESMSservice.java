@@ -25,9 +25,9 @@ import org.springframework.stereotype.Service;
 public class ESMSservice {
     @Autowired
     private OTPService otpService;
-    private final String APIKey="9F7FFB88511825A91061978CE826DC";
+    private final String APIKey="6F068A8F88779614D0670C292374E8";//9F7FFB88511825A91061978CE826DC
     //Dang ky tai khoan tai esms.vn de lay Key
-    private final String SecretKey="8BA185CC5367278187D45C6D963139";
+    private final String SecretKey="D659ACFC8A0DA986C84EA1B47C4924";//8BA185CC5367278187D45C6D963139
     public String execute() {
         return "SUCCESS";
     }
@@ -39,21 +39,12 @@ public class ESMSservice {
         }
         Random random = new Random();
         int requestId = random.nextInt(6);
-//        String url = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?ApiKey="
-//                + URLEncoder.encode(APIKey, "UTF-8")
-//                + "&SecretKey=" + URLEncoder.encode(SecretKey, "UTF-8")
-//                + "&SmsType=8&Phone=" + URLEncoder.encode(phone, "UTF-8")
-//                + "&Content=" + URLEncoder.encode(message, "UTF-8");
-        String url = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?Phone="
-                + URLEncoder.encode(phone, "UTF-8")
-                + "&Content=" + URLEncoder.encode(message, "UTF-8")
-                + "&Sandbox=1"
-                + "&ApiKey="+URLEncoder.encode(APIKey, "UTF-8")
+        String url = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?ApiKey="
+                + URLEncoder.encode(APIKey, "UTF-8")
                 + "&SecretKey=" + URLEncoder.encode(SecretKey, "UTF-8")
-                + "&IsUnicode=0"
-                + "&Brandname=" + URLEncoder.encode("Baotrixemay","UTF-8")
-                + "&SmsType=2"
-                ;
+                + "&SmsType=8&Phone=" + URLEncoder.encode(phone, "UTF-8")
+                + "&Content=" + URLEncoder.encode(message, "UTF-8");
+//
 
         URL obj;
         try {
