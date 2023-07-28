@@ -1,20 +1,20 @@
 <!DOCTYPE>
-<html lang="en" xmlns:th="http://thymeLeaf.org" class="w-[100%] h-">
+<html class="w-[100%] h-" lang="en" xmlns:th="http://thymeLeaf.org">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Management</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Admin</title>
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" rel="stylesheet">
 
-  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+  <script crossorigin="anonymous" defer
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-    crossorigin="anonymous"></script>
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../static/tailwind/font.css">
-  <link rel="stylesheet" href="../static/tailwind/index.css">
+  <script crossorigin="anonymous" src="https://kit.fontawesome.com/097aba0852.js"></script>
+  <link href="../static/tailwind/font.css" rel="stylesheet">
+  <link href="../static/tailwind/index.css" rel="stylesheet">
 
   <style>
     .orderDetail::before {
@@ -49,32 +49,34 @@
     class="confirmPicContainer fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center z-100 hidden"
     style="background-color: rgba(0, 0, 0, 0.5);">
     <div class="flex justify-center items-center" style="height: 90%; width: 60%;">
-      <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
-        class="confirmImg w-100 h-100 object-fit-contain">
+      <img alt="" class="confirmImg w-100 h-100 object-fit-contain"
+        src="../static/assets/images/Keanu-Reeves-5939c06.jpg">
     </div>
-    <div role="button" class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2">Close</div>
+    <div class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2" role="button">Close</div>
   </div>
 
 
   <!-- SHOW WORKER TABLE -->
   <!-- SHOW WORKER TABLE -->
   <!-- SHOW WORKER TABLE -->
-  <div id="main" class="container px-3 mt-3">
+  <div class="container px-3 mt-3" id="main">
     <div class="container flex justify-between p-0 my-3 ">
       <div class="flex justify-center items-center">
-        <input type="date" value="" id="selectWorkDay" class="bg-slate-300 rounded-lg px-2 py-2">
+        <input class="bg-slate-300 rounded-lg px-2 py-2" id="selectWorkDay" type="date" value="">
         <div id=""></div>
-        <select id="timeSlotSortSelect" value="" class="mx-1 py-2 px-2 bg-slate-300 rounded-lg">
+        <select class="mx-1 py-2 px-2 bg-slate-300 rounded-lg" id="timeSlotSortSelect" value="">
 
         </select>
-        <div role="button" class="py-2 px-3 bg-green-300 rounded-lg capitalize" onclick="Sorting()">sort</div>
+        <div class="py-2 px-3 bg-green-300 rounded-lg capitalize" onclick="Sorting()" role="button">sort</div>
       </div>
       <div class="flex justify-center w-[30%]">
         <!-- <label class="sr-only" for="search">Search</label> -->
-        <input type="text" class="flex-1 bg-slate-300 rounded-lg px-2" name="q" id="search" placeholder="Search">
+        <input class="flex-1 bg-slate-300 rounded-lg px-2" id="search" name="q" placeholder="Search" type="text">
         <div class="">
-          <button class="py-2 px-3 bg-green-300 rounded-lg dropdown-toggle capitalize" type="button"
-            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdown-title">none</button>
+          <button aria-expanded="false" aria-haspopup="true"
+            class="py-2 px-3 bg-green-300 rounded-lg dropdown-toggle capitalize" data-bs-toggle="dropdown"
+            id="dropdown-title" type="button">none
+          </button>
           <div class="dropdown-menu" id="dropdown-category">
 
           </div>
@@ -84,10 +86,11 @@
       </div>
     </div>
     <div class="mt-3">
-      <table class="block table-order">
+      <table class="sort block table-order" data-sort-order="desc">
         <thead>
           <tr class="bg-black">
-            <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Order Id</span>
+            <th class="table-heading py-3 asc text-center"><span
+                class="heading text-white capitalize cursor-pointer select-none" onclick="sortById(0)">Order Id</span>
             </th>
             <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Username</span>
             </th>
@@ -102,9 +105,10 @@
             </th>
             <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Status</span>
             </th>
-            <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">view Detail</span></th>
+            <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">view Detail</span>
+            </th>
             <!-- <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Action</span>
-            </th> -->
+                </th> -->
             <!-- <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">Cancel</span></th> -->
           </tr>
         </thead>
@@ -323,15 +327,28 @@
 
 
     async function cancelOrderAdmin(orderId) {
+      cancelOrderBnt.disabled = true
       var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
       var status = await response.status
       var toText = await response.text()
       if (status >= 200 && status <= 200) {
         alert("success:" + toText);
+        cancelOrderBtn.classList.add('hidden')
+        fetch('/api/order/all')
+          .then(response => response.json())
+          .then(data => {
+            OrderList = data
+            console.log(data)
+            convertToOrderDictionary(data)
+            printRowOrder(OrderList)
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
       } else {
         alert("fail: " + toText);
       }
-      window.location.href = "/see-all-order-by-admin"
+      cancelOrderBtn.disabled = false
     }
 
     function openDetail(id) {
@@ -415,24 +432,8 @@
                              `
         output +=
           `
-          <td class="py-3 text-center"><button class="text-center btn btn-primary w-1/2" onclick="openUpdateOrder(${orderId})">Detail</button></td>
-          <!--<td class="py-3 text-center">-->`
-        // if (paymentName == "VNPAY") {
-        //   output +=
-        //     `<a class="py-3 text-center" href="/admin_OrderTransaction/${txn}">Transaction Detail</a>`
-        // }
-        // else {
-        //   output +=
-        //     `<a class="py-3 text-center" href="#" ></a>`
-        // }
-        // output +=
-        //   `</td>`
-        //     <td class="py-3 text-center">
-        // if (status != "CANCEL" && status != "SUCCESS") {
-        //   output += `<button onclick="cancelOrderAdmin(${orderId})" class="btn btn-danger">Cancel</button>`
-        // } else {
-        //   output += `<a href="#">${status}</a>`
-        // }
+          <td class="py-3 text-center"><button class="text-center btn btn-primary w-1/2" onclick="openUpdateOrder(${orderId})">Detail</button></td>`
+
         output +=
           `
                         </tr>
@@ -525,6 +526,36 @@
 
     }
 
+    async function getRefundTransaction() {
+
+      const txn = transaction_body.querySelector('#transactionId').value
+      var response = await fetch("http://localhost:8080/transaction/admin/refundTransaction/" + txn,
+        {
+          method: "GET"
+        });
+      var status = await response.status; console.log(status)
+      var toText = await response.text(); console.log(toText)
+      if (status < 200 || status > 300) {
+        console.log("refund fail");
+        alert("refund fail: " + toText)
+      } else {
+        console.log("refund success");
+        alert("refund success: " + toText)
+      }
+      vnp_TransactionStatus.value = 'REFUNDED'
+      cancelOrderBtn.classList.add('hidden')
+      fetch('/api/order/all')
+        .then(response => response.json())
+        .then(data => {
+          OrderList = data
+          console.log(data)
+          convertToOrderDictionary(data)
+          printRowOrder(OrderList)
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
 
 
   </script>

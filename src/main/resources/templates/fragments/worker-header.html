@@ -18,8 +18,7 @@
 
       <div th:unless="${session.loginedUser}">
         <a href="/login">
-          <button
-                  class="cursor-pointer rounded-xl border-none bg-white px-10 py-4 font-extrabold text-blue-bootstrap">
+          <button class="cursor-pointer rounded-xl border-none bg-white px-10 py-4 font-extrabold text-blue-bootstrap">
             Login
           </button>
         </a>
@@ -30,7 +29,8 @@
                 class="w-full h-inherit bg-white border-2 border-blue-700 hover:bg-gray-300 focus:outline-0 focus:ring-0 font-medium rounded-lg text-sm px-2 py-2 text-center inline-flex items-center justify-between "
                 type="button">
           <span class="w-[20%] ">
-            <img src="../../static/assets/images/user.png" alt="user-pfp" class="pfp border-2 rounded-full border-blue-bootstrap h-[1.68] w-[1.68] object-cover">
+            <img src="../../static/assets/images/user.png" alt="user-pfp"
+                 class="pfp border-2 rounded-full border-blue-bootstrap h-[1.68] w-[1.68] object-cover">
           </span>
           <span class="username w-[70%] box-border px-2 mr-2 overflow-hidden text-blue-bootstrap font-bold text-[16px]"
                 th:text="${session.loginedUser.accountName}"></span>
@@ -44,14 +44,9 @@
           <ul class="absolute w-inherit rounded-lg border-2 border-blue-700 bg-white"
               aria-labelledby="dropdownDividerButton">
             <li class="relative">
-              <a href="/profile"
+              <a href="/worker-Profile"
                  class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300 rounded-t-lg"><i
                       class="fa fa-user mr-2"></i>Profile</a>
-            </li>
-            <li class="relative">
-              <a href="/order-history"
-                 class="block font-bold text-[16px] text-blue-bootstrap px-4 py-2 hover:bg-gray-300"><i
-                      class="fa fa-history mr-2"></i>Order History</a>
             </li>
             <li class="relative">
 
@@ -75,8 +70,7 @@
       <ul class="list-none transition-all duration-300 ease-linear overflow-hidden links lg:h-0 md:h-0 xl:h-0">
         <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i
                 class="fa fa-user mr-2"></i>Profile</a></li>
-        <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i
-                class="fa fa-history mr-2"></i>Orders
+        <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i class="fa fa-history mr-2"></i>Orders
           History</a></li>
         <li class="text-white"><a href="#" class="px-[1rem] py-[0.5rem] block"><i
                 class="fa fa-sign-out mr-2"></i>Logout</a></li>
@@ -85,23 +79,24 @@
   </nav>
 </header>
 <script>
-        const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
-        const dropDownMenu = document.querySelector('#dropdownDivider')
-        const navBar = document.querySelector('.navBar')
-        const profileBtn = document.querySelector('.profile-btn')
+  const dropDownMenuBtn = document.querySelector('#dropdownDividerButton')
+  const dropDownMenu = document.querySelector('#dropdownDivider')
+  const navBar = document.querySelector('.navBar')
+  const profileBtn = document.querySelector('.profile-btn')
 
-        const logo = document.querySelector('.logo');
-        const logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
-        const logoFontSize = parseFloat(logoStyle);
+  const logo = document.querySelector('.logo');
+  const logoStyle = window.getComputedStyle(logo, null).getPropertyValue('font-size');
+  const logoFontSize = parseFloat(logoStyle);
 
-        let navBarHeight = navBar.getBoundingClientRect().height;
+  let navBarHeight = navBar.getBoundingClientRect().height;
 
-        profileBtn.style.height = `${logoFontSize}px`
+  profileBtn.style.height = `${logoFontSize}px`
 
-        dropDownMenuBtn.addEventListener('click', () => {
-          console.log("clicked")
-          dropDownMenu.classList.toggle("hidden")
-        })
+  dropDownMenuBtn.addEventListener('click', () => {
+    console.log("clicked")
+    dropDownMenu.classList.toggle("hidden")
+  })
 
 </script>
+
 </html>

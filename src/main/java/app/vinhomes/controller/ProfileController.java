@@ -54,6 +54,9 @@ public class ProfileController {
     @Autowired
     BlobContainerClient blobContainerClient;
 
+    @Autowired
+    private PageController pageController;
+
     @Value("${phone.max_customer_phonenumber}")
     private int maxPhoneNumber;
 
@@ -185,4 +188,96 @@ public class ProfileController {
         request.getSession(false).setAttribute("loginedUser", account);
         return ResponseEntity.ok(Url);
     }
+
+    @PostMapping(value = "/workerProfile/{userId}")
+    public ResponseEntity<CreateErrorCatcher> changeWorkerProfile(@RequestBody JsonNode request, @PathVariable("userId") Long userId, HttpServletRequest request_) throws Exception {
+        int roleCustomer = 1;
+        System.out.println("get in update account customer");
+        System.out.println(request.asText());
+        Account acc = accountRepository.findById(userId).get();
+        Phone fone = null;
+        String username, email, phonenumber, date, phoneId;
+        phoneId = request.get("txtPhoneId").asText();
+        fone = phoneRepository.findById(Long.parseLong(phoneId)).get();
+        List<String> addressArr = new ArrayList<>();
+        List<Phone> phoneList = new ArrayList<>();
+        username = request.get("txtUsername") == null ? acc.getAccountName() : request.get("txtUsername").asText().trim();
+        email = request.get("txtEmail") == null ? acc.getEmail() : request.get("txtEmail").asText().trim();
+        date = request.get("txtDate") == null ? acc.getDob().toString() : request.get("txtDate").asText().trim();
+        phonenumber = request.get("txtPhone") == null ? fone.getNumber() : request.get("txtPhone").asText().trim();
+//        Long phoneID;
+        username = acc.getAccountName().equals(username) ? "" : errorChecker.checkUsername(username);
+        email = acc.getEmail().equals(email) ? "" : errorChecker.checkEmail(email);
+        date = errorChecker.checkDate(date);
+        phonenumber = fone.getNumber().equals(phonenumber) ? "" : errorChecker.checkPhoneNumber(phonenumber);
+
+        System.out.println("yes check okkk");
+        // role = 1 is worker
+        List<String> errorList = new ArrayList<>();
+        errorList.add(username);
+        errorList.add(email);
+        errorList.add(date);
+        errorList.add(phonenumber);
+        CreateErrorCatcher error = new CreateErrorCatcher(username, email, date, phonenumber);
+        // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        for (String message : errorList) {
+            if (message.isEmpty()) {
+                continue;
+            } else {
+                System.out.println("bad request");
+                System.out.println(message);
+                // return error;
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+        }
+        //
+        //
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            username = request.get("txtUsername") == null ? acc.getAccountName() : request.get("txtUsername").asText().trim();
+            email = request.get("txtEmail") == null ? acc.getEmail() : request.get("txtEmail").asText().trim();
+            date = request.get("txtDate") == null ? acc.getDob().toString() : request.get("txtDate").asText().trim();
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            phonenumber = request.get("txtPhone") == null ? fone.getNumber() : request.get("txtPhone").asText().trim();
+            System.out.println(phonenumber);
+
+            System.out.println("yes work");
+
+            acc.setAccountName(username);
+            acc.setEmail(email);
+            acc.setDob(localDate);
+            fone.setNumber(phonenumber);
+
+
+            phoneRepository.save(fone);
+            accountRepository.save(acc);
+
+            phoneList = phoneRepository.findByAccountId(acc.getAccountId());
+            System.out.println(phoneList);
+            System.out.println("save account");
+
+        } catch (DateTimeException e) {
+            System.out.println("cant parse date");
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+        System.out.println("okk, SAVE SUCCESS");
+        if (request_.getSession(false) != null) {
+            HttpSession session = request_.getSession(false);
+            if (session.getAttribute("loginedUser") != null) {
+                session.setAttribute("loginedUser", acc);
+            }
+            if (session.getAttribute("phone") != null) {
+                session.setAttribute("phone", phoneList);
+            }
+        }
+        error = new CreateErrorCatcher(username, email, date, phonenumber);
+        pageController.updateSessionAccount(request_);
+        return ResponseEntity.status(HttpStatus.OK).body(error);
+    }
+
 }
+

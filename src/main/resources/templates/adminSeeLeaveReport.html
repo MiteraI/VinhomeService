@@ -1,190 +1,16 @@
-<!--<!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeLeaf.org">
-
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-
-    <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../static/tailwind/font.css">
-    <link rel="stylesheet" href="../static/tailwind/index.css">
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-
-<body>
-    <header th:replace="~{./fragments/adminHeader.html}"></header>
-
-    </div>
-    <div class="container" id="leave-list">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Reason</th>
-                    <th>File</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="tbody-see-all-leave-report">
-
-            </tbody>
-        </table>
-    </div>
-    <script>
-        fetch('/api/leave-report')
-            .then(response => response.json())
-            .then(data => {
-                let output = '';
-                data.forEach(item => {
-                    const leaveReport = item['leaveReport'];
-                    const account = item['account'];
-
-                    const firstName = account['firstName'];
-                    const lastName = account['lastName'];
-                    const startDate = leaveReport['startTime'];
-                    const endDate = leaveReport['endTime'];
-                    const reason = leaveReport['reason'];
-                    const link = leaveReport['fileURL'];
-                    // const file = leaveReport['file'];
-
-                    output += `
-                        <tr>
-                          <td>${firstName}</td>
-                          <td>${lastName}</td>
-                          <td>${startDate}</td>
-                          <td>${endDate}</td>
-                          <td>${reason}</td>
-
-                            <td th:if="${link != null}"><a href="${link}">Link</a></td>
-                            <td>
-                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
-                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
-                            </td>
-                        </tr>
-                      `;
-                });
-
-                document.getElementById('tbody-see-all-leave-report').innerHTML = output;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-    </script>
-    <script>
-        function approveLeave(leaveReportId) {
-            performAction('api/leave-report/update', leaveReportId, 1); // Assuming 1 represents the 'approve' status
-        }
-
-        function rejectLeave(leaveReportId) {
-            performAction('api/leave-report/update', leaveReportId, 2); // Assuming 0 represents the 'reject' status
-        }
-
-        function performAction(url, leaveReportId, status) {
-            // Perform AJAX request to your controller
-            fetch(url, {
-                method: 'POST', // or 'GET' based on your server-side implementation
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ leaveReportId: leaveReportId, status: status })
-            })
-                .then(data => {
-                    if (data.status === 200) {
-                        console.log(data.text());
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-    </script>
-    <script>
-        // const eventSource = new EventSource('/sse');
-
-        eventSource.addEventListener('open', function (event) {
-            console.log(event);
-            console.log('SSE connection established');
-        });
-
-        eventSource.addEventListener('error', function (event) {
-            if (event.readyState === EventSource.CLOSED) {
-                console.log('SSE connection closed');
-            } else {
-                console.error('Error occurred in SSE connection:', event);
-            }
-        });
-
-        eventSource.addEventListener('leaveReport', function (event) {
-            const leaveReportDetail = JSON.parse(event.data);
-            const leaveReport = leaveReportDetail['leaveReport'];
-            const account = leaveReportDetail['account'];
-            const firstName = account['firstName'];
-            const lastName = account['lastName'];
-            const startDate = leaveReport['startTime'];
-            const endDate = leaveReport['endTime'];
-            const reason = leaveReport['reason'];
-            const link = leaveReport['fileURL'];
-            // const file = leaveReport['file'];
-            const newRow = document.createElement('tr');
-            newRow.innerHTML += `
-                          <td>${firstName}</td>
-                          <td>${lastName}</td>
-                          <td>${startDate}</td>
-                          <td>${endDate}</td>
-                          <td>${reason}</td>
-
-                            <td th:if="${link != null}"><a href="${link}">Link</a></td>
-                            <td>
-                              <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
-                              <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
-                            </td>
-                      `;
-            document.getElementById('tbody-see-all-leave-report').appendChild(newRow);
-            window.addEventListener('unload', function () {
-                eventSource.close();
-            });
-        });
-    </script>
-
-    <script>
-        document.getElementById("see-leave-report").addEventListener("click", function () {
-            localStorage.removeItem('unreadCount');
-            fetch("/sse", {
-                method: 'POST'
-            })
-                .then(res => {
-                    if (res.status === 200) {
-                    }
-                })
-        })
-    </script>
-</body>
-
-</html>-->
-
 <!DOCTYPE>
 <html lang="en" xmlns:th="http://thymeLeaf.org" class="w-[100%] h-full">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leave Report Management</title>
+    <title>Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
 
     <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../static/tailwind/font.css">
@@ -193,63 +19,87 @@
 </head>
 
 <body>
-    <header th:replace="~{./fragments/adminHeader.html}"></header>
-    <div class="container px-3 mt-3">
-
-        <table class="tableLeaveReport table-auto worker-table block" data-sort-order="desc" id="leave-list">
-            <thead>
-                <tr class="bg-black">
-                    <th id="heading-id-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
-                        <span class="heading capitalize text-white">First Name</span>
-                    </th>
-
-                    <th id="heading-email-w" class="table-heading py-3 asc text-center">
-                        <span class="heading capitalize text-white">Last Name</span>
-                    </th>
-
-                    <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
-                        <span class="heading capitalize text-white">Start Date</span>
-                    </th>
-
-                    <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
-                        <span class="heading capitalize text-white">End Date</span>
-                    </th>
-
-                    <!-- <th id="heading-lastname-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
-                                        onclick='sortByLastname(3)'>
-                                        <span class="heading capitalize text-white">lastname</span>
-                                    </th> -->
-
-                    <th id="heading-dob-w" class="table-heading py-3 asc text-center">
-                        <span class="heading capitalize text-white">Reason</span>
-                    </th>
-
-                    <th id="heading-status-w" class="table-heading py-3 asc text-center">
-                        <span class="heading capitalize text-white">File</span>
-                    </th>
-
-                    <th class="table-heading py-3 text-center">
-                        <span class="capitalize text-white">Action</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="tbody-see-all-leave-report">
-
-            </tbody>
-        </table>
+<header th:replace="~{./fragments/adminHeader.html}"></header>
+<div class="confirmPicContainer fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center z-100 hidden"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="flex justify-center items-center" style="height: 90%; width: 60%;">
+        <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
+             class="confirmImg w-100 h-100 object-fit-contain">
     </div>
+    <div role="button" class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2">Close</div>
+</div>
 
-    <div th:replace="~{./adminUpdateWorker.html}"></div>
 
-    <script>
+<div class="container px-3 mt-3">
+
+    <table class="tableLeaveReport table-auto worker-table block" id="leave-list">
+        <thead>
+        <tr class="bg-black">
+            <th id="heading-id-w" class="table-heading py-3 asc text-center">
+                <span class="heading capitalize text-white">Full Name</span>
+            </th>
+
+            <!-- <th id="heading-email-w" class="table-heading py-3 asc text-center">
+                <span class="heading capitalize text-white">Last Name</span>
+            </th> -->
+
+            <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
+                <span class="heading capitalize text-white">Start Date</span>
+            </th>
+
+            <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
+                <span class="heading capitalize text-white">End Date</span>
+            </th>
+
+            <!-- <th id="heading-lastname-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                                onclick='sortByLastname(3)'>
+                                <span class="heading capitalize text-white">lastname</span>
+                            </th> -->
+
+            <th id="heading-dob-w" class="table-heading py-3 asc text-center">
+                <span class="heading capitalize text-white">Reason</span>
+            </th>
+
+            <!-- <th id="heading-status-w" class="table-heading py-3 asc text-center">
+                <span class="heading capitalize text-white">File</span>
+            </th> -->
+
+            <th class="table-heading py-3 text-center">
+                <span class="capitalize text-white">Action</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="tbody-see-all-leave-report">
+
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{./viewReasonForm.html}"></div>
+
+<script>
         const tableHeading = document.querySelectorAll('.table-heading')
 
         const workerTable = document.querySelector('.tableLeaveReport')
 
         const workerTableLength = workerTable.getBoundingClientRect().width
         const widthForEachColumn = parseInt(workerTableLength / tableHeading.length + 10)
+        const reasonForm = document.querySelector('.reasonForm')
+        const uId = reasonForm.querySelector('.uId')
+        const uName = reasonForm.querySelector('.uName')
+        const uEmail = reasonForm.querySelector('.uEmail')
+        const uReason = reasonForm.querySelector('.uReason')
+        const clickableImageName = reasonForm.querySelector('.clickAbleImageName')
+        const confirmImg = document.querySelector('.confirmImg')
+        const confirmPicContainer = document.querySelector('.confirmPicContainer')
+        const closeBtn = document.querySelector('.closeBtn')
+
+        const rejectBtn = reasonForm.querySelector('.rejectBtn')
+        const approveBtn = reasonForm.querySelector('.approveBtn')
+
         let workerStatusDict = null
         let updateBtn = ""
+        let leaveReportDict = {}
 
         console.log(workerTableLength)
 
@@ -269,58 +119,103 @@
             i++
         })
 
+                approveBtn.addEventListener('click', () => {
+            approveLeave(uId.value, approveBtn)
+        })
 
+        rejectBtn.addEventListener('click', () => {
+            rejectLeave(uId.value, rejectBtn)
+        })
 
-        fetch('/api/leave-report')
-            .then(response => response.json())
-            .then(data => {
-                let output = '';
-                data.forEach(item => {
-                    const leaveReport = item['leaveReport'];
-                    const account = item['account'];
+        function closeReasonForm() {
+            reasonForm.classList.toggle('hidden')
+        }
+        closeBtn.addEventListener('click', () => {
+            confirmPicContainer.classList.add('hidden')
+            reasonForm.classList.remove('hidden')
+        })
 
-                    const firstName = account['firstName'];
-                    const lastName = account['lastName'];
-                    const startDate = leaveReport['startTime'];
-                    const endDate = leaveReport['endTime'];
-                    const reason = leaveReport['reason'];
-                    const link = leaveReport['fileURL'];
-                    // const file = leaveReport['file'];
+        function openReasonForm(id) {
+            uId.value = leaveReportDict[id].leaveReport.leaveReportId
+            uName.value = leaveReportDict[id].account.accountName
+            uEmail.value = leaveReportDict[id].account.email
+            uReason.value = leaveReportDict[id].leaveReport.reason
 
-                    output += `
+            if (leaveReportDict[id].leaveReport.fileURL != null) {
+                clickableImageName.classList.add("hover:text-blue-600", "hover:underline", "cursor-pointer")
+                clickableImageName.innerHTML = "Click to see the image"
+                clickableImageName.addEventListener('click', () => {
+                    confirmImg.src = leaveReportDict[id].leaveReport.fileURL
+                    confirmPicContainer.classList.remove('hidden')
+                    reasonForm.classList.add('hidden')
+                })
+            }
+            else {
+                clickableImageName.innerHTML = "No image available"
+                clickableImageName.classList.remove("hover:text-blue-600", "hover:underline", "cursor-pointer")
+            }
+            reasonForm.classList.toggle('hidden')
+        }
+
+        function printRow() {
+            fetch('/api/leave-report')
+                .then(response => response.json())
+                .then(data => {
+                    leaveReportDict = data.reduce((report, cur) => {
+                        report[cur.leaveReport.leaveReportId] = cur
+                        return report
+                    }, {})
+                    console.log(leaveReportDict)
+                    document.getElementById('tbody-see-all-leave-report').innerHTML = ''
+                    let output = '';
+                    data.forEach(item => {
+                        const leaveReport = item['leaveReport'];
+                        const account = item['account'];
+
+                        const firstName = account['firstName'];
+                        const lastName = account['lastName'];
+                        const startDate = leaveReport['startTime'];
+                        const endDate = leaveReport['endTime'];
+                        const reason = leaveReport['reason'];
+                        const link = leaveReport['fileURL'];
+                        // const file = leaveReport['file'];
+
+                        output += `
                                 <tr class="even:bg-[#c4c4c4] odd:bg-[#fffff4]">
-                                  <td class="py-3 text-center">${firstName}</td>
-                                  <td class="py-3 text-center">${lastName}</td>
+                                  <td class="py-3 text-center">${firstName} ${lastName}</td>
                                   <td class="py-3 text-center">${startDate}</td>
                                   <td class="py-3 text-center">${endDate}</td>
-                                  <td class="py-3 text-center">${reason}</td>
+                                  <td class="py-3 text-center"><button class="bg-slate-200 rounded-lg py-2 px-3" onclick="openReasonForm('${leaveReport['leaveReportId']}')">view</button></td>
 
-                                    <td class="py-3 text-center" th:if="${link != null}"><a href="${link}">Link</a></td>
                                     <td class="py-3 text-center">
-                                      <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
-                                      <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
+                                      <button class="bg-green-300 rounded-lg py-2 px-3 hover:bg-green-400 disabled:bg-green-50 disabled:cursor-default" onclick="approveLeave('${leaveReport['leaveReportId']}', this)">Approve</button>
+                                      <button class="bg-red-300 rounded-lg py-2 px-3 hover:bg-red-400 disabled:bg-red-50 disabled:cursor-default" onclick="rejectLeave('${leaveReport['leaveReportId']}', this)">Reject</button>
                                     </td>
                                 </tr>
                               `;
+                    });
+
+                    document.getElementById('tbody-see-all-leave-report').innerHTML = output;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
 
-                document.getElementById('tbody-see-all-leave-report').innerHTML = output;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-
-
-        function approveLeave(leaveReportId) {
-            performAction('api/leave-report/update', leaveReportId, 1); // Assuming 1 represents the 'approve' status
         }
 
-        function rejectLeave(leaveReportId) {
-            performAction('api/leave-report/update', leaveReportId, 2); // Assuming 0 represents the 'reject' status
+        printRow()
+
+        function approveLeave(leaveReportId, btn) {
+            btn.disabled = true
+            performAction('api/leave-report/update', leaveReportId, 1, btn); // Assuming 1 represents the 'approve' status
         }
 
-        function performAction(url, leaveReportId, status) {
+        function rejectLeave(leaveReportId, btn) {
+            btn.disabled = true
+            performAction('api/leave-report/update', leaveReportId, 2, btn); // Assuming 0 represents the 'reject' status
+        }
+
+        function performAction(url, leaveReportId, status, btn) {
             // Perform AJAX request to your controller
             fetch(url, {
                 method: 'POST', // or 'GET' based on your server-side implementation
@@ -332,15 +227,17 @@
                 .then(data => {
                     if (data.status === 200) {
                         console.log(data.text());
-                        window.location.reload();
+                        reasonForm.classList.add('hidden')
+                        printRow()
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+                btn.disabled = false
         }
     </script>
-    <script>
+<script>
         // const eventSource = new EventSource('/sse');
 
         eventSource.addEventListener('open', function (event) {
@@ -357,7 +254,10 @@
         });
 
         eventSource.addEventListener('leaveReport', function (event) {
+            let newKey = null
             const leaveReportDetail = JSON.parse(event.data);
+            leaveReportDict[leaveReportDetail.leaveReport.leaveReportId] = leaveReportDetail
+            console.log(leaveReportDict)
             const leaveReport = leaveReportDetail['leaveReport'];
             const account = leaveReportDetail['account'];
             const firstName = account['firstName'];
@@ -370,16 +270,13 @@
             const newRow = document.createElement('tr');
             newRow.setAttribute("class", "even:bg-[#c4c4c4] odd:bg-[#fffff4]")
             newRow.innerHTML += `
-                                          <td class="py-3 text-center">${firstName}</td>
-                                  <td class="py-3 text-center">${lastName}</td>
-                                  <td class="py-3 text-center">${startDate}</td>
-                                  <td class="py-3 text-center">${endDate}</td>
-                                  <td class="py-3 text-center">${reason}</td>
-
-                                    <td class="py-3 text-center" th:if="${link != null}"><a href="${link}">Link</a></td>
-                                    <td class="py-3 text-center">
-                                      <button class="btn btn-success" onclick="approveLeave('${leaveReport['leaveReportId']}')">Approve</button>
-                                      <button class="btn btn-danger" onclick="rejectLeave('${leaveReport['leaveReportId']}')">Reject</button>
+                                          <td class="py-3 text-center">${firstName} ${lastName}</td>
+                                          <td class="py-3 text-center">${startDate}</td>
+                                          <td class="py-3 text-center">${endDate}</td>
+                                          <td class="py-3 text-center"><button class="bg-slate-200 rounded-lg py-2 px-3" onclick="openReasonForm('${leaveReport['leaveReportId']}')">view</button></td>
+                                     <td class="py-3 text-center">
+                                      <button class="bg-green-300 rounded-lg py-2 px-3 hover:bg-green-400 disabled:bg-green-50 disabled:cursor-default" onclick="approveLeave('${leaveReport['leaveReportId']}', this)">Approve</button>
+                                      <button class="bg-red-300 rounded-lg py-2 px-3 hover:bg-red-400 disabled:bg-red-50 disabled:cursor-default" onclick="rejectLeave('${leaveReport['leaveReportId']}', this)">Reject</button>
                                     </td>
                                       `;
             document.getElementById('tbody-see-all-leave-report').appendChild(newRow);
