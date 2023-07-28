@@ -94,14 +94,14 @@ public class VNpayController extends HttpServlet {
         if(getDay.equals("0")||getTimeId.equals("0")||getPaymentId.equals("0")||getDay.equals("0")){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR please enter all fields");
         }
-        if(orderService.checkDayValidForOrder(getDay,getTimeId)){
+        if(orderService.checkDayValidForOrder(getDay,getTimeId) == false){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR inappropriate timeslot, rules are\n " +
                     "1. order has to be made atlease "+DAY_POLICY_ORDER+ " before\n" +
                     "2. If in the same day or tomorrow, then atleast "+HOUR_POLICY_ORDER+ " early\n" +
                     "3. order must not be placed after "+ DAY_PRIOR_ORDER+" days count from current day");
         }
         Account getAccount = securityService.getUserThroughAuth(authentication);
-        if(orderService.checkIfReachMaxOrder(getAccount.getAccountId()) == false){
+        if(orderService.checkIfReachMaxOrder(getAccount.getAccountId())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR reach max "+ ORDER_MAX+" order a day");
         }
         if(phonenumber.equals("")){
