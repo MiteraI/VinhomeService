@@ -1,5 +1,6 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.common.CheckSpecialChar;
 import app.vinhomes.entity.order.ServiceCategory;
 import app.vinhomes.entity.worker.LeaveReport;
 import app.vinhomes.repository.order.ServiceCategoryRepository;
@@ -51,6 +52,13 @@ public class ServiceCategoryController {
             ServiceCategory serviceCategory = serviceCategoryService.createService(categoryName, description);
             Long categoryId = serviceCategory.getServiceCategoryId();
             String originalFilename = file.getOriginalFilename();
+            String [] splitOriginalName = originalFilename.split("\\.");
+            for (String check : splitOriginalName) {
+                boolean checkSpecialCharacter = CheckSpecialChar.isValidFileName(check);
+                if (!checkSpecialCharacter) {
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not give a special character in file name");
+                }
+            }
             String newFilename = "";  // Specify the new file name here
             String extension = StringUtils.getFilenameExtension(originalFilename);
             newFilename = categoryId + "." + extension;
@@ -111,6 +119,13 @@ public class ServiceCategoryController {
             updateCate.setServiceCategoryName(categoryName);
             updateCate.setDescription(categoryDescriptionStr);
             String originalFilename = file.getOriginalFilename();
+            String [] splitOriginalName = originalFilename.split("\\.");
+            for (String check : splitOriginalName) {
+                boolean checkSpecialCharacter = CheckSpecialChar.isValidFileName(check);
+                if (!checkSpecialCharacter) {
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not give a special character in file name");
+                }
+            }
             String newFilename = "";  // Specify the new file name here
             String extension = StringUtils.getFilenameExtension(originalFilename);
             newFilename = categoryId + "." + extension;

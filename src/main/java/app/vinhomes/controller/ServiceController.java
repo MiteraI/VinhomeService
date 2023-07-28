@@ -1,5 +1,6 @@
 package app.vinhomes.controller;
 
+import app.vinhomes.common.CheckSpecialChar;
 import app.vinhomes.entity.Order;
 import app.vinhomes.entity.order.Service;
 import app.vinhomes.entity.order.ServiceCategory;
@@ -84,11 +85,30 @@ public class ServiceController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Please fill all field to create new Service");
         }
         double price = Double.parseDouble(priceStr);
-        int numOfPeople = Integer.parseInt(numOfPeopleStr);
+        int numOfPeople;
+        try {
+            numOfPeople = Integer.parseInt(numOfPeopleStr);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The number of the employee have to be an integer");
+        }
         Long serviceCategoryId = Long.parseLong(categoryId);
+
+        if (price < 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not input negative integer in price");
+        }
+        if (numOfPeople < 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not input negative integer in number of people");
+        }
 
         // Handel Image
         String originalFilename = image.getOriginalFilename();
+        String [] splitOriginalName = originalFilename.split("\\.");
+        for (String check : splitOriginalName) {
+            boolean checkSpecialCharacter = CheckSpecialChar.isValidFileName(check);
+            if (!checkSpecialCharacter) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not give a special character in file name");
+            }
+        }
         String newFilename = "";  // Specify the new file name here
         String extension = StringUtils.getFilenameExtension(originalFilename);
         newFilename = serviceName + "_" + categoryId + "." + extension;
@@ -148,6 +168,9 @@ public class ServiceController {
         if (numOfPeopleStr.isEmpty()) {
             numOfPeople = service.getNumOfPeople();
         }
+        else if (numOfPeopleStr.contains(".")) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not input a double in number of people");
+        }
         else if (!numOfPeopleStr.isEmpty()) {
             numOfPeople = Integer.parseInt(numOfPeopleStr);
         }
@@ -160,6 +183,13 @@ public class ServiceController {
         else if (!categoryId.isEmpty()) {
             serviceCategory = serviceCategoryRepository.findByServiceCategoryId(Long.parseLong(categoryId));
         }
+        if (price < 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not input negative integer in price");
+        }
+        if (numOfPeople < 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not input negative integer in number of people");
+        }
+
         service.setServiceCategory(serviceCategory);
         service.setServiceName(serviceName);
         service.setPrice(price);
@@ -167,6 +197,13 @@ public class ServiceController {
         service.setNumOfPeople(numOfPeople);
         if (image != null) {
             String originalFilename = image.getOriginalFilename();
+            String [] splitOriginalName = originalFilename.split("\\.");
+            for (String check : splitOriginalName) {
+                boolean checkSpecialCharacter = CheckSpecialChar.isValidFileName(check);
+                if (!checkSpecialCharacter) {
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not give a special character in file name");
+                }
+            }
             String newFilename = "";  // Specify the new file name here
             String extension = StringUtils.getFilenameExtension(originalFilename);
             newFilename = serviceName + "_" + categoryId + "." + extension;

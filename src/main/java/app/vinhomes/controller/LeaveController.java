@@ -1,6 +1,7 @@
 package app.vinhomes.controller;
 
 
+import app.vinhomes.common.CheckSpecialChar;
 import app.vinhomes.common.SessionUserCaller;
 import app.vinhomes.entity.Account;
 
@@ -20,6 +21,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Pattern;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -125,6 +127,13 @@ public class LeaveController {
 
             if (days >= 10 && leaveDaysLimit > daysOffInt) {
                 String originalFilename = file.getOriginalFilename();
+                String [] splitOriginalName = originalFilename.split("\\.");
+                for (String check : splitOriginalName) {
+                    boolean checkSpecialCharacter = CheckSpecialChar.isValidFileName(check);
+                    if (!checkSpecialCharacter) {
+                        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Can not give a special character in file name");
+                    }
+                }
                 String newFilename = "";  // Specify the new file name here
                 String extension = StringUtils.getFilenameExtension(originalFilename);
                 newFilename = startDateStr + "_" + workerStatus.getWorkerStatusId() + "." + extension;
@@ -197,15 +206,13 @@ public class LeaveController {
         }
     }
 
-    @PostMapping(value = "/leave-report/cancel/{id}")
-    public ResponseEntity cancelReport (@PathVariable("id") String leaveReportIdStr) {
-        Long leaveReportId = Long.parseLong(leaveReportIdStr);
+    @PostMapping(value = "/leave-report/cancel")
+    public ResponseEntity cancelReport (@RequestParam("leaveReportId") Long leaveReportId) {
         LeaveReport leaveReport = leaveReportRepository.findByLeaveReportId(leaveReportId);
         leaveReport.setStatus(4);
         leaveReportRepository.save(leaveReport);
         return ResponseEntity.ok("Cancel report");
     }
-
 //    @GetMapping (value = "/leave-report/{id}")
 //    public List<LeaveReport> seeAllLeaveReports (@PathVariable("id") Long workerId, HttpServletRequest request, @RequestParam String status ) {
 //        // cai RequestParam nay t dinh de xai combobox thi xem dc cai report process accept hay la reject
