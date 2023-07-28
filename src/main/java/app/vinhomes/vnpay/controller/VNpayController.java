@@ -101,7 +101,7 @@ public class VNpayController extends HttpServlet {
                     "3. order must not be placed after "+ DAY_PRIOR_ORDER+" days count from current day");
         }
         Account getAccount = securityService.getUserThroughAuth(authentication);
-        if(orderService.checkIfReachMaxOrder(getAccount.getAccountId()) == false){
+        if(orderService.checkIfReachMaxOrder(getAccount.getAccountId())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR reach max "+ ORDER_MAX+" order a day");
         }
         if(phonenumber.equals("")){
