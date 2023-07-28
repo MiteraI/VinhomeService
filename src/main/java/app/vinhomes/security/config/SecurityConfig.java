@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .tokenValiditySeconds(60 * 60)
                         .key("anythingyoulike")
                 )
+
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
 //                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAnyAuthority("1","2"))
@@ -130,6 +131,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/mail/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/accessDenied").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/forget_Account").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/createAccountAPI/forgetAccountMethod").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/services/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/resetpassword/**").permitAll())
+
                 .authorizeHttpRequests(any -> any.anyRequest().authenticated())
 
 

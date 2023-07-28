@@ -19,10 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @org.springframework.stereotype.Service
 public class AccountService {
@@ -134,7 +131,7 @@ public class AccountService {
     }
     public String changePassword_ForgetAccountService(Account account){
         try{
-            String generatedPassword = "123";/// can be replaced with some random generated password
+            String generatedPassword = UUID.randomUUID().toString().substring(0,20);/// can be replaced with some random generated password
             account.setPassword(passwordEncoder.encode(generatedPassword));
             accountRepository.save(account);
             return generatedPassword;

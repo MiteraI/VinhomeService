@@ -32,4 +32,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByCreateTimeBetween(LocalDateTime start, LocalDateTime end);
     List<Order> findAllByCreateTimeBetweenAndStatus(LocalDateTime start, LocalDateTime end, OrderStatus status);
+    List<Order> findAllByCreateTimeBetweenAndAccount_AccountId(LocalDateTime start, LocalDateTime end, Long accountId);
 }

@@ -89,11 +89,8 @@ public class Account implements UserDetails {
 
     @OneToOne(
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JoinColumn(
-            name = "address_id",
-            referencedColumnName = "address_id"
+            fetch = FetchType.EAGER,
+            mappedBy = "account"
     )
 
     private Address address;
@@ -126,8 +123,10 @@ public class Account implements UserDetails {
 
     @OneToMany(
             mappedBy = "account",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
     @JsonManagedReference
@@ -180,3 +179,4 @@ public class Account implements UserDetails {
         }
     }
 }
+

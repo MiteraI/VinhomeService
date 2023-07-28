@@ -20,8 +20,6 @@ import lombok.*;
 @Builder
 public class WorkerStatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "status_id")
     private Long workerStatusId;
 
     private int status;
@@ -32,10 +30,10 @@ public class WorkerStatus {
 
     @OneToOne
     @JoinColumn(
-            name = "worker_id",
-            referencedColumnName = "account_id",
-            nullable = false
+            name = "worker_id"
+
     )
+    @MapsId
     @JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
     @JsonIdentityReference(alwaysAsId = true)

@@ -19,6 +19,7 @@ import app.vinhomes.repository.worker.CancelRequestRepository;
 import app.vinhomes.repository.worker.LeaveReportRepository;
 import app.vinhomes.security.email.email_service.EmailService;
 import app.vinhomes.security.esms.otp_service.ESMSservice;
+import app.vinhomes.service.OrderService;
 import app.vinhomes.service.ScheduleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -39,6 +40,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -262,10 +264,25 @@ public class test2 {
         CancelRequest getCancelRequest = cancelRequestRepository.findById(1l).get();
         emailService.sendMailWithTemplate(CANCEL_REQUEST,getCancelRequest);
     }
-
+    @Autowired
+    private OrderService orderService;
+    @Value(value = "${order.policy.max_order_a_day}")
+    private int orderMax;
+    @Test
+    void testBlockToomuchOrderInday(){
+        long userId = 54;
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime getStart = localDate.atStartOfDay();
+        LocalDateTime getEnd = localDate.plusDays(1).atStartOfDay().minusSeconds(1);
+        System.out.println(getStart + "    "+ getEnd);
+        List<Order> getAllOrder = orderRepository.findAllByCreateTimeBetweenAndAccount_AccountId(getStart,getEnd,userId);
+        System.out.println(getAllOrder.size());
+        int size = getAllOrder.size();
+        if(size > orderMax){
+            System.out.println("off limit");
+        }else{
+            System.out.println("good");
+        }
+    }
 }
-
-
-
-
 

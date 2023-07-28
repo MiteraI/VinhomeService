@@ -1,10 +1,9 @@
 package app.vinhomes.entity.customer;
 
+import app.vinhomes.entity.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(
@@ -16,8 +15,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
     private Long address_id;
 
     @Column(name = "block")
@@ -25,4 +22,16 @@ public class Address {
 
     @Column(name = "room")
     private String buildingRoom;
+    @OneToOne(
+            cascade = CascadeType.MERGE
+    )
+    @JoinColumn(
+            name="address_id"
+    )
+    @MapsId
+    @ToString.Exclude
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    private Account account;
 }
+

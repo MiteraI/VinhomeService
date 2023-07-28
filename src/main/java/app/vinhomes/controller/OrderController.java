@@ -108,7 +108,7 @@ public class OrderController {
         Account getAccount = (Account) session.getAttribute("loginedUser");
         getAccount = accountRepository.findById(getAccount.getAccountId()).get();
         session.setAttribute("loginedUser",getAccount);
-        return ResponseEntity.status(HttpStatus.OK).body((Account) session.getAttribute("loginedUser"));
+        return ResponseEntity.status(HttpStatus.OK).body(getAccount);
     }
 
     @GetMapping(value = "/getSession/{option}", produces = MediaType.APPLICATION_JSON_VALUE)

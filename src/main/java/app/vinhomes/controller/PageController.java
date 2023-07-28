@@ -172,7 +172,10 @@ public class PageController {
             System.out.println(session.getId());
             if (session.getAttribute("loginedUser") != null) {
                 System.out.println("PC.getSessionAccount: " + session.getAttribute("loginedUser"));
+                ////minh ////fix //////
                 acc = (Account) session.getAttribute("loginedUser");
+//                acc = accountRepository.findById(acc.getAccountId()).get();
+//                session.setAttribute("loginedUser", acc);
             }
         }
         return acc;
@@ -305,7 +308,6 @@ public class PageController {
     public String checkEmailVerification(HttpServletRequest request, Model model) {
         try {
             //lay tu link bam tu mail
-            Account acc = null;
             System.out.println("inside email Verification");
             String emailTo = request.getParameter("emailTo");
             String tokenValue = request.getParameter("tokenValue");
@@ -318,16 +320,7 @@ public class PageController {
             } else {
                 //TODO : do something after check mail succeses
                 System.out.println(message);
-                acc = accountRepository.findByEmailEquals(emailTo);
-                if (request.getSession(false) != null) {
-                    request.getSession(false).setAttribute("loginedUser", acc);
-                    request.getSession(false).setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
-                    request.getSession(false).setAttribute("address", addressRepository.findByCustomerId(acc.getAccountId()));
-                } else {
-                    request.getSession().setAttribute("loginedUser", acc);
-                    request.getSession().setAttribute("phone", phoneRepository.findByAccountId(acc.getAccountId()));
-                    request.getSession().setAttribute("address", addressRepository.findByCustomerId(acc.getAccountId()));
-                }
+                updateSessionAccount(request);
                 model.addAttribute("statusMessage", "Verified");
                 model.addAttribute("message", "you have been verified, you can now order some services.");
                 model.addAttribute("status", HttpStatus.OK);

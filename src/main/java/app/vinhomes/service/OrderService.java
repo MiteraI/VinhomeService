@@ -50,6 +50,8 @@ public class OrderService {
     private String HOUR_POLICY_ORDER;
     @Value("${order.policy.max_day_prior_to_service}")
     private String DAY_PRIOR_ORDER;
+    @Value(value = "${order.policy.max_order_a_day}")
+    private int ORDER_MAX;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -384,5 +386,19 @@ public class OrderService {
             }
         }
         getList.add(order);
+    }
+    public boolean checkIfReachMaxOrder(Long userId){
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime getStart = localDate.atStartOfDay();
+        LocalDateTime getEnd = localDate.plusDays(1).atStartOfDay().minusSeconds(1);
+        //System.out.println(getStart + "    "+ getEnd);
+        List<Order> getAllOrder = orderRepository.findAllByCreateTimeBetweenAndAccount_AccountId(getStart,getEnd,userId);
+        System.out.println(getAllOrder.size());
+        int size = getAllOrder.size();
+        if(size > ORDER_MAX){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
