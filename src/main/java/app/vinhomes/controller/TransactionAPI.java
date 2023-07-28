@@ -53,29 +53,32 @@ public class TransactionAPI {
         // this return ALOT!!!! careful
         return transactionService.getSingleTransactionInfo(getTransactionId);
     }
+
     @GetMapping(value = "/cancelOrder/refundTransaction/{orderId}")// from client
-    public ResponseEntity<String> cancelOrder(@PathVariable String orderId,HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<String> cancelOrder(@PathVariable String orderId, HttpServletRequest request, HttpServletResponse response) {
         try {
             //String getOrderId = request.getParameter("order_id");
             String getOrderId = orderId;
             boolean checkPolicyRefund = orderService.checkIfOver_2_hourPolicy(getOrderId);
             // true means yes, allow refund
             // false mean no, no refund, only change time, MAYBE
+//            Order getOrder = orderService.getOrderById(Long.parseLong(getOrderId));
+//            Transaction getTransaction = transactionService.getTransactionById(getOrder.getOrderId());
             System.out.println("inside cancel and refund order");
             if (checkPolicyRefund) {
                 boolean check_if_order_legit_for_refund = orderService.checkIfOrderLegitForRefund(orderId);
-                if(check_if_order_legit_for_refund){
+                if (check_if_order_legit_for_refund) {
                     ResponseEntity<String> callingResult = transactionService.refundWithOrderID(getOrderId, request, response);
                     if (callingResult.getStatusCode().is2xxSuccessful()) {
                         Order getOrder = orderService.getOrderById(Long.parseLong(getOrderId));
                         Transaction getTransaction = transactionService.getTransactionById(getOrder.getOrderId());
                         System.out.println("now send mail");
-                        eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getOrder.getAccount(),getTransaction,false));
+                        eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getOrder.getAccount(), getTransaction, false));
                         return ResponseEntity.ok().body(callingResult.getBody().trim());
                     } else {
                         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
                     }
-                }else{
+                } else {
                     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ORDER NOT LEGIT FOR REFUND");
                 }
             } else {
@@ -90,19 +93,20 @@ public class TransactionAPI {
             }
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot find order_id through form, try fix the form");
-        }catch (NumberFormatException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot find order or transaction, something wrong with order id");
+        } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot find order_id through form, try fix the form");
         }
     }
-    @GetMapping(value = "/queryTransaction/{vnpTxnRef}",produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @GetMapping(value = "/queryTransaction/{vnpTxnRef}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> queryVNPAY(@PathVariable String vnpTxnRef, HttpServletRequest request, HttpServletResponse response) {
         System.out.println("inside calling queryVNPAY");
         try {// if admin then this
             System.out.println(vnpTxnRef);
             Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
-            if(getTransaction != null){
+            if (getTransaction != null) {
                 String getStatus = getTransaction.getStatus().toString();
                 ResponseEntity responseEntity = transactionService.queryVNpayWithVnp_txtRef(vnpTxnRef, request, response);
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -116,96 +120,79 @@ public class TransactionAPI {
         }
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transactoin does not exist");
     }
+
     @GetMapping(value = "/admin/refundTransaction/{vnpTxnRef}")
-    public ResponseEntity<String> refundVNPAY(@PathVariable String vnpTxnRef, HttpServletRequest request, HttpServletResponse response){
-        try{
+    public ResponseEntity<String> refundVNPAY(@PathVariable String vnpTxnRef, HttpServletRequest request, HttpServletResponse response) {
+        try {
             System.out.println("inside refund transaction from admin page");
-            ResponseEntity responseQuery = transactionService.queryVNpayWithVnp_txtRef(vnpTxnRef,request,response);
-            if(responseQuery.getStatusCode().is2xxSuccessful()){
-                Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
-                Order getOrder = getTransaction.getOrder();
-                String getQuery = (String) responseQuery.getBody();
-                String getResponseCode = vnPayService.extractResponseCode(getQuery);
-                if(getResponseCode.equals("00")){
-                    String getTransactionStatus = vnPayService.extractTransactionStatusQuery(getQuery);
-                    String getAmount = vnPayService.extractTransactionAmount(getQuery);
-                    String getPaydate = vnPayService.extractTransactionPayDateQuery(getQuery);
-                    if(getTransactionStatus.equals("00")){
-                        Account getAccount = getTransaction.getOrder().getAccount();
-                        String getUsername = getAccount.getAccountName();
-                        int parsedAmount = Integer.parseInt(getAmount);
-                        ResponseEntity callingResult =  vnPayService.refund(vnpTxnRef,getPaydate,parsedAmount / 100,getUsername,request,response);
-                        String getResponseCodeFromRefund = vnPayService.extractResponseCode(callingResult.getBody().toString().trim());
-                        System.out.println("respondCode form refund: "+ getResponseCodeFromRefund);
-                        if(callingResult.getStatusCode().is2xxSuccessful()){
-                            if(getResponseCodeFromRefund.equals("00")){
-                                orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
-                                transactionService.setTransactionStatus(getTransaction, TransactionStatus.REFUNDED);
-                                eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getAccount,getTransaction,false));
-                                return ResponseEntity.status(HttpStatus.OK).body("YES successfully refund this transaction of admin");
-                            }
-                            //todo check lại logic
-                            //orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
-                            //transactionService.setTransactionStatus(getTransaction,TransactionStatus.REFUNDED);
-                            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR cannot refund vnpay, this transaction has already refunded ");
-                        }
-                        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR cannot refund vnpay, try again later: ");
-                    }
-                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction is not valid for refund, this is because this order is cancel by customer");
-                }
-                //return transactionService.refundWithOrderID(getOrder.getOrderId().toString(),request,response);
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR this transaction might not exist on vnpay database");
-            }else{
-                System.out.println("ERROR query: "+ responseQuery.getBody());
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR EXCEPTION IN API");
+
+            Transaction getTransaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
+            Order getOrder = getTransaction.getOrder();
+            String orderId = getOrder.getOrderId().toString().trim();
+            ResponseEntity<String> callingResult = transactionService.refundWithOrderID(orderId, request, response);
+            if (callingResult.getStatusCode().is2xxSuccessful()) {
+                System.out.println("now send mail");
+                eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getOrder.getAccount(), getTransaction, false));
+                return ResponseEntity.ok().body(callingResult.getBody().trim());
+                //todo check lại logic
+                //orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
+                //transactionService.setTransactionStatus(getTransaction,TransactionStatus.REFUNDED);
+//                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR cannot refund vnpay, this transaction has already refunded or something happen ");
+            } else {
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("REFUND REQUEST FAILED, TRY AGAIN");
             }
-        }catch (Exception e){
+
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR EXCEPTION IN API");
         }
     }
+
     @GetMapping(value = "/cancelOrder/getAllInvalidCancelOrder")
     public List<Order> getInvalidCancelOrder() {
         return orderService.getInvalidCancelOrder();
     }
+
     @GetMapping(value = "/getStatus/{vnpTxnRef}")
-    public ResponseEntity<String> getTransactionStatus(@PathVariable String vnpTxnRef){
+    public ResponseEntity<String> getTransactionStatus(@PathVariable String vnpTxnRef) {
         System.out.println("inside getTransactoin Status");
         Transaction getTrasaction = transactionService.getTransactionByVnpTxnRef(vnpTxnRef);
-        if(getTrasaction != null){
+        if (getTrasaction != null) {
             String getStatus = getTrasaction.getStatus().toString();
             return ResponseEntity.status(HttpStatus.OK).body(getStatus);
         }
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("NULL");
 
     }
+
     @GetMapping(value = "/admin/cancelOrder/{orderId}")
-    public ResponseEntity<String> cancelOrderAdmin(@PathVariable String orderId, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<String> cancelOrderAdmin(@PathVariable String orderId, HttpServletRequest request, HttpServletResponse response) {
         SecurityContext getContext = SecurityContextHolder.getContext();
-        if(getContext == null){
+        if (getContext == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERROR unauthorized");
         }
         System.out.println(getContext);
         Authentication getCurrentAuth = getContext.getAuthentication();
-        if(getCurrentAuth == null){
+        if (getCurrentAuth == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERROR cannot get authentication of this account");
         }
         System.out.println(getCurrentAuth);
         SimpleGrantedAuthority getAuth = (SimpleGrantedAuthority) getCurrentAuth.getAuthorities().toArray()[0];
         System.out.println(getAuth.toString());
-        if(getAuth.toString().equals("2") == false){
+        if (getAuth.toString().equals("2") == false) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ERROR account is not valid to do this");
         }
         Order getOrder = orderService.getOrderById(Long.parseLong(orderId));
         String getPayment = getOrder.getPayment().getPaymentName();
         Transaction getTransaction = transactionService.getTransactionById(getOrder.getOrderId());
         System.out.println(getPayment);
-        if(getPayment.equals("COD")){
-            orderService.setOrderStatus(getOrder,OrderStatus.CANCEL);
-            transactionService.setTransactionStatus(getTransaction,TransactionStatus.FAIL);
+        if (getPayment.equals("COD")) {
+            orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
+            transactionService.setTransactionStatus(getTransaction, TransactionStatus.FAIL);
             return ResponseEntity.status(HttpStatus.OK).body("OK cancel cod");
-        }else{
-            return refundVNPAY(getTransaction.getVnpTxnRef(),request,response);
+        } else {
+            return refundVNPAY(getTransaction.getVnpTxnRef(), request, response);
         }
     }
 }

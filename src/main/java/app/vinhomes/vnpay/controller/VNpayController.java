@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -52,11 +53,13 @@ public class VNpayController extends HttpServlet {
     @Value("${order.policy.max_day_prior_to_service}")
     private String DAY_PRIOR_ORDER;
     @Autowired
+    private OrderService orderService;
+    @Value(value = "${order.policy.max_order_a_day}")
+    private int ORDER_MAX;
+    @Autowired
     private TransactionService transactionService;
     @Autowired
     private VNPayService vnpayService;
-    @Autowired
-    private OrderService orderService;
     @Autowired
     private PaymentService paymentService;
     @Autowired
@@ -96,6 +99,10 @@ public class VNpayController extends HttpServlet {
                     "1. order has to be made atlease "+DAY_POLICY_ORDER+ " before\n" +
                     "2. If in the same day or tomorrow, then atleast "+HOUR_POLICY_ORDER+ " early\n" +
                     "3. order must not be placed after "+ DAY_PRIOR_ORDER+" days count from current day");
+        }
+        Account getAccount = securityService.getUserThroughAuth(authentication);
+        if(orderService.checkIfReachMaxOrder(getAccount.getAccountId()) == false){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR reach max "+ ORDER_MAX+" order a day");
         }
         if(phonenumber.equals("")){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR phonenumber is empty, please re-login and try again");
@@ -250,4 +257,6 @@ public class VNpayController extends HttpServlet {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("order id is not a number ");
         }
     }
+
+
 }

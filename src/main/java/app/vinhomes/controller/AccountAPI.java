@@ -5,6 +5,7 @@ import app.vinhomes.event.event_storage.SendEmailOnCreateAccount;
 import app.vinhomes.event.event_storage.SendSmsForgetAccount;
 import app.vinhomes.event.event_storage.SendSmsOnCreateAccount;
 import app.vinhomes.repository.AccountRepository;
+import app.vinhomes.repository.customer.AddressRepository;
 import app.vinhomes.security.authentication.AuthenticationService;
 import app.vinhomes.common.CreateErrorCatcher;
 import app.vinhomes.common.ErrorChecker;
@@ -54,6 +55,8 @@ public class AccountAPI {
     private PhoneService phoneService;
     @Autowired
     private ApplicationEventPublisher eventPublisher;//CreateErrorCatcher
+    @Autowired
+    private AddressRepository addressRepository;
 
     @PostMapping(value = "/createAccountCustomer/{rolenumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAccountForCustomer(@RequestBody JsonNode request,
@@ -113,14 +116,15 @@ public class AccountAPI {
                     .dob(localDate)
                     .role(rolenumber)
                     .accountStatus(1)
-                    .address(addr)
                     .isBlock(false)
                     .imgProfileExtension("")
                     .build();
-
+            addr.setAccount(acc);
+            acc.setAddress(addr);
             Account response = authenticationService.register(acc);
             System.out.println("save account");
 
+            //addressRepository.save(addr);
             phone.setAccount(acc);
             phoneRepository.save(phone);
             System.out.println("save phone");
@@ -136,6 +140,7 @@ public class AccountAPI {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (Exception e) {
             System.out.println("something wrong with saving the account");
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
@@ -236,3 +241,4 @@ public class AccountAPI {
         }
     }
 }
+

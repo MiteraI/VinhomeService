@@ -36,4 +36,11 @@ public class SecurityService {
         }
         return false;
     }
+    public Account getUserThroughAuth(Authentication authentication){
+        Account getAccount = accountService.getCurrentlyLogginAccount(authentication);
+        if(getAccount != null){
+            return getAccount;
+        }
+        return null;
+    }
 }

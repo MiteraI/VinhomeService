@@ -152,7 +152,10 @@ public class ErrorChecker {
             phoneList = phoneRepository.findByNumber(phonenumber);
             if (phoneList.isEmpty() == false) {
                 return "this phone number has already been taken, try other number";
-            } else if (matcher.matches()) {
+            }else if(phonenumber.startsWith("0") == false){
+                return "Phone number must start with 0";
+            }
+            else if (matcher.matches()) {
                 return "";
             } else {
                 return "your phone number should contain only number between 10 and 12 ";

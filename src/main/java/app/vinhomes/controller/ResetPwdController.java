@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping(value = "/api/resetpassword")
 public class ResetPwdController {
     @Autowired
     private AccountRepository accountRepository;
@@ -58,13 +58,5 @@ public class ResetPwdController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your password suck");
         }
     }
-    @GetMapping(value = "/getallsession",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<HttpSession> test(){
-        return customerSessionListener.getActiveSessions();
-    }
 
-    @GetMapping(value = "/testGetPhone",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Phone> test2(){
-        return phoneRepository.findByAccountId(27l);
-    }
 }

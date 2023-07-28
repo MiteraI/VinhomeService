@@ -49,7 +49,7 @@ public class SimpleSuccessHandler implements AuthenticationSuccessHandler {
             username = principal.toString();
         }
         Account account = accountRepository.findByAccountName(username);
-        Address address = addressRepository.findByCustomerId(account.getAccountId());
+        Address address = account.getAddress();
         List<Phone> fone = phoneRepository.findByAccountId(account.getAccountId());
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authorityName = grantedAuthority.getAuthority();
