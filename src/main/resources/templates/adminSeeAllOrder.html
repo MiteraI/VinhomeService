@@ -329,7 +329,7 @@
       var status = await response.status
       var toText = await response.text()
       if (status >= 200 && status <= 200) {
-        alert("success:" + toText);
+        alert("Successfully cancel the order !");
         cancelOrderBtn.classList.add('hidden')
         fetch('/api/order/all')
           .then(response => response.json())
@@ -343,7 +343,7 @@
             console.error('Error:', error);
           });
       } else {
-        alert("fail: " + toText);
+        alert("Fail to cancel the order !");
       }
       cancelOrderBtn.disabled = false
     }
@@ -534,10 +534,10 @@
       var toText = await response.text(); console.log(toText)
       if (status < 200 || status > 300) {
         console.log("refund fail");
-        alert("refund fail: " + toText)
+        alert("Fail to refund the order !")
       } else {
         console.log("refund success");
-        alert("refund success: " + toText)
+        alert("Successfully refund the order !")
       }
       vnp_TransactionStatus.value = 'REFUNDED'
       cancelOrderBtn.classList.add('hidden')
