@@ -261,6 +261,10 @@
             // Get the canvas element and its context
             const canvas = document.getElementById("pieChart");
             const ctx = canvas.getContext("2d");
+            if (totalOrders === 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
 
             // Calculate percentages
             const canceledPercentage = (canceledOrders / totalOrders) * 100;
