@@ -47,12 +47,12 @@
     <section th:each="service: ${services.services}">
       <div class="flex mt-6 rounded-lg border-2 border-blue-300" th:if="${service.status == 1}">
         <div class="w-1/3 px-2 py-2">
-          <img class="rounded-lg w-full h-full object-cover" th:src="@{${service.urlImage}}"
-            style="width: 260px; height: 260px; object-fit: cover;" alt="working" />
+          <img class="rounded-lg w-full h-full object-cover" th:src="@{${service.urlImage}}" style="object-fit: cover;"
+            alt="working" />
         </div>
-        <div class="w-full mx-4 space-y-3 py-2 flex flex-col">
+        <div class="serivceInformation w-full mx-4 space-y-3 py-2 flex flex-col">
           <h1 class="text-2xl font-semibold" th:text="${service != null} ? ${service.serviceName} : ''"></h1>
-          <p class="text-1xl" th:text="${service.description}">
+          <p class="text-1xl text-justify des cursor-pointer" th:text="${service.description}" data-expand="false">
           </p>
           <div th:replace="~{./fragments/rating.html}"></div>
           <div class="price mt-2 text-2xl" th:text="${service != null} ? '₫' + ${service.price} : ''"></div>
@@ -76,6 +76,8 @@
   <script src="../static/js/rating.js"></script>
   <script>
     const price = document.querySelectorAll('.price')
+    const des = document.querySelectorAll('.des')
+    // const serviceInformation = document.querySelectorAll()
     price.forEach(p => {
       let number = parseInt(p.innerHTML.split('₫')[1]);
       let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
@@ -83,6 +85,20 @@
       let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
       p.innerHTML = `₫${formattedNumber}`
     })
+    des.forEach(d => {
+      let shortText = d.textContent.trim().split(' ').slice(0, 30).join(' ') + '...' + `<a class="text-blue-bootstrap text-sm hover underline">show more</a>`
+      let longText = d.textContent.trim() + `<a class="text-blue-bootstrap text-sm hover underline">show less</a>`
+      d.innerHTML = shortText
+      d.addEventListener('click', () => {
+        d.innerHTML = d.getAttribute("data-expand") == "false" ? longText : shortText
+        d.setAttribute("data-expand", d.getAttribute("data-expand") == "false" ? "true" : "false")
+      })
+    })
+
+    function more(des) {
+      console.log("1")
+
+    }
   </script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

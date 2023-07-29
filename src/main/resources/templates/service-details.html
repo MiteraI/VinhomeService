@@ -14,7 +14,7 @@
 
   <section class="mx-48 my-10 flex flex-col space-y-6 rounded-lg border-2 border-black p-8">
     <div class="flex space-x-6">
-      <img th:src="@{${service.urlImage}}" class="w-[250px] h-[250px] rounded-lg object-cover" alt="service's imgage" />
+      <img th:src="@{${service.urlImage}}" class="w-[300px] h-[300px] rounded-lg object-cover" alt="service's imgage" />
       <div class="flex flex-col w-full">
         <h2 class="mb-2 text-xl font-bold" th:text="${service.serviceName}"></h2>
         <p th:if="${service.description != null}" th:text="${service.description}" class="mb-2"></p>
