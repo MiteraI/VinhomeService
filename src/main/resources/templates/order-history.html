@@ -76,9 +76,11 @@
         <div class="flex w-3/6 items-start justify-between">
           <span th:text="${transaction.order.price}  + ' VND'"></span>
           <div class="space-x-5">
-            <button class="rounded-xl bg-yellow-info px-3 py-1">
-              Order Again
-            </button>
+            <a th:href="@{/service/{id}(id=${transaction.order.service.serviceId})}">
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                Order Again
+              </button>
+            </a>
             <a th:href="@{/order-history/{orderId}(orderId=${transaction.order.orderId})}">
               <button class="rounded-xl bg-yellow-info px-3 py-1">
                 View Details
@@ -102,9 +104,11 @@
         <div class="flex w-3/6 items-start justify-between">
           <span th:text="${transaction.order.price}  + ' VND'"></span>
           <div class="space-x-5">
-            <button class="rounded-xl bg-yellow-info px-3 py-1">
-              Order Again
-            </button>
+            <a th:href="@{/service/{id}(id=${transaction.order.service.serviceId})}">
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                Order Again
+              </button>
+            </a>
             <a th:href="@{/order-history/{orderId}(orderId=${transaction.order.orderId})}">
               <button class="rounded-xl bg-yellow-info px-3 py-1">
                 View Details
@@ -226,7 +230,7 @@
         alert("Refunded fail: " + toText.toLowerCase())
       } else {
         console.log("refund success");
-        alert("Refunded successfully " )
+        alert("Refunded successfully ")
         reloadPage()
       }
 

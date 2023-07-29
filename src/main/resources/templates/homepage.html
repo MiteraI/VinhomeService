@@ -40,7 +40,7 @@
 
             <!-- 2 service category -->
             <div class="flex justify-around">
-                <div class="w-2/6 flex-col space-y-6 text-center" th:each="c : ${category}">
+                <div class="w-2/6 flex-col flex space-y-6 text-center" th:each="c : ${category}">
                     <img class="mx-auto  rounded-lg" th:src="@{${c.urlImage}}" alt="cleaning house"
                         style="width: 324px; height: 216px; object-fit: cover;" />
 
@@ -48,12 +48,12 @@
                         th:text="${category != null} ? ${c.serviceCategoryName} : ''"></p>
 
                     <div>
-                        <p th:text="${category != null} ? ${c.description} : ''">
+                        <p th:text="${category != null} ? ${c.description} : ''" class="text-justify">
 
                         </p>
                     </div>
                     <br />
-                    <div>
+                    <div class="flex justify-center items-end flex-1">
                         <a th:href="@{/category-services/{id}(id=${c.serviceCategoryId})}"><button
                                 class="cursor-pointer rounded-xl border-none bg-yellow-info px-8 py-2">
                                 <span class="font-bold">LEARN MORE</span>

@@ -157,27 +157,27 @@ uploadPfpBtn.addEventListener('click', (e) => {
     formData.append('imgSrc', imgSrc);
     formData.append('tmpFileName', tmpFileName);
     axios.post('http://localhost:8080/images/avatar', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     })
-    .then((res) => {
+      .then((res) => {
         console.log(res)
         //CHECK IF STATUS IS 200//
         if (res.status === 200) {
-            console.log('success')
-            imgFileName.innerHTML = 'upload success'
-            imgFileName.classList.add('italic', 'text-green-500')
+          console.log('success')
+          imgFileName.innerHTML = 'upload success'
+          imgFileName.classList.add('italic', 'text-green-500')
         }
         else {
-            console.log('fail')
-            imgFileName.innerHTML = 'upload fail'
-            imgFileName.classList.add('italic', 'text-red-500')
+          console.log('fail')
+          imgFileName.innerHTML = 'upload fail'
+          imgFileName.classList.add('italic', 'text-red-500')
         }
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         console.log(err)
-    })
+      })
 
   }
 
@@ -290,6 +290,20 @@ profileForm.addEventListener('submit', async (e) => {
     userName.innerHTML = placeholderValue[0]
     alert("successfully update profile")
     submitBtn.disabled = false
+
+    errorMassage.forEach(err => {
+      err.classList.add('hidden')
+    })
+
+    profileFormInput.forEach(input => {
+      input.value = ''
+      input.placeholder = placeholderValue[i]
+      i++
+    });
+    i = 0;
+    profileFormInput[2].type = 'text'
+    phoneDropdownContainer.classList.add('hidden')
+    editFormContainer.classList.add('pointer-events-none')
 
   } else if (response.status == 500) {
     error_message = await response.json()
