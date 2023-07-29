@@ -149,6 +149,7 @@
     const closeBtn = document.querySelector('.closeBtn')
     const contactHeading = document.querySelector('.contactHeading')
     const closeOrderTransactionForm = document.querySelector('.closeOrderTransactionForm')
+    const btnGetRefundCustomer = document.querySelector('#btnGetRefundCustomer')
 
     const tableHeading = document.querySelectorAll('.table-heading')
     const transactionFormInput = document.querySelectorAll('.transactionFormInput')
@@ -330,7 +331,9 @@
       var toText = await response.text()
       if (status >= 200 && status <= 200) {
         alert("Successfully cancel the order !");
+        vnp_TransactionStatus.value = 'REFUNDED'
         cancelOrderBtn.classList.add('hidden')
+        btnGetRefundCustomer.classList.add('hidden')
         fetch('/api/order/all')
           .then(response => response.json())
           .then(data => {

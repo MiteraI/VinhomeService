@@ -310,11 +310,6 @@
         updateCategoryBtn.disabled = true
         categoryNameUpdate = document.getElementById("categoryNameUpdate").value
         categoryDescriptionUpdate = document.getElementById("categoryDescriptionUpdate").value
-        if (categoryDescriptionUpdate.trim().split(/\s+/).length > 30) {
-          updateCategoryBtn.disabled = false
-          alert("Please adjust the description of this category to 30 words only !")
-          return
-        }
         var formData = new FormData();
         formData.append("categoryName", categoryNameUpdate);
         formData.append("categoryDescription", categoryDescriptionUpdate);
@@ -366,11 +361,6 @@
       categoryNameStr = document.getElementById('categoryName').value;
       categoryDescriptionStr = document.querySelector('#categoryDescription').value
       fileImage = document.getElementById('imageCategoryCreate').files[0];
-      if (categoryDescriptionStr.trim().split(/\s+/).length > 30) {
-        createCategoryBtn.disabled = false
-        alert("Please adjust the description of this category to 30 words only !")
-        return
-      }
       var formData = new FormData();
       formData.append("categoryName", categoryNameStr);
       formData.append("categoryDescription", categoryDescriptionStr);
