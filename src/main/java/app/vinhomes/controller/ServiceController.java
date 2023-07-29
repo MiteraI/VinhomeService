@@ -75,7 +75,7 @@ public class ServiceController {
     }
 
     @PostMapping (value = "/create")
-    public ResponseEntity<List<Map<String, Object>>> createService(@RequestParam("serviceName") String serviceName,
+    public ResponseEntity<?> createService(@RequestParam("serviceName") String serviceName,
                                                 @RequestParam("category") String categoryId,
                                                 @RequestParam("price") String priceStr,
                                                 @RequestParam("description") String description,
