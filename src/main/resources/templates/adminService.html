@@ -351,6 +351,7 @@
             var image = document.getElementById('image').files[0];
             createServiceBtn.disabled = true
             if (description.trim().split(/\s+/).length > 30) {
+                createServiceBtn.disabled = false
                 alert("Please adjust the description of the service to 30 words only !")
                 return
             }
@@ -628,8 +629,8 @@
             form.addEventListener("submit", function (e) {
                 updateServiceBtn.disabled = true
                 if (des.trim().split(/\s+/).length > 30) {
-                    alert("Please adjust the description of this service to 30 words only !")
                     updateServiceBtn.disabled = false
+                    alert("Please adjust the description of this service to 30 words only !")
                     return
                 }
                 e.preventDefault();
