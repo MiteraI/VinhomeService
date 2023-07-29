@@ -327,7 +327,7 @@
 
 
     async function cancelOrderAdmin(orderId) {
-      cancelOrderBnt.disabled = true
+      cancelOrderBtn.disabled = true
       var response = await fetch(`/transaction/admin/cancelOrder/${orderId}`)
       var status = await response.status
       var toText = await response.text()
