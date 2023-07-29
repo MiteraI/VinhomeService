@@ -210,7 +210,7 @@
         .then((res) => {
           // Get the table element
           const table = document.getElementById("timeTable");
-          data = res.data;
+          data = res.data; console.log(data)
           // Iterate over each API entry
           data.forEach((entry) => {
             const { order, workDay, timeSlot, workers } = entry;
@@ -220,8 +220,10 @@
             const slot = timeSlot.timeSlotId; // Adjust index to match table row index
             // Get the table cell for the specific day and slot
             let cell = table.rows[slot + 1].cells[day];
-            console.log(cell);
             let button = '';
+            let buttonCancel = '';
+
+
             if (workers[0].accountId == loggedInAccount.accountId) {
               button = document.createElement("button");
               button.classList.add("bg-blue-bootstrap", "rounded-lg", "text-white")
@@ -251,8 +253,10 @@
             <br> Phone: ${order.phoneNumber}
             <br> Status: <span class='text-blue-bootstrap'>${order.status}</span>
             <br>`
-              cell.appendChild(button);
-              cell.appendChild(buttonCancel);
+              if (workers[0].accountId == loggedInAccount.accountId) {
+                cell.appendChild(button);
+                cell.appendChild(buttonCancel);
+              }
             } else {
               cell.innerHTML = `Customer: ${order.account.firstName} ${order.account.lastName}
             <br> Service: ${order.service.serviceName}
