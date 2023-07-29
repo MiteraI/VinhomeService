@@ -24,13 +24,13 @@ async function getQueryTransaction(txn, text) {
       if (toJson.vnp_TransactionStatus == "00") {
         console.log(toJson.vnp_Amount)
         console.log(text)
-        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount / 100
         vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
         vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       } else {
         console.log(toJson.vnp_Amount)
         console.log(text)
-        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount / 100
         vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
         vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       }
@@ -38,7 +38,7 @@ async function getQueryTransaction(txn, text) {
       console.log(toJson.vnp_Amount)
       console.log(text)
       refundButton.classList.add('hidden')
-      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount / 100
       vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
       vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
     }
