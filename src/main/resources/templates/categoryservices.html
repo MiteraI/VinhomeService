@@ -44,11 +44,11 @@
     </p>
     <br />
 
-    <section  th:each="service: ${services.services}">
+    <section th:each="service: ${services.services}">
       <div class="flex mt-6 rounded-lg border-2 border-blue-300" th:if="${service.status == 1}">
         <div class="w-1/3 px-2 py-2">
           <img class="rounded-lg w-full h-full object-cover" th:src="@{${service.urlImage}}"
-            style="width: 262px; height: 204px; object-fit: cover;" alt="working" />
+            style="width: 260px; height: 260px; object-fit: cover;" alt="working" />
         </div>
         <div class="w-full mx-4 space-y-3 py-2 flex flex-col">
           <h1 class="text-2xl font-semibold" th:text="${service != null} ? ${service.serviceName} : ''"></h1>

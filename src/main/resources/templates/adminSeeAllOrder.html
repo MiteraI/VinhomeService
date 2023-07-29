@@ -107,9 +107,6 @@
             </th>
             <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">view Detail</span>
             </th>
-            <!-- <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Action</span>
-                </th> -->
-            <!-- <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">Cancel</span></th> -->
           </tr>
         </thead>
         <tbody id="tbody-orders">
@@ -526,7 +523,7 @@
 
     }
 
-    async function getRefundTransaction() {
+    async function getRefundTransaction(btn) {
 
       const txn = transaction_body.querySelector('#transactionId').value
       var response = await fetch("http://localhost:8080/transaction/admin/refundTransaction/" + txn,
@@ -544,6 +541,7 @@
       }
       vnp_TransactionStatus.value = 'REFUNDED'
       cancelOrderBtn.classList.add('hidden')
+      btn.classList.add('hidden')
       fetch('/api/order/all')
         .then(response => response.json())
         .then(data => {
@@ -559,9 +557,6 @@
 
 
   </script>
-
-
-  <!-- <script defer src="../static/js/AdminPublicFunction.js"></script> -->
 </body>
 
 </html>

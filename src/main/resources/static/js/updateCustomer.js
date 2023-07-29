@@ -11,10 +11,6 @@ error_dob = document.getElementById("error-dob")
 error_address = document.getElementById("error-address")
 
 
-
-
-
-
 async function showFullCustomerInfo(AccountID) {
   document.getElementById("update-form").reset();
   document.getElementById("update-form-container").style.display = "block"
