@@ -7,6 +7,7 @@ import app.vinhomes.entity.Transaction;
 import app.vinhomes.entity.order.Schedule;
 import app.vinhomes.entity.order.TimeSlot;
 import app.vinhomes.entity.type_enum.OrderStatus;
+import app.vinhomes.entity.type_enum.TransactionStatus;
 import app.vinhomes.entity.worker.LeaveReport;
 import app.vinhomes.entity.worker.WorkerStatus;
 import app.vinhomes.repository.AccountRepository;
@@ -97,7 +98,10 @@ public class WorkerService {
         TimeSlot timeSlot = schedule.getTimeSlot();
         List<Account> accounts = schedule.getWorkers();
         if (workDate.isEqual(LocalDate.now()) && timeSlot.getStartTime().isBefore(LocalTime.now())) {
-            order.setStatus(OrderStatus.valueOf("SUCCESS"));
+            order.setStatus(OrderStatus.SUCCESS);
+            Transaction getTransaction= transactionRepository.findById(orderId).get();
+            getTransaction.setStatus(TransactionStatus.SUCCESS);
+            transactionRepository.save(getTransaction);
             String originalFilename = image.getOriginalFilename();
             String newFilename = "";  // Specify the new file name here
             String extension = StringUtils.getFilenameExtension(originalFilename);

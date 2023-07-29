@@ -395,7 +395,7 @@ public class OrderService {
         List<Order> getAllOrder = orderRepository.findAllByCreateTimeBetweenAndAccount_AccountId(getStart,getEnd,userId);
         System.out.println(getAllOrder.size());
         int size = getAllOrder.size();
-        if(size > ORDER_MAX){
+        if(size >= ORDER_MAX){
             return true;
         }else{
             return false;
