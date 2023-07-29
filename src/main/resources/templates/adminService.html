@@ -194,7 +194,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="price" class="mb-1">Price</label>
-                        <input type="number" class="form-control" id="price" required>
+                        <input type="number" class="form-control" id="price" min="1" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="des" class="mb-1">Description</label>
@@ -358,11 +358,12 @@
                         console.log('Service created successfully!');
                         // Reset the form
                         // document.getElementById('createServiceForm').reset();
+                        alert("create successfully");
                         window.location.reload();
                     } else {
                         // Handle error response
-
-                        console.log(response.text());
+                        alert("cannot create");
+                        window.location.reload();
                     }
                 })
                 .catch(function (error) {
@@ -503,7 +504,7 @@
 
         // OPEN UPDATE FORM
         function updateForm(serviceId, serviceName, categoryName, price, description, url, numOfPeople, categoryId) {
-
+            this.serviceId = serviceId
             console.log("show update service form")
             for (let i = 0; i < uploadFile.length; i++) {
                 uploadFile[i].value = ''
@@ -537,41 +538,37 @@
                 .catch(err => {
                     console.log(err)
                 })
-            var formData = new FormData();
-
-            const form = document.getElementById("UpdateServiceForm");
-            form.addEventListener("submit", function (e) {
-                updateServiceBtn.disabled = true
-                e.preventDefault();
-                formData.append('description', des);
-                formData.append('serviceName', serviceNameUpdate);
-                formData.append('category', categoryIdUpdate);
-                formData.append('price', priceUpdate);
-                formData.append('numOfPeople', numOfPeopleUpdate);
-                formData.append('image', urlUpdate);
-                fetch("/api/services/" + serviceId + "/update", {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(res => {
-                        if (res.status === 200) {
-                            window.location.reload();
-                        }
-                        else {
-                            window.location.reload();
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-                updateServiceBtn.disabled = false
-            })
-            // function update(serviceId) {
-            //     console.log(serviceId);
-            //     console.log(data);
-            //
-            // }
         }
+        var formData = new FormData();
+        const form = document.getElementById("UpdateServiceForm");
+        form.addEventListener("submit", function (e) {
+            updateServiceBtn.disabled = true
+            e.preventDefault();
+            formData.append('description', des);
+            formData.append('serviceName', serviceNameUpdate);
+            formData.append('category', categoryIdUpdate);
+            formData.append('price', priceUpdate);
+            formData.append('numOfPeople', numOfPeopleUpdate);
+            formData.append('image', urlUpdate);
+            fetch("/api/services/" + serviceId + "/update", {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        alert("update sucessfully");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("cannot update");
+                        window.location.reload();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            updateServiceBtn.disabled = false
+        })
 
 
 

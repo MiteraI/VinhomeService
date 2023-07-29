@@ -33,7 +33,7 @@
         <p>Time cancel <span class="text-blue-bootstrap" th:text="${cancelRequest.timeCancel}"></span></p>
         <p th:text="'Reason: ' + ${cancelRequest.reason}">new </p>
         <a th:href="${cancelRequest.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${cancelRequest.fileURL != null} ? 'File Link' : '' "></a>
-        <button onclick="cancel(this.value)" th:value="${cancelRequest.cancelRequestId}">Cancel Request</button>
+        <button onclick="cancel(this.value)" th:value="${cancelRequest.cancelRequestId}" style="background-color: red; color: white; border: 2px solid darkred; padding: 10px 20px; border-radius: 4px; cursor: pointer">Cancel Request</button>
         </br>
       </div>
     </div>

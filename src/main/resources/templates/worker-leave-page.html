@@ -65,6 +65,7 @@
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
           <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
           </br>
+          <button onclick="cancel(this.value)" th:value="${leaveReport.leaveReportId}" style="background-color: red; color: white; border: 2px solid darkred; padding: 10px 20px; border-radius: 4px; cursor: pointer">Cancel Leave Report</button>
         </div>
       </div>
     </div>
@@ -167,6 +168,31 @@
       fetchData();
     })
 
+  </script>
+  <script>
+    function cancel (leaveId) {
+      const formData = new FormData();
+      formData.append("leaveReportId", leaveId);
+      fetchData(formData);
+    }
+    async function fetchData(formData) {
+      try {
+        const response = await fetch("api/leave-report/cancel", {
+          method: 'POST',
+          body: formData
+        });
+        const dataNoti = await response.text();
+        if (response.status === 200) {
+          alert(dataNoti);
+          window.location.reload();
+        }
+        else{
+          alert(dataNoti)
+        }
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    }
   </script>
 </body>
 
