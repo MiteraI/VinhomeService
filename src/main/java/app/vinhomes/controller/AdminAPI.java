@@ -357,9 +357,9 @@ public class AdminAPI {
     }
 
     @GetMapping(value = "/getAccountInfo/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Account getAccountById(@PathVariable String ID) {
+    public Account getAccountById(@PathVariable long ID) {
         System.out.println("inside get Account info");
-        Account account = accountRepository.findById(Long.parseLong(ID)).get();
+        Account account = accountRepository.findById(ID).get();
         return account;
     }
 

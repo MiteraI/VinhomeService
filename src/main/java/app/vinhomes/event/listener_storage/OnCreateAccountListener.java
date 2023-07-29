@@ -55,7 +55,7 @@ public class OnCreateAccountListener {
             OTPResponseStatus OTP = otpService.generateOTPCode_Message(getPhone.getNumber());
             if(OTP.getStatus().equals(EnumOTPStatus.CREATED)){
                 System.out.println("in sending sms :"+ getPhone.getNumber());
-                //ESMSService.sendGetJSON(getPhone.getNumber().trim(),OTP.getMessage());
+                ESMSService.sendGetJSON(getPhone.getNumber().trim(),OTP.getMessage());
                 return true;
             }else{
                 System.out.println("ERROR sending sms ");
