@@ -32,19 +32,20 @@
     <form id="submit-leave-form" class="space-y-2 my-6 p-4" enctype="multipart/form-data">
       <div class="px-10">
         <label for="startDate">Start Date:</label>
-        <input type="date" class="border-2 border-black rounded-lg" id="startDate" required>
+        <input type="date" class="formInput border-2 border-black rounded-lg" id="startDate" required>
       </div>
       <div class="px-10">
         <label for="endDate">End Date:</label>
-        <input type="date" class="border-2 border-black rounded-lg" id="endDate" required>
+        <input type="date" class="formInput border-2 border-black rounded-lg" id="endDate" required>
       </div>
       <div class="px-10">
         <p for="content">Reason:</p>
-        <textarea class="w-full border-2 border-black rounded-lg p-4" id="content" rows="4" required></textarea>
+        <textarea class="formInput w-full border-2 border-black rounded-lg p-4" id="content" rows="4"
+          required></textarea>
       </div>
       <div class="px-10">
         <label for="file">Upload Related File:</label>
-        <input type="file" class="form-control-file" id="file" name="file">
+        <input type="file" class="formInput form-control-file" id="file" name="file">
       </div>
       <div class="flex justify-center space-x-6">
         <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg"
@@ -61,11 +62,14 @@
       <div class="flex p-4 space-x-6">
         <div class="w-2/6">
           <p>Start from: <span class="text-blue-bootstrap" th:text="${leaveReport.startTime}"></span> to <span
-                  class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
+              class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap"
+            th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
           </br>
-          <button onclick="cancel(this.value)" th:value="${leaveReport.leaveReportId}" style="background-color: red; color: white; border: 2px solid darkred; padding: 10px 20px; border-radius: 4px; cursor: pointer">Cancel Leave Report</button>
+          <button onclick="cancel(this.value)" th:value="${leaveReport.leaveReportId}"
+            style="background-color: red; color: white; border: 2px solid darkred; padding: 10px 20px; border-radius: 4px; cursor: pointer">Cancel
+            Leave Report</button>
         </div>
       </div>
     </div>
@@ -76,9 +80,10 @@
       <div class="flex p-4 space-x-6">
         <div class="w-2/6">
           <p>Start from: <span class="text-blue-bootstrap" th:text="${leaveReport.startTime}"></span> to <span
-                  class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
+              class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap"
+            th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
         </div>
       </div>
     </div>
@@ -89,9 +94,10 @@
       <div class="flex p-4 space-x-6">
         <div class="w-2/6">
           <p>Start from: <span class="text-blue-bootstrap" th:text="${leaveReport.startTime}"></span> to <span
-                  class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
+              class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap"
+            th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
         </div>
       </div>
     </div>
@@ -102,9 +108,10 @@
       <div class="flex p-4 space-x-6">
         <div class="w-2/6">
           <p>Start from: <span class="text-blue-bootstrap" th:text="${leaveReport.startTime}"></span> to <span
-                  class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
+              class="text-blue-bootstrap" th:text="${leaveReport.endTime}"></span></p>
           <p th:text="'Reason: ' + ${leaveReport.reason}">new </p>
-          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap" th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
+          <a th:href="${leaveReport.fileURL}" target="_blank" class="text-blue-bootstrap"
+            th:text="${leaveReport.fileURL != null} ? 'File Link' : '' "></a>
         </div>
       </div>
     </div>
@@ -132,8 +139,10 @@
       reason = this.value;
     });
 
+    const formDisplay = document.querySelector('#form-display')
+    const formInput = document.querySelectorAll('.formInput')
     const submitLeaveForm = document.getElementById("submit-leave-form");
-    submitLeaveForm.addEventListener('submit', function (e) {
+    submitLeaveForm.addEventListener('submit', async function (e) {
       e.preventDefault();
       document.getElementById("submit-leave").disabled = true
       const formData = new FormData();
@@ -147,30 +156,32 @@
         formData.append('file', file);
       }
       console.log(formData)
-      async function fetchData() {
-        try {
-          const response = await fetch("/api/leave-report/create", {
-            method: 'POST',
-            body: formData
-          });
-          const dataNoti = await response.text();
-          if (response.status === 201) {
-            alert(dataNoti);
-            window.location.reload();
-          } else {
-            alert(dataNoti);
-          }
-        } catch (error) {
-          console.log("Error: ", error);
+      try {
+        const response = await fetch("/api/leave-report/create", {
+          method: 'POST',
+          body: formData
+        });
+        const dataNoti = await response.text();
+        console.log(response.status)
+        if (response.status === 201 || response.status !== 406) {
+          alert("create leave report successfully");
+          formInput.forEach(input => input.value = '')
+          formDisplay.style.display = 'none'
+          window.location.reload()
         }
-        document.getElementById("submit-leave").disabled = false
+        if (response.status === 406) {
+          alert(dataNoti);
+        }
+      } catch (error) {
+        console.log("Error: ", error);
       }
-      fetchData();
+      document.getElementById("submit-leave").disabled = false
+
     })
 
   </script>
   <script>
-    function cancel (leaveId) {
+    function cancel(leaveId) {
       const formData = new FormData();
       formData.append("leaveReportId", leaveId);
       fetchData(formData);
@@ -186,7 +197,7 @@
           alert(dataNoti);
           window.location.reload();
         }
-        else{
+        else {
           alert(dataNoti)
         }
       } catch (error) {

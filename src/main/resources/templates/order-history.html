@@ -41,11 +41,11 @@
         </div>
         <div class="w-2/6">
           <p th:text="${transaction.order.service.serviceName}"></p>
-          <p th:text="${transaction.order.createTime}"></p>
+          <p th:text="${transaction.order.createTime}" class="createTime"></p>
           <p>Status:<span class="text-blue-bootstrap" th:text="' ' + ${transaction.order.status}"></span></p>
         </div>
         <div class="flex w-3/6 items-start justify-between">
-          <span th:text="${transaction.order.price} + ' VND'"></span>
+          <span th:text="'₫' + ${transaction.order.price}" class="price"></span>
           <div class="space-x-5">
             <button class="rounded-xl bg-red-cancel px-3 py-1"
               th:onclick="callCancelService([[${transaction.order.orderId}]])">Cancel</button>
@@ -70,15 +70,17 @@
         </div>
         <div class="w-2/6">
           <p th:text="${transaction.order.service.serviceName}"></p>
-          <p th:text="${transaction.order.createTime}"></p>
+          <p th:text="${transaction.order.createTime}" class="createTime"></p>
           <p>Status:<span class="text-green-success" th:text="' ' + ${transaction.order.status}"></span></p>
         </div>
         <div class="flex w-3/6 items-start justify-between">
-          <span th:text="${transaction.order.price}  + ' VND'"></span>
+          <span th:text="'₫' + ${transaction.order.price}" class="price"></span>
           <div class="space-x-5">
-            <button class="rounded-xl bg-yellow-info px-3 py-1">
-              Order Again
-            </button>
+            <a th:href="@{/service/{id}(id=${transaction.order.service.serviceId})}">
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                Order Again
+              </button>
+            </a>
             <a th:href="@{/order-history/{orderId}(orderId=${transaction.order.orderId})}">
               <button class="rounded-xl bg-yellow-info px-3 py-1">
                 View Details
@@ -96,15 +98,17 @@
         </div>
         <div class="w-2/6">
           <p th:text="${transaction.order.service.serviceName}"></p>
-          <p th:text="${transaction.order.createTime}"></p>
+          <p th:text="${transaction.order.createTime}" class="createTime"></p>
           <p>Status:<span class="text-red-cancel" th:text="' ' + ${transaction.order.status}"></span></p>
         </div>
         <div class="flex w-3/6 items-start justify-between">
-          <span th:text="${transaction.order.price}  + ' VND'"></span>
+          <span th:text="'₫' + ${transaction.order.price}" class="price"></span>
           <div class="space-x-5">
-            <button class="rounded-xl bg-yellow-info px-3 py-1">
-              Order Again
-            </button>
+            <a th:href="@{/service/{id}(id=${transaction.order.service.serviceId})}">
+              <button class="rounded-xl bg-yellow-info px-3 py-1">
+                Order Again
+              </button>
+            </a>
             <a th:href="@{/order-history/{orderId}(orderId=${transaction.order.orderId})}">
               <button class="rounded-xl bg-yellow-info px-3 py-1">
                 View Details
@@ -117,6 +121,8 @@
   </section>
   <footer th:replace="~{./fragments/footer.html}"></footer>
   <script>
+    const price = document.querySelectorAll('.price')
+    const createTime = document.querySelectorAll('.createTime')
     const pendingOrderDisplay = document.getElementsByClassName("pending");
     const cancelledOrderDisplay = document.getElementsByClassName("cancelled");
     const completedOrderDisplay = document.getElementsByClassName("completed");
@@ -154,6 +160,17 @@
         div.style.display = "none";
       }
     };
+    price.forEach(p => {
+      let number = parseInt(p.innerHTML.split('₫')[1]);
+      let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+      let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+      p.innerHTML = `₫${formattedNumber}`
+    })
+    createTime.forEach(time => {
+      time.innerHTML = time.innerHTML.split("T")[0]
+    })
+
     let changeCancelledDisplay = () => {
       filterBar.classList.add("bg-red-cancel");
       filterBar.classList.remove("bg-green-success");
@@ -226,7 +243,7 @@
         alert("Refunded fail: " + toText.toLowerCase())
       } else {
         console.log("refund success");
-        alert("Refunded successfully " )
+        alert("Refunded successfully ")
         reloadPage()
       }
 

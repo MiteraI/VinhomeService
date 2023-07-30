@@ -4,12 +4,6 @@ var vnp_TransactionStatus = document.getElementById("vnp_TransactionStatus")
 const transaction_body = document.getElementById("TRANSACTIONBODY")
 const warning_COD = document.getElementById("WARNING_COD")
 const refundButton = document.getElementById("btnGetRefundCustomer")
-//const queryString = window.location.search;
-//const getVnpTxnRef = new URLSearchParams(queryString).get('vnpTxnRef'); console.log(getVnpTxnRef)
-
-
-
-
 
 async function getQueryTransaction(txn, text) {
   if (txn.startsWith("admin") || txn.toLowerCase() == "NULL".toLowerCase()) {
@@ -28,33 +22,27 @@ async function getQueryTransaction(txn, text) {
   if (status >= 200 && status <= 300) {
     if (toJson.vnp_ResponseCode == "00") {
       if (toJson.vnp_TransactionStatus == "00") {
-        // alert("yes get transaction Success");
         console.log(toJson.vnp_Amount)
         console.log(text)
-        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : formatMoney(toJson.vnp_Amount / 100)
         vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
         vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       } else {
         console.log(toJson.vnp_Amount)
         console.log(text)
-        // alert("yes get transaction cancel")
-        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : formatMoney(toJson.vnp_Amount / 100)
         vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
         vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
-        // refundButton.disabled = true;
       }
     } else {
       console.log(toJson.vnp_Amount)
       console.log(text)
-      // alert("fail to get transaction, this might be the transaction is not exist or pre cancel")
       refundButton.classList.add('hidden')
-      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount
+      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : formatMoney(toJson.vnp_Amount / 100)
       vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
       vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
-      // refundButton.disabled = true;
     }
   } else {
-    // alert("fail to get transaction")
     transaction_body.style.display = "none";
     warning_COD.style.display = "block";
     refundButton.classList.add('hidden')
@@ -89,4 +77,16 @@ function getAdminCustomerPage() {
   console.log("inside return main page")
   window.location.href = "/see-all-order-by-admin";
 }
+
+function formatMoney(money) {
+  let number = parseInt(money);
+  let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+  let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+
+  return `₫${formattedNumber}`
+}
+
+
+
 

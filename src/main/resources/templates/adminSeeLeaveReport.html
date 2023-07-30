@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave Report Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
 
     <script src="https://kit.fontawesome.com/097aba0852.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../static/tailwind/font.css">
@@ -19,65 +19,65 @@
 </head>
 
 <body>
-<header th:replace="~{./fragments/adminHeader.html}"></header>
-<div class="confirmPicContainer fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center z-100 hidden"
-     style="background-color: rgba(0, 0, 0, 0.5);">
-    <div class="flex justify-center items-center" style="height: 90%; width: 60%;">
-        <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
-             class="confirmImg w-100 h-100 object-fit-contain">
+    <header th:replace="~{./fragments/adminHeader.html}"></header>
+    <div class="confirmPicContainer fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center z-100 hidden"
+        style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="flex justify-center items-center" style="height: 90%; width: 60%;">
+            <img src="../static/assets/images/Keanu-Reeves-5939c06.jpg" alt=""
+                class="confirmImg w-100 h-100 object-fit-contain">
+        </div>
+        <div role="button" class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2">Close</div>
     </div>
-    <div role="button" class="closeBtn bg-red-400 text-white rounded-lg text-center w-25 py-2 mt-2">Close</div>
-</div>
 
 
-<div class="container px-3 mt-3">
+    <div class="container px-3 mt-3">
 
-    <table class="tableLeaveReport table-auto worker-table block" id="leave-list">
-        <thead>
-        <tr class="bg-black">
-            <th id="heading-id-w" class="table-heading py-3 asc text-center">
-                <span class="heading capitalize text-white">Full Name</span>
-            </th>
+        <table class="tableLeaveReport table-auto worker-table block" id="leave-list">
+            <thead>
+                <tr class="bg-black">
+                    <th id="heading-id-w" class="table-heading py-3 asc text-center">
+                        <span class="heading capitalize text-white">Full Name</span>
+                    </th>
 
-            <!-- <th id="heading-email-w" class="table-heading py-3 asc text-center">
+                    <!-- <th id="heading-email-w" class="table-heading py-3 asc text-center">
                 <span class="heading capitalize text-white">Last Name</span>
             </th> -->
 
-            <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
-                <span class="heading capitalize text-white">Start Date</span>
-            </th>
+                    <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
+                        <span class="heading capitalize text-white">Start Date</span>
+                    </th>
 
-            <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
-                <span class="heading capitalize text-white">End Date</span>
-            </th>
+                    <th id="heading-firstname-w" class="table-heading py-3 asc text-center cursor-pointer select-none">
+                        <span class="heading capitalize text-white">End Date</span>
+                    </th>
 
-            <!-- <th id="heading-lastname-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
+                    <!-- <th id="heading-lastname-w" class="table-heading py-3 asc text-center cursor-pointer select-none"
                                 onclick='sortByLastname(3)'>
                                 <span class="heading capitalize text-white">lastname</span>
                             </th> -->
 
-            <th id="heading-dob-w" class="table-heading py-3 asc text-center">
-                <span class="heading capitalize text-white">Reason</span>
-            </th>
+                    <th id="heading-dob-w" class="table-heading py-3 asc text-center">
+                        <span class="heading capitalize text-white">Reason</span>
+                    </th>
 
-            <!-- <th id="heading-status-w" class="table-heading py-3 asc text-center">
+                    <!-- <th id="heading-status-w" class="table-heading py-3 asc text-center">
                 <span class="heading capitalize text-white">File</span>
             </th> -->
 
-            <th class="table-heading py-3 text-center">
-                <span class="capitalize text-white">Action</span>
-            </th>
-        </tr>
-        </thead>
-        <tbody id="tbody-see-all-leave-report">
+                    <th class="table-heading py-3 text-center">
+                        <span class="capitalize text-white">Action</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody-see-all-leave-report">
 
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 
-<div th:replace="~{./viewReasonForm.html}"></div>
+    <div th:replace="~{./viewReasonForm.html}"></div>
 
-<script>
+    <script>
         const tableHeading = document.querySelectorAll('.table-heading')
 
         const workerTable = document.querySelector('.tableLeaveReport')
@@ -119,7 +119,7 @@
             i++
         })
 
-                approveBtn.addEventListener('click', () => {
+        approveBtn.addEventListener('click', () => {
             approveLeave(uId.value, approveBtn)
         })
 
@@ -188,8 +188,8 @@
                                   <td class="py-3 text-center"><button class="bg-slate-200 rounded-lg py-2 px-3" onclick="openReasonForm('${leaveReport['leaveReportId']}')">view</button></td>
 
                                     <td class="py-3 text-center">
-                                      <button class="bg-green-300 rounded-lg py-2 px-3 hover:bg-green-400 disabled:bg-green-50 disabled:cursor-default" onclick="approveLeave('${leaveReport['leaveReportId']}', this)">Approve</button>
-                                      <button class="bg-red-300 rounded-lg py-2 px-3 hover:bg-red-400 disabled:bg-red-50 disabled:cursor-default" onclick="rejectLeave('${leaveReport['leaveReportId']}', this)">Reject</button>
+                                        <button class="bg-red-300 rounded-lg py-2 px-3 hover:bg-red-400 disabled:bg-red-50 disabled:cursor-default" onclick="rejectLeave('${leaveReport['leaveReportId']}', this)">Reject</button>
+                                        <button class="bg-green-300 rounded-lg py-2 px-3 hover:bg-green-400 disabled:bg-green-50 disabled:cursor-default" onclick="approveLeave('${leaveReport['leaveReportId']}', this)">Approve</button>
                                     </td>
                                 </tr>
                               `;
@@ -217,6 +217,7 @@
 
         function performAction(url, leaveReportId, status, btn) {
             // Perform AJAX request to your controller
+            var alertString = ''
             fetch(url, {
                 method: 'POST', // or 'GET' based on your server-side implementation
                 headers: {
@@ -226,6 +227,8 @@
             })
                 .then(data => {
                     if (data.status === 200) {
+                        alertString = status === 2 ? 'Successfully reject' : 'Successfully approve'
+                        alert(alertString)
                         console.log(data.text());
                         reasonForm.classList.add('hidden')
                         printRow()
@@ -234,10 +237,10 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-                btn.disabled = false
+            btn.disabled = false
         }
     </script>
-<script>
+    <script>
         // const eventSource = new EventSource('/sse');
 
         eventSource.addEventListener('open', function (event) {

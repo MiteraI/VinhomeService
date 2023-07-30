@@ -24,17 +24,18 @@
         <h1 class="px-8 py-4 font-bold text-xl">Order Service</h1>
       </div>
       <div class="p-8 space-y-2">
-        <p>Service name: <span>House cleaning</span></p>
-        <p>Price: <span>100$</span></p>
+        <input type="hidden" th:value="${session.loginedUser != null} ? 1 : 0" class="checkSession">
+        <p>Service name: <span class="serviceName">House cleaning</span></p>
+        <p>Price: <span class="price">100$</span></p>
         <label for="timeSlot">Time Slot:</label>
         <div id="timeSlot"></div>
         <label for="payment">Payment:</label>
         <div id="payment"></div>
-        <label for="phonenumber">Phone Number: </label>
-        <div id="phonenumber"></div>
+        <label for="phonenumber" th:if="${session.loginedUser}">Phone Number: </label>
+        <div id="phonenumber" th:if="${session.loginedUser}"></div>
       </div>
 
-      
+
       <div class="px-8 pb-8">
         <label for="date">Date: </label>
         <input class="border-2" type="date" id="date" name="day" />
@@ -54,6 +55,7 @@
   <script>
     const orderForm = document.getElementById("order-form");
     const cancelBtn = document.getElementById("cancel-btn");
+    const checkSession = document.querySelector('.checkSession')
 
     const requestBody = {
       timeId: 0,
@@ -134,16 +136,19 @@
           requestBody.phonenumberId = data[0].phoneId;
         })
 
-
     };
 
 
 
 
 
-    orderForm.addEventListener("submit",async (e) => {
+    orderForm.addEventListener("submit", async (e) => {
       // Retrieve the selected radio button value
       e.preventDefault();
+      if (checkSession.value == 0) {
+        window.location.href = "/login"
+      }
+
       const selectedTimeSlot = document.querySelector(
         'input[name="timeSlot"]:checked'
       ).value;
@@ -169,30 +174,30 @@
       let toText = await response.text();
       console.log(status)
       console.log(toText)
-      if(status == 200){
+      if (status == 200) {
 
-        if(toText === "COD"){
+        if (toText === "COD") {
           alert("Successfully created order")
           console.log("COD success")
           window.location.href = "/order-history"
-        }else if(toText.includes("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html") == false){
+        } else if (toText.includes("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html") == false) {
           window.location.href = "/login"
         }
-        else{
+        else {
           alert("Successfully created order")
           window.location.replace(toText)
         }
-      }else{
+      } else {
         console.log("Fail");
-        alert("Fail in ordering: "+toText);
+        alert("Fail in ordering: " + toText);
       }
-      
+
     });
 
     const orderBtns = Array.from(document.getElementsByClassName("order-btn"));
     for (var i = 0; i < orderBtns.length; i++) {
       orderBtns[i].addEventListener("click", function () {
-        displayForm();
+        displayForm(this.parentElement.parentElement.querySelector('.price').innerHTML, this.parentElement.parentElement.querySelector('.serviceName').innerHTML);
         const inputValue = this.parentNode.querySelector(
           'input[type="hidden"]'
         ).value;
@@ -200,8 +205,12 @@
         // You can perform further actions with the input value here
       });
     }
-    const displayForm = () => {
+    const displayForm = (money, name) => {
+      const price = orderForm.querySelector('.price')
+      const serviceName = orderForm.querySelector('.serviceName')
       console.log('display');
+      price.innerHTML = money
+      serviceName.innerHTML = name
       orderForm.style.display =
         orderForm.style.display === "none" ? "block" : "none";
     };

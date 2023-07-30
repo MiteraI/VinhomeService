@@ -155,6 +155,20 @@
             cursor: default;
             opacity: 0.5;
         }
+
+        #dropdownDivider ul li:hover {
+            background-color: #D1D5DB;
+        }
+
+        #dropdownDivider ul li:first-child:hover {
+            border-top-right-radius: 0.3rem;
+            border-top-left-radius: 0.3rem;
+        }
+
+        #dropdownDivider ul li:last-child:hover {
+            border-bottom-right-radius: 0.3rem;
+            border-bottom-left-radius: 0.3rem;
+        }
     </style>
 </head>
 
@@ -198,7 +212,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="des" class="mb-1">Description</label>
-                        <textarea type="text" class="form-control" id="des" required></textarea>
+                        <textarea rows="5" type="text" class="form-control" id="des" required></textarea>
                     </div>
                     <div class="form-group mb-3">
                         <label for="numOfPeople" class="mb-1">Number Of people</label>
@@ -257,7 +271,7 @@
             </div>
             <div class="col-12">
                 <label for="des" class="form-label">Description</label>
-                <textarea class="form-control" id="description"></textarea>
+                <textarea rows="5" class="form-control" id="description"></textarea>
             </div>
             <div class="col-12">
                 <label for="numOfPeopleUpdate" class="form-label">Number of worker</label>
@@ -328,16 +342,16 @@
 
         })
         document.getElementById('createServiceForm').addEventListener('submit', function (event) {
-            createServiceBtn.disabled = true
             event.preventDefault(); // Prevent form submission
-
-            // Get form values
             var serviceName = document.getElementById('serviceName').value;
             var categoryId = document.getElementById('category').value;
             var price = document.getElementById('price').value;
             var description = document.getElementById('des').value;
             var numOfPeople = document.getElementById('numOfPeople').value;
             var image = document.getElementById('image').files[0];
+            createServiceBtn.disabled = true
+
+            // Get form values
 
             // Create form data object
             var formData = new FormData();
@@ -355,22 +369,95 @@
                 .then(function (response) {
                     if (response.ok) {
                         // Handle successful response
+                        alert(`Successfully create ${serviceName} service !`)
                         console.log('Service created successfully!');
                         // Reset the form
                         // document.getElementById('createServiceForm').reset();
-                        alert("create successfully");
-                        window.location.reload();
+                        createServiceBtn.disabled = false
+                        return response.json().then(data => {
+                            document.querySelector(".service").innerHTML = ''
+                            let output = '';
+                            let serviceCount = 0;
+                            data.forEach(item => {
+                                if (serviceCount % 2 === 0) {
+                                    // Start a new row every two services
+                                    output += '<div class="row justify-content-center">';
+                                }
+
+                                const service = item['service'];
+                                const serviceId = service['serviceId'];
+                                const serviceName = service['serviceName'];
+                                const category = item['category'];
+                                const categoryName = category['serviceCategoryName'];
+                                const categoryId = category['serviceCategoryId'];
+                                const price = formatMoney(service['price']);
+                                const description = service['description'] !== null ? service['description'] : '';
+                                const status = service['status'];
+                                const url = service['urlImage'];
+                                const numOfPeople = service['numOfPeople'];
+                                output += `
+                                <div class="col-sm-6 service-card">
+                                    <div class="card" style="width: 100%; height:100%;">
+                                        <img src="${url}" class="card-img-top" style="height: 300px">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">${serviceName}</h5>
+                                            <p class="card-text">${description}</p>
+                                            <div class="d-flex flex-column flex-grow-1 justify-content-end">
+                                            <p>Category: ${categoryName}</p>
+                                            <p>Price: ${price}</p>
+                                            <div class="d-flex">
+                                            <a href="#" class="btn btn-primary me-2" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
+                                            
+                                            `
+
+                                if (status === 1) {
+                                    output +=
+                                        `<a href="#" class="btn btn-primary" onclick="setStatus(0, '${serviceId}')">Active</a>
+                            </div>`
+                                }
+                                else {
+                                    output +=
+                                        `<a href="#" class="btn btn-primary" onclick="setStatus(1, '${serviceId}')">Inactive</a>
+                            </div>`
+                                }
+                                output +=
+                                    `
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                if (serviceCount % 2 !== 0 || serviceCount === Object.keys(data).length - 1) {
+                                    // Close the row at the end of each pair or when it's the last service
+                                    output += '</div>';
+                                }
+
+                                serviceCount++;
+
+                                document.querySelector(".service").innerHTML = output;
+                            });
+                            for (let i = 0; i < uploadFile.length; i++) {
+                                uploadFile[i].value = ''
+                                clickableImgName[i].innerHTML = ''
+
+                            }
+                            document.querySelectorAll('.form-control').forEach(form => form.value = "")
+                            document.getElementById("createServiceFormContainer").classList.add('d-none')
+                            window.location.reload()
+                        })
                     } else {
+                        createServiceBtn.disabled = false
                         // Handle error response
-                        alert("cannot create");
-                        window.location.reload();
+                        console.log(response.text());
+                        throw new Error()
                     }
+
                 })
                 .catch(function (error) {
                     // Handle network error
+                    createServiceBtn.disabled = false
                     console.log('Network error:', error);
                 });
-            createServiceBtn.disabled = false
         });
 
         document.getElementById("cancelCreateService").addEventListener("click", function () {
@@ -400,33 +487,39 @@
                     const category = item['category'];
                     const categoryName = category['serviceCategoryName'];
                     const categoryId = category['serviceCategoryId'];
-                    const price = service['price'];
+                    const price = formatMoney(service['price']);
                     const description = service['description'] !== null ? service['description'] : '';
                     const status = service['status'];
                     const url = service['urlImage'];
                     const numOfPeople = service['numOfPeople'];
                     output += `
                                 <div class="col-sm-6 service-card">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 100%; height:100%;">
                                         <img src="${url}" class="card-img-top" style="height: 300px">
-                                        <div class="card-body">
+                                        <div class="card-body d-flex flex-column">
                                             <h5 class="card-title">${serviceName}</h5>
                                             <p class="card-text">${description}</p>
+                                            <div class="d-flex flex-column flex-grow-1 justify-content-end">
                                             <p>Category: ${categoryName}</p>
                                             <p>Price: ${price}</p>
-                                            <a href="#" class="btn btn-primary" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
+                                            <div class="d-flex">
+                                            <a href="#" class="btn btn-primary me-2" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
+                                            
                                             `
 
                     if (status === 1) {
                         output +=
-                            `<a href="#" class="btn btn-primary" onclick="setStatus(0, '${serviceId}')">Active</a>`
+                            `<a href="#" class="btn btn-primary" onclick="setStatus(0, '${serviceId}')">Active</a>
+                            </div>`
                     }
                     else {
                         output +=
-                            `<a href="#" class="btn btn-primary" onclick="setStatus(1, '${serviceId}')">Inactive</a>`
+                            `<a href="#" class="btn btn-primary" onclick="setStatus(1, '${serviceId}')">Inactive</a>
+                            </div>`
                     }
                     output +=
                         `
+                                            </div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -538,38 +631,52 @@
                 .catch(err => {
                     console.log(err)
                 })
-        }
-        var formData = new FormData();
-        const form = document.getElementById("UpdateServiceForm");
-        form.addEventListener("submit", function (e) {
-            updateServiceBtn.disabled = true
-            e.preventDefault();
-            formData.append('description', des);
-            formData.append('serviceName', serviceNameUpdate);
-            formData.append('category', categoryIdUpdate);
-            formData.append('price', priceUpdate);
-            formData.append('numOfPeople', numOfPeopleUpdate);
-            formData.append('image', urlUpdate);
-            fetch("/api/services/" + serviceId + "/update", {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => {
-                    if (res.status === 200) {
-                        alert("update sucessfully");
-                        window.location.reload();
-                    }
-                    else {
-                        alert("cannot update");
-                        window.location.reload();
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            updateServiceBtn.disabled = false
-        })
+            var formData = new FormData();
 
+            const form = document.getElementById("UpdateServiceForm");
+            form.addEventListener("submit", function (e) {
+                updateServiceBtn.disabled = true
+                e.preventDefault();
+                formData.append('description', des);
+                formData.append('serviceName', serviceNameUpdate);
+                formData.append('category', categoryIdUpdate);
+                formData.append('price', priceUpdate);
+                formData.append('numOfPeople', numOfPeopleUpdate);
+                formData.append('image', urlUpdate);
+                fetch("/api/services/" + serviceId + "/update", {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(res => {
+                        if (res.status === 200) {
+                            alert(`Successfully update service !`)
+                            updateServiceBtn.disabled = false
+                            window.location.reload();
+                        }
+                        else {
+                            updateServiceBtn.disabled = false
+                            window.location.reload();
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            })
+            // function update(serviceId) {
+            //     console.log(serviceId);
+            //     console.log(data);
+            //
+            // }
+        }
+
+        function formatMoney(money) {
+            let number = parseInt(money);
+            let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+            let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+
+            return `₫${formattedNumber}`
+        }
 
 
 

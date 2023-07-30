@@ -75,14 +75,14 @@ public class ServiceController {
     }
 
     @PostMapping (value = "/create")
-    public ResponseEntity<String> createService(@RequestParam("serviceName") String serviceName,
+    public ResponseEntity<?> createService(@RequestParam("serviceName") String serviceName,
                                                 @RequestParam("category") String categoryId,
                                                 @RequestParam("price") String priceStr,
                                                 @RequestParam("description") String description,
                                                 @RequestParam("numOfPeople") String numOfPeopleStr,
                                                 @RequestParam("image") MultipartFile image) throws IOException {
         if (serviceName.isEmpty() || categoryId.isEmpty() || priceStr.isEmpty() || description.isEmpty() || numOfPeopleStr.isEmpty() || image.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Please fill all field to create new Service");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
         }
         double price = Double.parseDouble(priceStr);
         int numOfPeople;
@@ -134,7 +134,16 @@ public class ServiceController {
                 .urlImage(Url)
                 .build();
         serviceRepository.save(service);
-        return ResponseEntity.status(HttpStatus.OK).body("Has created a new service");
+        List<Service> listService = serviceRepository.findAll();
+        List<Map<String,Object>> listMap = new ArrayList<>();
+        for (Service ser : listService) {
+            serviceCategory = ser.getServiceCategory();
+            Map<String, Object> map = new HashMap<>();
+            map.put("category", serviceCategory);
+            map.put("service", ser);
+            listMap.add(map);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(listMap);
     }
     @PostMapping(value = "/{id}/update")
     public ResponseEntity updateService (@RequestParam("serviceName") String serviceName,
@@ -144,7 +153,7 @@ public class ServiceController {
                                          @RequestParam("numOfPeople") String numOfPeopleStr,
                                          @RequestParam(name = "image", required = false) MultipartFile image,
                                          @PathVariable("id")  Long serviceId) throws IOException {
-        if (serviceName.isEmpty() && priceStr.isEmpty() && numOfPeopleStr.isEmpty() && description.isEmpty() && categoryId.isEmpty() && image == null) {
+        if (serviceName.isEmpty() && priceStr.isEmpty() && numOfPeopleStr.isEmpty() && description.isEmpty() && categoryId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Not leaving any field empty");
         }
 //        String serviceName = data.get("serviceName").asText();

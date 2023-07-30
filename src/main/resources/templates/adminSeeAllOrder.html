@@ -107,9 +107,6 @@
             </th>
             <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">view Detail</span>
             </th>
-            <!-- <th class="table-heading py-3 asc text-center"><span class="heading text-white capitalize">Action</span>
-                </th> -->
-            <!-- <th class="table-heading py-3 asc text-center"><span class="text-white capitalize">Cancel</span></th> -->
           </tr>
         </thead>
         <tbody id="tbody-orders">
@@ -152,6 +149,7 @@
     const closeBtn = document.querySelector('.closeBtn')
     const contactHeading = document.querySelector('.contactHeading')
     const closeOrderTransactionForm = document.querySelector('.closeOrderTransactionForm')
+    const btnGetRefundCustomer = document.querySelector('#btnGetRefundCustomer')
 
     const tableHeading = document.querySelectorAll('.table-heading')
     const transactionFormInput = document.querySelectorAll('.transactionFormInput')
@@ -216,6 +214,12 @@
     })
 
     function openUpdateOrder(id) {
+      workerInvoledTable.classList.remove("overflow-y-scroll", "h-[72px]")
+      let number = parseInt(orderDict[id].price);
+      let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+      let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+
       phoneDropdownContainer.classList.add('hidden')
       orderid.innerHTML = orderDict[id].orderId
       oid = orderDict[id].orderId
@@ -225,7 +229,7 @@
       phone.value = orderDict[id].phones.length > 0 ? orderDict[id].phones[0].number : "No phone number available"
       createtime.value = orderDict[id].createTime.split("T")[0] + "  " + orderDict[id].createTime.split("T")[1]
       servicename.value = orderDict[id].serviceName
-      serviceprice.value = orderDict[id].price
+      serviceprice.value = `₫${formattedNumber}`
       workday.value = orderDict[id].workDay
       starttime.value = orderDict[id].timeSlot.startTime
       endtime.value = orderDict[id].timeSlot.endTime
@@ -257,6 +261,7 @@
 
       if (orderDict[id].workers.length > 3) {
         console.log('> 3')
+        contactHeading.classList.add("pr-[17px]")
         workerInvoledTable.classList.add("overflow-y-scroll", "h-[72px]")
       }
       for (let i = 0; i < orderDict[id].workers.length; i++) {
@@ -332,8 +337,10 @@
       var status = await response.status
       var toText = await response.text()
       if (status >= 200 && status <= 200) {
-        alert("success:" + toText);
+        alert("Successfully cancel the order !");
+        vnp_TransactionStatus.value = 'REFUNDED'
         cancelOrderBtn.classList.add('hidden')
+        btnGetRefundCustomer.classList.add('hidden')
         fetch('/api/order/all')
           .then(response => response.json())
           .then(data => {
@@ -346,7 +353,7 @@
             console.error('Error:', error);
           });
       } else {
-        alert("fail: " + toText);
+        alert("Fail to cancel the order !");
       }
       cancelOrderBtn.disabled = false
     }
@@ -422,7 +429,7 @@
         const imageConfirm = order['urlImageConfirm'];
         output += `
                         <tr class="item-to-search item-to-search even:bg-[#c4c4c4] odd:bg-[#fffff4]">
-                          <td class="username py-3 text-center" >${orderId}</td>
+                          <td class="orderid py-3 text-center" >${orderId}</td>
                           <td class="username py-3 text-center" >${accountName}</td>
                           <td class="servicename py-3 text-center">${serviceName}</td>
                           <td class="payment py-3 text-center">${paymentName}</td>
@@ -526,7 +533,7 @@
 
     }
 
-    async function getRefundTransaction() {
+    async function getRefundTransaction(btn) {
 
       const txn = transaction_body.querySelector('#transactionId').value
       var response = await fetch("http://localhost:8080/transaction/admin/refundTransaction/" + txn,
@@ -537,13 +544,14 @@
       var toText = await response.text(); console.log(toText)
       if (status < 200 || status > 300) {
         console.log("refund fail");
-        alert("refund fail: " + toText)
+        alert("Fail to refund the order !")
       } else {
         console.log("refund success");
-        alert("refund success: " + toText)
+        alert("Successfully refund the order !")
       }
       vnp_TransactionStatus.value = 'REFUNDED'
       cancelOrderBtn.classList.add('hidden')
+      btn.classList.add('hidden')
       fetch('/api/order/all')
         .then(response => response.json())
         .then(data => {
@@ -559,9 +567,6 @@
 
 
   </script>
-
-
-  <!-- <script defer src="../static/js/AdminPublicFunction.js"></script> -->
 </body>
 
 </html>

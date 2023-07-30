@@ -14,33 +14,35 @@
 
   <section class="mx-48 my-10 flex flex-col space-y-6 rounded-lg border-2 border-black p-8">
     <div class="flex space-x-6">
-      <img th:src="@{${service.urlImage}}" class="w-1/4 rounded-lg" alt="service's imgage" />
-      <div class="space-y-4">
-        <h2 class="text-xl font-bold" th:text="${service.serviceName}"></h2>
-        <p th:if="${service.description != null}" th:text="${service.description}"></p>
-        <p th:unless="${service.description != null}">
+      <img th:src="@{${service.urlImage}}" class="w-[300px] h-inherit rounded-lg object-cover" alt="service's imgage" />
+      <div class="flex flex-col w-full">
+        <h2 class="mb-2 text-xl font-bold serviceName" th:text="${service.serviceName}"></h2>
+        <p th:if="${service.description != null}" th:text="${service.description}" class="mb-2"></p>
+        <p th:unless="${service.description != null}" class="mb-2">
           No description available
         </p>
-        <p>
+        <p class="mb-2">
           Price:
-          <span class="text-blue-bootstrap" th:text="${service.price}"></span>
+          <span class="text-blue-bootstrap price" th:text="'₫' + ${service.price}"></span>
         </p>
-        <p>
+        <p class="mb-2">
           Number of workers:
           <span class="text-blue-bootstrap" th:text="${service.numOfPeople}"></span>
         </p>
-        <p>
+        <p class="mb-2">
           Category:
           <span class="text-blue-bootstrap" th:text="${category.serviceCategoryName}"></span>
         </p>
+        <div class="flex-1 flex flex-col justify-end items-end">
+          <input type="hidden" th:value="${service.serviceId}" />
+          <button class=" order-btn rounded-lg bg-blue-bootstrap px-8 py-2 text-left text-white">
+            Order
+          </button>
+        </div>
+
       </div>
     </div>
-    <div class="flex justify-end">
-      <input type="hidden" th:value="${service.serviceId}" />
-      <button class="order-btn rounded-lg bg-blue-bootstrap px-8 py-2 text-left text-white">
-        Order
-      </button>
-    </div>
+
   </section>
   <section class="mx-48 my-20">
     <h1 class="m-4 text-2xl font-bold">Comments</h1>
@@ -70,6 +72,12 @@
       // Execute the fetchData function after the segment is loaded
       loadOrderForm();
     });
+    const price = document.querySelector('.price')
+    let number = parseInt(price.innerHTML.split('₫')[1]);
+    let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+    let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+    price.innerHTML = `₫${formattedNumber}`
   </script>
 </body>
 

@@ -49,7 +49,7 @@ public class SecurityConfig {
                 )
 
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").hasAnyAuthority("0", "1", "2"))
-//                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/**").permitAll())
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/worker/**").hasAnyAuthority("1","2"))
 //                //.authorizeHttpRequests(auth -> auth.requestMatchers("/api/order/getSession").permitAll())
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/vnpay/createPayment").authenticated())
