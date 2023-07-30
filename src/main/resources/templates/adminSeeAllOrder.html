@@ -214,6 +214,7 @@
     })
 
     function openUpdateOrder(id) {
+      workerInvoledTable.classList.remove("overflow-y-scroll", "h-[72px]")
       let number = parseInt(orderDict[id].price);
       let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
       let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -260,6 +261,7 @@
 
       if (orderDict[id].workers.length > 3) {
         console.log('> 3')
+        contactHeading.classList.add("pr-[17px]")
         workerInvoledTable.classList.add("overflow-y-scroll", "h-[72px]")
       }
       for (let i = 0; i < orderDict[id].workers.length; i++) {
