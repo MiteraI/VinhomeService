@@ -951,10 +951,6 @@ video {
   height: 25%;
 }
 
-.h-\[250px\] {
-  height: 250px;
-}
-
 .h-\[2px\] {
   height: 2px;
 }
@@ -993,10 +989,6 @@ video {
 
 .h-inherit {
   height: inherit;
-}
-
-.h-\[300px\] {
-  height: 300px;
 }
 
 .w-1\/2 {
@@ -1087,10 +1079,6 @@ video {
   width: 20px;
 }
 
-.w-\[250px\] {
-  width: 250px;
-}
-
 .w-\[30\%\] {
   width: 30%;
 }
@@ -1158,10 +1146,6 @@ video {
 
 .w-inherit {
   width: inherit;
-}
-
-.w-\[300px\] {
-  width: 300px;
 }
 
 .min-w-\[282px\] {
