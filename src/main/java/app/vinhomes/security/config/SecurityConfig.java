@@ -100,6 +100,7 @@ public class SecurityConfig {
                     authUser.requestMatchers("/profile").hasAnyAuthority("0","2");
                 })
                 .authorizeHttpRequests(authAdmin ->{
+                    authAdmin.requestMatchers("/dashboard").hasAuthority("2");
                     authAdmin.requestMatchers("/UserRestController/**").hasAuthority("2");
                     authAdmin.requestMatchers("/api/admin/**").hasAuthority("2");
                     authAdmin.requestMatchers("/admin").hasAuthority("2");
