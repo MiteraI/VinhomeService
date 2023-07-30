@@ -25,8 +25,8 @@
       </div>
       <div class="p-8 space-y-2">
         <input type="hidden" th:value="${session.loginedUser != null} ? 1 : 0" class="checkSession">
-        <p>Service name: <span>House cleaning</span></p>
-        <p>Price: <span>100$</span></p>
+        <p>Service name: <span class="serviceName">House cleaning</span></p>
+        <p>Price: <span class="price">100$</span></p>
         <label for="timeSlot">Time Slot:</label>
         <div id="timeSlot"></div>
         <label for="payment">Payment:</label>
@@ -136,7 +136,6 @@
           requestBody.phonenumberId = data[0].phoneId;
         })
 
-
     };
 
 
@@ -198,7 +197,7 @@
     const orderBtns = Array.from(document.getElementsByClassName("order-btn"));
     for (var i = 0; i < orderBtns.length; i++) {
       orderBtns[i].addEventListener("click", function () {
-        displayForm();
+        displayForm(this.parentElement.parentElement.querySelector('.price').innerHTML, this.parentElement.parentElement.querySelector('.serviceName').innerHTML);
         const inputValue = this.parentNode.querySelector(
           'input[type="hidden"]'
         ).value;
@@ -206,8 +205,12 @@
         // You can perform further actions with the input value here
       });
     }
-    const displayForm = () => {
+    const displayForm = (money, name) => {
+      const price = orderForm.querySelector('.price')
+      const serviceName = orderForm.querySelector('.serviceName')
       console.log('display');
+      price.innerHTML = money
+      serviceName.innerHTML = name
       orderForm.style.display =
         orderForm.style.display === "none" ? "block" : "none";
     };
