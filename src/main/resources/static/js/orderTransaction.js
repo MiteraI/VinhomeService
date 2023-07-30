@@ -24,13 +24,13 @@ async function getQueryTransaction(txn, text) {
       if (toJson.vnp_TransactionStatus == "00") {
         console.log(toJson.vnp_Amount)
         console.log(text)
-        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount / 100
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : formatMoney(toJson.vnp_Amount / 100)
         vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
         vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       } else {
         console.log(toJson.vnp_Amount)
         console.log(text)
-        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount / 100
+        vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : formatMoney(toJson.vnp_Amount / 100)
         vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
         vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
       }
@@ -38,7 +38,7 @@ async function getQueryTransaction(txn, text) {
       console.log(toJson.vnp_Amount)
       console.log(text)
       refundButton.classList.add('hidden')
-      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_Amount / 100
+      vnp_Amount.value = typeof toJson.vnp_Amount === 'undefined' ? 'UNAVAILABLE' : formatMoney(toJson.vnp_Amount / 100)
       vnp_FeeAmount.value = typeof toJson.vnp_FeeAmount === 'undefined' ? 'UNAVAILABLE' : toJson.vnp_FeeAmount
       vnp_TransactionStatus.value = typeof text === 'undefined' ? 'UNAVAILABLE' : text
     }
@@ -77,4 +77,16 @@ function getAdminCustomerPage() {
   console.log("inside return main page")
   window.location.href = "/see-all-order-by-admin";
 }
+
+function formatMoney(money) {
+  let number = parseInt(money);
+  let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+  let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+
+  return `₫${formattedNumber}`
+}
+
+
+
 

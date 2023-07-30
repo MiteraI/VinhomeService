@@ -214,6 +214,11 @@
     })
 
     function openUpdateOrder(id) {
+      let number = parseInt(orderDict[id].price);
+      let [integerPart, decimalPart] = number.toFixed(0).toString().split('.');
+      let formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      let formattedNumber = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+
       phoneDropdownContainer.classList.add('hidden')
       orderid.innerHTML = orderDict[id].orderId
       oid = orderDict[id].orderId
@@ -223,7 +228,7 @@
       phone.value = orderDict[id].phones.length > 0 ? orderDict[id].phones[0].number : "No phone number available"
       createtime.value = orderDict[id].createTime.split("T")[0] + "  " + orderDict[id].createTime.split("T")[1]
       servicename.value = orderDict[id].serviceName
-      serviceprice.value = orderDict[id].price
+      serviceprice.value = `₫${formattedNumber}`
       workday.value = orderDict[id].workDay
       starttime.value = orderDict[id].timeSlot.startTime
       endtime.value = orderDict[id].timeSlot.endTime

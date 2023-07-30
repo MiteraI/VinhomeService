@@ -18,19 +18,19 @@
 <body>
     <header th:replace="~{./fragments/adminHeader.html}"></header>
 
-<div id="main" class="container px-3 mt-3">
-    <div class="container flex justify-between p-0 my-3 ">
-        <div class="">
-            <button class="btn btn-primary text-white" onclick="openCreateForm()">
-                Create worker
-            </button>
-        </div>
-        <div class="flex justify-center w-[30%]">
-            <!-- <label class="sr-only" for="search">Search</label> -->
-            <input type="text" class="flex-1 bg-slate-300 rounded-lg px-2" name="q" id="search"
-                   placeholder="Search">
+    <div id="main" class="container px-3 mt-3">
+        <div class="container flex justify-between p-0 my-3 ">
             <div class="">
-                <button class="py-2 px-3 bg-green-300 rounded-lg dropdown-toggle capitalize" type="button"
+                <button class="btn btn-primary text-white" onclick="openCreateForm()">
+                    Create worker
+                </button>
+            </div>
+            <div class="flex justify-center w-[30%]">
+                <!-- <label class="sr-only" for="search">Search</label> -->
+                <input type="text" class="flex-1 bg-slate-300 rounded-lg px-2" name="q" id="search"
+                    placeholder="Search">
+                <div class="">
+                    <button class="py-2 px-3 bg-green-300 rounded-lg dropdown-toggle capitalize" type="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         id="dropdown-title">none</button>
                     <div class="dropdown-menu" id="dropdown-category">
@@ -556,7 +556,7 @@
         }
         dayOff.value = workerStatusDict[id].allowedDayOff
         workCount.value = workerStatusDict[id].workCount
-        workerStatusTxt.value = workerStatusDict[id].status > 0 ? 'off' : 'free'
+        workerStatusTxt.value = workerStatusDict[id].status > 0 ? 'off' : 'on'
         workerStatus.value = workerStatusDict[id].status
 
         console.log(workerStatusDict[id].status)
