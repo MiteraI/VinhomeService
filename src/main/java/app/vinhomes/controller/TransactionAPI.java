@@ -190,6 +190,7 @@ public class TransactionAPI {
         if (getPayment.equals("COD")) {
             orderService.setOrderStatus(getOrder, OrderStatus.CANCEL);
             transactionService.setTransactionStatus(getTransaction, TransactionStatus.FAIL);
+            eventPublisher.publishEvent(new SendEmailOnRefund_OnFinishOrder(getOrder.getAccount(), getTransaction, false));
             return ResponseEntity.status(HttpStatus.OK).body("OK cancel cod");
         } else {
             return refundVNPAY(getTransaction.getVnpTxnRef(), request, response);

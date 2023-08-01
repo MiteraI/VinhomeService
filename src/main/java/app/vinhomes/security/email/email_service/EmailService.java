@@ -241,7 +241,7 @@ public class EmailService {
     }
     private void onLeaveReportAccept_Denied(Account account,LeaveReport report) {
         try {
-            System.out.println("inside sending email on accept leave reprot");
+            System.out.println(" on accept leave reprot");
             MimeMessage mailMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
             Context context = new Context();
