@@ -76,8 +76,8 @@
             position: relative;
             background: #f5f5f5;
             min-height: 100vh;
-            < !-- width: calc(100% - 340px);
-            -->left: 340px;
+            width: calc(100% - 340px);
+            left: 340px;
             transition: all 0.5s ease;
         }
 
@@ -266,7 +266,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="priceUpdate" class="form-label">Price</label>
-                    <input type="number" class="form-control" id="priceUpdate">
+                    <input type="number" min="1" class="form-control" id="priceUpdate">
                 </div>
             </div>
             <div class="col-12">
@@ -503,7 +503,7 @@
                                             <p>Category: ${categoryName}</p>
                                             <p>Price: ${price}</p>
                                             <div class="d-flex">
-                                            <a href="#" class="btn btn-primary me-2" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${price}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
+                                            <a href="#" class="btn btn-primary me-2" onclick="updateForm('${serviceId}', '${serviceName}', '${categoryName}', '${service['price']}', '${description}', '${url}', '${numOfPeople}', '${categoryId}')">Update</a>
                                             
                                             `
 

@@ -174,8 +174,8 @@ public class PageController {
                 System.out.println("PC.getSessionAccount: " + session.getAttribute("loginedUser"));
                 ////minh ////fix //////
                 acc = (Account) session.getAttribute("loginedUser");
-//                acc = accountRepository.findById(acc.getAccountId()).get();
-//                session.setAttribute("loginedUser", acc);
+                acc = accountRepository.findById(acc.getAccountId()).get();
+                session.setAttribute("loginedUser", acc);
             }
         }
         return acc;

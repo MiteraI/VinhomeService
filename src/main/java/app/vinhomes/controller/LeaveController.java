@@ -9,6 +9,7 @@ import app.vinhomes.entity.worker.Leave;
 
 import app.vinhomes.entity.worker.LeaveReport;
 import app.vinhomes.entity.worker.WorkerStatus;
+import app.vinhomes.event.event_storage.SendEmail_LeaveReportConfirmation;
 import app.vinhomes.repository.AccountRepository;
 import app.vinhomes.repository.worker.LeaveReportRepository;
 import app.vinhomes.repository.worker.LeaveRepository;
@@ -24,6 +25,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Pattern;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +68,9 @@ public class LeaveController {
     private LeaveService leaveService;
     @Autowired
     private SseController sseController;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @PostMapping(value = "/leave-report/create")
     public ResponseEntity<?> LeaveReport (@RequestParam("startDate") String startDateStr,
                                           @RequestParam("endDate") String endDateStr,
@@ -197,6 +202,10 @@ public class LeaveController {
             int allowDaysOff = (int) (workerStatus.getAllowedDayOff() - daysLeave);
             workerStatus.setAllowedDayOff(allowDaysOff);
             workerStatusRepository.save(workerStatus);
+            System.out.println("about to sending email");
+            eventPublisher.publishEvent(new SendEmail_LeaveReportConfirmation(account,leaveReport));
+            System.out.println("pass sending email");
+
             return ResponseEntity.status(HttpStatus.OK).body("Approving the leave report");
         }
         else {

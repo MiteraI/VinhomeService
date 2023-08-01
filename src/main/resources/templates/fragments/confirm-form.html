@@ -27,7 +27,8 @@
                 <img id="preview" src="#" alt="Preview" style="display: none; max-width: 400px; margin-top: 10px;" />
             </div>
             <button type="button" class="bg-red-cancel py-2 px-10 rounded-lg" id="cancelConfirmOrder">Cancel</button>
-            <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg">Confirm</button>
+            <button type="submit" class="bg-blue-bootstrap text-white py-2 px-10 rounded-lg"
+                id="confirm-btn">Confirm</button>
         </form>
     </div>
 
@@ -50,6 +51,7 @@
 
         document.getElementById("confirm-form").addEventListener("submit", async (e) => {
             e.preventDefault();
+            document.getElementById("confirm-btn").disabled = true;
             const imageConfirm = document.getElementById("imageConfirm").files[0];
             const orderId = document.getElementById("input-orderid").value;
             console.log(orderId);
@@ -71,6 +73,7 @@
                 .catch(err => {
                     console.log(err);
                 })
+            document.getElementById("confirm-btn").disabled = false;
         })
 
         document.getElementById("cancelConfirmOrder").addEventListener("click", function (e) {

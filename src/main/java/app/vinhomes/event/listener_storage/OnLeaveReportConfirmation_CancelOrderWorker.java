@@ -13,7 +13,8 @@ import app.vinhomes.security.email.email_service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
-
+import org.springframework.stereotype.Component;
+@Component
 public class OnLeaveReportConfirmation_CancelOrderWorker {
     @Autowired
     private EmailService emailService;
@@ -23,13 +24,11 @@ public class OnLeaveReportConfirmation_CancelOrderWorker {
     public void sendEmailOnForgetAccount(SendEmail_LeaveReportConfirmation event) {
         try{
             LeaveReport getReport = event.getGetReport();
+            System.out.println("inside sending email on leave reprot");
             emailService.sendMailWithTemplate(event.getAccount(),LEAVE_REPORT,getReport);
         }catch (Exception e){
-
+            System.out.println(e.getMessage());
         }
     }
-    @EventListener
-    public void sendEmailOnCancelOrder(){
 
-    }
 }

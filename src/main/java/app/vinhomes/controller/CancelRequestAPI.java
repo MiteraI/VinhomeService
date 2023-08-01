@@ -99,7 +99,7 @@ public class CancelRequestAPI {
 
             cancelRequestService.createCancelRequest(createNew);
             System.out.println("pass cancel request");
-            return ResponseEntity.status(HttpStatus.OK).body("");
+            return ResponseEntity.status(HttpStatus.OK).body("Success");
         }catch (NumberFormatException e){
             System.out.println("error inside cancelrequestAPI: "+ e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("number format exception");

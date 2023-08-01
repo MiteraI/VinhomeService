@@ -25,6 +25,7 @@
       <ul class="space-y-4">
         <input type="hidden" id="orderId" th:value="${order.orderId}">
         <li>Work day: <span th:text="${order.schedule.workDay}"></span></li>
+        <li>Timeslot: <span th:text="${order.schedule.timeSlot.startTime}"></span> - <span th:text="${order.schedule.timeSlot.endTime}"></span></li>
         <li>
           Payment method: <span th:text="${order.payment.paymentName}"></span>
         </li>

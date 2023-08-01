@@ -83,12 +83,15 @@ public class CancelRequestService {
     public boolean checkIfValidForCreate(Account account , Order order){
         boolean checkIfValid = false;
         LocalDate date = order.getSchedule().getWorkDay().minusDays(1);
+        System.out.println(date);
         LocalDate dateNow = LocalDate.now();
+        System.out.println(dateNow);
+
         if (dateNow.isAfter(date) || dateNow.isEqual(date)) {
             Optional<List<CancelRequest>> getList = cancelRequestRepository.findByWorkerAndOrder(account,order);
-            if(getList.isPresent() || getList.isEmpty() == false){
+            if( getList.get().isEmpty() == false){
                 for (CancelRequest request : getList.get()){
-                    if(request.getStatus().equals(CancelRequestStatus.CANCEL)){
+                    if(request.getStatus().equals(CancelRequestStatus.CANCEL)||request.getStatus().equals(CancelRequestStatus.REJECT)){
                         checkIfValid = true;
                     }else{
                         checkIfValid =  false;
